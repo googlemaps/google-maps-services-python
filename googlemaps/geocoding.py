@@ -1,9 +1,11 @@
-import common
-import convert
+"""Performs requests to the Google Maps Geocoding API."""
+from googlemaps import common
+from googlemaps import convert
 
 
 # TODO(mdr-eng): test unicode parameters (e.g. in addresses).
-def geocode(ctx, address=None, components=None, bounds=None, region=None, language=None):
+def geocode(ctx, address=None, components=None, bounds=None, region=None,
+            language=None):
     """
     Geocoding is the process of converting addresses
     (like "1600 Amphitheatre Parkway, Mountain View, CA") into geographic
@@ -31,7 +33,8 @@ def geocode(ctx, address=None, components=None, bounds=None, region=None, langua
     return common._get(ctx, "/maps/api/geocode/json", params)["results"]
 
 
-def reverse_geocode(ctx, latlng, result_type=None, location_type=None, language=None):
+def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
+                    language=None):
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.

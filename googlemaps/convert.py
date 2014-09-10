@@ -14,7 +14,7 @@
 import time as _time
 
 
-def latlng(ll):
+def latlng(arg):
     """Converts a lat/lon pair to a comma-separated string.
 
     Accepts various representations:
@@ -32,59 +32,71 @@ def latlng(ll):
     convert.latlng(sydney)
     # '-33.8674869,151.2069902'
 
-    :param ll: The lat/lon pair.
-    :type ll: basestring or dict or list
+    :param arg: The lat/lon pair.
+    :type arg: basestring or dict or list
     """
-    if isinstance(ll, basestring):
-        return ll
+    if isinstance(arg, basestring):
+        return arg
 
-    if isinstance(ll, dict):
-        if "lat" in ll and "lng" in ll:
-            return "%f,%f" % (ll["lat"], ll["lng"])
+    if isinstance(arg, dict):
+        if "lat" in arg and "lng" in arg:
+            return "%f,%f" % (arg["lat"], arg["lng"])
 
     # List or tuple.
-    if _is_list(ll):
-        return "%f,%f" % (ll[0], ll[1])
+    if _is_list(arg):
+        return "%f,%f" % (arg[0], arg[1])
 
     raise TypeError(
-            "Expected a string or lat/lng dict, "
-            "but got %s" % type(o).__name__)
+        "Expected a string or lat/lng dict, "
+        "but got %s" % type(arg).__name__)
 
 
-def join_list(sep, l):
-    return sep.join(as_list(l))
+def join_list(sep, arg):
+    """If arg is list-like, then joins it with sep.
+    :param sep: Separator string.
+    :type sep: basestring
+    :param arg: Value to coerce into a list.
+    :type arg: basestring or list
+    :rtype: basestring
+    """
+    return sep.join(as_list(arg))
 
 
-def as_list(l):
-    if _is_list(l):
-        return l
-    return [l]
+def as_list(arg):
+    """Coerces arg into a list. If arg is already list-like, returns arg.
+    Otherwise, returns a one-element list containing arg.
+    :rtype: list
+    """
+    if _is_list(arg):
+        return arg
+    return [arg]
 
 
 def _is_list(arg):
+    """Checks if arg is list-like. This excludes strings."""
     return (not _has_method(arg, "strip")
-        and _has_method(arg, "__getitem__")
-        or _has_method(arg, "__iter__"))
+            and _has_method(arg, "__getitem__")
+            or _has_method(arg, "__iter__"))
 
 
-def time(t):
+def time(arg):
     """Converts the value into a unix time (seconds since unix epoch).
 
     For example:
         convert.time(datetime.now())
         # '1409810596'
 
-    :param t: The time.
-    :type t: datetime.datetime or int
+    :param arg: The time.
+    :type arg: datetime.datetime or int
     """
     # handle datetime instances.
-    if _has_method(t, "timetuple"):
-        t = _time.mktime(t.timetuple())
+    if _has_method(arg, "timetuple"):
+        arg = _time.mktime(arg.timetuple())
 
-    if isinstance(t, float):
-        t = int(t)
+    if isinstance(arg, float):
+        arg = int(arg)
 
-    return str(t)
+    return str(arg)
 
 
 def _has_method(arg, method):
@@ -98,7 +110,7 @@ def _has_method(arg, method):
     return hasattr(arg, method) and callable(getattr(arg, method))
 
 
-def components(c):
+def components(arg):
     """Converts a dict of components to the format expected by the Google Maps
     server.
 
@@ -107,31 +119,59 @@ def components(c):
     convert.components(c)
     # 'country:US|postal_code:94043'
 
-    :param c: The component filter.
-    :type c: dict or basestring
+    :param arg: The component filter.
+    :type arg: dict or basestring
     :rtype basestring:
     """
-    if isinstance(c, basestring):
-        return c
+    if isinstance(arg, basestring):
+        return arg
 
-    if isinstance(c, dict):
-        c = ["%s:%s" % (k, c[k]) for k in c]
-        return "|".join(c)
-
-    raise TypeError(
-            "Expected a string or dict for components, "
-            "but got %s" % type(c).__name__)
-
-
-def bounds(b):
-    if isinstance(b, basestring):
-        return b
-
-    if isinstance(b, dict):
-        if "southwest" in b and "northeast" in b:
-            return "%s|%s" % (latlng(b["southwest"]), latlng(b["northeast"]))
+    if isinstance(arg, dict):
+        arg = ["%s:%s" % (k, arg[k]) for k in arg]
+        return "|".join(arg)
 
     raise TypeError(
-            "Expected a string or bounds (southwest/northeast) dict, "
-            "but got %s" % type(b).__name__)
+        "Expected a string or dict for components, "
+        "but got %s" % type(arg).__name__)
+
+
+def bounds(arg):
+    """Converts a lat/lon bounds to a comma- and pipe-separated string.
+
+    Accepts two representations:
+    1) string: pipe-separated pair of comma-separated lat/lon pairs.
+    2) dict with two entries - "southwest" and "northeast". See convert.latlng
+    for information on how these can be represented.
+
+    For example:
+
+    sydney_bounds = {
+        "northeast" : {
+            "lat" : -33.4245981,
+            "lng" : 151.3426361
+        },
+        "southwest" : {
+            "lat" : -34.1692489,
+            "lng" : 150.502229
+        }
+    }
+
+    convert.bounds(sydney_bounds)
+    # '-34.169249,150.502229|-33.424598,151.342636'
+
+    :param arg: The bounds.
+    :type arg: basestring or dict
+    """
+
+    if isinstance(arg, basestring):
+        return arg
+
+    if isinstance(arg, dict):
+        if "southwest" in arg and "northeast" in arg:
+            return "%s|%s" % (latlng(arg["southwest"]),
+                              latlng(arg["northeast"]))
+
+    raise TypeError(
+        "Expected a string or bounds (southwest/northeast) dict, "
+        "but got %s" % type(arg).__name__)
 

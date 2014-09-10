@@ -1,11 +1,13 @@
-import common
-import convert
+"""Performs requests to the Google Maps Directions API."""
+
+from googlemaps import common
+from googlemaps import convert
 
 
 def directions(ctx, origin, destination,
-        mode=None, waypoints=None, alternatives=False, avoid=None,
-        language=None, units=None, region=None, departure_time=None,
-        arrival_time=None):
+               mode=None, waypoints=None, alternatives=False, avoid=None,
+               language=None, units=None, region=None, departure_time=None,
+               arrival_time=None):
     """Get directions between an origin point and a destination point.
 
     :param ctx: Shared googlemaps.Context
@@ -48,7 +50,8 @@ def directions(ctx, origin, destination,
     :param departure_time: Specifies the desired time of departure.
     :type departure_time: int or datetime.datetime
 
-    :param arrival_time: Specifies the desired time of arrival for transit directions.
+    :param arrival_time: Specifies the desired time of arrival for transit
+        directions.
     :type arrival_time: int or datetime.datetime
 
     :rtype: list of routes
