@@ -18,9 +18,8 @@ def latlng(arg):
     """Converts a lat/lon pair to a comma-separated string.
 
     Accepts various representations:
-    1) comma-separated string
-    2) dict with two entries - "lat" and "lng"
-    3) list or tuple - e.g. (-33, 151) or [-33, 151]
+    1) dict with two entries - "lat" and "lng"
+    2) list or tuple - e.g. (-33, 151) or [-33, 151]
 
     For example:
 
@@ -33,11 +32,8 @@ def latlng(arg):
     # '-33.8674869,151.2069902'
 
     :param arg: The lat/lon pair.
-    :type arg: basestring or dict or list
+    :type arg: dict or list or tuple
     """
-    if isinstance(arg, basestring):
-        return arg
-
     if isinstance(arg, dict):
         if "lat" in arg and "lng" in arg:
             return "%f,%f" % (arg["lat"], arg["lng"])
@@ -47,7 +43,7 @@ def latlng(arg):
         return "%f,%f" % (arg[0], arg[1])
 
     raise TypeError(
-        "Expected a string or lat/lng dict, "
+        "Expected a lat/lng dict or tuple, "
         "but got %s" % type(arg).__name__)
 
 
@@ -56,7 +52,7 @@ def join_list(sep, arg):
     :param sep: Separator string.
     :type sep: basestring
     :param arg: Value to coerce into a list.
-    :type arg: basestring or list
+    :type arg: basestring or list of basestring
     :rtype: basestring
     """
     return sep.join(as_list(arg))
@@ -120,12 +116,9 @@ def components(arg):
     # 'country:US|postal_code:94043'
 
     :param arg: The component filter.
-    :type arg: dict or basestring
+    :type arg: dict
     :rtype basestring:
     """
-    if isinstance(arg, basestring):
-        return arg
-
     if isinstance(arg, dict):
         arg = ["%s:%s" % (k, arg[k]) for k in arg]
         return "|".join(arg)
@@ -160,11 +153,8 @@ def bounds(arg):
     # '-34.169249,150.502229|-33.424598,151.342636'
 
     :param arg: The bounds.
-    :type arg: basestring or dict
+    :type arg: dict
     """
-
-    if isinstance(arg, basestring):
-        return arg
 
     if isinstance(arg, dict):
         if "southwest" in arg and "northeast" in arg:
@@ -174,4 +164,3 @@ def bounds(arg):
     raise TypeError(
         "Expected a string or bounds (southwest/northeast) dict, "
         "but got %s" % type(arg).__name__)
-
