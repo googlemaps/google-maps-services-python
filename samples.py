@@ -15,7 +15,7 @@ def main():
     print googlemaps.reverse_geocode(c, geocoded[0]["geometry"]["location"])
 
     print googlemaps.reverse_geocode(c,
-            latlng="-33.86536501970851,151.1969187802915",
+            latlng=(-33.86536501970851,151.1969187802915),
             result_type=["country", "political"])
 
     print googlemaps.geocode(c, components={"country": "US"})

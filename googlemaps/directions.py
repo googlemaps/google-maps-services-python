@@ -58,9 +58,15 @@ def directions(ctx, origin, destination,
     """
     # TODO(mdr-eng): Add optimize_waypoints=True.
 
+    if not isinstance(origin, basestring):
+        origin = convert.latlng(origin)
+
+    if not isinstance(destination, basestring):
+        origin = convert.latlng(destination)
+
     params = {
-        "origin": convert.latlng(origin),
-        "destination": convert.latlng(destination)
+        "origin": origin,
+        "destination": destination
     }
 
     if mode:
