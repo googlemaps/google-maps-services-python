@@ -5,7 +5,7 @@ import datetime
 
 from googlemaps import convert
 
-class ConvertLatLngTest(unittest.TestCase):
+class ConvertTest(unittest.TestCase):
 
     def test_latlng(self):
         ll = {"lat": 1, "lng": 2}
