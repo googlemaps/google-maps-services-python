@@ -161,9 +161,6 @@ def bounds(arg):
             return "%s|%s" % (latlng(arg["southwest"]),
                               latlng(arg["northeast"]))
 
-    if isinstance(arg, basestring):
-        return arg
-
     raise TypeError(
-        "Expected a string or bounds (southwest/northeast) dict, "
+        "Expected a bounds (southwest/northeast) dict, "
         "but got %s" % type(arg).__name__)
