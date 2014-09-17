@@ -11,3 +11,7 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Sphinx documentation #
+########################
+docs/_build/
