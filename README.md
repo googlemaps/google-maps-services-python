@@ -4,6 +4,7 @@ Generating documentation:
 
 
 Installing dependencies:
+
     $ [sudo] pip install requests
 
 Running tests:
