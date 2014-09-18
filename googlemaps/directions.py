@@ -58,11 +58,8 @@ def directions(ctx, origin, destination,
     """
     # TODO(mdr-eng): Add optimize_waypoints=True.
 
-    if not isinstance(origin, basestring):
-        origin = convert.latlng(origin)
-
-    if not isinstance(destination, basestring):
-        origin = convert.latlng(destination)
+    origin = _convert_waypoint(origin)
+    destination = _convert_waypoint(destination)
 
     params = {
         "origin": origin,
@@ -74,7 +71,7 @@ def directions(ctx, origin, destination,
 
     if waypoints:
         waypoints = convert.as_list(waypoints)
-        waypoints = [convert.latlng(waypoint) for waypoint in waypoints]
+        waypoints = [_convert_waypoint(waypoint) for waypoint in waypoints]
         params["waypoints"] = convert.join_list("|", waypoints)
 
     if alternatives:
@@ -99,3 +96,9 @@ def directions(ctx, origin, destination,
         params["arrival_time"] = convert.time(arrival_time)
 
     return common._get(ctx, "/maps/api/directions/json", params)["routes"]
+
+def _convert_waypoint(waypoint):
+    if not isinstance(waypoint, basestring):
+        return convert.latlng(waypoint)
+
+    return waypoint
