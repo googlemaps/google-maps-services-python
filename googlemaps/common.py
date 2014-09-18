@@ -27,7 +27,10 @@ class Context(object):
             secret (base64 encoded).
         :type client_secret: basestring
         """
-        # TODO(lukem): simple key validation.
+        if not key.startswith("AIza"):
+            raise Exception("Must provide API key or enterprise credentials "
+                            "with context object.")
+
         self.key = key
         self.timeout = timeout
         self.client_id = client_id
@@ -46,7 +49,6 @@ def _get(ctx, url, params):
 
     # TODO(mdr-eng): implement rate limiting, retries, etc.
     # TODO(mdr-eng): implement enterprise key signing
-    # TODO(mdr-eng): enforce use of API keys/credentials
     # TODO(mdr-eng): add jitter (might not be necessary since most uses will be
     #       single threaded)
     params["key"] = ctx.key
