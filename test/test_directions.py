@@ -60,6 +60,14 @@ class DirectionsTest(unittest.TestCase):
                                        arrival_time=an_hour_from_now)
         self.assertIsNotNone(routes)
 
+    # TODO(mdr): Convert error returns into exceptions
+    # def test_crazy_travel_mode(self):
+    #     # An invalid travel mode throws a ValueError
+    #     with self.assertRaises(Exception):
+    #         googlemaps.directions(self.ctx, "48 Pirrama Road, Pyrmont, NSW",
+    #                               "Sydney Town Hall",
+    #                               mode="crawling")
+
     def test_travel_mode_round_trip(self):
         routes = googlemaps.directions(self.ctx, "Town Hall, Sydney",
                                        "Parramatta, NSW",
@@ -114,7 +122,7 @@ class DirectionsTest(unittest.TestCase):
         self.assertEquals("Madrid, Madrid, Spain",
                           routes[0]["legs"][0]["end_address"])
 
-    # TODO(mdr): Implement ZERO_RESULTS handling
+    # TODO(mdr): Convert ZERO_RETURNS into zero length arrays.
     # def test_toledo_to_madrid_not_in_spain(self):
     #     routes = googlemaps.directions(self.ctx, "Toledo", "Madrid")
     #     self.assertIsNotNone(routes)
@@ -152,7 +160,7 @@ class DirectionsTest(unittest.TestCase):
         self.assertIsNotNone(results[0]["geometry"]["location"])
         self._expected_location(-33.8674869, 151.2069902, results)
 
-    # TODO(mdr): Implement API Key enforcement
+    # TODO(mdr): Enforce API Key
     # def test_no_api_key(self):
     #     with self.assertRaises(Exception):
     #         ctx = googlemaps.Context()
