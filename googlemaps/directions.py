@@ -58,12 +58,9 @@ def directions(ctx, origin, destination,
     """
     # TODO(mdr-eng): Add optimize_waypoints=True.
 
-    origin = _convert_waypoint(origin)
-    destination = _convert_waypoint(destination)
-
     params = {
-        "origin": origin,
-        "destination": destination
+        "origin": _convert_waypoint(origin),
+        "destination": _convert_waypoint(destination)
     }
 
     if mode:
