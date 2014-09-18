@@ -162,5 +162,5 @@ def bounds(arg):
                               latlng(arg["northeast"]))
 
     raise TypeError(
-        "Expected a string or bounds (southwest/northeast) dict, "
+        "Expected a bounds (southwest/northeast) dict, "
         "but got %s" % type(arg).__name__)
