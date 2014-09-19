@@ -60,13 +60,12 @@ class DirectionsTest(unittest.TestCase):
                                        arrival_time=an_hour_from_now)
         self.assertIsNotNone(routes)
 
-    # TODO(mdr): Convert error returns into exceptions
-    # def test_crazy_travel_mode(self):
-    #     # An invalid travel mode throws a ValueError
-    #     with self.assertRaises(Exception):
-    #         googlemaps.directions(self.ctx, "48 Pirrama Road, Pyrmont, NSW",
-    #                               "Sydney Town Hall",
-    #                               mode="crawling")
+    # TODO(mdr-eng): More specific Exception type.
+    def test_crazy_travel_mode(self):
+        with self.assertRaises(Exception):
+            googlemaps.directions(self.ctx, "48 Pirrama Road, Pyrmont, NSW",
+                                  "Sydney Town Hall",
+                                  mode="crawling")
 
     def test_travel_mode_round_trip(self):
         routes = googlemaps.directions(self.ctx, "Town Hall, Sydney",
@@ -102,7 +101,7 @@ class DirectionsTest(unittest.TestCase):
         self.assertEquals("Concord, MA, USA",
                           routes[0]["legs"][2]["end_address"])
 
-    # TODO(mdr): Implement optimize_waypoints
+    # TODO(mdr-eng): Implement optimize_waypoints
     # def test_adelaide_wine_tour(self):
     #     routes = googlemaps.directions(self.ctx, "Adelaide, SA",
     #                                    "Adelaide, SA",
@@ -122,7 +121,7 @@ class DirectionsTest(unittest.TestCase):
         self.assertEquals("Madrid, Madrid, Spain",
                           routes[0]["legs"][0]["end_address"])
 
-    # TODO(mdr): Convert ZERO_RETURNS into zero length arrays.
+    # TODO(mdr-eng): Convert ZERO_RETURNS into zero length arrays.
     # def test_toledo_to_madrid_not_in_spain(self):
     #     routes = googlemaps.directions(self.ctx, "Toledo", "Madrid")
     #     self.assertIsNotNone(routes)

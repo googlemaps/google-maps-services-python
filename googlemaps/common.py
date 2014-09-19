@@ -69,7 +69,6 @@ def _get(ctx, url, params):
 
     body = resp.json()
 
-    # TODO(mdr-eng): NOT_FOUND for directions?
     if body["status"] == "OK" or body["status"] == "NO_RESULTS":
         return body
 

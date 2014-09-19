@@ -22,7 +22,7 @@ def directions(ctx, origin, destination,
     :type destination: basestring or dict or tuple
 
     :param mode: Specifies the mode of transport to use when calculating
-        directions.
+        directions. One of "driving", "walking", "bicycling" or "transit"
     :type mode: basestring
 
     :param waypoints: Specifies an array of waypoints. Waypoints alter a
@@ -58,15 +58,14 @@ def directions(ctx, origin, destination,
     """
     # TODO(mdr-eng): Add optimize_waypoints=True.
 
-    origin = _convert_waypoint(origin)
-    destination = _convert_waypoint(destination)
-
     params = {
-        "origin": origin,
-        "destination": destination
+        "origin": _convert_waypoint(origin),
+        "destination": _convert_waypoint(destination)
     }
 
     if mode:
+        if mode not in ["driving", "walking", "bicycling", "transit"]:
+            raise Exception("Invalid travel mode.")
         params["mode"] = mode
 
     if waypoints:
