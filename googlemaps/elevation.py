@@ -11,8 +11,8 @@ def elevation(ctx, locations):
     :param ctx: Shared googlemaps.Context
     :type ctx: googlemaps.Context
 
-    :param locations: A single latitude/longitude tuple, or a list of
-            latitude/longitude tuples from which you wish to calculate
+    :param locations: A single latitude/longitude tuple or dict, or a list of
+            latitude/longitude tuples or dicts from which you wish to calculate
             elevation data.
     :type locations: list or tuple
 
