@@ -7,7 +7,7 @@ from googlemaps import convert
 def directions(ctx, origin, destination,
                mode=None, waypoints=None, alternatives=False, avoid=None,
                language=None, units=None, region=None, departure_time=None,
-               arrival_time=None):
+               arrival_time=None, optimize_waypoints=False):
     """Get directions between an origin point and a destination point.
 
     :param ctx: Shared googlemaps.Context
@@ -54,9 +54,12 @@ def directions(ctx, origin, destination,
         directions.
     :type arrival_time: int or datetime.datetime
 
+    :param optimize_waypoints: Optimize the provided route by rearranging the
+        waypoints in a more efficient order.
+    :type optimize_waypoints: bool
+
     :rtype: list of routes
     """
-    # TODO(mdr-eng): Add optimize_waypoints=True.
 
     params = {
         "origin": _convert_waypoint(origin),
@@ -71,6 +74,10 @@ def directions(ctx, origin, destination,
     if waypoints:
         waypoints = convert.as_list(waypoints)
         waypoints = [_convert_waypoint(waypoint) for waypoint in waypoints]
+
+        if optimize_waypoints:
+            waypoints = ["optimize:true"] + waypoints
+
         params["waypoints"] = convert.join_list("|", waypoints)
 
     if alternatives:

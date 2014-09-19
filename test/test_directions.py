@@ -101,16 +101,15 @@ class DirectionsTest(unittest.TestCase):
         self.assertEquals("Concord, MA, USA",
                           routes[0]["legs"][2]["end_address"])
 
-    # TODO(mdr-eng): Implement optimize_waypoints
-    # def test_adelaide_wine_tour(self):
-    #     routes = googlemaps.directions(self.ctx, "Adelaide, SA",
-    #                                    "Adelaide, SA",
-    #                                    waypoints=["Barossa Valley, SA",
-    #                                               "Clare, SA",
-    #                                               "Connawarra, SA",
-    #                                               "McLaren Vale, SA"],
-    #                                    optimize_waypoints=True)
-    #     self.assertEquals([1, 0, 2, 3], routes[0]["waypoint_order"])
+    def test_adelaide_wine_tour(self):
+        routes = googlemaps.directions(self.ctx, "Adelaide, SA",
+                                       "Adelaide, SA",
+                                       waypoints=["Barossa Valley, SA",
+                                                  "Clare, SA",
+                                                  "Connawarra, SA",
+                                                  "McLaren Vale, SA"],
+                                       optimize_waypoints=True)
+        self.assertEquals([1, 0, 2, 3], routes[0]["waypoint_order"])
 
     def test_toledo_to_madrid_in_spain(self):
         routes = googlemaps.directions(self.ctx, "Toledo", "Madrid",
