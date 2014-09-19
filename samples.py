@@ -8,6 +8,12 @@ def main():
             key="AIzaSyDyZdCabN8GKh786tdj16gq80xalbbfqDM",
             timeout=5)
 
+    locations = [(40.714728, -73.998672), (-34.397, 150.644)]
+    print googlemaps.elevation(c, locations)
+    print googlemaps.elevation(c, (40.714728, -73.998672))
+
+    print googlemaps.elevation_along_path(c, locations, 3)
+
     geocoded = googlemaps.geocode(c, "48 Pirrama Rd")
 
     print geocoded
