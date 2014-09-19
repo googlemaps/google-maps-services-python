@@ -6,6 +6,9 @@ HTTP requests.
 import requests
 
 
+_VERSION = "0.1"
+_USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
+
 class Context(object):
     """Holds state between requests, such as credentials (API key), timeout
     settings"""
@@ -54,6 +57,7 @@ def _get(ctx, url, params):
     params["key"] = ctx.key
     resp = requests.get(
         "https://maps.googleapis.com" + url,
+        headers={"User-Agent": _USER_AGENT},
         verify=True, # NOTE(cbro): verify SSL certs.
         params=params)
 
