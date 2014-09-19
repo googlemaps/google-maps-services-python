@@ -159,14 +159,3 @@ class DirectionsTest(unittest.TestCase):
         self.assertIsNotNone(results[0]["geometry"])
         self.assertIsNotNone(results[0]["geometry"]["location"])
         self._expected_location(-33.8674869, 151.2069902, results)
-
-    # TODO(mdr): Enforce API Key
-    # def test_no_api_key(self):
-    #     with self.assertRaises(Exception):
-    #         ctx = googlemaps.Context()
-    #         googlemaps.directions(ctx, "Sydney", "Melbourne")
-
-    def test_invalid_api_key(self):
-        with self.assertRaises(Exception):
-            ctx = googlemaps.Context(key="Invalid key.")
-            googlemaps.directions(ctx, "Sydney", "Melbourne")
