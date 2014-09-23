@@ -6,6 +6,9 @@ HTTP requests.
 import requests
 
 
+_VERSION = "0.1"
+_USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
+
 class Context(object):
     """Holds state between requests, such as credentials (API key), timeout
     settings"""
@@ -27,7 +30,10 @@ class Context(object):
             secret (base64 encoded).
         :type client_secret: basestring
         """
-        # TODO(lukem): simple key validation.
+        if not key.startswith("AIza"):
+            raise Exception("Must provide API key or enterprise credentials "
+                            "with context object.")
+
         self.key = key
         self.timeout = timeout
         self.client_id = client_id
@@ -46,12 +52,12 @@ def _get(ctx, url, params):
 
     # TODO(mdr-eng): implement rate limiting, retries, etc.
     # TODO(mdr-eng): implement enterprise key signing
-    # TODO(mdr-eng): enforce use of API keys/credentials
     # TODO(mdr-eng): add jitter (might not be necessary since most uses will be
     #       single threaded)
     params["key"] = ctx.key
     resp = requests.get(
         "https://maps.googleapis.com" + url,
+        headers={"User-Agent": _USER_AGENT},
         verify=True, # NOTE(cbro): verify SSL certs.
         params=params)
 
@@ -63,7 +69,6 @@ def _get(ctx, url, params):
 
     body = resp.json()
 
-    # TODO(mdr-eng): NOT_FOUND for directions?
     if body["status"] == "OK" or body["status"] == "NO_RESULTS":
         return body
 

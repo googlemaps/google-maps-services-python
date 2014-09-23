@@ -7,7 +7,7 @@ from googlemaps import convert
 def directions(ctx, origin, destination,
                mode=None, waypoints=None, alternatives=False, avoid=None,
                language=None, units=None, region=None, departure_time=None,
-               arrival_time=None):
+               arrival_time=None, optimize_waypoints=False):
     """Get directions between an origin point and a destination point.
 
     :param ctx: Shared googlemaps.Context
@@ -22,7 +22,7 @@ def directions(ctx, origin, destination,
     :type destination: basestring or dict or tuple
 
     :param mode: Specifies the mode of transport to use when calculating
-        directions.
+        directions. One of "driving", "walking", "bicycling" or "transit"
     :type mode: basestring
 
     :param waypoints: Specifies an array of waypoints. Waypoints alter a
@@ -54,24 +54,30 @@ def directions(ctx, origin, destination,
         directions.
     :type arrival_time: int or datetime.datetime
 
+    :param optimize_waypoints: Optimize the provided route by rearranging the
+        waypoints in a more efficient order.
+    :type optimize_waypoints: bool
+
     :rtype: list of routes
     """
-    # TODO(mdr-eng): Add optimize_waypoints=True.
-
-    origin = _convert_waypoint(origin)
-    destination = _convert_waypoint(destination)
 
     params = {
-        "origin": origin,
-        "destination": destination
+        "origin": _convert_waypoint(origin),
+        "destination": _convert_waypoint(destination)
     }
 
     if mode:
+        if mode not in ["driving", "walking", "bicycling", "transit"]:
+            raise Exception("Invalid travel mode.")
         params["mode"] = mode
 
     if waypoints:
         waypoints = convert.as_list(waypoints)
         waypoints = [_convert_waypoint(waypoint) for waypoint in waypoints]
+
+        if optimize_waypoints:
+            waypoints = ["optimize:true"] + waypoints
+
         params["waypoints"] = convert.join_list("|", waypoints)
 
     if alternatives:

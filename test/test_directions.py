@@ -60,13 +60,12 @@ class DirectionsTest(unittest.TestCase):
                                        arrival_time=an_hour_from_now)
         self.assertIsNotNone(routes)
 
-    # TODO(mdr): Convert error returns into exceptions
-    # def test_crazy_travel_mode(self):
-    #     # An invalid travel mode throws a ValueError
-    #     with self.assertRaises(Exception):
-    #         googlemaps.directions(self.ctx, "48 Pirrama Road, Pyrmont, NSW",
-    #                               "Sydney Town Hall",
-    #                               mode="crawling")
+    # TODO(mdr-eng): More specific Exception type.
+    def test_crazy_travel_mode(self):
+        with self.assertRaises(Exception):
+            googlemaps.directions(self.ctx, "48 Pirrama Road, Pyrmont, NSW",
+                                  "Sydney Town Hall",
+                                  mode="crawling")
 
     def test_travel_mode_round_trip(self):
         routes = googlemaps.directions(self.ctx, "Town Hall, Sydney",
@@ -102,16 +101,15 @@ class DirectionsTest(unittest.TestCase):
         self.assertEquals("Concord, MA, USA",
                           routes[0]["legs"][2]["end_address"])
 
-    # TODO(mdr): Implement optimize_waypoints
-    # def test_adelaide_wine_tour(self):
-    #     routes = googlemaps.directions(self.ctx, "Adelaide, SA",
-    #                                    "Adelaide, SA",
-    #                                    waypoints=["Barossa Valley, SA",
-    #                                               "Clare, SA",
-    #                                               "Connawarra, SA",
-    #                                               "McLaren Vale, SA"],
-    #                                    optimize_waypoints=True)
-    #     self.assertEquals([1, 0, 2, 3], routes[0]["waypoint_order"])
+    def test_adelaide_wine_tour(self):
+        routes = googlemaps.directions(self.ctx, "Adelaide, SA",
+                                       "Adelaide, SA",
+                                       waypoints=["Barossa Valley, SA",
+                                                  "Clare, SA",
+                                                  "Connawarra, SA",
+                                                  "McLaren Vale, SA"],
+                                       optimize_waypoints=True)
+        self.assertEquals([1, 0, 2, 3], routes[0]["waypoint_order"])
 
     def test_toledo_to_madrid_in_spain(self):
         routes = googlemaps.directions(self.ctx, "Toledo", "Madrid",
@@ -122,7 +120,7 @@ class DirectionsTest(unittest.TestCase):
         self.assertEquals("Madrid, Madrid, Spain",
                           routes[0]["legs"][0]["end_address"])
 
-    # TODO(mdr): Convert ZERO_RETURNS into zero length arrays.
+    # TODO(mdr-eng): Convert ZERO_RETURNS into zero length arrays.
     # def test_toledo_to_madrid_not_in_spain(self):
     #     routes = googlemaps.directions(self.ctx, "Toledo", "Madrid")
     #     self.assertIsNotNone(routes)
@@ -159,14 +157,3 @@ class DirectionsTest(unittest.TestCase):
         self.assertIsNotNone(results[0]["geometry"])
         self.assertIsNotNone(results[0]["geometry"]["location"])
         self._expected_location(-33.8674869, 151.2069902, results)
-
-    # TODO(mdr): Enforce API Key
-    # def test_no_api_key(self):
-    #     with self.assertRaises(Exception):
-    #         ctx = googlemaps.Context()
-    #         googlemaps.directions(ctx, "Sydney", "Melbourne")
-
-    def test_invalid_api_key(self):
-        with self.assertRaises(Exception):
-            ctx = googlemaps.Context(key="Invalid key.")
-            googlemaps.directions(ctx, "Sydney", "Melbourne")

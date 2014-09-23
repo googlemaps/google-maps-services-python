@@ -2,10 +2,9 @@ Generating documentation:
 
     $ sphinx-build -b html docs docs/html
 
-
 Installing dependencies:
 
-    $ [sudo] pip install requests
+    $ pip install requests responses
 
 Running tests:
 
