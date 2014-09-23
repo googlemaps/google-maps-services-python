@@ -3,8 +3,10 @@
 from googlemaps import common
 from googlemaps import convert
 
+from datetime import datetime
 
-def timezone(ctx, location, timestamp, language=None):
+
+def timezone(ctx, location, timestamp=datetime.now(), language=None):
     """Get time zone for a location on the earth, as well as that location's time offset from UTC.
 
     :param ctx: Shared googlemaps.Context
@@ -15,7 +17,7 @@ def timezone(ctx, location, timestamp, language=None):
 
     :param timestamp: Timestamp specifies the desired time as seconds since midnight, January 1, 
         1970 UTC. The Time Zone API uses the timestamp to determine whether or not Daylight Savings
-        should be applied. Times before 1970 can be expressed as negative values.
+        should be applied. Times before 1970 can be expressed as negative values. Optional.
     :type timestamp: int or datetime.datetime
 
     :param language: The language in which to return results.
