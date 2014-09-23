@@ -26,8 +26,7 @@ def timezone(ctx, location, timestamp=datetime.now(), language=None):
     :rtype: dict
     """
 
-    if not isinstance(location, basestring):
-        location = convert.latlng(location)
+    location = convert.latlng(location)
 
     timestamp = convert.time(timestamp)
 
