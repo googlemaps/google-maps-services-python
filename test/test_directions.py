@@ -257,19 +257,3 @@ class DirectionsTest(unittest.TestCase):
                           'alternatives=true&key=%s' % self.key,
                           responses.calls[0].request.url)
 
-
-    _EPSILON = 0.000001
-
-    def _expected_location(self, expected_lat, expected_lng, results):
-        location = results[0]["geometry"]["location"]
-        lat_delta = abs(location["lat"] - expected_lat)
-        lng_delta = abs(location["lng"] - expected_lng)
-
-        self.assertTrue(lat_delta < DirectionsTest._EPSILON)
-        self.assertTrue(lng_delta < DirectionsTest._EPSILON)
-
-    def _check_sydney_results(self, results):
-        self.assertIsNotNone(results)
-        self.assertIsNotNone(results[0]["geometry"])
-        self.assertIsNotNone(results[0]["geometry"]["location"])
-        self._expected_location(-33.8674869, 151.2069902, results)
