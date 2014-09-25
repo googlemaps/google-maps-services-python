@@ -102,7 +102,15 @@ class ConvertTest(unittest.TestCase):
                          "C~w@hnB{e@yF}`D`_Ayx@~vGqn@l}CafC")
 
         points = convert.decode_polyline(syd_mel_route)
-        self.assertAlmostEquals(points[0]["lat"], -33.86746)
-        self.assertAlmostEquals(points[0]["lng"], 151.207090)
-        self.assertAlmostEquals(points[-1]["lat"], -37.814130)
-        self.assertAlmostEquals(points[-1]["lng"], 144.963180)
+        self.assertAlmostEquals(-33.86746, points[0]["lat"])
+        self.assertAlmostEquals(151.207090, points[0]["lng"])
+        self.assertAlmostEquals(-37.814130, points[-1]["lat"])
+        self.assertAlmostEquals(144.963180, points[-1]["lng"])
+
+    def test_polyline_round_trip(self):
+        test_polyline = ("gcneIpgxzRcDnBoBlEHzKjBbHlG`@`IkDxIi"
+                         "KhKoMaLwTwHeIqHuAyGXeB~Ew@fFjAtIzExF")
+
+        points = convert.decode_polyline(test_polyline)
+        actual_polyline = convert.encode_polyline(points)
+        self.assertEquals(test_polyline, actual_polyline)

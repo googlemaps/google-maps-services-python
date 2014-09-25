@@ -206,3 +206,35 @@ def decode_polyline(polyline):
         points.append({"lat": lat * 1e-5, "lng": lng * 1e-5})
 
     return points
+
+
+def encode_polyline(points):
+    """Encodes a list of points into a polyline string.
+
+    See the developer docs for a detailed description of this encoding:
+    https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+
+    :param points: a list of lat/lng pairs
+    :type points: list of dicts or tuples
+
+    :rtype: basestring
+    """
+    last_lat = last_lng = 0
+    result = ""
+
+    for point in points:
+        (lat, lng) = [int(round(float(x) * 1e5)) for x in latlng(point).split(',')]
+        d_lat = lat - last_lat
+        d_lng = lng - last_lng
+
+        for v in [d_lat, d_lng]:
+            v = ~(v << 1) if v < 0 else v << 1
+            while v >= 0x20:
+                result += (chr((0x20 | (v & 0x1f)) + 63))
+                v >>= 5
+            result += (chr(v + 63))
+
+        last_lat = lat
+        last_lng = lng
+
+    return result
