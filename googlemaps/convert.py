@@ -17,10 +17,6 @@ import time as _time
 def latlng(arg):
     """Converts a lat/lon pair to a comma-separated string.
 
-    Accepts various representations:
-    1) dict with two entries - "lat" and "lng"
-    2) list or tuple - e.g. (-33, 151) or [-33, 151]
-
     For example:
 
     sydney = {
@@ -34,13 +30,27 @@ def latlng(arg):
     :param arg: The lat/lon pair.
     :type arg: dict or list or tuple
     """
+    return "%f,%f" % normalise_lat_lng(arg)
+
+def normalise_lat_lng(arg):
+    """Take the various lat/lng representations and return a tuple.
+
+    Accepts various representations:
+    1) dict with two entries - "lat" and "lng"
+    2) list or tuple - e.g. (-33, 151) or [-33, 151]
+
+    :param arg: The lat/lng pair.
+    :type arg: dict or list or tuple
+
+    :rtype: tuple (lat, lng)
+    """
     if isinstance(arg, dict):
         if "lat" in arg and "lng" in arg:
-            return "%f,%f" % (arg["lat"], arg["lng"])
+            return arg["lat"], arg["lng"]
 
     # List or tuple.
     if _is_list(arg):
-        return "%f,%f" % (arg[0], arg[1])
+        return arg[0], arg[1]
 
     raise TypeError(
         "Expected a lat/lng dict or tuple, "
@@ -167,7 +177,7 @@ def bounds(arg):
 
 
 def decode_polyline(polyline):
-    """Decodes a Polyline string into a list of lat/lng objects.
+    """Decodes a Polyline string into a list of lat/lng dicts.
 
     See the developer docs for a detailed description of this encoding:
     https://developers.google.com/maps/documentation/utilities/polylinealgorithm
@@ -175,7 +185,7 @@ def decode_polyline(polyline):
     :param polyline: An encoded polyline
     :type polyline: basestring
 
-    :rtype: list of objects with lat/lng keys
+    :rtype: list of dicts with lat/lng keys
     """
     points = []
     index = lat = lng = 0
@@ -223,7 +233,7 @@ def encode_polyline(points):
     result = ""
 
     for point in points:
-        (lat, lng) = [int(round(float(x) * 1e5)) for x in latlng(point).split(',')]
+        (lat, lng) = [int(round(float(x) * 1e5)) for x in normalise_lat_lng(point)]
         d_lat = lat - last_lat
         d_lng = lng - last_lng
 
