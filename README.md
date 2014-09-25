@@ -8,4 +8,5 @@ Installing dependencies:
 
 Running tests:
 
+    $ git submodule update --init
     $ python -m unittest discover

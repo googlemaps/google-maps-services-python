@@ -3,8 +3,12 @@
 import googlemaps
 from googlemaps import common
 import unittest
-import responses
 import urlparse
+
+# NOTE: the current version of "sesponses" doesn't have request_callback.
+# Use the master version until it's released.
+import responses_master as responses
+
 
 class CommonTest(unittest.TestCase):
 
@@ -79,3 +83,47 @@ class CommonTest(unittest.TestCase):
         self.assertEquals(1, len(responses.calls))
         user_agent = responses.calls[0].request.headers["User-Agent"]
         self.assertTrue(user_agent.startswith("GoogleGeoApiClientPython"))
+
+    @responses.activate
+    def test_retry(self):
+        class request_callback:
+            def __init__(self):
+                self.first_req = True
+
+            def __call__(self, req):
+                if self.first_req:
+                    self.first_req = False
+                    return (200, {}, '{"status":"OVER_QUERY_LIMIT"}')
+                return (200, {}, '{"status":"OK","results":[]}')
+
+        responses.add_callback(responses.GET,
+                "https://maps.googleapis.com/maps/api/geocode/json",
+                content_type='application/json',
+                callback=request_callback())
+
+        ctx = googlemaps.Context(key="AIzaasdf")
+        googlemaps.geocode(ctx, "Sesame St.")
+
+        self.assertEquals(2, len(responses.calls))
+
+    @responses.activate
+    def test_retry_intermittent(self):
+        class request_callback:
+            def __init__(self):
+                self.first_req = True
+
+            def __call__(self, req):
+                if self.first_req:
+                    self.first_req = False
+                    return (500, {}, 'Internal Server Error.')
+                return (200, {}, '{"status":"OK","results":[]}')
+
+        responses.add_callback(responses.GET,
+                "https://maps.googleapis.com/maps/api/geocode/json",
+                content_type='application/json',
+                callback=request_callback())
+
+        ctx = googlemaps.Context(key="AIzaasdf")
+        googlemaps.geocode(ctx, "Sesame St.")
+
+        self.assertEquals(2, len(responses.calls))
