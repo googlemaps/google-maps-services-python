@@ -10,7 +10,7 @@ import time
 class DirectionsTest(unittest.TestCase):
 
     def setUp(self):
-        self.key = 'AIzaSyAZ0_yiPw2Zp2huKxug49ZYi-pytL6NZ-c'
+        self.key = 'AIzaasdf'
         self.ctx = googlemaps.Context(self.key)
 
     @responses.activate
