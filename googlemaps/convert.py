@@ -164,3 +164,45 @@ def bounds(arg):
     raise TypeError(
         "Expected a bounds (southwest/northeast) dict, "
         "but got %s" % type(arg).__name__)
+
+
+def decode_polyline(polyline):
+    """Decodes a Polyline string into a list of lat/lng objects.
+
+    See the developer docs for a detailed description of this encoding:
+    https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+
+    :param polyline: An encoded polyline
+    :type polyline: basestring
+
+    :rtype: list of objects with lat/lng keys
+    """
+    points = []
+    index = lat = lng = 0
+
+    while index < len(polyline):
+        result = 1
+        shift = 0
+        while True:
+            b = ord(polyline[index]) - 63 - 1
+            index += 1
+            result += b << shift
+            shift += 5
+            if b < 0x1f:
+                break
+        lat += (~result >> 1) if (result & 1) != 0 else (result >> 1)
+
+        result = 1
+        shift = 0
+        while True:
+            b = ord(polyline[index]) - 63 - 1
+            index += 1
+            result += b << shift
+            shift += 5
+            if b < 0x1f:
+                break
+        lng += ~(result >> 1) if (result & 1) != 0 else (result >> 1)
+
+        points.append({"lat": lat * 1e-5, "lng": lng * 1e-5})
+
+    return points
