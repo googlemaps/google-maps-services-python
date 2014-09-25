@@ -31,6 +31,4 @@ class TimezoneTest(unittest.TestCase):
     def test_los_angeles_with_no_timestamp(self):
         timezone = googlemaps.timezone(self.c, (39.6034810,-119.6822510))
         self.assertIsNotNone(timezone)
-        self.assertEquals(3600.0, timezone['dstOffset'])
         self.assertEquals('America/Los_Angeles', timezone['timeZoneId'])
-        self.assertEquals('Pacific Daylight Time', timezone['timeZoneName'])
