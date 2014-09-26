@@ -30,9 +30,9 @@ def latlng(arg):
     :param arg: The lat/lon pair.
     :type arg: dict or list or tuple
     """
-    return "%f,%f" % normalise_lat_lng(arg)
+    return "%f,%f" % normalize_lat_lng(arg)
 
-def normalise_lat_lng(arg):
+def normalize_lat_lng(arg):
     """Take the various lat/lng representations and return a tuple.
 
     Accepts various representations:
@@ -233,7 +233,9 @@ def encode_polyline(points):
     result = ""
 
     for point in points:
-        (lat, lng) = [int(round(float(x) * 1e5)) for x in normalise_lat_lng(point)]
+        ll = normalize_lat_lng(point)
+        lat = int(round(ll[0] * 1e5))
+        lng = int(round(ll[1] * 1e5))
         d_lat = lat - last_lat
         d_lng = lng - last_lng
 
