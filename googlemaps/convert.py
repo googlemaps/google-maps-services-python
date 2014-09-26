@@ -17,10 +17,6 @@ import time as _time
 def latlng(arg):
     """Converts a lat/lon pair to a comma-separated string.
 
-    Accepts various representations:
-    1) dict with two entries - "lat" and "lng"
-    2) list or tuple - e.g. (-33, 151) or [-33, 151]
-
     For example:
 
     sydney = {
@@ -34,13 +30,27 @@ def latlng(arg):
     :param arg: The lat/lon pair.
     :type arg: dict or list or tuple
     """
+    return "%f,%f" % normalize_lat_lng(arg)
+
+def normalize_lat_lng(arg):
+    """Take the various lat/lng representations and return a tuple.
+
+    Accepts various representations:
+    1) dict with two entries - "lat" and "lng"
+    2) list or tuple - e.g. (-33, 151) or [-33, 151]
+
+    :param arg: The lat/lng pair.
+    :type arg: dict or list or tuple
+
+    :rtype: tuple (lat, lng)
+    """
     if isinstance(arg, dict):
         if "lat" in arg and "lng" in arg:
-            return "%f,%f" % (arg["lat"], arg["lng"])
+            return arg["lat"], arg["lng"]
 
     # List or tuple.
     if _is_list(arg):
-        return "%f,%f" % (arg[0], arg[1])
+        return arg[0], arg[1]
 
     raise TypeError(
         "Expected a lat/lng dict or tuple, "
@@ -164,3 +174,79 @@ def bounds(arg):
     raise TypeError(
         "Expected a bounds (southwest/northeast) dict, "
         "but got %s" % type(arg).__name__)
+
+
+def decode_polyline(polyline):
+    """Decodes a Polyline string into a list of lat/lng dicts.
+
+    See the developer docs for a detailed description of this encoding:
+    https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+
+    :param polyline: An encoded polyline
+    :type polyline: basestring
+
+    :rtype: list of dicts with lat/lng keys
+    """
+    points = []
+    index = lat = lng = 0
+
+    while index < len(polyline):
+        result = 1
+        shift = 0
+        while True:
+            b = ord(polyline[index]) - 63 - 1
+            index += 1
+            result += b << shift
+            shift += 5
+            if b < 0x1f:
+                break
+        lat += (~result >> 1) if (result & 1) != 0 else (result >> 1)
+
+        result = 1
+        shift = 0
+        while True:
+            b = ord(polyline[index]) - 63 - 1
+            index += 1
+            result += b << shift
+            shift += 5
+            if b < 0x1f:
+                break
+        lng += ~(result >> 1) if (result & 1) != 0 else (result >> 1)
+
+        points.append({"lat": lat * 1e-5, "lng": lng * 1e-5})
+
+    return points
+
+
+def encode_polyline(points):
+    """Encodes a list of points into a polyline string.
+
+    See the developer docs for a detailed description of this encoding:
+    https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+
+    :param points: a list of lat/lng pairs
+    :type points: list of dicts or tuples
+
+    :rtype: basestring
+    """
+    last_lat = last_lng = 0
+    result = ""
+
+    for point in points:
+        ll = normalize_lat_lng(point)
+        lat = int(round(ll[0] * 1e5))
+        lng = int(round(ll[1] * 1e5))
+        d_lat = lat - last_lat
+        d_lng = lng - last_lng
+
+        for v in [d_lat, d_lng]:
+            v = ~(v << 1) if v < 0 else v << 1
+            while v >= 0x20:
+                result += (chr((0x20 | (v & 0x1f)) + 63))
+                v >>= 5
+            result += (chr(v + 63))
+
+        last_lat = lat
+        last_lng = lng
+
+    return result
