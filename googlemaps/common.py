@@ -89,8 +89,6 @@ def _get(ctx, url, params):
     """
 
     # TODO(mdr-eng): implement rate limiting, retries, etc.
-    # TODO(mdr-eng): add jitter (might not be necessary since most uses will be
-    #       single threaded)
     resp = requests.get(
         "https://maps.googleapis.com" + ctx._auth_url(url, params),
         headers={"User-Agent": _USER_AGENT},
