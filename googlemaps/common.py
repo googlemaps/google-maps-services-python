@@ -94,7 +94,6 @@ def _get(ctx, url, params):
         headers={"User-Agent": _USER_AGENT},
         verify=True) # NOTE(cbro): verify SSL certs.
 
-    # TODO(mdr-eng): better error handling
     if resp.status_code != 200:
         raise Exception(
             "Unexpected response: [%d] %s" %
@@ -105,5 +104,16 @@ def _get(ctx, url, params):
     if body["status"] == "OK" or body["status"] == "NO_RESULTS":
         return body
 
-    # TODO(mdr-eng): use body["error_message"] if present.
-    raise Exception("API error: %s" % body["status"])
+    if "error_message" in body:
+        raise ApiException(body["status"], body["error_message"])
+    else:
+        raise ApiException(body["status"])
+
+
+class ApiException(Exception):
+    def __init__(self, status, message = None):
+        self.status = status
+        if message is None:
+            super(Exception, self).__init__(status)
+        else:
+            super(Exception, self).__init__("%s (%s)" % (status, message))

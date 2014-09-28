@@ -34,7 +34,7 @@ class ElevationTest(unittest.TestCase):
         self.assertAlmostEqual(152.7032318, results[1]['resolution'])
 
     def test_elevation_along_path_single(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(googlemaps.ApiException):
           results = googlemaps.elevation_along_path(self.c,
                     [(40.714728, -73.998672)], 5)
 
