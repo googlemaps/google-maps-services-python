@@ -104,7 +104,7 @@ def _get(ctx, url, params):
 
     body = resp.json()
 
-    if body["status"] == "OK" or body["status"] == "NO_RESULTS":
+    if body["status"] == "OK" or body["status"] == "ZERO_RESULTS":
         return body
 
     # TODO(mdr-eng): use body["error_message"] if present.
