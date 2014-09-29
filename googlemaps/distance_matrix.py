@@ -58,7 +58,7 @@ def distance_matrix(ctx, origins, destinations,
 
     if mode:
         if mode not in ["driving", "walking", "bicycling"]:
-            raise Exception("Invalid travel mode.")
+            raise ValueError("Invalid travel mode.")
         params["mode"] = mode
 
     if language:
@@ -66,7 +66,7 @@ def distance_matrix(ctx, origins, destinations,
 
     if avoid:
         if avoid not in ["tolls", "highways", "ferries"]:
-            raise Exception("Invalid route restriction.")
+            raise ValueError("Invalid route restriction.")
         params["avoid"] = avoid
 
     if units:

@@ -1,3 +1,4 @@
+from googlemaps.common import ApiException
 from googlemaps.common import Context
 from googlemaps.directions import directions
 from googlemaps.distance_matrix import distance_matrix
@@ -8,6 +9,6 @@ from googlemaps.geocoding import reverse_geocode
 from googlemaps.timezone import timezone
 
 # Allow sphinx to pick up these symbols for the documentation.
-__all__ = ['Context', 'geocode', 'reverse_geocode', 'directions',
-           'distance_matrix', 'elevation', 'elevation_along_path',
-           'timezone']
+__all__ = ['Context', 'ApiException' 'geocode', 'reverse_geocode',
+           'directions', 'distance_matrix', 'elevation',
+           'elevation_along_path', 'timezone']

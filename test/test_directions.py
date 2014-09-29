@@ -59,7 +59,7 @@ class DirectionsTest(unittest.TestCase):
     def test_transit_without_time(self):
         # With mode of transit, we need a departure_time or an
         # arrival_time specified
-        with self.assertRaises(Exception):
+        with self.assertRaises(googlemaps.ApiException):
             googlemaps.directions(self.ctx,
                                   "Sydney Town Hall",
                                   "Parramatta, NSW",
@@ -109,9 +109,8 @@ class DirectionsTest(unittest.TestCase):
                           responses.calls[0].request.url)
 
 
-    # TODO(mdr-eng): More specific Exception type.
     def test_crazy_travel_mode(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             googlemaps.directions(self.ctx, "48 Pirrama Road, Pyrmont, NSW",
                                   "Sydney Town Hall",
                                   mode="crawling")
