@@ -32,14 +32,5 @@ def main():
             alternatives=True
     )
 
-    # "Context-like" object.
-    class MyContext():
-        pass
-
-    ctx = MyContext()
-    ctx.key = "AIzaSyDyZdCabN8GKh786tdj16gq80xalbbfqDM"
-
-    print googlemaps.directions(ctx, "sydney", "melbourne")
-
 if __name__ == '__main__':
     main()

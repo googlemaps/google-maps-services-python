@@ -4,6 +4,8 @@ HTTP requests.
 """
 
 import base64
+from datetime import datetime
+from datetime import timedelta
 import hashlib
 import hmac
 import requests
@@ -18,7 +20,7 @@ class Context(object):
     settings"""
 
     def __init__(self, key=None, client_id=None, client_secret=None,
-                 timeout=None):
+                 timeout=None, retry_timeout=60):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -26,6 +28,9 @@ class Context(object):
 
         :param timeout: Timeout for requests, in seconds.
         :type timeout: int
+
+        :param retry_timeout: Timeout across multiple retriable requests, in seconds.
+        :type retry_timeout: int
 
         :param client_id: (for Maps API for Work customers) Your client ID.
         :type client_id: basestring
@@ -45,6 +50,7 @@ class Context(object):
         self.timeout = timeout
         self.client_id = client_id
         self.client_secret = client_secret
+        self.retry_timeout = timedelta(seconds=retry_timeout)
 
     def _auth_url(self, path, params):
         """Returns the path and query string portion of the request URL, first
@@ -77,7 +83,7 @@ def _hmac_sign(secret, s):
     sig = hmac.new(base64.urlsafe_b64decode(secret), s, hashlib.sha1)
     return base64.urlsafe_b64encode(sig.digest())
 
-def _get(ctx, url, params):
+def _get(ctx, url, params, first_request_time=None):
     """Performs HTTP GET request with credentials, returning the body as JSON.
 
     :param ctx: Shared context parameters.
@@ -86,9 +92,19 @@ def _get(ctx, url, params):
     :type url: basestring
     :param params: HTTP GET parameters
     :type params: dict
+    :param first_request_time: The time of the first request (None if no retries
+            have occurred).
+    :type first_request_time: datetime.datetime
     """
 
-    # TODO(mdr-eng): implement rate limiting, retries, etc.
+    if not first_request_time:
+        first_request_time = datetime.now()
+
+    # TODO(mdr-eng) implement back-off.
+    if datetime.now() - first_request_time > ctx.retry_timeout:
+        raise Exception("Timed out while retrying.")
+
+    # TODO(mdr-eng): implement rate limiting, etc.
     # TODO(mdr-eng): add jitter (might not be necessary since most uses will be
     #       single threaded)
     resp = requests.get(
@@ -96,16 +112,21 @@ def _get(ctx, url, params):
         headers={"User-Agent": _USER_AGENT},
         verify=True) # NOTE(cbro): verify SSL certs.
 
-    # TODO(mdr-eng): better error handling
+    if resp.status_code in [500, 503, 504]:
+        # Retry request.
+        return _get(ctx, url, params, first_request_time)
+
     if resp.status_code != 200:
-        raise Exception(
-            "Unexpected response: [%d] %s" %
-            (resp.status_code, resp.text))
+        resp.raise_for_status() # raises a requests.exceptions.HTTPError
 
     body = resp.json()
 
     if body["status"] == "OK" or body["status"] == "ZERO_RESULTS":
         return body
+
+    if body["status"] == "OVER_QUERY_LIMIT":
+        # Retry request.
+        return _get(ctx, url, params, first_request_time)
 
     # TODO(mdr-eng): use body["error_message"] if present.
     raise Exception("API error: %s" % body["status"])

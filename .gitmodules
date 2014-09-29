@@ -1,0 +1,4 @@
+[submodule "responses_master"]
+	path = responses_master
+	url = git@github.com:dropbox/responses.git
+	branch = master
