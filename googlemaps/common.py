@@ -110,16 +110,19 @@ def _get(ctx, url, params):
         return body
 
     if "error_message" in body:
-        raise ApiException(body["status"], body["error_message"])
+        raise ApiError(body["status"], body["error_message"])
     else:
-        raise ApiException(body["status"])
+        raise ApiError(body["status"])
 
 
-class ApiException(Exception):
+class ApiError(Exception):
     """Represents an exception returned by the remote API."""
     def __init__(self, status, message=None):
         self.status = status
-        if message is None:
-            super(Exception, self).__init__(status)
+        self.message = message
+
+    def __str__(self):
+        if self.message is None:
+            return self.status
         else:
-            super(Exception, self).__init__("%s (%s)" % (status, message))
+            return "%s (%s)" % (self.status, self.message)
