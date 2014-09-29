@@ -215,11 +215,17 @@ class DirectionsTest(unittest.TestCase):
                           self.key,
                           responses.calls[0].request.url)
 
-    # TODO(mdr-eng): Convert ZERO_RETURNS into zero length arrays.
-    # def test_toledo_to_madrid_not_in_spain(self):
-    #     routes = googlemaps.directions(self.ctx, "Toledo", "Madrid")
-    #     self.assertIsNotNone(routes)
-    #     self.assertEquals(0, len(routes))
+    @responses.activate
+    def test_zero_results_returns_response(self):
+        responses.add(responses.GET,
+                      'https://maps.googleapis.com/maps/api/directions/json',
+                      body='{"status":"ZERO_RESULTS","routes":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        routes = googlemaps.directions(self.ctx, "Toledo", "Madrid")
+        self.assertIsNotNone(routes)
+        self.assertEquals(0, len(routes))
 
     @responses.activate
     def test_language_parameter(self):
