@@ -2,111 +2,248 @@
 
 import unittest
 import datetime
+import responses
 
 import googlemaps
 
 class GeocodingTest(unittest.TestCase):
 
     def setUp(self):
-        self.c = googlemaps.Context(
-            key="AIzaSyDyZdCabN8GKh786tdj16gq80xalbbfqDM",
-            timeout=5)
+        self.key = 'AIzaasdf'
+        self.ctx = googlemaps.Context(self.key)
 
-    _EPSILON = 0.000001
-
-    def _expected_location(self, expected_lat, expected_lng, results):
-        lat_delta = abs(results[0]['geometry']['location']['lat'] - expected_lat)
-        lng_delta = abs(results[0]['geometry']['location']['lng'] - expected_lng)
-
-        self.assertTrue(lat_delta < self._EPSILON)
-        self.assertTrue(lng_delta < self._EPSILON)
-
-    def _check_sydney_results(self, results):
-        self.assertIsNotNone(results)
-        self.assertIsNotNone(results[0]['geometry'])
-        self.assertIsNotNone(results[0]['geometry']['location'])
-        self._expected_location(-33.8674869, 151.2069902, results)
-
+    @responses.activate
     def test_simple_geocode(self):
-        results = googlemaps.geocode(self.c, 'Sydney')
-        self._check_sydney_results(results)
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
 
+        results = googlemaps.geocode(self.ctx, 'Sydney')
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'key=%s&address=Sydney' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_reverse_geocode(self):
-        results = googlemaps.reverse_geocode(self.c, (-33.8674869, 151.2069902))
-        self.assertTrue(results[0]['formatted_address'].find('Sydney') != -1)
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
 
+        results = googlemaps.reverse_geocode(self.ctx, (-33.8674869, 151.2069902))
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'latlng=-33.867487%%2C151.206990&key=%s' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_geocoding_the_googleplex(self):
-        results = googlemaps.geocode(self.c, '1600 Amphitheatre Parkway, '
-                                  'Mountain View, CA')
-        self.assertEquals('1600 Amphitheatre Parkway, Mountain View, CA 94043, USA',
-                      results[0]['formatted_address'])
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
 
+        results = googlemaps.geocode(self.ctx, '1600 Amphitheatre Parkway, '
+                                  'Mountain View, CA')
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'key=%s&address=1600+Amphitheatre+Parkway%%2C+Mountain'
+                          '+View%%2C+CA' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_geocode_with_bounds(self):
-        results = googlemaps.geocode(self.c, 'Winnetka',
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.geocode(self.ctx, 'Winnetka',
                                   bounds={'southwest': (34.172684, -118.604794),
                                           'northeast':(34.236144, -118.500938)})
-        self.assertEquals('Winnetka, Los Angeles, CA, USA',
-                      results[0]['formatted_address'])
 
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'bounds=34.172684%%2C-118.604794%%7C34.236144%%2C'
+                          '-118.500938&key=%s&address=Winnetka' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_geocode_with_region_biasing(self):
-        results = googlemaps.geocode(self.c, 'Toledo', region='es')
-        self.assertEquals('Toledo, Toledo, Spain', results[0]['formatted_address'])
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
 
+        results = googlemaps.geocode(self.ctx, 'Toledo', region='es')
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'region=es&key=%s&address=Toledo' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_geocode_with_component_filter(self):
-        results = googlemaps.geocode(self.c, 'santa cruz', 
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.geocode(self.ctx, 'santa cruz', 
             components={'country': 'ES'})
-        self.assertEquals('Santa Cruz de Tenerife, Santa Cruz de Tenerife, Spain',
-                      results[0]['formatted_address'])
 
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'key=%s&components=country%%3AES&address=santa+cruz' % 
+                          self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_geocode_with_multiple_component_filters(self):
-        results = googlemaps.geocode(self.c, 'Torun', 
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.geocode(self.ctx, 'Torun', 
             components={'administrative_area': 'TX','country': 'US'})
-        self.assertEquals('Texas, USA', results[0]['formatted_address'])
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'key=%s&components=administrative_area%%3ATX%%7C'
+                          'country%%3AUS&address=Torun' % self.key,
+                          responses.calls[0].request.url)
 
 
+    @responses.activate
     def test_geocode_with_just_components(self):
-        results = googlemaps.geocode(self.c, 
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.geocode(self.ctx, 
             components={'route': 'Annegatan',
                         'administrative_area': 'Helsinki', 
                         'country': 'Findland'})
-        self.assertEquals('Annegatan, Helsinki, Finland',
-                      results[0]['formatted_address'])
 
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'key=%s&components=administrative_area%%3AHelsinki'
+                          '%%7Croute%%3AAnnegatan%%7Ccountry%%3AFindland' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_simple_reverse_geocode(self):
-        results = googlemaps.reverse_geocode(self.c, (40.714224, -73.961452))
-        self.assertEquals('277 Bedford Avenue, Brooklyn, NY 11211, USA',
-                      results[0]['formatted_address'])
-        self.assertEquals('277', results[0]['address_components'][0]['long_name'])
-        self.assertEquals('277', results[0]['address_components'][0]['short_name'])
-        self.assertEquals('street_number',
-                      results[0]['address_components'][0]['types'][0])
-        self.assertEquals('street_address', results[0]['types'][0])
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
 
+        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452))
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'latlng=40.714224%%2C-73.961452&key=%s' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_reverse_geocode_restricted_by_type(self):
-        results = googlemaps.reverse_geocode(self.c, (40.714224, -73.961452),
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452),
                                           location_type='ROOFTOP',
                                           result_type='street_address')
-        self.assertIsNotNone(results)
 
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'latlng=40.714224%%2C-73.961452&result_type=street_address&'
+                          'key=%s&location_type=ROOFTOP' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_reverse_geocode_multiple_location_types(self):
-        results = googlemaps.reverse_geocode(self.c, (40.714224, -73.961452),
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452),
                                           location_type=['ROOFTOP',
                                                          'RANGE_INTERPOLATED'],
                                           result_type='street_address')
-        self.assertIsNotNone(results)
 
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'latlng=40.714224%%2C-73.961452&result_type=street_address&'
+                          'key=%s&location_type=ROOFTOP%%7CRANGE_INTERPOLATED' % 
+                          self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_reverse_geocode_multiple_result_types(self):
-        results = googlemaps.reverse_geocode(self.c, (40.714224, -73.961452),
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452),
                                           location_type='ROOFTOP',
                                           result_type=['street_address',
                                                        'route'])
-        self.assertIsNotNone(results)
 
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'latlng=40.714224%%2C-73.961452&result_type=street_address'
+                          '%%7Croute&key=%s&location_type=ROOFTOP' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_partial_match(self):
-        results = googlemaps.geocode(self.c, 'Pirrama Pyrmont')
-        self.assertTrue(results[0]['partial_match'])
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
 
+        results = googlemaps.geocode(self.ctx, 'Pirrama Pyrmont')
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'key=%s&address=Pirrama+Pyrmont' % self.key,
+                          responses.calls[0].request.url)
+
+    @responses.activate
     def test_utf_results(self):
-        results = googlemaps.geocode(self.c, components={'postal_code': '96766'})
-        self.assertEquals(u'L\u012bhu\u02bbe, HI 96766, USA',
-                      results[0]['formatted_address'])
+        responses.add(responses.GET, 
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = googlemaps.geocode(self.ctx, components={'postal_code': '96766'})
+
+        self.assertEquals(1, len(responses.calls))
+        self.assertEquals('https://maps.googleapis.com/maps/api/geocode/json?'
+                          'key=%s&components=postal_code%%3A96766' % self.key,
+                          responses.calls[0].request.url)
