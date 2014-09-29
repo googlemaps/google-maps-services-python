@@ -20,14 +20,25 @@ class Context(object):
     settings"""
 
     def __init__(self, key=None, client_id=None, client_secret=None,
-                 timeout=None, retry_timeout=60):
+                 timeout=None, connect_timeout=None, read_timeout=None,
+                 retry_timeout=60):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
         :type key: basestring
 
-        :param timeout: Timeout for requests, in seconds.
+        :param timeout: Combined connect and read timeout for HTTP requests, in
+            seconds. Specify "None" for no timeout.
         :type timeout: int
+
+        :param connect_timeout: Connection timeout for HTTP requests, in
+            seconds. You should specify read_timeout in addition to this option.
+        :type connect_timeout: int
+
+        :param read_timeout: Read timeout for HTTP requests, in
+            seconds. You should specify connect_timeout in addition to this
+            option.
+        :type read_timeout: int
 
         :param retry_timeout: Timeout across multiple retriable requests, in seconds.
         :type retry_timeout: int
@@ -47,7 +58,11 @@ class Context(object):
             raise Exception("Invalid API key provided.")
 
         self.key = key
-        self.timeout = timeout
+
+        if timeout and (connect_timeout or read_timeout):
+            raise ValueError("Specify either timeout, or connect_timeout and read_timeout")
+
+        self.timeout = timeout or (connect_timeout, read_timeout)
         self.client_id = client_id
         self.client_secret = client_secret
         self.retry_timeout = timedelta(seconds=retry_timeout)
@@ -104,12 +119,10 @@ def _get(ctx, url, params, first_request_time=None):
     if datetime.now() - first_request_time > ctx.retry_timeout:
         raise Exception("Timed out while retrying.")
 
-    # TODO(mdr-eng): implement rate limiting, etc.
-    # TODO(mdr-eng): add jitter (might not be necessary since most uses will be
-    #       single threaded)
     resp = requests.get(
         "https://maps.googleapis.com" + ctx._auth_url(url, params),
         headers={"User-Agent": _USER_AGENT},
+        timeout=ctx.timeout,
         verify=True) # NOTE(cbro): verify SSL certs.
 
     if resp.status_code in [500, 503, 504]:
