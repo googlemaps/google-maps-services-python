@@ -6,8 +6,8 @@ HTTP requests.
 import base64
 import hashlib
 import hmac
-import requests
 import urllib
+import requests
 
 
 _VERSION = "0.1"
@@ -15,7 +15,7 @@ _USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
 
 class Context(object):
     """Holds state between requests, such as credentials (API key), timeout
-    settings"""
+    settings."""
 
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None):
@@ -33,13 +33,16 @@ class Context(object):
         :param client_secret: (for Maps API for Work customers) Your client
             secret (base64 encoded).
         :type client_secret: basestring
+
+        :raises ValueError: when either credentials are missing, incomplete
+            or invalid.
         """
         if not key and not (client_secret and client_id):
-            raise Exception("Must provide API key or enterprise credentials "
-                            "with context object.")
+            raise ValueError("Must provide API key or enterprise credentials "
+                             "with context object.")
 
         if key and not key.startswith("AIza"):
-            raise Exception("Invalid API key provided.")
+            raise ValueError("Invalid API key provided.")
 
         self.key = key
         self.timeout = timeout
@@ -86,6 +89,8 @@ def _get(ctx, url, params):
     :type url: basestring
     :param params: HTTP GET parameters
     :type params: dict
+
+    :raises ApiException: when the API returns an error.
     """
 
     # TODO(mdr-eng): implement rate limiting, retries, etc.
@@ -111,7 +116,8 @@ def _get(ctx, url, params):
 
 
 class ApiException(Exception):
-    def __init__(self, status, message = None):
+    """Represents an exception returned by the remote API."""
+    def __init__(self, status, message=None):
         self.status = status
         if message is None:
             super(Exception, self).__init__(status)

@@ -1,10 +1,11 @@
 """Tests across modules (or common module)."""
 
 import googlemaps
-from googlemaps import common
 import unittest
 import responses
 import urlparse
+from googlemaps import common
+
 
 class CommonTest(unittest.TestCase):
 
