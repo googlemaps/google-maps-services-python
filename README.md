@@ -5,7 +5,7 @@ Python Client for Google Maps Services
 
 Use Python? Want to [geocode][Geocoding API] something? Looking for [directions][Directions API]?
 Maybe [matrices of directions][Distance Matrix API]? This library brings the [Google Maps API Web
-Services] to your server-side Python application.
+Services] to your Python application.
 
 The Python Client for Google Maps Services is a Python Client library for the following Google Maps 
 APIs:
@@ -88,20 +88,19 @@ This example uses the [Geocoding API].
 
 
 ```python
-def setUp(self):
-    self.key = 'AIzaasdf'
-    self.ctx = googlemaps.Context(self.key)
+
+ctx = googlemaps.Context('Add Your Key here')
 
 # Geocoding and address
-geocode_result = googlemaps.geocode(self.ctx, '1600 Amphitheatre Parkway, '
+geocode_result = googlemaps.geocode(ctx, '1600 Amphitheatre Parkway, '
                            'Mountain View, CA')
 
 # Look up an address with reverse geocoding
-reverse_geocode_result = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452))
+reverse_geocode_result = googlemaps.reverse_geocode(ctx, (40.714224, -73.961452))
 
 # Request directions via public transit
 now = datetime.now()
-directions_result = googlemaps.directions(self.ctx,
+directions_result = googlemaps.directions(ctx,
                                "Sydney Town Hall",
                                "Parramatta, NSW",
                                mode="transit",
@@ -114,12 +113,6 @@ For more usage examples, check out [the tests](test/).
 
 ## Features
 
-### Rate Limiting
-
-Never sleep between requests again! By default, requests are sent at the expected rate limits for
-each web service, typically 10 queries per second for free users. If you want to speed up or slow
-down requests, you can do that too.
-
 ### Retry on Failure
 
 Automatically retry when intermittent failures occur. That is, when any of the retriable 5xx errors
@@ -129,10 +122,6 @@ are returned from the API.
 
 Maps API for Work customers can use their [client ID and secret][clientid] to authenticate. Free
 customers can use their [API key][apikey], too.
-
-### Native data types
-
-Native objects for each of the API responses.
 
 ## Building the Project
 
