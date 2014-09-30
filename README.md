@@ -141,7 +141,7 @@ customers can use their [API key][apikey], too.
 [apikey]: https://developers.google.com/maps/faq#keysystem
 [clientid]: https://developers.google.com/maps/documentation/business/webservices/auth
 
-[Google Maps API Web Services]: (https://developers.google.com/maps/documentation/webservices/
+[Google Maps API Web Services]: https://developers.google.com/maps/documentation/webservices/
 [Directions API]: https://developers.google.com/maps/documentation/directions
 [Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix
 [Elevation API]: https://developers.google.com/maps/documentation/elevation
