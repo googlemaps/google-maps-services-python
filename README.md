@@ -85,10 +85,30 @@ https://developers.google.com/maps/.
 
 This example uses the [Geocoding API].
 
+
+
 ```python
-results = googlemaps.geocode(self.ctx, '1600 Amphitheatre Parkway, '
-                          'Mountain View, CA')
+def setUp(self):
+    self.key = 'AIzaasdf'
+    self.ctx = googlemaps.Context(self.key)
+
+# Geocoding and address
+geocode_result = googlemaps.geocode(self.ctx, '1600 Amphitheatre Parkway, '
+                           'Mountain View, CA')
+
+# Look up an address with reverse geocoding
+reverse_geocode_result = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452))
+
+# Request directions via public transit
+now = datetime.now()
+directions_result = googlemaps.directions(self.ctx,
+                               "Sydney Town Hall",
+                               "Parramatta, NSW",
+                               mode="transit",
+                               departure_time=now)
 ```
+
+
 
 For more usage examples, check out [the tests](test/).
 
