@@ -35,7 +35,7 @@ def geocode(ctx, address=None, components=None, bounds=None, region=None,
     :param address: The address to geocode.
     :type address: str
 
-    :param components: A component filter for which you wish to obtain a geocode.
+    :param components: A component filter for which you wish to obtain a geocode
     :type components: dict
 
     :param bounds: The bounding box of the viewport within which to bias geocode 
@@ -81,7 +81,7 @@ def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
     :param ctx: Shared googlemaps.Context
     :type ctx: googlemaps.Context
 
-    :param latlng: The latitude/longitude value for which you wish to obtain the 
+    :param latlng: The latitude/longitude value for which you wish to obtain the
     closest, human-readable address
     :type latlng: dict or list or tuple
 
