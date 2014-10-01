@@ -93,7 +93,7 @@ ctx = googlemaps.Context('Add Your Key here')
 
 # Geocoding and address
 geocode_result = googlemaps.geocode(ctx, '1600 Amphitheatre Parkway, '
-                           'Mountain View, CA')
+                                    'Mountain View, CA')
 
 # Look up an address with reverse geocoding
 reverse_geocode_result = googlemaps.reverse_geocode(ctx, (40.714224, -73.961452))
@@ -101,10 +101,10 @@ reverse_geocode_result = googlemaps.reverse_geocode(ctx, (40.714224, -73.961452)
 # Request directions via public transit
 now = datetime.now()
 directions_result = googlemaps.directions(ctx,
-                               "Sydney Town Hall",
-                               "Parramatta, NSW",
-                               mode="transit",
-                               departure_time=now)
+                                          "Sydney Town Hall",
+                                          "Parramatta, NSW",
+                                          mode="transit",
+                                          departure_time=now)
 ```
 
 
