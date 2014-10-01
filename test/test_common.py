@@ -48,13 +48,13 @@ class CommonTest(unittest.TestCase):
                       status=200,
                       content_type='application/json')
 
-        ctx = googlemaps.Context(key="AIzaasdf")
+        ctx = googlemaps.Context(key="YOUR-API-KEY-HERE")
         googlemaps.geocode(ctx, "Sesame St.")
 
         self.assertEquals(1, len(responses.calls))
 
         url = urlparse.urlparse(responses.calls[0].request.url)
-        self.assertEquals("key=AIzaasdf&address=Sesame+St.", url.query)
+        self.assertEquals("key=YOUR-API-KEY-HERE&address=Sesame+St.", url.query)
 
     def test_hmac(self):
         """
@@ -95,7 +95,7 @@ class CommonTest(unittest.TestCase):
                       status=200,
                       content_type='application/json')
 
-        ctx = googlemaps.Context(key="AIzaasdf")
+        ctx = googlemaps.Context(key="YOUR-API-KEY-HERE")
         googlemaps.geocode(ctx, "Sesame St.")
 
         self.assertEquals(1, len(responses.calls))
@@ -119,7 +119,7 @@ class CommonTest(unittest.TestCase):
                 content_type='application/json',
                 callback=request_callback())
 
-        ctx = googlemaps.Context(key="AIzaasdf")
+        ctx = googlemaps.Context(key="YOUR-API-KEY-HERE")
         googlemaps.geocode(ctx, "Sesame St.")
 
         self.assertEquals(2, len(responses.calls))
@@ -141,7 +141,7 @@ class CommonTest(unittest.TestCase):
                 content_type='application/json',
                 callback=request_callback())
 
-        ctx = googlemaps.Context(key="AIzaasdf")
+        ctx = googlemaps.Context(key="YOUR-API-KEY-HERE")
         googlemaps.geocode(ctx, "Sesame St.")
 
         self.assertEquals(2, len(responses.calls))

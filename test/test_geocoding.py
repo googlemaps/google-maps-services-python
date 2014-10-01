@@ -26,7 +26,7 @@ import googlemaps
 class GeocodingTest(unittest.TestCase):
 
     def setUp(self):
-        self.key = 'AIzaasdf'
+        self.key = 'YOUR-API-KEY-HERE'
         self.ctx = googlemaps.Context(self.key)
 
     @responses.activate

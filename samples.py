@@ -22,7 +22,7 @@ import googlemaps
 
 def main():
     c = googlemaps.Context(
-            key="AIzaSyDyZdCabN8GKh786tdj16gq80xalbbfqDM",
+            key="YOUR-API-KEY-HERE",
             timeout=5)
 
     locations = [(40.714728, -73.998672), (-34.397, 150.644)]

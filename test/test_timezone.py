@@ -27,7 +27,7 @@ class TimezoneTest(unittest.TestCase):
 
     def setUp(self):
         self.c = googlemaps.Context(
-            key="AIzaSyDyZdCabN8GKh786tdj16gq80xalbbfqDM",
+            key="YOUR-API-KEY-HERE",
             timeout=5)
 
     def test_los_angeles(self):
