@@ -6,8 +6,8 @@ HTTP requests.
 import base64
 import hashlib
 import hmac
-import urllib
 import requests
+import urllib
 
 
 _VERSION = "0.1"
