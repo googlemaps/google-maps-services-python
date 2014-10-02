@@ -78,7 +78,7 @@ class ElevationTest(unittest.TestCase):
 
     def test_elevation_along_path_single(self):
         with self.assertRaises(googlemaps.ApiError):
-          results = googlemaps.elevation_along_path(self.c,
+          results = googlemaps.elevation_along_path(self.ctx,
                     [(40.714728, -73.998672)], 5)
 
     @responses.activate

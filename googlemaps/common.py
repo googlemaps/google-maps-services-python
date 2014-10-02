@@ -54,11 +54,12 @@ class Context(object):
 
         :param connect_timeout: Connection timeout for HTTP requests, in
             seconds. You should specify read_timeout in addition to this option.
+            Note that this requires requests >= 2.4.0.
         :type connect_timeout: int
 
         :param read_timeout: Read timeout for HTTP requests, in
             seconds. You should specify connect_timeout in addition to this
-            option.
+            option. Note that this requires requests >= 2.4.0.
         :type read_timeout: int
 
         :param retry_timeout: Timeout across multiple retriable requests, in seconds.
@@ -73,6 +74,8 @@ class Context(object):
 
         :raises ValueError: when either credentials are missing, incomplete
             or invalid.
+        :raises NotImplementedError: if connect_timeout and read_timeout are used
+            with a version of requests prior to 2.4.0.
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
@@ -86,7 +89,16 @@ class Context(object):
         if timeout and (connect_timeout or read_timeout):
             raise ValueError("Specify either timeout, or connect_timeout and read_timeout")
 
-        self.timeout = timeout or (connect_timeout, read_timeout)
+        if connect_timeout and read_timeout:
+            # Check that the version of requests is >= 2.4.0
+            chunks = requests.__version__.split(".")
+            if chunks[0] < 2 or (chunks[0] == 2 and chunks[1] < 4):
+                raise NotImplementedError("Connect/Read timeouts require "
+                                          "requests v2.4.0 or higher")
+            self.timeout = (connect_timeout, read_timeout)
+        else:
+            self.timeout = timeout
+
         self.client_id = client_id
         self.client_secret = client_secret
         self.retry_timeout = timedelta(seconds=retry_timeout)
