@@ -103,5 +103,5 @@ def _convert_path(waypoints):
         waypoints = as_list(waypoints)
 
     return convert.join_list("|",
-            [(k if isinstance(k, basestring) else convert.latlng(k))
+            [(k if common._isstr(k) else convert.latlng(k))
                 for k in waypoints])

@@ -121,7 +121,7 @@ def directions(ctx, origin, destination,
     return common._get(ctx, "/maps/api/directions/json", params)["routes"]
 
 def _convert_waypoint(waypoint):
-    if not isinstance(waypoint, basestring):
+    if not common._isstr(waypoint):
         return convert.latlng(waypoint)
 
     return waypoint
