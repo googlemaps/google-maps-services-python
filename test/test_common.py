@@ -19,9 +19,10 @@
 """Tests across modules (or common module)."""
 
 import googlemaps
-from googlemaps import common
 import unittest
 import urlparse
+from googlemaps import common
+
 
 # NOTE: the current version of "sesponses" doesn't have request_callback.
 # Use the master version until it's released.

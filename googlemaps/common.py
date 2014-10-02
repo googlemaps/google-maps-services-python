@@ -34,7 +34,7 @@ _USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
 
 class Context(object):
     """Holds state between requests, such as credentials (API key), timeout
-    settings"""
+    settings."""
 
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
@@ -66,13 +66,16 @@ class Context(object):
         :param client_secret: (for Maps API for Work customers) Your client
             secret (base64 encoded).
         :type client_secret: basestring
+
+        :raises ValueError: when either credentials are missing, incomplete
+            or invalid.
         """
         if not key and not (client_secret and client_id):
-            raise Exception("Must provide API key or enterprise credentials "
-                            "with context object.")
+            raise ValueError("Must provide API key or enterprise credentials "
+                             "with context object.")
 
         if key and not key.startswith("AIza"):
-            raise Exception("Invalid API key provided.")
+            raise ValueError("Invalid API key provided.")
 
         self.key = key
 
@@ -127,6 +130,8 @@ def _get(ctx, url, params, first_request_time=None):
     :param first_request_time: The time of the first request (None if no retries
             have occurred).
     :type first_request_time: datetime.datetime
+
+    :raises ApiException: when the API returns an error.
     """
 
     if not first_request_time:
@@ -158,5 +163,20 @@ def _get(ctx, url, params, first_request_time=None):
         # Retry request.
         return _get(ctx, url, params, first_request_time)
 
-    # TODO(mdr-eng): use body["error_message"] if present.
-    raise Exception("API error: %s" % body["status"])
+    if "error_message" in body:
+        raise ApiError(body["status"], body["error_message"])
+    else:
+        raise ApiError(body["status"])
+
+
+class ApiError(Exception):
+    """Represents an exception returned by the remote API."""
+    def __init__(self, status, message=None):
+        self.status = status
+        self.message = message
+
+    def __str__(self):
+        if self.message is None:
+            return self.status
+        else:
+            return "%s (%s)" % (self.status, self.message)

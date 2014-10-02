@@ -20,7 +20,6 @@ from googlemaps import common
 from googlemaps import convert
 
 
-# TODO(mdr-eng): test unicode parameters (e.g. in addresses).
 def geocode(ctx, address=None, components=None, bounds=None, region=None,
             language=None):
     """

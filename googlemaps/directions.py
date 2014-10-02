@@ -85,7 +85,7 @@ def directions(ctx, origin, destination,
 
     if mode:
         if mode not in ["driving", "walking", "bicycling", "transit"]:
-            raise Exception("Invalid travel mode.")
+            raise ValueError("Invalid travel mode.")
         params["mode"] = mode
 
     if waypoints:
