@@ -70,6 +70,8 @@ Your API key should be 40 characters long, and begin with `AIza`.
     # Installing dependencies:
     $ pip install requests responses
 
+Note that you will need requests 2.4.0 or higher if you want to specify connect/read timeouts.
+
 ## Developer Documentation
 
 Additional documentation for the included web services is available at 
