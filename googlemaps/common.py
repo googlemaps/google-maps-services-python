@@ -90,7 +90,9 @@ class Context(object):
             raise ValueError("Specify either timeout, or connect_timeout and read_timeout")
 
         if connect_timeout and read_timeout:
-            if requests.__version__ < "2.4.0":
+            # Check that the version of requests is >= 2.4.0
+            chunks = requests.__version__.split(".")
+            if chunks[0] < 2 or (chunks[0] == 2 and chunks[1] < 4):
                 raise NotImplementedError("Connect/Read timeouts require "
                                           "requests v2.4.0 or higher")
             self.timeout = (connect_timeout, read_timeout)
