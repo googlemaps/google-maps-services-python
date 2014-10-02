@@ -21,7 +21,12 @@
 import googlemaps
 from googlemaps import common
 import unittest
-import urlparse
+
+try: # Python 3
+    from urllib.parse import urlparse
+except ImportError: # Python 2
+    from urlparse import urlparse
+
 
 # NOTE: the current version of "sesponses" doesn't have request_callback.
 # Use the master version until it's released.
@@ -53,7 +58,7 @@ class CommonTest(unittest.TestCase):
 
         self.assertEquals(1, len(responses.calls))
 
-        url = urlparse.urlparse(responses.calls[0].request.url)
+        url = urlparse(responses.calls[0].request.url)
         self.assertEquals("key=AIzaasdf&address=Sesame+St.", url.query)
 
     def test_hmac(self):
@@ -83,7 +88,7 @@ class CommonTest(unittest.TestCase):
 
         self.assertEquals(1, len(responses.calls))
 
-        url = urlparse.urlparse(responses.calls[0].request.url)
+        url = urlparse(responses.calls[0].request.url)
         expected = "client=foo&address=Sesame+St.&signature=Ao1r8ULP1g_vPwnf7Fvf2TSCYBQ="
         self.assertEquals(expected, url.query)
 

@@ -26,7 +26,11 @@ from datetime import timedelta
 import hashlib
 import hmac
 import requests
-import urllib
+
+try: # Python 3
+    from urllib.parse import urlencode
+except ImportError: # Python 2
+    from urllib import urlencode
 
 
 _VERSION = "0.1"
@@ -95,12 +99,12 @@ class Context(object):
         """
         if self.key:
             params["key"] = self.key
-            return path + "?" + urllib.urlencode(params)
+            return path + "?" + urlencode(params)
 
         if self.client_id and self.client_secret:
             params["client"] = self.client_id
 
-            path = path + "?" + urllib.urlencode(params)
+            path = path + "?" + urlencode(params)
             sig = _hmac_sign(self.client_secret, path)
             return path + "&signature=" + sig
 
@@ -160,3 +164,15 @@ def _get(ctx, url, params, first_request_time=None):
 
     # TODO(mdr-eng): use body["error_message"] if present.
     raise Exception("API error: %s" % body["status"])
+
+def _isstr(v):
+    """Determines whether the passed value is a string, safe for 2/3.
+    
+    :param v: Object to check
+    :type ctx: basestring or object
+    """
+    try:
+        basestring
+    except NameError:
+        return isinstance(v, str)
+    return isinstance(v, basestring)
