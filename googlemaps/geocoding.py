@@ -1,19 +1,19 @@
-# 
+#
 # Copyright 2014 Google Inc. All rights reserved.
-# 
-# 
+#
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-# 
+#
 
 """Performs requests to the Google Maps Geocoding API."""
 from googlemaps import common
@@ -27,6 +27,30 @@ def geocode(ctx, address=None, components=None, bounds=None, region=None,
     (like "1600 Amphitheatre Parkway, Mountain View, CA") into geographic
     coordinates (like latitude 37.423021 and longitude -122.083739), which you
     can use to place markers or position the map.
+
+    :param ctx: Shared googlemaps.Context
+    :type ctx: googlemaps.Context
+
+    :param address: The address to geocode.
+    :type address: basestring
+
+    :param components: A component filter for which you wish to obtain a geocode,
+                       for example: {'administrative_area': 'TX','country': 'US'}
+    :type components: dict
+
+    :param bounds: The bounding box of the viewport within which to bias geocode
+                   results more prominently.
+    :type bounds: basestring or dict with northeast and southwest keys.
+
+    :param region: The region code, specified as a ccTLD ("top-level domain")
+                   two-character value.
+    :type region: basestring
+
+    :param language: The language in which to return results.
+    :type langauge: basestring
+
+    :rtype: list of geocoding results.
+
     """
 
     params = {}
@@ -54,8 +78,26 @@ def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
+
+    :param ctx: Shared googlemaps.Context
+    :type ctx: googlemaps.Context
+
+    :param latlng: The latitude/longitude value for which you wish to obtain the
+                   closest, human-readable address
+    :type latlng: dict or list or tuple
+
+    :param result_type: One or more address types to restrict results to.
+    :type result_type: basestring or list of basestring
+
+    :param location_type: One or more location types to restrict results to.
+    :type location_type: list of basestring
+
+    :param language: The language in which to return results.
+    :type langauge: basestring
+
+    :rtype: list of reverse geocoding results.
+
     """
-    # TODO(mdr-eng): Add ReST style doc comments.
 
     params = {
         "latlng": convert.latlng(latlng)
