@@ -42,35 +42,35 @@ class ConvertTest(unittest.TestCase):
             convert.latlng("test")
 
     def test_join_list(self):
-        self.assertEquals("asdf", convert.join_list("|", "asdf"))
+        self.assertEqual("asdf", convert.join_list("|", "asdf"))
 
-        self.assertEquals("1,2,A", convert.join_list(",", ["1", "2", "A"]))
+        self.assertEqual("1,2,A", convert.join_list(",", ["1", "2", "A"]))
 
-        self.assertEquals("", convert.join_list(",", []))
+        self.assertEqual("", convert.join_list(",", []))
 
-        self.assertEquals("a,B", convert.join_list(",", ("a", "B")))
+        self.assertEqual("a,B", convert.join_list(",", ("a", "B")))
 
     def test_as_list(self):
-        self.assertEquals([1], convert.as_list(1))
+        self.assertEqual([1], convert.as_list(1))
 
-        self.assertEquals([1, 2, 3], convert.as_list([1, 2, 3]))
+        self.assertEqual([1, 2, 3], convert.as_list([1, 2, 3]))
 
-        self.assertEquals(["string"], convert.as_list("string"))
+        self.assertEqual(["string"], convert.as_list("string"))
 
-        self.assertEquals((1, 2), convert.as_list((1, 2)))
+        self.assertEqual((1, 2), convert.as_list((1, 2)))
 
     def test_time(self):
-        self.assertEquals("1409810596", convert.time(1409810596))
+        self.assertEqual("1409810596", convert.time(1409810596))
 
         dt = datetime.datetime.fromtimestamp(1409810596)
-        self.assertEquals("1409810596", convert.time(dt))
+        self.assertEqual("1409810596", convert.time(dt))
 
     def test_components(self):
         c = {"country": "US"}
-        self.assertEquals("country:US", convert.components(c))
+        self.assertEqual("country:US", convert.components(c))
 
         c = {"country": "US", "foo": 1}
-        self.assertEquals("country:US|foo:1", convert.components(c))
+        self.assertEqual("country:US|foo:1", convert.components(c))
 
         with self.assertRaises(TypeError):
             convert.components("test")
@@ -85,7 +85,7 @@ class ConvertTest(unittest.TestCase):
         ne = {"lat": 1, "lng": 2}
         sw = (3, 4)
         b = {"northeast": ne, "southwest": sw}
-        self.assertEquals("3.000000,4.000000|1.000000,2.000000",
+        self.assertEqual("3.000000,4.000000|1.000000,2.000000",
                           convert.bounds(b))
 
         with self.assertRaises(TypeError):
@@ -119,10 +119,10 @@ class ConvertTest(unittest.TestCase):
                          "C~w@hnB{e@yF}`D`_Ayx@~vGqn@l}CafC")
 
         points = convert.decode_polyline(syd_mel_route)
-        self.assertAlmostEquals(-33.86746, points[0]["lat"])
-        self.assertAlmostEquals(151.207090, points[0]["lng"])
-        self.assertAlmostEquals(-37.814130, points[-1]["lat"])
-        self.assertAlmostEquals(144.963180, points[-1]["lng"])
+        self.assertAlmostEqual(-33.86746, points[0]["lat"])
+        self.assertAlmostEqual(151.207090, points[0]["lng"])
+        self.assertAlmostEqual(-37.814130, points[-1]["lat"])
+        self.assertAlmostEqual(144.963180, points[-1]["lng"])
 
     def test_polyline_round_trip(self):
         test_polyline = ("gcneIpgxzRcDnBoBlEHzKjBbHlG`@`IkDxIi"
@@ -130,4 +130,4 @@ class ConvertTest(unittest.TestCase):
 
         points = convert.decode_polyline(test_polyline)
         actual_polyline = convert.encode_polyline(points)
-        self.assertEquals(test_polyline, actual_polyline)
+        self.assertEqual(test_polyline, actual_polyline)

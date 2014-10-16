@@ -39,8 +39,8 @@ class ElevationTest(unittest.TestCase):
 
         results = googlemaps.elevation(self.ctx, (40.714728, -73.998672))
 
-        self.assertEquals(1, len(responses.calls))
-        self.assertEquals('https://maps.googleapis.com/maps/api/elevation/json?'
+        self.assertEqual(1, len(responses.calls))
+        self.assertEqual('https://maps.googleapis.com/maps/api/elevation/json?'
                           'locations=40.714728%%2C-73.998672&key=%s' % self.key,
                           responses.calls[0].request.url)
 
@@ -54,10 +54,10 @@ class ElevationTest(unittest.TestCase):
 
         results = googlemaps.elevation(self.ctx, [(40.714728, -73.998672)])
 
-        self.assertEquals(1, len(responses.calls))
-        self.assertEquals('https://maps.googleapis.com/maps/api/elevation/json?'
-                          'locations=40.714728%%2C-73.998672&key=%s' % self.key,
-                          responses.calls[0].request.url)
+        self.assertEqual(1, len(responses.calls))
+        self.assertEqual('https://maps.googleapis.com/maps/api/elevation/json?'
+                         'locations=40.714728%%2C-73.998672&key=%s' % self.key,
+                         responses.calls[0].request.url)
 
     @responses.activate
     def test_elevation_multiple(self):
@@ -70,11 +70,11 @@ class ElevationTest(unittest.TestCase):
         locations = [(40.714728, -73.998672), (-34.397, 150.644)]
         results = googlemaps.elevation(self.ctx, locations)
 
-        self.assertEquals(1, len(responses.calls))
-        self.assertEquals('https://maps.googleapis.com/maps/api/elevation/json?'
-                          'locations=40.714728%%2C-73.998672%%7C-34.397000%%2C'
-                          '150.644000&key=%s' % self.key,
-                          responses.calls[0].request.url)
+        self.assertEqual(1, len(responses.calls))
+        self.assertEqual('https://maps.googleapis.com/maps/api/elevation/json?'
+                         'locations=40.714728%%2C-73.998672%%7C-34.397000%%2C'
+                         '150.644000&key=%s' % self.key,
+                         responses.calls[0].request.url)
 
     def test_elevation_along_path_single(self):
         with self.assertRaises(googlemaps.ApiError):
@@ -94,9 +94,9 @@ class ElevationTest(unittest.TestCase):
         
         results = googlemaps.elevation_along_path(self.ctx, path, 5)
 
-        self.assertEquals(1, len(responses.calls))
-        self.assertEquals('https://maps.googleapis.com/maps/api/elevation/json?'
-                          'path=40.714728%%2C-73.998672%%7C-34.397000%%2C150.644000&'
-                          'key=%s&samples=5' % self.key,
-                          responses.calls[0].request.url)
+        self.assertEqual(1, len(responses.calls))
+        self.assertEqual('https://maps.googleapis.com/maps/api/elevation/json?'
+                         'path=40.714728%%2C-73.998672%%7C-34.397000%%2C150.644000&'
+                         'key=%s&samples=5' % self.key,
+                         responses.calls[0].request.url)
 
