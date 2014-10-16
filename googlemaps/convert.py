@@ -149,7 +149,7 @@ def components(arg):
     :rtype basestring:
     """
     if isinstance(arg, dict):
-        arg = ["%s:%s" % (k, arg[k]) for k in arg]
+        arg = sorted(["%s:%s" % (k, arg[k]) for k in arg])
         return "|".join(arg)
 
     raise TypeError(

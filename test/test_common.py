@@ -21,19 +21,16 @@
 import googlemaps
 import unittest
 from googlemaps import common
+import test as _test
 
-try: # Python 3
-    from urllib.parse import urlparse
-except ImportError: # Python 2
-    from urlparse import urlparse
-
-
-# NOTE: the current version of "sesponses" doesn't have request_callback.
+# NOTE: the current version of "responses" doesn't have request_callback.
 # Use the master version until it's released.
 import responses_master as responses
+if not hasattr(responses, 'activate'): # Python 3.1+
+    from responses_master import responses
 
 
-class CommonTest(unittest.TestCase):
+class CommonTest(_test.TestCase):
 
     def test_no_api_key(self):
         with self.assertRaises(Exception):
@@ -57,9 +54,9 @@ class CommonTest(unittest.TestCase):
         googlemaps.geocode(ctx, "Sesame St.")
 
         self.assertEqual(1, len(responses.calls))
-
-        url = urlparse(responses.calls[0].request.url)
-        self.assertEqual("key=AIzaasdf&address=Sesame+St.", url.query)
+        self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
+                            "key=AIzaasdf&address=Sesame+St.",
+                            responses.calls[0].request.url)
 
     def test_hmac(self):
         """
@@ -87,10 +84,10 @@ class CommonTest(unittest.TestCase):
         googlemaps.geocode(ctx, "Sesame St.")
 
         self.assertEqual(1, len(responses.calls))
-
-        url = urlparse(responses.calls[0].request.url)
-        expected = "client=foo&address=Sesame+St.&signature=Ao1r8ULP1g_vPwnf7Fvf2TSCYBQ="
-        self.assertEqual(expected, url.query)
+        self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
+                            "client=foo&address=Sesame+St.&"
+                            "signature=Ao1r8ULP1g_vPwnf7Fvf2TSCYBQ=",
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_ua_sent(self):
