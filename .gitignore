@@ -19,3 +19,12 @@ docs/_build/
 
 # vim
 *.swp
+
+# python testing things etc
+.coverage
+.tox
+env
+nosetests.xml
+googlemaps.egg-info
+*.egg
+
