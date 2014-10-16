@@ -131,8 +131,12 @@ def _hmac_sign(secret, s):
     :type s: basestring
     :rtype: basestring
     """
+    # Encode/decode from UTF-8. In Python 3, this converts to bytes and back;
+    # in Python 2, it is a no-op.
+    s = s.encode('utf-8')
     sig = hmac.new(base64.urlsafe_b64decode(secret), s, hashlib.sha1)
-    return base64.urlsafe_b64encode(sig.digest())
+    out = base64.urlsafe_b64encode(sig.digest())
+    return out.decode('utf-8')
 
 def _get(ctx, url, params, first_request_time=None):
     """Performs HTTP GET request with credentials, returning the body as JSON.
