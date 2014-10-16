@@ -195,7 +195,7 @@ class GeocodingTest(_test.TestCase):
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
                             'latlng=40.714224%%2C-73.961452&result_type=street_address&'
                             'key=%s&location_type=ROOFTOP' % self.key,
-                             responses.calls[0].request.url)
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_reverse_geocode_multiple_location_types(self):
