@@ -2,9 +2,9 @@ import sys
 
 
 try:
-  from setuptools import setup, find_packages
+  from setuptools import setup
 except ImportError:
-  from distutils.core import setup, find_packages
+  from distutils.core import setup
 
 
 if sys.version_info <= (2, 4):
