@@ -56,10 +56,10 @@ class CommonTest(unittest.TestCase):
         ctx = googlemaps.Context(key="AIzaasdf")
         googlemaps.geocode(ctx, "Sesame St.")
 
-        self.assertEquals(1, len(responses.calls))
+        self.assertEqual(1, len(responses.calls))
 
         url = urlparse(responses.calls[0].request.url)
-        self.assertEquals("key=AIzaasdf&address=Sesame+St.", url.query)
+        self.assertEqual("key=AIzaasdf&address=Sesame+St.", url.query)
 
     def test_hmac(self):
         """
@@ -73,7 +73,7 @@ class CommonTest(unittest.TestCase):
         key = "a2V5" # "key" -> base64
         signature = "3nybhbi3iqa8ino29wqQcBydtNk="
 
-        self.assertEquals(signature, common._hmac_sign(key, message))
+        self.assertEqual(signature, common._hmac_sign(key, message))
 
     @responses.activate
     def test_url_signed(self):
@@ -86,11 +86,11 @@ class CommonTest(unittest.TestCase):
         ctx = googlemaps.Context(client_id="foo", client_secret="a2V5")
         googlemaps.geocode(ctx, "Sesame St.")
 
-        self.assertEquals(1, len(responses.calls))
+        self.assertEqual(1, len(responses.calls))
 
         url = urlparse(responses.calls[0].request.url)
         expected = "client=foo&address=Sesame+St.&signature=Ao1r8ULP1g_vPwnf7Fvf2TSCYBQ="
-        self.assertEquals(expected, url.query)
+        self.assertEqual(expected, url.query)
 
     @responses.activate
     def test_ua_sent(self):
@@ -103,7 +103,7 @@ class CommonTest(unittest.TestCase):
         ctx = googlemaps.Context(key="AIzaasdf")
         googlemaps.geocode(ctx, "Sesame St.")
 
-        self.assertEquals(1, len(responses.calls))
+        self.assertEqual(1, len(responses.calls))
         user_agent = responses.calls[0].request.headers["User-Agent"]
         self.assertTrue(user_agent.startswith("GoogleGeoApiClientPython"))
 
@@ -127,7 +127,7 @@ class CommonTest(unittest.TestCase):
         ctx = googlemaps.Context(key="AIzaasdf")
         googlemaps.geocode(ctx, "Sesame St.")
 
-        self.assertEquals(2, len(responses.calls))
+        self.assertEqual(2, len(responses.calls))
 
     @responses.activate
     def test_retry_intermittent(self):
@@ -149,4 +149,4 @@ class CommonTest(unittest.TestCase):
         ctx = googlemaps.Context(key="AIzaasdf")
         googlemaps.geocode(ctx, "Sesame St.")
 
-        self.assertEquals(2, len(responses.calls))
+        self.assertEqual(2, len(responses.calls))
