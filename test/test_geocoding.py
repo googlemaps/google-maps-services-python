@@ -17,13 +17,13 @@
 
 """Tests for the geocoding module."""
 
-import unittest
 import datetime
 import responses
 
+import test as _test
 import googlemaps
 
-class GeocodingTest(unittest.TestCase):
+class GeocodingTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'AIzaasdf'
@@ -40,9 +40,9 @@ class GeocodingTest(unittest.TestCase):
         results = googlemaps.geocode(self.ctx, 'Sydney')
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                          'key=%s&address=Sydney' % self.key,
-                          responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'key=%s&address=Sydney' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_reverse_geocode(self):
@@ -55,9 +55,9 @@ class GeocodingTest(unittest.TestCase):
         results = googlemaps.reverse_geocode(self.ctx, (-33.8674869, 151.2069902))
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'latlng=-33.867487%%2C151.206990&key=%s' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'latlng=-33.867487%%2C151.206990&key=%s' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_geocoding_the_googleplex(self):
@@ -71,10 +71,10 @@ class GeocodingTest(unittest.TestCase):
                                   'Mountain View, CA')
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'key=%s&address=1600+Amphitheatre+Parkway%%2C+Mountain'
-                         '+View%%2C+CA' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'key=%s&address=1600+Amphitheatre+Parkway%%2C+Mountain'
+                            '+View%%2C+CA' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_geocode_with_bounds(self):
@@ -89,10 +89,10 @@ class GeocodingTest(unittest.TestCase):
                                           'northeast':(34.236144, -118.500938)})
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'bounds=34.172684%%2C-118.604794%%7C34.236144%%2C'
-                         '-118.500938&key=%s&address=Winnetka' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'bounds=34.172684%%2C-118.604794%%7C34.236144%%2C'
+                            '-118.500938&key=%s&address=Winnetka' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_geocode_with_region_biasing(self):
@@ -105,9 +105,9 @@ class GeocodingTest(unittest.TestCase):
         results = googlemaps.geocode(self.ctx, 'Toledo', region='es')
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'region=es&key=%s&address=Toledo' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'region=es&key=%s&address=Toledo' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_geocode_with_component_filter(self):
@@ -121,10 +121,10 @@ class GeocodingTest(unittest.TestCase):
             components={'country': 'ES'})
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'key=%s&components=country%%3AES&address=santa+cruz' % 
-                         self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'key=%s&components=country%%3AES&address=santa+cruz' % 
+                            self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_geocode_with_multiple_component_filters(self):
@@ -138,10 +138,10 @@ class GeocodingTest(unittest.TestCase):
             components={'administrative_area': 'TX','country': 'US'})
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'key=%s&components=administrative_area%%3ATX%%7C'
-                         'country%%3AUS&address=Torun' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'key=%s&components=administrative_area%%3ATX%%7C'
+                            'country%%3AUS&address=Torun' % self.key,
+                            responses.calls[0].request.url)
 
 
     @responses.activate
@@ -158,10 +158,10 @@ class GeocodingTest(unittest.TestCase):
                         'country': 'Findland'})
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'key=%s&components=administrative_area%%3AHelsinki'
-                         '%%7Croute%%3AAnnegatan%%7Ccountry%%3AFindland' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'key=%s&components=administrative_area%%3AHelsinki'
+                            '%%7Ccountry%%3AFindland%%7Croute%%3AAnnegatan' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_simple_reverse_geocode(self):
@@ -174,9 +174,9 @@ class GeocodingTest(unittest.TestCase):
         results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452))
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'latlng=40.714224%%2C-73.961452&key=%s' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'latlng=40.714224%%2C-73.961452&key=%s' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_reverse_geocode_restricted_by_type(self):
@@ -191,10 +191,10 @@ class GeocodingTest(unittest.TestCase):
                                           result_type='street_address')
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'latlng=40.714224%%2C-73.961452&result_type=street_address&'
-                         'key=%s&location_type=ROOFTOP' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'latlng=40.714224%%2C-73.961452&result_type=street_address&'
+                            'key=%s&location_type=ROOFTOP' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_reverse_geocode_multiple_location_types(self):
@@ -210,11 +210,11 @@ class GeocodingTest(unittest.TestCase):
                                           result_type='street_address')
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'latlng=40.714224%%2C-73.961452&result_type=street_address&'
-                         'key=%s&location_type=ROOFTOP%%7CRANGE_INTERPOLATED' % 
-                         self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'latlng=40.714224%%2C-73.961452&result_type=street_address&'
+                            'key=%s&location_type=ROOFTOP%%7CRANGE_INTERPOLATED' %
+                            self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_reverse_geocode_multiple_result_types(self):
@@ -230,10 +230,10 @@ class GeocodingTest(unittest.TestCase):
                                                        'route'])
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'latlng=40.714224%%2C-73.961452&result_type=street_address'
-                         '%%7Croute&key=%s&location_type=ROOFTOP' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'latlng=40.714224%%2C-73.961452&result_type=street_address'
+                            '%%7Croute&key=%s&location_type=ROOFTOP' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_partial_match(self):
@@ -246,9 +246,9 @@ class GeocodingTest(unittest.TestCase):
         results = googlemaps.geocode(self.ctx, 'Pirrama Pyrmont')
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'key=%s&address=Pirrama+Pyrmont' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'key=%s&address=Pirrama+Pyrmont' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_utf_results(self):
@@ -261,6 +261,6 @@ class GeocodingTest(unittest.TestCase):
         results = googlemaps.geocode(self.ctx, components={'postal_code': '96766'})
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                         'key=%s&components=postal_code%%3A96766' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
+                            'key=%s&components=postal_code%%3A96766' % self.key,
+                            responses.calls[0].request.url)

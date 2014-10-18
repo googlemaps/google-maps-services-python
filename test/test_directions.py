@@ -19,12 +19,13 @@
 
 from datetime import datetime
 from datetime import timedelta
-import googlemaps
-import unittest
 import responses
 import time
 
-class DirectionsTest(unittest.TestCase):
+import googlemaps
+import test as _test
+
+class DirectionsTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'AIzaasdf'
@@ -43,10 +44,10 @@ class DirectionsTest(unittest.TestCase):
                                        "Sydney", "Melbourne")
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json'
-                          '?origin=Sydney&destination=Melbourne&key=%s' %
-                          self.key,
-                          responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json'
+                            '?origin=Sydney&destination=Melbourne&key=%s' %
+                            self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_complex_request(self):
@@ -65,12 +66,12 @@ class DirectionsTest(unittest.TestCase):
                                        region="us")
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Sydney&avoid=highways%%7Ctolls%%7Cferries&'
-                         'destination=Melbourne&mode=bicycling&key=%s'
-                         '&units=metric&region=us' %
-                         self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Sydney&avoid=highways%%7Ctolls%%7Cferries&'
+                            'destination=Melbourne&mode=bicycling&key=%s'
+                            '&units=metric&region=us' %
+                            self.key,
+                            responses.calls[0].request.url)
 
 
     def test_transit_without_time(self):
@@ -98,11 +99,11 @@ class DirectionsTest(unittest.TestCase):
                                        departure_time=now)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?origin='
-                         'Sydney+Town+Hall&key=%s&destination=Parramatta%%2C+NSW&'
-                         'mode=transit&departure_time=%d' %
-                         (self.key, time.mktime(now.timetuple())),
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?origin='
+                            'Sydney+Town+Hall&key=%s&destination=Parramatta%%2C+NSW&'
+                            'mode=transit&departure_time=%d' %
+                            (self.key, time.mktime(now.timetuple())),
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_transit_with_arrival_time(self):
@@ -119,11 +120,11 @@ class DirectionsTest(unittest.TestCase):
                                        arrival_time=an_hour_from_now)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Sydney+Town+Hall&arrival_time=%d&'
-                         'destination=Parramatta%%2C+NSW&mode=transit&key=%s' %
-                         (time.mktime(an_hour_from_now.timetuple()), self.key),
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Sydney+Town+Hall&arrival_time=%d&'
+                            'destination=Parramatta%%2C+NSW&mode=transit&key=%s' %
+                            (time.mktime(an_hour_from_now.timetuple()), self.key),
+                            responses.calls[0].request.url)
 
 
     def test_crazy_travel_mode(self):
@@ -145,10 +146,10 @@ class DirectionsTest(unittest.TestCase):
                                        mode="bicycling")
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Town+Hall%%2C+Sydney&destination=Parramatta%%2C+NSW&'
-                         'mode=bicycling&key=%s' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Town+Hall%%2C+Sydney&destination=Parramatta%%2C+NSW&'
+                            'mode=bicycling&key=%s' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_brooklyn_to_queens_by_transit(self):
@@ -165,10 +166,10 @@ class DirectionsTest(unittest.TestCase):
                                        departure_time=now)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                          'origin=Brooklyn&key=%s&destination=Queens&mode=transit&'
-                          'departure_time=%d' % (self.key, time.mktime(now.timetuple())),
-                          responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Brooklyn&key=%s&destination=Queens&mode=transit&'
+                            'departure_time=%d' % (self.key, time.mktime(now.timetuple())),
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_boston_to_concord_via_charlestown_and_lexington(self):
@@ -184,11 +185,11 @@ class DirectionsTest(unittest.TestCase):
                                                   "Lexington, MA"])
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Boston%%2C+MA&destination=Concord%%2C+MA&'
-                         'waypoints=Charlestown%%2C+MA%%7CLexington%%2C+MA&'
-                         'key=%s' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Boston%%2C+MA&destination=Concord%%2C+MA&'
+                            'waypoints=Charlestown%%2C+MA%%7CLexington%%2C+MA&'
+                            'key=%s' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_adelaide_wine_tour(self):
@@ -207,12 +208,12 @@ class DirectionsTest(unittest.TestCase):
                                        optimize_waypoints=True)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Adelaide%%2C+SA&destination=Adelaide%%2C+SA&'
-                         'waypoints=optimize%%3Atrue%%7CBarossa+Valley%%2C+'
-                         'SA%%7CClare%%2C+SA%%7CConnawarra%%2C+SA%%7CMcLaren+'
-                         'Vale%%2C+SA&key=%s' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Adelaide%%2C+SA&destination=Adelaide%%2C+SA&'
+                            'waypoints=optimize%%3Atrue%%7CBarossa+Valley%%2C+'
+                            'SA%%7CClare%%2C+SA%%7CConnawarra%%2C+SA%%7CMcLaren+'
+                            'Vale%%2C+SA&key=%s' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_toledo_to_madrid_in_spain(self):
@@ -226,10 +227,10 @@ class DirectionsTest(unittest.TestCase):
                                        region="es")
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Toledo&region=es&destination=Madrid&key=%s' % 
-                         self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Toledo&region=es&destination=Madrid&key=%s' %
+                            self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_zero_results_returns_response(self):
@@ -256,10 +257,10 @@ class DirectionsTest(unittest.TestCase):
                                        language="es")
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Toledo&region=es&destination=Madrid&key=%s&'
-                         'language=es' % self.key,
-                         responses.calls[0].request.url)
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Toledo&region=es&destination=Madrid&key=%s&'
+                            'language=es' % self.key,
+                            responses.calls[0].request.url)
 
     @responses.activate
     def test_alternatives(self):
@@ -274,9 +275,8 @@ class DirectionsTest(unittest.TestCase):
                                        alternatives=True)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertEqual('https://maps.googleapis.com/maps/api/directions/json?'
-                         'origin=Sydney+Town+Hall&destination=Parramatta+Town+Hall&'
-                         'alternatives=true&key=%s' % self.key,
-                         responses.calls[0].request.url)
-                         
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?'
+                            'origin=Sydney+Town+Hall&destination=Parramatta+Town+Hall&'
+                            'alternatives=true&key=%s' % self.key,
+                            responses.calls[0].request.url)
 
