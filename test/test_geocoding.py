@@ -17,7 +17,6 @@
 
 """Tests for the geocoding module."""
 
-import unittest
 import datetime
 import responses
 

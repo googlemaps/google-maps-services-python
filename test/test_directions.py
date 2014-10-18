@@ -19,7 +19,6 @@
 
 from datetime import datetime
 from datetime import timedelta
-import unittest
 import responses
 import time
 

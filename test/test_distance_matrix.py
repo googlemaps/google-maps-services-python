@@ -17,7 +17,6 @@
 
 """Tests for the distance matrix module."""
 
-import unittest
 import googlemaps
 import responses
 import test as _test

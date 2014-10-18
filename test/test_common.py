@@ -19,7 +19,6 @@
 """Tests across modules (or common module)."""
 
 import googlemaps
-import unittest
 from googlemaps import common
 import test as _test
 

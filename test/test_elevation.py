@@ -17,7 +17,6 @@
 
 """Tests for the elevation module."""
 
-import unittest
 import datetime
 import responses
 
