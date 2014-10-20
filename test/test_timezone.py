@@ -1,5 +1,3 @@
-# This Python file uses the following encoding: utf-8
-# 
 # Copyright 2014 Google Inc. All rights reserved.
 # 
 # 
@@ -18,6 +16,7 @@
 
 """Tests for the timezone module."""
 
+import codecs
 import unittest
 import datetime
 
@@ -42,7 +41,8 @@ class TimezoneTest(unittest.TestCase):
         self.assertIsNotNone(timezone)
         self.assertEqual(3600.0, timezone['dstOffset'])
         self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])
-        self.assertEqual(u'Hora de verano del Pacífico', timezone['timeZoneName'])
+        self.assertEqual(codecs.unicode_escape_decode('Hora de verano del Pac\\xedfico')[0],
+                         timezone['timeZoneName'])
 
     def test_los_angeles_with_no_timestamp(self):
         timezone = googlemaps.timezone(self.c, (39.6034810,-119.6822510))
