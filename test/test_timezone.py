@@ -1,5 +1,3 @@
-# This Python file uses the following encoding: utf-8
-# 
 # Copyright 2014 Google Inc. All rights reserved.
 # 
 # 
