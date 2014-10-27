@@ -77,10 +77,10 @@ def normalize_lat_lng(arg):
 def join_list(sep, arg):
     """If arg is list-like, then joins it with sep.
     :param sep: Separator string.
-    :type sep: basestring
+    :type sep: string
     :param arg: Value to coerce into a list.
-    :type arg: basestring or list of basestring
-    :rtype: basestring
+    :type arg: string or list of string
+    :rtype: string
     """
     return sep.join(as_list(arg))
 
@@ -129,7 +129,7 @@ def _has_method(arg, method):
 
     :param arg: the object
     :param method: the method name
-    :type method: basestring
+    :type method: string
     :rtype: bool
     """
     return hasattr(arg, method) and callable(getattr(arg, method))
@@ -146,7 +146,7 @@ def components(arg):
 
     :param arg: The component filter.
     :type arg: dict
-    :rtype basestring:
+    :rtype: basestring
     """
     if isinstance(arg, dict):
         arg = sorted(["%s:%s" % (k, arg[k]) for k in arg])
@@ -202,7 +202,7 @@ def decode_polyline(polyline):
     https://developers.google.com/maps/documentation/utilities/polylinealgorithm
 
     :param polyline: An encoded polyline
-    :type polyline: basestring
+    :type polyline: string
 
     :rtype: list of dicts with lat/lng keys
     """
@@ -246,7 +246,7 @@ def encode_polyline(points):
     :param points: a list of lat/lng pairs
     :type points: list of dicts or tuples
 
-    :rtype: basestring
+    :rtype: string
     """
     last_lat = last_lng = 0
     result = ""

@@ -32,15 +32,15 @@ def directions(ctx, origin, destination,
 
     :param origin: The address or latitude/longitude value from which you wish
             to calculate directions.
-    :type origin: basestring or dict or tuple
+    :type origin: string or dict or tuple
 
     :param destination: The address or latitude/longitude value from which
         you wish to calculate directions.
-    :type destination: basestring or dict or tuple
+    :type destination: string or dict or tuple
 
     :param mode: Specifies the mode of transport to use when calculating
         directions. One of "driving", "walking", "bicycling" or "transit"
-    :type mode: basestring
+    :type mode: string
 
     :param waypoints: Specifies an array of waypoints. Waypoints alter a
         route by routing it through the specified location(s).
@@ -51,18 +51,18 @@ def directions(ctx, origin, destination,
 
     :param avoid: Indicates that the calculated route(s) should avoid the
         indicated features.
-    :type avoid: list or basestring
+    :type avoid: list or string
 
     :param language: The language in which to return results.
-    :type language: basestring
+    :type language: string
 
     :param units: Specifies the unit system to use when displaying results.
         "metric" or "imperial"
-    :type units: basestring
+    :type units: string
 
     :param region: The region code, specified as a ccTLD ("top-level domain"
         two-character value.
-    :type region: basestring
+    :type region: string
 
     :param departure_time: Specifies the desired time of departure.
     :type departure_time: int or datetime.datetime

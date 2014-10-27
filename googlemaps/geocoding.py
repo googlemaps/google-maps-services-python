@@ -32,7 +32,7 @@ def geocode(ctx, address=None, components=None, bounds=None, region=None,
     :type ctx: googlemaps.Context
 
     :param address: The address to geocode.
-    :type address: basestring
+    :type address: string
 
     :param components: A component filter for which you wish to obtain a geocode,
                        for example: {'administrative_area': 'TX','country': 'US'}
@@ -40,14 +40,14 @@ def geocode(ctx, address=None, components=None, bounds=None, region=None,
 
     :param bounds: The bounding box of the viewport within which to bias geocode
                    results more prominently.
-    :type bounds: basestring or dict with northeast and southwest keys.
+    :type bounds: string or dict with northeast and southwest keys.
 
     :param region: The region code, specified as a ccTLD ("top-level domain")
                    two-character value.
-    :type region: basestring
+    :type region: string
 
     :param language: The language in which to return results.
-    :type langauge: basestring
+    :type langauge: string
 
     :rtype: list of geocoding results.
 
@@ -87,13 +87,13 @@ def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
     :type latlng: dict or list or tuple
 
     :param result_type: One or more address types to restrict results to.
-    :type result_type: basestring or list of basestring
+    :type result_type: string or list of string
 
     :param location_type: One or more location types to restrict results to.
-    :type location_type: list of basestring
+    :type location_type: list of string
 
     :param language: The language in which to return results.
-    :type langauge: basestring
+    :type langauge: string
 
     :rtype: list of reverse geocoding results.
 

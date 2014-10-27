@@ -38,7 +38,7 @@ def timezone(ctx, location, timestamp=datetime.now(), language=None):
     :type timestamp: int or datetime.datetime
 
     :param language: The language in which to return results.
-    :type language: basestring
+    :type language: string
 
     :rtype: dict
     """

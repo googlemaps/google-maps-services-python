@@ -48,7 +48,7 @@ class Context(object):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
-        :type key: basestring
+        :type key: string
 
         :param timeout: Combined connect and read timeout for HTTP requests, in
             seconds. Specify "None" for no timeout.
@@ -69,11 +69,11 @@ class Context(object):
         :type retry_timeout: int
 
         :param client_id: (for Maps API for Work customers) Your client ID.
-        :type client_id: basestring
+        :type client_id: string
 
         :param client_secret: (for Maps API for Work customers) Your client
             secret (base64 encoded).
-        :type client_secret: basestring
+        :type client_secret: string
 
         :raises ValueError: when either credentials are missing, incomplete
             or invalid.
@@ -111,10 +111,10 @@ class Context(object):
         """Returns the path and query string portion of the request URL, first
         adding any necessary parameters.
         :param path: The path portion of the URL.
-        :type path: basestring
+        :type path: string
         :param params: URL parameters.
         :type params: dict
-        :rtype: basestring
+        :rtype: string
         """
         if self.key:
             params["key"] = self.key
@@ -130,10 +130,10 @@ class Context(object):
 def _hmac_sign(secret, s):
     """Returns a basee64-encoded HMAC-SHA1 signature of a given string.
     :param secret: The key used for the signature, base64 encoded.
-    :type secret: basestring
+    :type secret: string
     :param s: The string.
-    :type s: basestring
-    :rtype: basestring
+    :type s: string
+    :rtype: string
     """
     # Encode/decode from UTF-8. In Python 3, this converts to bytes and back;
     # in Python 2, it is a no-op.
@@ -148,7 +148,7 @@ def _get(ctx, url, params, first_request_time=None, retry_counter=0):
     :param ctx: Shared context parameters.
     :type ctx: googlemaps.Context
     :param url: URL path for the request
-    :type url: basestring
+    :type url: string
     :param params: HTTP GET parameters
     :type params: dict
     :param first_request_time: The time of the first request (None if no retries
@@ -218,7 +218,7 @@ def _isstr(v):
     """Determines whether the passed value is a string, safe for 2/3.
 
     :param v: Object to check
-    :type ctx: basestring or object
+    :type ctx: string or object
     """
     try:
         basestring
