@@ -21,7 +21,7 @@
 import responses
 
 import googlemaps
-from googlemaps import client
+from googlemaps import client as _client
 import test as _test
 
 class ClientTest(_test.TestCase):
@@ -64,7 +64,7 @@ class ClientTest(_test.TestCase):
         key = "a2V5" # "key" -> base64
         signature = "3nybhbi3iqa8ino29wqQcBydtNk="
 
-        self.assertEqual(signature, client.sign_hmac(key, message))
+        self.assertEqual(signature, _client.sign_hmac(key, message))
 
     @responses.activate
     def test_url_signed(self):

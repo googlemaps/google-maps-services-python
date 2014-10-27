@@ -39,6 +39,7 @@ except ImportError: # Python 2
 
 _VERSION = "0.1"
 _USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
+_BASE_URL = "https://maps.googleapis.com"
 
 class Client(object):
     """Performs requests to the Google Maps API web services."""
@@ -109,7 +110,8 @@ class Client(object):
         self.retry_timeout = timedelta(seconds=retry_timeout)
 
     def get(self, url, params, first_request_time=None, retry_counter=0):
-        """Performs HTTP GET request with credentials, returning the body as JSON.
+        """Performs HTTP GET request with credentials, returning the body as
+        JSON.
 
         :param url: URL path for the request
         :type url: string
@@ -129,20 +131,21 @@ class Client(object):
 
         if retry_counter > 0:
             # 0.5 * (1.5 ^ i) is an increased sleep time of 1.5x per iteration,
-            # starting at 0.5s when retry_counter=0. The first retry will occur at
-            # 1, so subtract that first.
+            # starting at 0.5s when retry_counter=0. The first retry will occur
+            # at 1, so subtract that first.
             delay_seconds = 0.5 * 1.5 ** (retry_counter - 1)
 
-            # Jitter this value and sleep for between 50% and 150% of delay_seconds.
+            # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
         resp = requests.get(
-            "https://maps.googleapis.com" + self._generate_auth_url(url, params),
+            _BASE_URL + self._generate_auth_url(url, params),
             headers={"User-Agent": _USER_AGENT},
             timeout=self.timeout,
             verify=True) # NOTE(cbro): verify SSL certs.
 
-        exceeded_timeout = (datetime.now() - first_request_time > self.retry_timeout)
+        elapsed = datetime.now() - first_request_time
+        exceeded_timeout = elapsed > self.retry_timeout
 
         if resp.status_code in [500, 503, 504] and not exceeded_timeout:
             # Retry request.
