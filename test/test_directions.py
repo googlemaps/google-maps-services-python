@@ -1,19 +1,19 @@
-# 
+#
 # Copyright 2014 Google Inc. All rights reserved.
-# 
-# 
+#
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-# 
+#
 
 """Tests for the directions module."""
 
@@ -33,7 +33,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_simple_directions(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -51,7 +51,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_complex_request(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -85,7 +85,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_transit_with_departure_time(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -107,7 +107,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_transit_with_arrival_time(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -135,7 +135,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_travel_mode_round_trip(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -153,7 +153,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_brooklyn_to_queens_by_transit(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -173,7 +173,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_boston_to_concord_via_charlestown_and_lexington(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -193,7 +193,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_adelaide_wine_tour(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -217,7 +217,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_toledo_to_madrid_in_spain(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -246,7 +246,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_language_parameter(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,
@@ -264,7 +264,7 @@ class DirectionsTest(_test.TestCase):
 
     @responses.activate
     def test_alternatives(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/directions/json',
                       body='{"status":"OK","routes":[]}',
                       status=200,

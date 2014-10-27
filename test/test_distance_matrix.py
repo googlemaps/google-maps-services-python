@@ -1,19 +1,19 @@
-# 
+#
 # Copyright 2014 Google Inc. All rights reserved.
-# 
-# 
+#
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-# 
+#
 
 """Tests for the distance matrix module."""
 
@@ -29,7 +29,7 @@ class DistanceMatrixTest(_test.TestCase):
 
     @responses.activate
     def test_basic_params(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/distancematrix/json',
                       body='{"status":"OK","rows":[]}',
                       status=200,
@@ -60,12 +60,12 @@ class DistanceMatrixTest(_test.TestCase):
 
     @responses.activate
     def test_mixed_params(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/distancematrix/json',
                       body='{"status":"OK","rows":[]}',
                       status=200,
                       content_type='application/json')
-        
+
         origins = ["Bobcaygeon ON", [41.43206, -81.38992]]
         destinations = [(43.012486, -83.6964149),
                         {"lat": 42.8863855, "lng": -78.8781627}]
@@ -81,7 +81,7 @@ class DistanceMatrixTest(_test.TestCase):
 
     @responses.activate
     def test_all_params(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/distancematrix/json',
                       body='{"status":"OK","rows":[]}',
                       status=200,
@@ -118,7 +118,7 @@ class DistanceMatrixTest(_test.TestCase):
 
     @responses.activate
     def test_lang_param(self):
-        responses.add(responses.GET, 
+        responses.add(responses.GET,
                       'https://maps.googleapis.com/maps/api/distancematrix/json',
                       body='{"status":"OK","rows":[]}',
                       status=200,
