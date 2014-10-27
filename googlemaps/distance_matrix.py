@@ -34,28 +34,28 @@ def distance_matrix(ctx, origins, destinations,
             from which to calculate distance and time. If you pass an address
             as a string, the service will geocode the string and convert it to
             a latitude/longitude coordinate to calculate directions.
-    :type origins: list of basestrings, dicts or tuples
+    :type origins: list of strings, dicts or tuples
 
     :param destinations: One or more addresses and/or lat/lng values, to
             which to calculate distance and time. If you pass an address as a
             string, the service will geocode the string and convert it to a
             latitude/longitude coordinate to calculate directions.
-    :type destinations: list of basestrings, dicts or tuples
+    :type destinations: list of strings, dicts or tuples
 
     :param mode: Specifies the mode of transport to use when calculating
             directions. Valid values are "driving", "walking" or "bicycling".
-    :type mode: basestring
+    :type mode: string
 
     :param language: The language in which to return results.
-    :type language: basestring
+    :type language: string
 
     :param avoid: Indicates that the calculated route(s) should avoid the
         indicated features. Valid values are "tolls", "highways" or "ferries"
-    :type avoid: basestring
+    :type avoid: string
 
     :param units: Specifies the unit system to use when displaying results.
         Valid values are "metric" or "imperial"
-    :type units: basestring
+    :type units: string
 
     :param departure_time: Specifies the desired time of departure as seconds
         since midnight, January 1, 1970 UTC. The departure time may be
