@@ -26,6 +26,8 @@ from datetime import timedelta
 import hashlib
 import hmac
 import requests
+import random
+import time
 
 try: # Python 3
     from urllib.parse import urlencode
@@ -62,7 +64,8 @@ class Context(object):
             option. Note that this requires requests >= 2.4.0.
         :type read_timeout: int
 
-        :param retry_timeout: Timeout across multiple retriable requests, in seconds.
+        :param retry_timeout: Timeout across multiple retriable requests, in
+            seconds.
         :type retry_timeout: int
 
         :param client_id: (for Maps API for Work customers) Your client ID.
@@ -74,8 +77,8 @@ class Context(object):
 
         :raises ValueError: when either credentials are missing, incomplete
             or invalid.
-        :raises NotImplementedError: if connect_timeout and read_timeout are used
-            with a version of requests prior to 2.4.0.
+        :raises NotImplementedError: if connect_timeout and read_timeout are
+            used with a version of requests prior to 2.4.0.
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
@@ -87,7 +90,8 @@ class Context(object):
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
-            raise ValueError("Specify either timeout, or connect_timeout and read_timeout")
+            raise ValueError("Specify either timeout, or connect_timeout " +
+                             "and read_timeout")
 
         if connect_timeout and read_timeout:
             # Check that the version of requests is >= 2.4.0
@@ -138,7 +142,7 @@ def _hmac_sign(secret, s):
     out = base64.urlsafe_b64encode(sig.digest())
     return out.decode('utf-8')
 
-def _get(ctx, url, params, first_request_time=None):
+def _get(ctx, url, params, first_request_time=None, retry_counter=0):
     """Performs HTTP GET request with credentials, returning the body as JSON.
 
     :param ctx: Shared context parameters.
@@ -150,6 +154,8 @@ def _get(ctx, url, params, first_request_time=None):
     :param first_request_time: The time of the first request (None if no retries
             have occurred).
     :type first_request_time: datetime.datetime
+    :param retry_counter: The number of this retry, or zero for first attempt.
+    :type retry_counter: int
 
     :raises ApiException: when the API returns an error.
     """
@@ -157,9 +163,14 @@ def _get(ctx, url, params, first_request_time=None):
     if not first_request_time:
         first_request_time = datetime.now()
 
-    # TODO(mdr-eng) implement back-off.
-    if datetime.now() - first_request_time > ctx.retry_timeout:
-        raise Exception("Timed out while retrying.")
+    if retry_counter > 0:
+        # 0.5 * (1.5 ^ i) is an increased sleep time of 1.5x per iteration,
+        # starting at 0.5s when retry_counter=0. The first retry will occur at
+        # 1, so subtract that first.
+        delay_seconds = 0.5 * 1.5 ** (retry_counter - 1)
+
+        # Jitter this value and sleep for between 50% and 150% of delay_seconds.
+        time.sleep(delay_seconds * (random.random() + 0.5))
 
     resp = requests.get(
         "https://maps.googleapis.com" + ctx._auth_url(url, params),
@@ -167,9 +178,11 @@ def _get(ctx, url, params, first_request_time=None):
         timeout=ctx.timeout,
         verify=True) # NOTE(cbro): verify SSL certs.
 
-    if resp.status_code in [500, 503, 504]:
+    exceeded_timeout = (datetime.now() - first_request_time > ctx.retry_timeout)
+
+    if resp.status_code in [500, 503, 504] and not exceeded_timeout:
         # Retry request.
-        return _get(ctx, url, params, first_request_time)
+        return _get(ctx, url, params, first_request_time, retry_counter + 1)
 
     if resp.status_code != 200:
         resp.raise_for_status() # raises a requests.exceptions.HTTPError
@@ -179,9 +192,9 @@ def _get(ctx, url, params, first_request_time=None):
     if body["status"] == "OK" or body["status"] == "ZERO_RESULTS":
         return body
 
-    if body["status"] == "OVER_QUERY_LIMIT":
+    if body["status"] == "OVER_QUERY_LIMIT" and not exceeded_timeout:
         # Retry request.
-        return _get(ctx, url, params, first_request_time)
+        return _get(ctx, url, params, first_request_time, retry_counter + 1)
 
     if "error_message" in body:
         raise ApiError(body["status"], body["error_message"])
