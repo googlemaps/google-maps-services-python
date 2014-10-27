@@ -18,16 +18,11 @@
 
 """Tests for client module."""
 
+import responses
+
 import googlemaps
 from googlemaps import client
 import test as _test
-
-# NOTE: the current version of "responses" doesn't have request_callback.
-# Use the master version until it's released.
-import responses_master as responses
-if not hasattr(responses, 'activate'): # Python 3.1+
-    from responses_master import responses
-
 
 class ClientTest(_test.TestCase):
 
