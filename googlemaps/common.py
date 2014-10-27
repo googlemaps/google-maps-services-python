@@ -189,17 +189,18 @@ def _get(ctx, url, params, first_request_time=None, retry_counter=0):
 
     body = resp.json()
 
-    if body["status"] == "OK" or body["status"] == "ZERO_RESULTS":
+    api_status = body["status"]
+    if api_status == "OK" or api_status == "ZERO_RESULTS":
         return body
 
-    if body["status"] == "OVER_QUERY_LIMIT" and not exceeded_timeout:
+    if api_status == "OVER_QUERY_LIMIT" and not exceeded_timeout:
         # Retry request.
         return _get(ctx, url, params, first_request_time, retry_counter + 1)
 
     if "error_message" in body:
-        raise ApiError(body["status"], body["error_message"])
+        raise ApiError(api_status, body["error_message"])
     else:
-        raise ApiError(body["status"])
+        raise ApiError(api_status)
 
 
 class ApiError(Exception):
