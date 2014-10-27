@@ -28,13 +28,13 @@ class ClientTest(_test.TestCase):
 
     def test_no_api_key(self):
         with self.assertRaises(Exception):
-            ctx = googlemaps.Context()
-            googlemaps.directions(ctx, "Sydney", "Melbourne")
+            client = googlemaps.Client()
+            client.directions("Sydney", "Melbourne")
 
     def test_invalid_api_key(self):
         with self.assertRaises(Exception):
-            ctx = googlemaps.Context(key="Invalid key.")
-            googlemaps.directions(ctx, "Sydney", "Melbourne")
+            client = googlemaps.Client(key="Invalid key.")
+            client.directions("Sydney", "Melbourne")
 
     @responses.activate
     def test_key_sent(self):
@@ -44,8 +44,8 @@ class ClientTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        ctx = googlemaps.Context(key="AIzaasdf")
-        googlemaps.geocode(ctx, "Sesame St.")
+        client = googlemaps.Client(key="AIzaasdf")
+        client.geocode("Sesame St.")
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
@@ -64,7 +64,7 @@ class ClientTest(_test.TestCase):
         key = "a2V5" # "key" -> base64
         signature = "3nybhbi3iqa8ino29wqQcBydtNk="
 
-        self.assertEqual(signature, client._hmac_sign(key, message))
+        self.assertEqual(signature, client.sign_hmac(key, message))
 
     @responses.activate
     def test_url_signed(self):
@@ -74,8 +74,8 @@ class ClientTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        ctx = googlemaps.Context(client_id="foo", client_secret="a2V5")
-        googlemaps.geocode(ctx, "Sesame St.")
+        client = googlemaps.Client(client_id="foo", client_secret="a2V5")
+        client.geocode("Sesame St.")
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
@@ -91,8 +91,8 @@ class ClientTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        ctx = googlemaps.Context(key="AIzaasdf")
-        googlemaps.geocode(ctx, "Sesame St.")
+        client = googlemaps.Client(key="AIzaasdf")
+        client.geocode("Sesame St.")
 
         self.assertEqual(1, len(responses.calls))
         user_agent = responses.calls[0].request.headers["User-Agent"]
@@ -115,8 +115,8 @@ class ClientTest(_test.TestCase):
                 content_type='application/json',
                 callback=request_callback())
 
-        ctx = googlemaps.Context(key="AIzaasdf")
-        googlemaps.geocode(ctx, "Sesame St.")
+        client = googlemaps.Client(key="AIzaasdf")
+        client.geocode("Sesame St.")
 
         self.assertEqual(2, len(responses.calls))
 
@@ -137,7 +137,7 @@ class ClientTest(_test.TestCase):
                 content_type='application/json',
                 callback=request_callback())
 
-        ctx = googlemaps.Context(key="AIzaasdf")
-        googlemaps.geocode(ctx, "Sesame St.")
+        client = googlemaps.Client(key="AIzaasdf")
+        client.geocode("Sesame St.")
 
         self.assertEqual(2, len(responses.calls))

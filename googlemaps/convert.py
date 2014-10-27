@@ -103,6 +103,14 @@ def _is_list(arg):
             and _has_method(arg, "__getitem__")
             or _has_method(arg, "__iter__"))
 
+def is_string(val):
+    """Determines whether the passed value is a string, safe for 2/3.
+    """
+    try:
+        basestring
+    except NameError:
+        return isinstance(val, str)
+    return isinstance(val, basestring)
 
 def time(arg):
     """Converts the value into a unix time (seconds since unix epoch).

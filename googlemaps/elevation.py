@@ -16,17 +16,13 @@
 #
 
 """Performs requests to the Google Maps Elevation API."""
-from googlemaps import client
 from googlemaps import convert
 
-def elevation(ctx, locations):
+def elevation(client, locations):
     """
     Provides elevation data for locations provided on the surface of the
     earth, including depth locations on the ocean floor (which return negative
     values)
-
-    :param ctx: Shared googlemaps.Context
-    :type ctx: googlemaps.Context
 
     :param locations: A single latitude/longitude tuple or dict, or a list of
             latitude/longitude tuples or dicts from which you wish to calculate
@@ -42,14 +38,11 @@ def elevation(ctx, locations):
     params["locations"] = convert.join_list("|",
             [convert.latlng(k) for k in convert.as_list(locations)])
 
-    return client._get(ctx, "/maps/api/elevation/json", params)["results"]
+    return client.get("/maps/api/elevation/json", params)["results"]
 
-def elevation_along_path(ctx, path, samples):
+def elevation_along_path(client, path, samples):
     """
     Provides elevation data sampled along a path on the surface of the earth.
-
-    :param ctx: Shared googlemaps.Context
-    :type ctx: googlemaps.Context
 
     :param path: A encoded polyline string, or a list of
             latitude/longitude tuples from which you wish to calculate
@@ -74,4 +67,4 @@ def elevation_along_path(ctx, path, samples):
         "samples": samples
     }
 
-    return client._get(ctx, "/maps/api/elevation/json", params)["results"]
+    return client.get("/maps/api/elevation/json", params)["results"]

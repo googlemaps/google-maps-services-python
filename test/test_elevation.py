@@ -27,7 +27,7 @@ class ElevationTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'AIzaasdf'
-        self.ctx = googlemaps.Context(self.key)
+        self.client = googlemaps.Client(self.key)
 
     @responses.activate
     def test_elevation_single(self):
@@ -37,7 +37,7 @@ class ElevationTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.elevation(self.ctx, (40.714728, -73.998672))
+        results = self.client.elevation((40.714728, -73.998672))
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
@@ -52,7 +52,7 @@ class ElevationTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.elevation(self.ctx, [(40.714728, -73.998672)])
+        results = self.client.elevation([(40.714728, -73.998672)])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
@@ -68,7 +68,7 @@ class ElevationTest(_test.TestCase):
                       content_type='application/json')
 
         locations = [(40.714728, -73.998672), (-34.397, 150.644)]
-        results = googlemaps.elevation(self.ctx, locations)
+        results = self.client.elevation(locations)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
@@ -78,7 +78,7 @@ class ElevationTest(_test.TestCase):
 
     def test_elevation_along_path_single(self):
         with self.assertRaises(googlemaps.ApiError):
-          results = googlemaps.elevation_along_path(self.ctx,
+            results = self.client.elevation_along_path(
                     [(40.714728, -73.998672)], 5)
 
     @responses.activate
@@ -91,7 +91,7 @@ class ElevationTest(_test.TestCase):
 
         path = [(40.714728, -73.998672), (-34.397, 150.644)]
 
-        results = googlemaps.elevation_along_path(self.ctx, path, 5)
+        results = self.client.elevation_along_path(path, 5)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'

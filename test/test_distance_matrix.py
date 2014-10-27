@@ -25,7 +25,7 @@ class DistanceMatrixTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'AIzaasdf'
-        self.ctx = googlemaps.Context(self.key)
+        self.client = googlemaps.Client(self.key)
 
     @responses.activate
     def test_basic_params(self):
@@ -45,7 +45,7 @@ class DistanceMatrixTest(_test.TestCase):
                         "Bungle Bungles, Australia",
                         "The Pinnacles, Australia"]
 
-        matrix = googlemaps.distance_matrix(self.ctx, origins, destinations)
+        matrix = self.client.distance_matrix(origins, destinations)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/distancematrix/json?'
@@ -70,7 +70,7 @@ class DistanceMatrixTest(_test.TestCase):
         destinations = [(43.012486, -83.6964149),
                         {"lat": 42.8863855, "lng": -78.8781627}]
 
-        matrix = googlemaps.distance_matrix(self.ctx, origins, destinations)
+        matrix = self.client.distance_matrix(origins, destinations)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/distancematrix/json?'
@@ -97,7 +97,7 @@ class DistanceMatrixTest(_test.TestCase):
                         "Bungle Bungles, Australia",
                         "The Pinnacles, Australia"]
 
-        matrix = googlemaps.distance_matrix(self.ctx, origins, destinations,
+        matrix = self.client.distance_matrix(origins, destinations,
                                             mode="driving",
                                             language="en-AU",
                                             avoid="tolls",
@@ -127,7 +127,7 @@ class DistanceMatrixTest(_test.TestCase):
         origins = ["Vancouver BC", "Seattle"]
         destinations = ["San Francisco", "Victoria BC"]
 
-        matrix = googlemaps.distance_matrix(self.ctx, origins, destinations,
+        matrix = self.client.distance_matrix(origins, destinations,
                                             language="fr-FR",
                                             mode="bicycling")
 

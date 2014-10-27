@@ -17,17 +17,13 @@
 
 """Performs requests to the Google Maps Directions API."""
 
-from googlemaps import client
 from googlemaps import convert
 
 from datetime import datetime
 
 
-def timezone(ctx, location, timestamp=datetime.now(), language=None):
+def timezone(client, location, timestamp=datetime.now(), language=None):
     """Get time zone for a location on the earth, as well as that location's time offset from UTC.
-
-    :param ctx: Shared googlemaps.Context
-    :type ctx: googlemaps.Context
 
     :param location: The latitude/longitude value representing the location to look up.
     :type location: dict or tuple
@@ -55,4 +51,4 @@ def timezone(ctx, location, timestamp=datetime.now(), language=None):
     if language:
         params["language"] = language
 
-    return client._get(ctx, "/maps/api/timezone/json", params)
+    return client.get( "/maps/api/timezone/json", params)

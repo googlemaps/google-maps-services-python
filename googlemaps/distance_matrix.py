@@ -18,17 +18,12 @@
 """Performs requests to the Google Maps Distance Matrix API."""
 
 from googlemaps import convert
-from googlemaps import client
 from googlemaps.convert import as_list
 
-
-def distance_matrix(ctx, origins, destinations,
+def distance_matrix(client, origins, destinations,
                     mode=None, language=None, avoid=None, units=None,
                     departure_time=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
-
-    :param ctx: Shared googlemaps.Context
-    :type ctx: googlemaps.Context
 
     :param origins: One or more addresses and/or latitude/longitude values,
             from which to calculate distance and time. If you pass an address
@@ -92,7 +87,7 @@ def distance_matrix(ctx, origins, destinations,
     if departure_time:
         params["departure_time"] = convert.time(departure_time)
 
-    return client._get(ctx, "/maps/api/distancematrix/json", params)
+    return client.get("/maps/api/distancematrix/json", params)
 
 
 def _convert_path(waypoints):
@@ -103,5 +98,5 @@ def _convert_path(waypoints):
         waypoints = as_list(waypoints)
 
     return convert.join_list("|",
-            [(k if client._isstr(k) else convert.latlng(k))
+            [(k if convert.is_string(k) else convert.latlng(k))
                 for k in waypoints])
