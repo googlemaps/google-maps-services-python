@@ -16,7 +16,7 @@
 #
 
 """Performs requests to the Google Maps Geocoding API."""
-from googlemaps import common
+from googlemaps import client
 from googlemaps import convert
 
 
@@ -70,7 +70,7 @@ def geocode(ctx, address=None, components=None, bounds=None, region=None,
     if language:
         params["language"] = language
 
-    return common._get(ctx, "/maps/api/geocode/json", params)["results"]
+    return client._get(ctx, "/maps/api/geocode/json", params)["results"]
 
 
 def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
@@ -112,4 +112,4 @@ def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
     if language:
         params["language"] = language
 
-    return common._get(ctx, "/maps/api/geocode/json", params)["results"]
+    return client._get(ctx, "/maps/api/geocode/json", params)["results"]

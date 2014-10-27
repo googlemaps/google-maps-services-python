@@ -17,7 +17,7 @@
 
 """Performs requests to the Google Maps Directions API."""
 
-from googlemaps import common
+from googlemaps import client
 from googlemaps import convert
 
 
@@ -118,10 +118,10 @@ def directions(ctx, origin, destination,
     if arrival_time:
         params["arrival_time"] = convert.time(arrival_time)
 
-    return common._get(ctx, "/maps/api/directions/json", params)["routes"]
+    return client._get(ctx, "/maps/api/directions/json", params)["routes"]
 
 def _convert_waypoint(waypoint):
-    if not common._isstr(waypoint):
+    if not client._isstr(waypoint):
         return convert.latlng(waypoint)
 
     return waypoint

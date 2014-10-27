@@ -16,7 +16,7 @@
 #
 
 """Performs requests to the Google Maps Elevation API."""
-from googlemaps import common
+from googlemaps import client
 from googlemaps import convert
 
 def elevation(ctx, locations):
@@ -42,7 +42,7 @@ def elevation(ctx, locations):
     params["locations"] = convert.join_list("|",
             [convert.latlng(k) for k in convert.as_list(locations)])
 
-    return common._get(ctx, "/maps/api/elevation/json", params)["results"]
+    return client._get(ctx, "/maps/api/elevation/json", params)["results"]
 
 def elevation_along_path(ctx, path, samples):
     """
@@ -74,4 +74,4 @@ def elevation_along_path(ctx, path, samples):
         "samples": samples
     }
 
-    return common._get(ctx, "/maps/api/elevation/json", params)["results"]
+    return client._get(ctx, "/maps/api/elevation/json", params)["results"]

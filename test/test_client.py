@@ -16,10 +16,10 @@
 #
 
 
-"""Tests across modules (or common module)."""
+"""Tests for client module."""
 
 import googlemaps
-from googlemaps import common
+from googlemaps import client
 import test as _test
 
 # NOTE: the current version of "responses" doesn't have request_callback.
@@ -29,7 +29,7 @@ if not hasattr(responses, 'activate'): # Python 3.1+
     from responses_master import responses
 
 
-class CommonTest(_test.TestCase):
+class ClientTest(_test.TestCase):
 
     def test_no_api_key(self):
         with self.assertRaises(Exception):
@@ -69,7 +69,7 @@ class CommonTest(_test.TestCase):
         key = "a2V5" # "key" -> base64
         signature = "3nybhbi3iqa8ino29wqQcBydtNk="
 
-        self.assertEqual(signature, common._hmac_sign(key, message))
+        self.assertEqual(signature, client._hmac_sign(key, message))
 
     @responses.activate
     def test_url_signed(self):

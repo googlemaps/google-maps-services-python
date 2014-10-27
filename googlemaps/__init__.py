@@ -15,8 +15,8 @@
 # the License.
 #
 
-from googlemaps.common import ApiError
-from googlemaps.common import Context
+from googlemaps.client import ApiError
+from googlemaps.client import Context
 from googlemaps.directions import directions
 from googlemaps.distance_matrix import distance_matrix
 from googlemaps.elevation import elevation

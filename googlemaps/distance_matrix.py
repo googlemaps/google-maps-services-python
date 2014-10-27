@@ -18,7 +18,7 @@
 """Performs requests to the Google Maps Distance Matrix API."""
 
 from googlemaps import convert
-from googlemaps import common
+from googlemaps import client
 from googlemaps.convert import as_list
 
 
@@ -92,7 +92,7 @@ def distance_matrix(ctx, origins, destinations,
     if departure_time:
         params["departure_time"] = convert.time(departure_time)
 
-    return common._get(ctx, "/maps/api/distancematrix/json", params)
+    return client._get(ctx, "/maps/api/distancematrix/json", params)
 
 
 def _convert_path(waypoints):
@@ -103,5 +103,5 @@ def _convert_path(waypoints):
         waypoints = as_list(waypoints)
 
     return convert.join_list("|",
-            [(k if common._isstr(k) else convert.latlng(k))
+            [(k if client._isstr(k) else convert.latlng(k))
                 for k in waypoints])
