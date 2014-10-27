@@ -8,7 +8,7 @@ Maybe [matrices of directions][Distance Matrix API]? This library brings the [Go
 Services] to your Python application.
 ![Analytics](https://ga-beacon.appspot.com/UA-12846745-20/google-maps-services-python/readme?pixel)
 
-The Python Client for Google Maps Services is a Python Client library for the following Google Maps 
+The Python Client for Google Maps Services is a Python Client library for the following Google Maps
 APIs:
 
  - [Directions API]
@@ -44,11 +44,11 @@ Each Google Maps Web Service requires an API key or Client ID. API keys are
 freely available with a Google Account at https://developers.google.com/console.
 To generate a server key for your project:
 
- 1. Visit https://developers.google.com/console and log in with 
+ 1. Visit https://developers.google.com/console and log in with
     a Google Account.
  1. Select an existing project, or create a new project.
  1. Click **Enable an API**.
- 1. Browse for the API, and set its status to "On". The Python Client for Google Maps Services 
+ 1. Browse for the API, and set its status to "On". The Python Client for Google Maps Services
     accesses the following APIs:
     * Directions API
     * Distance Matrix API
@@ -75,7 +75,7 @@ Note that you will need requests 2.4.0 or higher if you want to specify connect/
 
 ## Developer Documentation
 
-Additional documentation for the included web services is available at 
+Additional documentation for the included web services is available at
 https://developers.google.com/maps/.
 
  - [Directions API]
