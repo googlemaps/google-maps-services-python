@@ -62,7 +62,8 @@ class Context(object):
             option. Note that this requires requests >= 2.4.0.
         :type read_timeout: int
 
-        :param retry_timeout: Timeout across multiple retriable requests, in seconds.
+        :param retry_timeout: Timeout across multiple retriable requests, in
+            seconds.
         :type retry_timeout: int
 
         :param client_id: (for Maps API for Work customers) Your client ID.
@@ -74,8 +75,8 @@ class Context(object):
 
         :raises ValueError: when either credentials are missing, incomplete
             or invalid.
-        :raises NotImplementedError: if connect_timeout and read_timeout are used
-            with a version of requests prior to 2.4.0.
+        :raises NotImplementedError: if connect_timeout and read_timeout are
+            used with a version of requests prior to 2.4.0.
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
@@ -87,7 +88,8 @@ class Context(object):
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
-            raise ValueError("Specify either timeout, or connect_timeout and read_timeout")
+            raise ValueError("Specify either timeout, or connect_timeout " +
+                             "and read_timeout")
 
         if connect_timeout and read_timeout:
             # Check that the version of requests is >= 2.4.0
