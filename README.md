@@ -133,12 +133,11 @@ customers can use their [API key][apikey], too.
     # Generating documentation:
     $ sphinx-build -b html docs docs/html
 
-    # Installing dependencies:
-    $ pip install requests responses
+    # Installing tox:
+    $ pip install tox
 
     # Running tests:
-    $ git submodule update --init
-    $ python -m unittest discover
+    $ tox
 
 
 [apikey]: https://developers.google.com/maps/faq#keysystem
