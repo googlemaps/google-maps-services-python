@@ -41,6 +41,8 @@ _VERSION = "0.1"
 _USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
 _BASE_URL = "https://maps.googleapis.com"
 
+_RETRIABLE_STATUSES = set([500, 503, 504])
+
 class Client(object):
     """Performs requests to the Google Maps API web services."""
 
@@ -123,7 +125,10 @@ class Client(object):
         :param retry_counter: The number of this retry, or zero for first attempt.
         :type retry_counter: int
 
-        :raises ApiException: when the API returns an error.
+        :raises ApiError: when the API returns an error.
+        :raises Timeout: if the request timed out.
+        :raises TransportError: when something went wrong while trying to
+                exceute a request.
         """
 
         if not first_request_time:
@@ -138,21 +143,27 @@ class Client(object):
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
-        resp = requests.get(
-            _BASE_URL + self._generate_auth_url(url, params),
-            headers={"User-Agent": _USER_AGENT},
-            timeout=self.timeout,
-            verify=True) # NOTE(cbro): verify SSL certs.
+        try:
+            resp = requests.get(
+                _BASE_URL + self._generate_auth_url(url, params),
+                headers={"User-Agent": _USER_AGENT},
+                timeout=self.timeout,
+                verify=True) # NOTE(cbro): verify SSL certs.
+        except requests.exceptions.Timeout:
+            raise googlemaps.Timeout()
+        except:
+            raise googlemaps.exceptions.TransportError()
 
         elapsed = datetime.now() - first_request_time
-        exceeded_timeout = elapsed > self.retry_timeout
+        if elapsed > self.retry_timeout:
+            raise googlemaps.exceptions.Timeout()
 
-        if resp.status_code in [500, 503, 504] and not exceeded_timeout:
+        if resp.status_code in _RETRIABLE_STATUSES:
             # Retry request.
             return self.get(url, params, first_request_time, retry_counter + 1)
 
         if resp.status_code != 200:
-            resp.raise_for_status() # raises a requests.exceptions.HTTPError
+            raise googlemaps.exceptions.TransportError()
 
         body = resp.json()
 
@@ -160,14 +171,15 @@ class Client(object):
         if api_status == "OK" or api_status == "ZERO_RESULTS":
             return body
 
-        if api_status == "OVER_QUERY_LIMIT" and not exceeded_timeout:
+        if api_status == "OVER_QUERY_LIMIT":
             # Retry request.
             return self.get(url, params, first_request_time, retry_counter + 1)
 
         if "error_message" in body:
-            raise googlemaps.ApiError(api_status, body["error_message"])
+            raise googlemaps.exceptions.ApiError(api_status,
+                    body["error_message"])
         else:
-            raise googlemaps.ApiError(api_status)
+            raise googlemaps.exceptions.ApiError(api_status)
 
     def _generate_auth_url(self, path, params):
         """Returns the path and query string portion of the request URL, first

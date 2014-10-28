@@ -31,3 +31,10 @@ class ApiError(Exception):
         else:
             return "%s (%s)" % (self.status, self.message)
 
+class TransportError(Exception):
+    """Something went wrong while trying to execute the request."""
+    pass
+
+class Timeout(Exception):
+    """The request timed out."""
+    pass

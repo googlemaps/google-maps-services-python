@@ -8,3 +8,12 @@ Python Client for Google Maps Services
     :members:
     :undoc-members:
     :show-inheritance:
+    :exclude-members: get
+
+:mod:`googlemaps.exceptions` Module
+-------------------------
+
+.. automodule:: googlemaps.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
