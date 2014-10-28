@@ -16,8 +16,8 @@
 #
 
 """
-Common functionality for modules in the googlemaps package, such as performing
-HTTP requests.
+Core client functionality, common across all API requests (including performing
+HTTP requests).
 """
 
 import base64
@@ -29,6 +29,8 @@ import requests
 import random
 import time
 
+import googlemaps
+
 try: # Python 3
     from urllib.parse import urlencode
 except ImportError: # Python 2
@@ -37,10 +39,10 @@ except ImportError: # Python 2
 
 _VERSION = "0.1"
 _USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
+_BASE_URL = "https://maps.googleapis.com"
 
-class Context(object):
-    """Holds state between requests, such as credentials (API key), timeout
-    settings."""
+class Client(object):
+    """Performs requests to the Google Maps API web services."""
 
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
@@ -82,7 +84,7 @@ class Context(object):
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
-                             "with context object.")
+                             "when creating client.")
 
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
@@ -107,7 +109,67 @@ class Context(object):
         self.client_secret = client_secret
         self.retry_timeout = timedelta(seconds=retry_timeout)
 
-    def _auth_url(self, path, params):
+    def get(self, url, params, first_request_time=None, retry_counter=0):
+        """Performs HTTP GET request with credentials, returning the body as
+        JSON.
+
+        :param url: URL path for the request
+        :type url: string
+        :param params: HTTP GET parameters
+        :type params: dict
+        :param first_request_time: The time of the first request (None if no retries
+                have occurred).
+        :type first_request_time: datetime.datetime
+        :param retry_counter: The number of this retry, or zero for first attempt.
+        :type retry_counter: int
+
+        :raises ApiException: when the API returns an error.
+        """
+
+        if not first_request_time:
+            first_request_time = datetime.now()
+
+        if retry_counter > 0:
+            # 0.5 * (1.5 ^ i) is an increased sleep time of 1.5x per iteration,
+            # starting at 0.5s when retry_counter=0. The first retry will occur
+            # at 1, so subtract that first.
+            delay_seconds = 0.5 * 1.5 ** (retry_counter - 1)
+
+            # Jitter this value by 50% and pause.
+            time.sleep(delay_seconds * (random.random() + 0.5))
+
+        resp = requests.get(
+            _BASE_URL + self._generate_auth_url(url, params),
+            headers={"User-Agent": _USER_AGENT},
+            timeout=self.timeout,
+            verify=True) # NOTE(cbro): verify SSL certs.
+
+        elapsed = datetime.now() - first_request_time
+        exceeded_timeout = elapsed > self.retry_timeout
+
+        if resp.status_code in [500, 503, 504] and not exceeded_timeout:
+            # Retry request.
+            return self.get(url, params, first_request_time, retry_counter + 1)
+
+        if resp.status_code != 200:
+            resp.raise_for_status() # raises a requests.exceptions.HTTPError
+
+        body = resp.json()
+
+        api_status = body["status"]
+        if api_status == "OK" or api_status == "ZERO_RESULTS":
+            return body
+
+        if api_status == "OVER_QUERY_LIMIT" and not exceeded_timeout:
+            # Retry request.
+            return self.get(url, params, first_request_time, retry_counter + 1)
+
+        if "error_message" in body:
+            raise googlemaps.ApiError(api_status, body["error_message"])
+        else:
+            raise googlemaps.ApiError(api_status)
+
+    def _generate_auth_url(self, path, params):
         """Returns the path and query string portion of the request URL, first
         adding any necessary parameters.
         :param path: The path portion of the URL.
@@ -123,11 +185,27 @@ class Context(object):
         if self.client_id and self.client_secret:
             params["client"] = self.client_id
 
-            path = path + "?" + urlencode(params)
-            sig = _hmac_sign(self.client_secret, path)
+            path = "?".join([path, urlencode(params)])
+            sig = sign_hmac(self.client_secret, path)
             return path + "&signature=" + sig
 
-def _hmac_sign(secret, s):
+from googlemaps.directions import directions
+from googlemaps.distance_matrix import distance_matrix
+from googlemaps.elevation import elevation
+from googlemaps.elevation import elevation_along_path
+from googlemaps.geocoding import geocode
+from googlemaps.geocoding import reverse_geocode
+from googlemaps.timezone import timezone
+
+Client.directions = directions
+Client.distance_matrix = distance_matrix
+Client.elevation = elevation
+Client.elevation_along_path = elevation_along_path
+Client.geocode = geocode
+Client.reverse_geocode = reverse_geocode
+Client.timezone = timezone
+
+def sign_hmac(secret, payload):
     """Returns a basee64-encoded HMAC-SHA1 signature of a given string.
     :param secret: The key used for the signature, base64 encoded.
     :type secret: string
@@ -137,91 +215,7 @@ def _hmac_sign(secret, s):
     """
     # Encode/decode from UTF-8. In Python 3, this converts to bytes and back;
     # in Python 2, it is a no-op.
-    s = s.encode('utf-8')
-    sig = hmac.new(base64.urlsafe_b64decode(secret), s, hashlib.sha1)
+    payload = payload.encode('utf-8')
+    sig = hmac.new(base64.urlsafe_b64decode(secret), payload, hashlib.sha1)
     out = base64.urlsafe_b64encode(sig.digest())
     return out.decode('utf-8')
-
-def _get(ctx, url, params, first_request_time=None, retry_counter=0):
-    """Performs HTTP GET request with credentials, returning the body as JSON.
-
-    :param ctx: Shared context parameters.
-    :type ctx: googlemaps.Context
-    :param url: URL path for the request
-    :type url: string
-    :param params: HTTP GET parameters
-    :type params: dict
-    :param first_request_time: The time of the first request (None if no retries
-            have occurred).
-    :type first_request_time: datetime.datetime
-    :param retry_counter: The number of this retry, or zero for first attempt.
-    :type retry_counter: int
-
-    :raises ApiException: when the API returns an error.
-    """
-
-    if not first_request_time:
-        first_request_time = datetime.now()
-
-    if retry_counter > 0:
-        # 0.5 * (1.5 ^ i) is an increased sleep time of 1.5x per iteration,
-        # starting at 0.5s when retry_counter=0. The first retry will occur at
-        # 1, so subtract that first.
-        delay_seconds = 0.5 * 1.5 ** (retry_counter - 1)
-
-        # Jitter this value and sleep for between 50% and 150% of delay_seconds.
-        time.sleep(delay_seconds * (random.random() + 0.5))
-
-    resp = requests.get(
-        "https://maps.googleapis.com" + ctx._auth_url(url, params),
-        headers={"User-Agent": _USER_AGENT},
-        timeout=ctx.timeout,
-        verify=True) # NOTE(cbro): verify SSL certs.
-
-    exceeded_timeout = (datetime.now() - first_request_time > ctx.retry_timeout)
-
-    if resp.status_code in [500, 503, 504] and not exceeded_timeout:
-        # Retry request.
-        return _get(ctx, url, params, first_request_time, retry_counter + 1)
-
-    if resp.status_code != 200:
-        resp.raise_for_status() # raises a requests.exceptions.HTTPError
-
-    body = resp.json()
-
-    if body["status"] == "OK" or body["status"] == "ZERO_RESULTS":
-        return body
-
-    if body["status"] == "OVER_QUERY_LIMIT" and not exceeded_timeout:
-        # Retry request.
-        return _get(ctx, url, params, first_request_time, retry_counter + 1)
-
-    if "error_message" in body:
-        raise ApiError(body["status"], body["error_message"])
-    else:
-        raise ApiError(body["status"])
-
-
-class ApiError(Exception):
-    """Represents an exception returned by the remote API."""
-    def __init__(self, status, message=None):
-        self.status = status
-        self.message = message
-
-    def __str__(self):
-        if self.message is None:
-            return self.status
-        else:
-            return "%s (%s)" % (self.status, self.message)
-
-def _isstr(v):
-    """Determines whether the passed value is a string, safe for 2/3.
-
-    :param v: Object to check
-    :type ctx: string or object
-    """
-    try:
-        basestring
-    except NameError:
-        return isinstance(v, str)
-    return isinstance(v, basestring)

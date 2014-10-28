@@ -29,7 +29,7 @@ class DirectionsTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'AIzaasdf'
-        self.ctx = googlemaps.Context(self.key)
+        self.client = googlemaps.Client(self.key)
 
     @responses.activate
     def test_simple_directions(self):
@@ -40,8 +40,7 @@ class DirectionsTest(_test.TestCase):
                       content_type='application/json')
 
         # Simplest directions request. Driving directions by default.
-        routes = googlemaps.directions(self.ctx,
-                                       "Sydney", "Melbourne")
+        routes = self.client.directions("Sydney", "Melbourne")
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json'
@@ -57,9 +56,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx,
-                                       "Sydney",
-                                       "Melbourne",
+        routes = self.client.directions("Sydney", "Melbourne",
                                        mode="bicycling",
                                        avoid=["highways", "tolls", "ferries"],
                                        units="metric",
@@ -78,9 +75,7 @@ class DirectionsTest(_test.TestCase):
         # With mode of transit, we need a departure_time or an
         # arrival_time specified
         with self.assertRaises(googlemaps.ApiError):
-            googlemaps.directions(self.ctx,
-                                  "Sydney Town Hall",
-                                  "Parramatta, NSW",
+            self.client.directions("Sydney Town Hall", "Parramatta, NSW",
                                   mode="transit")
 
     @responses.activate
@@ -92,9 +87,7 @@ class DirectionsTest(_test.TestCase):
                       content_type='application/json')
 
         now = datetime.now()
-        routes = googlemaps.directions(self.ctx,
-                                       "Sydney Town Hall",
-                                       "Parramatta, NSW",
+        routes = self.client.directions("Sydney Town Hall", "Parramatta, NSW",
                                        mode="transit",
                                        departure_time=now)
 
@@ -114,7 +107,7 @@ class DirectionsTest(_test.TestCase):
                       content_type='application/json')
 
         an_hour_from_now = datetime.now() + timedelta(hours=1)
-        routes = googlemaps.directions(self.ctx, "Sydney Town Hall",
+        routes = self.client.directions("Sydney Town Hall",
                                        "Parramatta, NSW",
                                        mode="transit",
                                        arrival_time=an_hour_from_now)
@@ -129,7 +122,7 @@ class DirectionsTest(_test.TestCase):
 
     def test_crazy_travel_mode(self):
         with self.assertRaises(ValueError):
-            googlemaps.directions(self.ctx, "48 Pirrama Road, Pyrmont, NSW",
+            self.client.directions("48 Pirrama Road, Pyrmont, NSW",
                                   "Sydney Town Hall",
                                   mode="crawling")
 
@@ -141,7 +134,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx, "Town Hall, Sydney",
+        routes = self.client.directions("Town Hall, Sydney",
                                        "Parramatta, NSW",
                                        mode="bicycling")
 
@@ -160,7 +153,7 @@ class DirectionsTest(_test.TestCase):
                       content_type='application/json')
 
         now = datetime.now()
-        routes = googlemaps.directions(self.ctx, "Brooklyn",
+        routes = self.client.directions("Brooklyn",
                                        "Queens",
                                        mode="transit",
                                        departure_time=now)
@@ -179,7 +172,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx, "Boston, MA",
+        routes = self.client.directions("Boston, MA",
                                        "Concord, MA",
                                        waypoints=["Charlestown, MA",
                                                   "Lexington, MA"])
@@ -199,7 +192,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx, "Adelaide, SA",
+        routes = self.client.directions("Adelaide, SA",
                                        "Adelaide, SA",
                                        waypoints=["Barossa Valley, SA",
                                                   "Clare, SA",
@@ -223,7 +216,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx, "Toledo", "Madrid",
+        routes = self.client.directions("Toledo", "Madrid",
                                        region="es")
 
         self.assertEqual(1, len(responses.calls))
@@ -240,7 +233,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx, "Toledo", "Madrid")
+        routes = self.client.directions("Toledo", "Madrid")
         self.assertIsNotNone(routes)
         self.assertEqual(0, len(routes))
 
@@ -252,7 +245,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx, "Toledo", "Madrid",
+        routes = self.client.directions("Toledo", "Madrid",
                                        region="es",
                                        language="es")
 
@@ -270,7 +263,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        routes = googlemaps.directions(self.ctx, "Sydney Town Hall",
+        routes = self.client.directions("Sydney Town Hall",
                                        "Parramatta Town Hall",
                                        alternatives=True)
 

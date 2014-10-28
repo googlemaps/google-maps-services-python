@@ -16,20 +16,16 @@
 #
 
 """Performs requests to the Google Maps Geocoding API."""
-from googlemaps import common
 from googlemaps import convert
 
 
-def geocode(ctx, address=None, components=None, bounds=None, region=None,
+def geocode(client, address=None, components=None, bounds=None, region=None,
             language=None):
     """
     Geocoding is the process of converting addresses
     (like "1600 Amphitheatre Parkway, Mountain View, CA") into geographic
     coordinates (like latitude 37.423021 and longitude -122.083739), which you
     can use to place markers or position the map.
-
-    :param ctx: Shared googlemaps.Context
-    :type ctx: googlemaps.Context
 
     :param address: The address to geocode.
     :type address: string
@@ -70,17 +66,14 @@ def geocode(ctx, address=None, components=None, bounds=None, region=None,
     if language:
         params["language"] = language
 
-    return common._get(ctx, "/maps/api/geocode/json", params)["results"]
+    return client.get("/maps/api/geocode/json", params)["results"]
 
 
-def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
+def reverse_geocode(client, latlng, result_type=None, location_type=None,
                     language=None):
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
-
-    :param ctx: Shared googlemaps.Context
-    :type ctx: googlemaps.Context
 
     :param latlng: The latitude/longitude value for which you wish to obtain the
                    closest, human-readable address
@@ -112,4 +105,4 @@ def reverse_geocode(ctx, latlng, result_type=None, location_type=None,
     if language:
         params["language"] = language
 
-    return common._get(ctx, "/maps/api/geocode/json", params)["results"]
+    return client.get("/maps/api/geocode/json", params)["results"]

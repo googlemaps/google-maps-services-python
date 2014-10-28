@@ -17,18 +17,14 @@
 
 """Performs requests to the Google Maps Directions API."""
 
-from googlemaps import common
 from googlemaps import convert
 
 
-def directions(ctx, origin, destination,
+def directions(client, origin, destination,
                mode=None, waypoints=None, alternatives=False, avoid=None,
                language=None, units=None, region=None, departure_time=None,
                arrival_time=None, optimize_waypoints=False):
     """Get directions between an origin point and a destination point.
-
-    :param ctx: Shared googlemaps.Context
-    :type ctx: googlemaps.Context
 
     :param origin: The address or latitude/longitude value from which you wish
             to calculate directions.
@@ -118,10 +114,10 @@ def directions(ctx, origin, destination,
     if arrival_time:
         params["arrival_time"] = convert.time(arrival_time)
 
-    return common._get(ctx, "/maps/api/directions/json", params)["routes"]
+    return client.get("/maps/api/directions/json", params)["routes"]
 
 def _convert_waypoint(waypoint):
-    if not common._isstr(waypoint):
+    if not convert.is_string(waypoint):
         return convert.latlng(waypoint)
 
     return waypoint

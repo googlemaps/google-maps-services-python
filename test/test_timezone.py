@@ -26,25 +26,25 @@ import googlemaps
 class TimezoneTest(unittest.TestCase):
 
     def setUp(self):
-        self.c = googlemaps.Context(
+        self.c = googlemaps.Client(
             key="AIzaSyDyZdCabN8GKh786tdj16gq80xalbbfqDM",
             timeout=5)
 
     def test_los_angeles(self):
-        timezone = googlemaps.timezone(self.c, (39.6034810,-119.6822510), 1331766000)
+        timezone = self.c.timezone((39.6034810,-119.6822510), 1331766000)
         self.assertIsNotNone(timezone)
         self.assertEqual(3600.0, timezone['dstOffset'])
         self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])
         self.assertEqual('Pacific Daylight Time', timezone['timeZoneName'])
 
     def test_los_angeles_es(self):
-        timezone = googlemaps.timezone(self.c, (39.6034810,-119.6822510), 1331766000, language='es')
+        timezone = self.c.timezone((39.6034810,-119.6822510), 1331766000, language='es')
         self.assertIsNotNone(timezone)
         self.assertEqual(3600.0, timezone['dstOffset'])
         self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])
         self.assertEqual(u'Hora de verano del Pacífico', timezone['timeZoneName'])
 
     def test_los_angeles_with_no_timestamp(self):
-        timezone = googlemaps.timezone(self.c, (39.6034810,-119.6822510))
+        timezone = self.c.timezone((39.6034810,-119.6822510))
         self.assertIsNotNone(timezone)
         self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])

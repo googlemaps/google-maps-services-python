@@ -27,7 +27,7 @@ class GeocodingTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'AIzaasdf'
-        self.ctx = googlemaps.Context(self.key)
+        self.client = googlemaps.Client(self.key)
 
     @responses.activate
     def test_simple_geocode(self):
@@ -37,7 +37,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, 'Sydney')
+        results = self.client.geocode('Sydney')
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
@@ -52,7 +52,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.reverse_geocode(self.ctx, (-33.8674869, 151.2069902))
+        results = self.client.reverse_geocode((-33.8674869, 151.2069902))
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
@@ -67,7 +67,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, '1600 Amphitheatre Parkway, '
+        results = self.client.geocode('1600 Amphitheatre Parkway, '
                                   'Mountain View, CA')
 
         self.assertEqual(1, len(responses.calls))
@@ -84,7 +84,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, 'Winnetka',
+        results = self.client.geocode('Winnetka',
                                   bounds={'southwest': (34.172684, -118.604794),
                                           'northeast':(34.236144, -118.500938)})
 
@@ -102,7 +102,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, 'Toledo', region='es')
+        results = self.client.geocode('Toledo', region='es')
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
@@ -117,7 +117,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, 'santa cruz',
+        results = self.client.geocode('santa cruz',
             components={'country': 'ES'})
 
         self.assertEqual(1, len(responses.calls))
@@ -134,7 +134,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, 'Torun',
+        results = self.client.geocode('Torun',
             components={'administrative_area': 'TX','country': 'US'})
 
         self.assertEqual(1, len(responses.calls))
@@ -152,7 +152,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx,
+        results = self.client.geocode(
             components={'route': 'Annegatan',
                         'administrative_area': 'Helsinki',
                         'country': 'Findland'})
@@ -171,7 +171,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452))
+        results = self.client.reverse_geocode((40.714224, -73.961452))
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
@@ -186,7 +186,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452),
+        results = self.client.reverse_geocode((40.714224, -73.961452),
                                           location_type='ROOFTOP',
                                           result_type='street_address')
 
@@ -204,7 +204,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452),
+        results = self.client.reverse_geocode((40.714224, -73.961452),
                                           location_type=['ROOFTOP',
                                                          'RANGE_INTERPOLATED'],
                                           result_type='street_address')
@@ -224,7 +224,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.reverse_geocode(self.ctx, (40.714224, -73.961452),
+        results = self.client.reverse_geocode((40.714224, -73.961452),
                                           location_type='ROOFTOP',
                                           result_type=['street_address',
                                                        'route'])
@@ -243,7 +243,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, 'Pirrama Pyrmont')
+        results = self.client.geocode('Pirrama Pyrmont')
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
@@ -258,7 +258,7 @@ class GeocodingTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        results = googlemaps.geocode(self.ctx, components={'postal_code': '96766'})
+        results = self.client.geocode(components={'postal_code': '96766'})
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
