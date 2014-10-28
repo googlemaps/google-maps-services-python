@@ -16,6 +16,7 @@
 #
 
 import unittest
+import codecs
 
 try: # Python 3
     from urllib.parse import urlparse, parse_qsl
@@ -36,3 +37,8 @@ class TestCase(unittest.TestCase):
         first_qsl = sorted(parse_qsl(first_parsed.query))
         second_qsl = sorted(parse_qsl(second_parsed.query))
         self.assertEqual(first_qsl, second_qsl, msg)
+
+    def u(self, string):
+        """Create a unicode string, compatible across all versions of Python."""
+        # NOTE(cbro): Python 3-3.2 does not have the u'' syntax.
+        return codecs.unicode_escape_decode(string)[0]

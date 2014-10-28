@@ -104,8 +104,7 @@ def _is_list(arg):
             or _has_method(arg, "__iter__"))
 
 def is_string(val):
-    """Determines whether the passed value is a string, safe for 2/3.
-    """
+    """Determines whether the passed value is a string, safe for 2/3."""
     try:
         basestring
     except NameError:

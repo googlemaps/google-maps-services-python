@@ -1,3 +1,4 @@
+# This Python file uses the following encoding: utf-8
 #
 # Copyright 2014 Google Inc. All rights reserved.
 #
@@ -155,12 +156,12 @@ class GeocodingTest(_test.TestCase):
         results = self.client.geocode(
             components={'route': 'Annegatan',
                         'administrative_area': 'Helsinki',
-                        'country': 'Findland'})
+                        'country': 'Finland'})
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
                             'key=%s&components=administrative_area%%3AHelsinki'
-                            '%%7Ccountry%%3AFindland%%7Croute%%3AAnnegatan' % self.key,
+                            '%%7Ccountry%%3AFinland%%7Croute%%3AAnnegatan' % self.key,
                             responses.calls[0].request.url)
 
     @responses.activate
@@ -264,3 +265,17 @@ class GeocodingTest(_test.TestCase):
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
                             'key=%s&components=postal_code%%3A96766' % self.key,
                             responses.calls[0].request.url)
+
+    @responses.activate
+    def test_utf8_request(self):
+        responses.add(responses.GET,
+                      'https://maps.googleapis.com/maps/api/geocode/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        self.client.geocode(self.u('\\u4e2d\\u56fd')) # China
+        self.assertURLEqual(
+                      'https://maps.googleapis.com/maps/api/geocode/json?'
+                      'key=%s&address=%s' % (self.key, '%E4%B8%AD%E5%9B%BD'),
+                      responses.calls[0].request.url)
