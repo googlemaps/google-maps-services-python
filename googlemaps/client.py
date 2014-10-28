@@ -134,6 +134,10 @@ class Client(object):
         if not first_request_time:
             first_request_time = datetime.now()
 
+        elapsed = datetime.now() - first_request_time
+        if elapsed > self.retry_timeout:
+            raise googlemaps.exceptions.Timeout()
+
         if retry_counter > 0:
             # 0.5 * (1.5 ^ i) is an increased sleep time of 1.5x per iteration,
             # starting at 0.5s when retry_counter=0. The first retry will occur
@@ -153,10 +157,6 @@ class Client(object):
             raise googlemaps.Timeout()
         except:
             raise googlemaps.exceptions.TransportError()
-
-        elapsed = datetime.now() - first_request_time
-        if elapsed > self.retry_timeout:
-            raise googlemaps.exceptions.Timeout()
 
         if resp.status_code in _RETRIABLE_STATUSES:
             # Retry request.
