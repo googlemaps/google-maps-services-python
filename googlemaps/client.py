@@ -154,16 +154,16 @@ class Client(object):
                 timeout=self.timeout,
                 verify=True) # NOTE(cbro): verify SSL certs.
         except requests.exceptions.Timeout:
-            raise googlemaps.Timeout()
-        except:
-            raise googlemaps.exceptions.TransportError()
+            raise googlemaps.exceptions.Timeout()
+        except Exception as e:
+            raise googlemaps.exceptions.TransportError(e)
 
         if resp.status_code in _RETRIABLE_STATUSES:
             # Retry request.
             return self._get(url, params, first_request_time, retry_counter + 1)
 
         if resp.status_code != 200:
-            raise googlemaps.exceptions.TransportError()
+            raise googlemaps.exceptions.HTTPError(resp.status_code)
 
         body = resp.json()
 

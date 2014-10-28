@@ -132,8 +132,10 @@ class ClientTest(_test.TestCase):
                       content_type='application/json')
 
         client = googlemaps.Client(key="AIzaasdf")
-        with self.assertRaises(googlemaps.exceptions.TransportError):
+        with self.assertRaises(googlemaps.exceptions.HTTPError) as e:
             client.geocode("Foo")
+
+        self.assertEqual(e.exception.status_code, 400)
 
     @responses.activate
     def test_retry_intermittent(self):
