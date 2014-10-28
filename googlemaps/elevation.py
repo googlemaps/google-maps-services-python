@@ -38,7 +38,7 @@ def elevation(client, locations):
     params["locations"] = convert.join_list("|",
             [convert.latlng(k) for k in convert.as_list(locations)])
 
-    return client.get("/maps/api/elevation/json", params)["results"]
+    return client._get("/maps/api/elevation/json", params)["results"]
 
 def elevation_along_path(client, path, samples):
     """
@@ -67,4 +67,4 @@ def elevation_along_path(client, path, samples):
         "samples": samples
     }
 
-    return client.get("/maps/api/elevation/json", params)["results"]
+    return client._get("/maps/api/elevation/json", params)["results"]

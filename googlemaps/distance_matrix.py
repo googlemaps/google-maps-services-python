@@ -87,7 +87,7 @@ def distance_matrix(client, origins, destinations,
     if departure_time:
         params["departure_time"] = convert.time(departure_time)
 
-    return client.get("/maps/api/distancematrix/json", params)
+    return client._get("/maps/api/distancematrix/json", params)
 
 
 def _convert_path(waypoints):

@@ -111,7 +111,7 @@ class Client(object):
         self.client_secret = client_secret
         self.retry_timeout = timedelta(seconds=retry_timeout)
 
-    def get(self, url, params, first_request_time=None, retry_counter=0):
+    def _get(self, url, params, first_request_time=None, retry_counter=0):
         """Performs HTTP GET request with credentials, returning the body as
         JSON.
 
@@ -160,7 +160,7 @@ class Client(object):
 
         if resp.status_code in _RETRIABLE_STATUSES:
             # Retry request.
-            return self.get(url, params, first_request_time, retry_counter + 1)
+            return self._get(url, params, first_request_time, retry_counter + 1)
 
         if resp.status_code != 200:
             raise googlemaps.exceptions.TransportError()
@@ -173,7 +173,7 @@ class Client(object):
 
         if api_status == "OVER_QUERY_LIMIT":
             # Retry request.
-            return self.get(url, params, first_request_time, retry_counter + 1)
+            return self._get(url, params, first_request_time, retry_counter + 1)
 
         if "error_message" in body:
             raise googlemaps.exceptions.ApiError(api_status,
