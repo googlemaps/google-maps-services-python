@@ -78,9 +78,13 @@ class ClientTest(_test.TestCase):
         client.geocode("Sesame St.")
 
         self.assertEqual(1, len(responses.calls))
+
+        # Check ordering of parameters.
+        self.assertIn("address=Sesame+St.&client=foo&signature",
+                responses.calls[0].request.url)
         self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
-                            "client=foo&address=Sesame+St.&"
-                            "signature=Ao1r8ULP1g_vPwnf7Fvf2TSCYBQ=",
+                            "address=Sesame+St.&client=foo&"
+                            "signature=fxbWUIcNPZSekVOhp2ul9LW5TpY=",
                             responses.calls[0].request.url)
 
     @responses.activate
