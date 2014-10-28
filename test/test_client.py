@@ -135,7 +135,7 @@ class ClientTest(_test.TestCase):
         with self.assertRaises(googlemaps.exceptions.HTTPError) as e:
             client.geocode("Foo")
 
-        self.assertEqual(e.exception.status_code, 400)
+        self.assertEqual(e.exception.status_code, 404)
 
     @responses.activate
     def test_retry_intermittent(self):
