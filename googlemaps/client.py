@@ -185,7 +185,8 @@ class Client(object):
         if self.client_id and self.client_secret:
             params["client"] = self.client_id
 
-            path = "?".join([path, urlencode(params)])
+            # Sort params - signature changes depending on the order.
+            path = "?".join([path, urlencode(sort_params(params))])
             sig = sign_hmac(self.client_secret, path)
             return path + "&signature=" + sig
 
@@ -219,3 +220,8 @@ def sign_hmac(secret, payload):
     sig = hmac.new(base64.urlsafe_b64decode(secret), payload, hashlib.sha1)
     out = base64.urlsafe_b64encode(sig.digest())
     return out.decode('utf-8')
+
+def sort_params(params):
+    """Sorts a params dict into a list of tuples, sorted by their keys."""
+
+    return sorted(params.items(), key=lambda t: t[0])
