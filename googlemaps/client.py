@@ -84,7 +84,7 @@ class Client(object):
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
-                             "with context object.")
+                             "when creating client.")
 
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
