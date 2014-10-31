@@ -74,7 +74,7 @@ class DirectionsTest(_test.TestCase):
     def test_transit_without_time(self):
         # With mode of transit, we need a departure_time or an
         # arrival_time specified
-        with self.assertRaises(googlemaps.ApiError):
+        with self.assertRaises(googlemaps.exceptions.ApiError):
             self.client.directions("Sydney Town Hall", "Parramatta, NSW",
                                   mode="transit")
 

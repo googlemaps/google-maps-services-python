@@ -114,7 +114,7 @@ def directions(client, origin, destination,
     if arrival_time:
         params["arrival_time"] = convert.time(arrival_time)
 
-    return client.get("/maps/api/directions/json", params)["routes"]
+    return client._get("/maps/api/directions/json", params)["routes"]
 
 def _convert_waypoint(waypoint):
     if not convert.is_string(waypoint):
