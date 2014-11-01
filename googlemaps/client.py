@@ -111,6 +111,7 @@ class Client(object):
         self.client_secret = client_secret
         self.retry_timeout = timedelta(seconds=retry_timeout)
 
+
     def _get(self, url, params, first_request_time=None, retry_counter=0):
         """Performs HTTP GET request with credentials, returning the body as
         JSON.
@@ -147,9 +148,10 @@ class Client(object):
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
+        url = self._generate_auth_url(url, params)
+
         try:
-            resp = requests.get(
-                _BASE_URL + self._generate_auth_url(url, params),
+            resp = requests.get(_BASE_URL + url,
                 headers={"User-Agent": _USER_AGENT},
                 timeout=self.timeout,
                 verify=True) # NOTE(cbro): verify SSL certs.
@@ -181,6 +183,7 @@ class Client(object):
         else:
             raise googlemaps.exceptions.ApiError(api_status)
 
+
     def _generate_auth_url(self, path, params):
         """Returns the path and query string portion of the request URL, first
         adding any necessary parameters.
@@ -192,15 +195,15 @@ class Client(object):
         """
         if self.key:
             params["key"] = self.key
-            return path + "?" + urlencode(params)
+            return path + "?" + urlencode_params_sorted(params)
 
         if self.client_id and self.client_secret:
             params["client"] = self.client_id
 
-            # Sort params - signature changes depending on the order.
-            path = "?".join([path, urlencode(sort_params(params))])
+            path = "?".join([path, urlencode_params_sorted(params)])
             sig = sign_hmac(self.client_secret, path)
             return path + "&signature=" + sig
+
 
 from googlemaps.directions import directions
 from googlemaps.distance_matrix import distance_matrix
@@ -218,22 +221,48 @@ Client.geocode = geocode
 Client.reverse_geocode = reverse_geocode
 Client.timezone = timezone
 
+
 def sign_hmac(secret, payload):
     """Returns a basee64-encoded HMAC-SHA1 signature of a given string.
     :param secret: The key used for the signature, base64 encoded.
     :type secret: string
-    :param s: The string.
-    :type s: string
+    :param payload: The payload to sign.
+    :type payload: string
     :rtype: string
     """
-    # Encode/decode from UTF-8. In Python 3, this converts to bytes and back;
-    # in Python 2, it is a no-op.
-    payload = payload.encode('utf-8')
+    payload = payload.encode('ascii', 'strict')
+    secret = secret.encode('ascii', 'strict')
     sig = hmac.new(base64.urlsafe_b64decode(secret), payload, hashlib.sha1)
     out = base64.urlsafe_b64encode(sig.digest())
     return out.decode('utf-8')
 
-def sort_params(params):
-    """Sorts a params dict into a list of tuples, sorted by their keys."""
 
-    return sorted(params.items(), key=lambda t: t[0])
+def urlencode_params_sorted(params):
+    """URL encodes the parameters, first sorting them to provide
+    deteriministic ordering. Useful for tests and in the future, any caches."""
+
+    # urlencode does not handle unicode strings in Python 2.
+    # First normalize the values so they get encoded correctly.
+    params = [(key, normalize_for_urlencode(val)) for key, val in params.items()]
+    return urlencode(sorted(params))
+
+try:
+    unicode
+    # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
+    # raised here, and caught below.
+
+    def normalize_for_urlencode(value):
+        """(Python 2) Converts the value to a `str` (raw bytes)."""
+        if isinstance(value, unicode):
+            return value.encode('utf8')
+
+        if isinstance(value, str):
+            return value
+
+        return normalize_for_urlencode(str(value))
+
+except NameError:
+    def normalize_for_urlencode(value):
+        """(Python 3) No-op."""
+        # urlencode in Python 3 handles all the types we are passing it.
+        return value

@@ -18,12 +18,12 @@
 
 """Tests for the timezone module."""
 
-import unittest
+import test as _test
 import datetime
 
 import googlemaps
 
-class TimezoneTest(unittest.TestCase):
+class TimezoneTest(_test.TestCase):
 
     def setUp(self):
         self.c = googlemaps.Client(
@@ -42,7 +42,7 @@ class TimezoneTest(unittest.TestCase):
         self.assertIsNotNone(timezone)
         self.assertEqual(3600.0, timezone['dstOffset'])
         self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])
-        self.assertEqual(u'Hora de verano del Pacífico', timezone['timeZoneName'])
+        self.assertEqual(self.u('Hora de verano del Pac\\xedfico'), timezone['timeZoneName'])
 
     def test_los_angeles_with_no_timestamp(self):
         timezone = self.c.timezone((39.6034810,-119.6822510))
