@@ -37,7 +37,7 @@ except ImportError: # Python 2
     from urllib import urlencode
 
 
-_VERSION = "2.0"
+_VERSION = "2.0-dev"
 _USER_AGENT = "GoogleGeoApiClientPython/%s" % _VERSION
 _BASE_URL = "https://maps.googleapis.com"
 
