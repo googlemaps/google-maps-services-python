@@ -18,7 +18,7 @@ requirements = [
 ]
 
 setup(name='googlemaps',
-      version='0.1',
+      version='2.0',
       description='API Client library for Google Maps',
       scripts=[],
       url='https://github.com/googlemaps/google-maps-services-python',
