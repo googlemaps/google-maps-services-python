@@ -92,7 +92,7 @@ This example uses the [Geocoding API].
 
 ```python
 
-gmaps = googlemaps.Client('Add Your Key here')
+gmaps = googlemaps.Client(key='Add Your Key here')
 
 # Geocoding and address
 geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
