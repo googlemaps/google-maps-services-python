@@ -136,6 +136,9 @@ customers can use their [API key][apikey], too.
 
     # Running tests:
     $ tox
+    
+    # Uploading a new release
+    $ python setup.py register sdist upload
 
 
 [apikey]: https://developers.google.com/maps/faq#keysystem
