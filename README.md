@@ -75,6 +75,8 @@ Note that you will need requests 2.4.0 or higher if you want to specify connect/
 
 ## Developer Documentation
 
+View the [reference documentation](http://googlemaps.github.io/google-maps-services-python/docs/2.0/)
+
 Additional documentation for the included web services is available at
 https://developers.google.com/maps/.
 
@@ -128,17 +130,20 @@ customers can use their [API key][apikey], too.
 
 **Note:** You will need an API key or Client ID to run the tests.
 
-    # Generating documentation:
-    $ sphinx-build -b html docs docs/html
-
-    # Installing tox:
+    # Installing tox
     $ pip install tox
 
-    # Running tests:
+    # Running tests
     $ tox
+
+    # Generating documentation
+    $ tox -e docs
     
     # Uploading a new release
     $ python setup.py register sdist upload
+
+    # Copy docs to gh-pages
+    $ tox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
 
 
 [apikey]: https://developers.google.com/maps/faq#keysystem
