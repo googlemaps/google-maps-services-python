@@ -1,0 +1,19 @@
+language: python
+python:
+  - "2.7"
+  - "3.2"
+  - "3.4"
+  - "pypy"
+
+install:
+  - pip install requests
+  - pip install tox
+
+script:
+  - tox
+
+env:
+  - TOXENV=py27
+  - TOXENV=py32
+  - TOXENV=py34
+  - TOXENV=docs
