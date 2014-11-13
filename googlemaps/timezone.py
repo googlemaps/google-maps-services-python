@@ -34,7 +34,7 @@ def timezone(client, location, timestamp=None, language=None):
         midnight, January 1, 1970 UTC. The Time Zone API uses the timestamp to
         determine whether or not Daylight Savings should be applied. Times
         before 1970 can be expressed as negative values. Optional. Defaults to
-        `datetime.now()`.
+        ``datetime.now()``.
     :type timestamp: int or datetime.datetime
 
     :param language: The language in which to return results.

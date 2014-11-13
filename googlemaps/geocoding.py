@@ -23,7 +23,7 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
             language=None):
     """
     Geocoding is the process of converting addresses
-    (like "1600 Amphitheatre Parkway, Mountain View, CA") into geographic
+    (like ``"1600 Amphitheatre Parkway, Mountain View, CA"``) into geographic
     coordinates (like latitude 37.423021 and longitude -122.083739), which you
     can use to place markers or position the map.
 
@@ -31,7 +31,8 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
     :type address: string
 
     :param components: A component filter for which you wish to obtain a geocode,
-                       for example: {'administrative_area': 'TX','country': 'US'}
+                       for example:
+                       ``{'administrative_area': 'TX','country': 'US'}``
     :type components: dict
 
     :param bounds: The bounding box of the viewport within which to bias geocode
