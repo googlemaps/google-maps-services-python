@@ -215,7 +215,7 @@ return elevation data.</li>
 <dt id="googlemaps.Client.geocode">
 <code class="descname">geocode</code><span class="sig-paren">(</span><em>client</em>, <em>address=None</em>, <em>components=None</em>, <em>bounds=None</em>, <em>region=None</em>, <em>language=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.geocode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Geocoding is the process of converting addresses
-(like &#8220;1600 Amphitheatre Parkway, Mountain View, CA&#8221;) into geographic
+(like <code class="docutils literal"><span class="pre">&quot;1600</span> <span class="pre">Amphitheatre</span> <span class="pre">Parkway,</span> <span class="pre">Mountain</span> <span class="pre">View,</span> <span class="pre">CA&quot;</span></code>) into geographic
 coordinates (like latitude 37.423021 and longitude -122.083739), which you
 can use to place markers or position the map.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -225,7 +225,8 @@ can use to place markers or position the map.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>address</strong> (<em>string</em>) &#8211; The address to geocode.</li>
 <li><strong>components</strong> (<em>dict</em>) &#8211; A component filter for which you wish to obtain a geocode,
-for example: {&#8216;administrative_area&#8217;: &#8216;TX&#8217;,&#8217;country&#8217;: &#8216;US&#8217;}</li>
+for example:
+<code class="docutils literal"><span class="pre">{'administrative_area':</span> <span class="pre">'TX','country':</span> <span class="pre">'US'}</span></code></li>
 <li><strong>bounds</strong> (<em>string or dict with northeast and southwest keys.</em>) &#8211; The bounding box of the viewport within which to bias geocode
 results more prominently.</li>
 <li><strong>region</strong> (<em>string</em>) &#8211; The region code, specified as a ccTLD (&#8220;top-level domain&#8221;)
@@ -282,7 +283,7 @@ look up.</li>
 midnight, January 1, 1970 UTC. The Time Zone API uses the timestamp to
 determine whether or not Daylight Savings should be applied. Times
 before 1970 can be expressed as negative values. Optional. Defaults to
-<cite>datetime.now()</cite>.</li>
+<code class="docutils literal"><span class="pre">datetime.now()</span></code>.</li>
 <li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
 </ul>
 </td>
