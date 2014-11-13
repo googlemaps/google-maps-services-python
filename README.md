@@ -68,8 +68,7 @@ Your API key should be 40 characters long, and begin with `AIza`.
 
 ## Installation
 
-    # Installing dependencies:
-    $ pip install requests responses
+    $ pip install -U googlemaps
 
 Note that you will need requests 2.4.0 or higher if you want to specify connect/read timeouts.
 
@@ -140,7 +139,9 @@ customers can use their [API key][apikey], too.
     $ tox -e docs
     
     # Uploading a new release
-    $ python setup.py register sdist upload
+    $ easy_install wheel twine
+    $ python setup.py sdist bdist_wheel
+    $ twine upload dist/*
 
     # Copy docs to gh-pages
     $ tox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
