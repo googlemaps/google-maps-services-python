@@ -222,7 +222,7 @@ Client.timezone = timezone
 
 
 def sign_hmac(secret, payload):
-    """Returns a basee64-encoded HMAC-SHA1 signature of a given string.
+    """Returns a base64-encoded HMAC-SHA1 signature of a given string.
     :param secret: The key used for the signature, base64 encoded.
     :type secret: string
     :param payload: The payload to sign.
