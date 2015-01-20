@@ -38,7 +38,7 @@ except ImportError: # Python 2
 
 
 _USER_AGENT = "GoogleGeoApiClientPython/%s" % googlemaps.__version__
-_BASE_URL = "https://maps.googleapis.com"
+_DEFAULT_BASE_URL = "https://maps.googleapis.com"
 
 _RETRIABLE_STATUSES = set([500, 503, 504])
 
@@ -111,19 +111,23 @@ class Client(object):
         self.retry_timeout = timedelta(seconds=retry_timeout)
 
 
-    def _get(self, url, params, first_request_time=None, retry_counter=0):
+    def _get(self, url, params, first_request_time=None, retry_counter=0,
+             base_url=_DEFAULT_BASE_URL):
         """Performs HTTP GET request with credentials, returning the body as
         JSON.
 
-        :param url: URL path for the request
+        :param url: URL path for the request. Should begin with a slash.
         :type url: string
-        :param params: HTTP GET parameters
+        :param params: HTTP GET parameters.
         :type params: dict
         :param first_request_time: The time of the first request (None if no retries
                 have occurred).
         :type first_request_time: datetime.datetime
         :param retry_counter: The number of this retry, or zero for first attempt.
         :type retry_counter: int
+        :param base_url: The base URL for the request. Defaults to the Maps API
+                server. Should not have a trailing slash.
+        :type base_url: string
 
         :raises ApiError: when the API returns an error.
         :raises Timeout: if the request timed out.
@@ -150,7 +154,7 @@ class Client(object):
         url = self._generate_auth_url(url, params)
 
         try:
-            resp = requests.get(_BASE_URL + url,
+            resp = requests.get(base_url + url,
                 headers={"User-Agent": _USER_AGENT},
                 timeout=self.timeout,
                 verify=True) # NOTE(cbro): verify SSL certs.
