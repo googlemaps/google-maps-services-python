@@ -42,7 +42,7 @@ class ClientTest(_test.TestCase):
                       "https://maps.googleapis.com/maps/api/geocode/json",
                       body='{"status":"OK","results":[]}',
                       status=200,
-                      content_type='application/json')
+                      content_type="application/json")
 
         client = googlemaps.Client(key="AIzaasdf")
         client.geocode("Sesame St.")
@@ -72,7 +72,7 @@ class ClientTest(_test.TestCase):
                       "https://maps.googleapis.com/maps/api/geocode/json",
                       body='{"status":"OK","results":[]}',
                       status=200,
-                      content_type='application/json')
+                      content_type="application/json")
 
         client = googlemaps.Client(client_id="foo", client_secret="a2V5")
         client.geocode("Sesame St.")
@@ -93,7 +93,7 @@ class ClientTest(_test.TestCase):
                       "https://maps.googleapis.com/maps/api/geocode/json",
                       body='{"status":"OK","results":[]}',
                       status=200,
-                      content_type='application/json')
+                      content_type="application/json")
 
         client = googlemaps.Client(key="AIzaasdf")
         client.geocode("Sesame St.")
@@ -138,6 +138,35 @@ class ClientTest(_test.TestCase):
         self.assertEqual(e.exception.status_code, 404)
 
     @responses.activate
+    def test_host_override(self):
+        responses.add(responses.GET,
+                      "https://foo.com/bar",
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type="application/json")
+
+        client = googlemaps.Client(key="AIzaasdf")
+        client._get("/bar", {}, base_url="https://foo.com")
+
+        self.assertEqual(1, len(responses.calls))
+
+    @responses.activate
+    def test_custom_extract(self):
+        def custom_extract(resp):
+            return resp.json()
+
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/bar",
+                      body='{"error":"errormessage"}',
+                      status=403,
+                      content_type="application/json")
+
+        client = googlemaps.Client(key="AIzaasdf")
+        b = client._get("/bar", {}, extract_body=custom_extract)
+        self.assertEqual(1, len(responses.calls))
+        self.assertEqual("errormessage", b["error"])
+
+    @responses.activate
     def test_retry_intermittent(self):
         class request_callback:
             def __init__(self):
@@ -151,7 +180,7 @@ class ClientTest(_test.TestCase):
 
         responses.add_callback(responses.GET,
                 "https://maps.googleapis.com/maps/api/geocode/json",
-                content_type='application/json',
+                content_type="application/json",
                 callback=request_callback())
 
         client = googlemaps.Client(key="AIzaasdf")
