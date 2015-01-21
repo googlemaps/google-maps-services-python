@@ -112,7 +112,7 @@ class Client(object):
 
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=_DEFAULT_BASE_URL):
+             base_url=_DEFAULT_BASE_URL, extract_body=None):
         """Performs HTTP GET request with credentials, returning the body as
         JSON.
 
@@ -128,6 +128,10 @@ class Client(object):
         :param base_url: The base URL for the request. Defaults to the Maps API
                 server. Should not have a trailing slash.
         :type base_url: string
+        :param extract_body: A function that extracts the body from the request.
+                If the request was not successful, the function should raise a
+                googlemaps.HTTPError or googlemaps.ApiError as appropriate.
+        :type extract_body: function
 
         :raises ApiError: when the API returns an error.
         :raises Timeout: if the request timed out.
@@ -165,8 +169,19 @@ class Client(object):
 
         if resp.status_code in _RETRIABLE_STATUSES:
             # Retry request.
-            return self._get(url, params, first_request_time, retry_counter + 1)
+            return self._get(url, params, first_request_time, retry_counter + 1,
+                             base_url, extract_body)
 
+        try:
+            if extract_body:
+                return extract_body(resp)
+            return self._get_body(resp)
+        except googlemaps.exceptions._RetriableRequest:
+            # Retry request.
+            return self._get(url, params, first_request_time, retry_counter + 1,
+                             base_url, extract_body)
+
+    def _get_body(self, resp):
         if resp.status_code != 200:
             raise googlemaps.exceptions.HTTPError(resp.status_code)
 
@@ -177,15 +192,13 @@ class Client(object):
             return body
 
         if api_status == "OVER_QUERY_LIMIT":
-            # Retry request.
-            return self._get(url, params, first_request_time, retry_counter + 1)
+            raise googlemaps.exceptions._RetriableRequest()
 
         if "error_message" in body:
             raise googlemaps.exceptions.ApiError(api_status,
                     body["error_message"])
         else:
             raise googlemaps.exceptions.ApiError(api_status)
-
 
     def _generate_auth_url(self, path, params):
         """Returns the path and query string portion of the request URL, first

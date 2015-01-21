@@ -54,3 +54,7 @@ class HTTPError(TransportError):
 class Timeout(Exception):
     """The request timed out."""
     pass
+
+class _RetriableRequest(Exception):
+    """Signifies that the request can be retried."""
+    pass
