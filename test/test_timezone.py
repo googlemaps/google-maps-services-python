@@ -18,33 +18,59 @@
 
 """Tests for the timezone module."""
 
-import test as _test
+import responses
+import mock
 import datetime
 
 import googlemaps
+import test as _test
+
 
 class TimezoneTest(_test.TestCase):
 
     def setUp(self):
-        self.c = googlemaps.Client(
-            key="AIzaSyDyZdCabN8GKh786tdj16gq80xalbbfqDM",
-            timeout=5)
+        self.key = "AIzaasdf"
+        self.client = googlemaps.Client(self.key)
 
+    @responses.activate
     def test_los_angeles(self):
-        timezone = self.c.timezone((39.6034810,-119.6822510), 1331766000)
-        self.assertIsNotNone(timezone)
-        self.assertEqual(3600.0, timezone['dstOffset'])
-        self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])
-        self.assertEqual('Pacific Daylight Time', timezone['timeZoneName'])
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/maps/api/timezone/json",
+                      body='{"status":"OK"}',
+                      status=200,
+                      content_type="application/json")
 
-    def test_los_angeles_es(self):
-        timezone = self.c.timezone((39.6034810,-119.6822510), 1331766000, language='es')
+        ts = 1331766000
+        timezone = self.client.timezone((39.603481, -119.682251), ts)
         self.assertIsNotNone(timezone)
-        self.assertEqual(3600.0, timezone['dstOffset'])
-        self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])
-        self.assertEqual(self.u('Hora de verano del Pac\\xedfico'), timezone['timeZoneName'])
 
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual("https://maps.googleapis.com/maps/api/timezone/json"
+                            "?location=39.603481,-119.682251&timestamp=%d"
+                            "&key=%s" %
+                            (ts, self.key),
+                            responses.calls[0].request.url)
+
+    class MockDatetime(object):
+
+        def now(self):
+            return datetime.datetime.fromtimestamp(1608)
+
+    @responses.activate
+    @mock.patch("googlemaps.timezone.datetime", MockDatetime())
     def test_los_angeles_with_no_timestamp(self):
-        timezone = self.c.timezone((39.6034810,-119.6822510))
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/maps/api/timezone/json",
+                      body='{"status":"OK"}',
+                      status=200,
+                      content_type="application/json")
+
+        timezone = self.client.timezone((39.603481, -119.682251))
         self.assertIsNotNone(timezone)
-        self.assertEqual('America/Los_Angeles', timezone['timeZoneId'])
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual("https://maps.googleapis.com/maps/api/timezone/json"
+                            "?location=39.603481,-119.682251&timestamp=%d"
+                            "&key=%s" %
+                            (1608, self.key),
+                            responses.calls[0].request.url)
