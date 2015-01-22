@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Client for Google Maps Services &mdash; Python Client for Google Maps Services 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python Client for Google Maps Services 2.0 documentation" href="#" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">Python Client for Google Maps Services 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-client-for-google-maps-services">
+<h1>Python Client for Google Maps Services<a class="headerlink" href="#python-client-for-google-maps-services" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-googlemaps">
+<span id="googlemaps-module"></span><h2><a class="reference internal" href="#module-googlemaps" title="googlemaps"><code class="xref py py-mod docutils literal"><span class="pre">googlemaps</span></code></a> Module<a class="headerlink" href="#module-googlemaps" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="googlemaps.Client">
+<em class="property">class </em><code class="descclassname">googlemaps.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>key=None</em>, <em>client_id=None</em>, <em>client_secret=None</em>, <em>timeout=None</em>, <em>connect_timeout=None</em>, <em>read_timeout=None</em>, <em>retry_timeout=60</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Performs requests to the Google Maps API web services.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>string</em>) &#8211; Maps API key. Required, unless &#8220;client_id&#8221; and
+&#8220;client_secret&#8221; are set.</li>
+<li><strong>timeout</strong> (<em>int</em>) &#8211; Combined connect and read timeout for HTTP requests, in
+seconds. Specify &#8220;None&#8221; for no timeout.</li>
+<li><strong>connect_timeout</strong> (<em>int</em>) &#8211; Connection timeout for HTTP requests, in
+seconds. You should specify read_timeout in addition to this option.
+Note that this requires requests &gt;= 2.4.0.</li>
+<li><strong>read_timeout</strong> (<em>int</em>) &#8211; Read timeout for HTTP requests, in
+seconds. You should specify connect_timeout in addition to this
+option. Note that this requires requests &gt;= 2.4.0.</li>
+<li><strong>retry_timeout</strong> (<em>int</em>) &#8211; Timeout across multiple retriable requests, in
+seconds.</li>
+<li><strong>client_id</strong> (<em>string</em>) &#8211; (for Maps API for Work customers) Your client ID.</li>
+<li><strong>client_secret</strong> (<em>string</em>) &#8211; (for Maps API for Work customers) Your client
+secret (base64 encoded).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ValueError</strong> &#8211; when either credentials are missing, incomplete
+or invalid.</li>
+<li><strong>NotImplementedError</strong> &#8211; if connect_timeout and read_timeout are
+used with a version of requests prior to 2.4.0.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="googlemaps.Client.directions">
+<code class="descname">directions</code><span class="sig-paren">(</span><em>client</em>, <em>origin</em>, <em>destination</em>, <em>mode=None</em>, <em>waypoints=None</em>, <em>alternatives=False</em>, <em>avoid=None</em>, <em>language=None</em>, <em>units=None</em>, <em>region=None</em>, <em>departure_time=None</em>, <em>arrival_time=None</em>, <em>optimize_waypoints=False</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.directions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get directions between an origin point and a destination point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>origin</strong> (<em>string or dict or tuple</em>) &#8211; The address or latitude/longitude value from which you wish
+to calculate directions.</li>
+<li><strong>destination</strong> (<em>string or dict or tuple</em>) &#8211; The address or latitude/longitude value from which
+you wish to calculate directions.</li>
+<li><strong>mode</strong> (<em>string</em>) &#8211; Specifies the mode of transport to use when calculating
+directions. One of &#8220;driving&#8221;, &#8220;walking&#8221;, &#8220;bicycling&#8221; or &#8220;transit&#8221;</li>
+<li><strong>waypoints</strong> &#8211; Specifies an array of waypoints. Waypoints alter a
+route by routing it through the specified location(s).</li>
+<li><strong>alternatives</strong> (<em>bool</em>) &#8211; If True, more than one route may be returned in the
+response.</li>
+<li><strong>avoid</strong> (<em>list or string</em>) &#8211; Indicates that the calculated route(s) should avoid the
+indicated features.</li>
+<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
+<li><strong>units</strong> (<em>string</em>) &#8211; Specifies the unit system to use when displaying results.
+&#8220;metric&#8221; or &#8220;imperial&#8221;</li>
+<li><strong>region</strong> (<em>string</em>) &#8211; The region code, specified as a ccTLD (&#8220;top-level domain&#8221;
+two-character value.</li>
+<li><strong>departure_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of departure.</li>
+<li><strong>arrival_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of arrival for transit
+directions.</li>
+<li><strong>optimize_waypoints</strong> (<em>bool</em>) &#8211; Optimize the provided route by rearranging the
+waypoints in a more efficient order.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of routes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="googlemaps.Client.distance_matrix">
+<code class="descname">distance_matrix</code><span class="sig-paren">(</span><em>client</em>, <em>origins</em>, <em>destinations</em>, <em>mode=None</em>, <em>language=None</em>, <em>avoid=None</em>, <em>units=None</em>, <em>departure_time=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.distance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets travel distance and time for a matrix of origins and destinations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>origins</strong> (<em>list of strings, dicts or tuples</em>) &#8211; One or more addresses and/or latitude/longitude values,
+from which to calculate distance and time. If you pass an address
+as a string, the service will geocode the string and convert it to
+a latitude/longitude coordinate to calculate directions.</li>
+<li><strong>destinations</strong> (<em>list of strings, dicts or tuples</em>) &#8211; One or more addresses and/or lat/lng values, to
+which to calculate distance and time. If you pass an address as a
+string, the service will geocode the string and convert it to a
+latitude/longitude coordinate to calculate directions.</li>
+<li><strong>mode</strong> (<em>string</em>) &#8211; Specifies the mode of transport to use when calculating
+directions. Valid values are &#8220;driving&#8221;, &#8220;walking&#8221; or &#8220;bicycling&#8221;.</li>
+<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
+<li><strong>avoid</strong> (<em>string</em>) &#8211; Indicates that the calculated route(s) should avoid the
+indicated features. Valid values are &#8220;tolls&#8221;, &#8220;highways&#8221; or &#8220;ferries&#8221;</li>
+<li><strong>units</strong> (<em>string</em>) &#8211; Specifies the unit system to use when displaying results.
+Valid values are &#8220;metric&#8221; or &#8220;imperial&#8221;</li>
+<li><strong>departure_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of departure as seconds
+since midnight, January 1, 1970 UTC. The departure time may be
+specified by Google Maps API for Work customers to receive trip
+duration considering current traffic conditions. The departure_time
+must be set to within a few minutes of the current time.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matrix of distances. Results are returned in rows, each row
+containing one origin paired with each destination.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="googlemaps.Client.elevation">
+<code class="descname">elevation</code><span class="sig-paren">(</span><em>client</em>, <em>locations</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.elevation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides elevation data for locations provided on the surface of the
+earth, including depth locations on the ocean floor (which return negative
+values)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locations</strong> (<em>list or tuple</em>) &#8211; A single latitude/longitude tuple or dict, or a list of
+latitude/longitude tuples or dicts from which you wish to calculate
+elevation data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of elevation data responses</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="googlemaps.Client.elevation_along_path">
+<code class="descname">elevation_along_path</code><span class="sig-paren">(</span><em>client</em>, <em>path</em>, <em>samples</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.elevation_along_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides elevation data sampled along a path on the surface of the earth.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str or list</em>) &#8211; A encoded polyline string, or a list of
+latitude/longitude tuples from which you wish to calculate
+elevation data.</li>
+<li><strong>samples</strong> (<em>int</em>) &#8211; The number of sample points along a path for which to
+return elevation data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of elevation data responses</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="googlemaps.Client.geocode">
+<code class="descname">geocode</code><span class="sig-paren">(</span><em>client</em>, <em>address=None</em>, <em>components=None</em>, <em>bounds=None</em>, <em>region=None</em>, <em>language=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.geocode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geocoding is the process of converting addresses
+(like <code class="docutils literal"><span class="pre">&quot;1600</span> <span class="pre">Amphitheatre</span> <span class="pre">Parkway,</span> <span class="pre">Mountain</span> <span class="pre">View,</span> <span class="pre">CA&quot;</span></code>) into geographic
+coordinates (like latitude 37.423021 and longitude -122.083739), which you
+can use to place markers or position the map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>address</strong> (<em>string</em>) &#8211; The address to geocode.</li>
+<li><strong>components</strong> (<em>dict</em>) &#8211; A component filter for which you wish to obtain a geocode,
+for example:
+<code class="docutils literal"><span class="pre">{'administrative_area':</span> <span class="pre">'TX','country':</span> <span class="pre">'US'}</span></code></li>
+<li><strong>bounds</strong> (<em>string or dict with northeast and southwest keys.</em>) &#8211; The bounding box of the viewport within which to bias geocode
+results more prominently.</li>
+<li><strong>region</strong> (<em>string</em>) &#8211; The region code, specified as a ccTLD (&#8220;top-level domain&#8221;)
+two-character value.</li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of geocoding results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="googlemaps.Client.reverse_geocode">
+<code class="descname">reverse_geocode</code><span class="sig-paren">(</span><em>client</em>, <em>latlng</em>, <em>result_type=None</em>, <em>location_type=None</em>, <em>language=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.reverse_geocode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverse geocoding is the process of converting geographic coordinates into a
+human-readable address.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>latlng</strong> (<em>dict or list or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
+closest, human-readable address</li>
+<li><strong>result_type</strong> (<em>string or list of string</em>) &#8211; One or more address types to restrict results to.</li>
+<li><strong>location_type</strong> (<em>list of string</em>) &#8211; One or more location types to restrict results to.</li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of reverse geocoding results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="googlemaps.Client.timezone">
+<code class="descname">timezone</code><span class="sig-paren">(</span><em>client</em>, <em>location</em>, <em>timestamp=None</em>, <em>language=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.timezone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get time zone for a location on the earth, as well as that location&#8217;s
+time offset from UTC.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>location</strong> (<em>dict or tuple</em>) &#8211; The latitude/longitude value representing the location to
+look up.</li>
+<li><strong>timestamp</strong> (<em>int or datetime.datetime</em>) &#8211; Timestamp specifies the desired time as seconds since
+midnight, January 1, 1970 UTC. The Time Zone API uses the timestamp to
+determine whether or not Daylight Savings should be applied. Times
+before 1970 can be expressed as negative values. Optional. Defaults to
+<code class="docutils literal"><span class="pre">datetime.now()</span></code>.</li>
+<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="googlemaps-exceptions-module">
+<h2><a class="reference internal" href="#module-googlemaps.exceptions" title="googlemaps.exceptions"><code class="xref py py-mod docutils literal"><span class="pre">googlemaps.exceptions</span></code></a> Module<a class="headerlink" href="#googlemaps-exceptions-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-googlemaps.exceptions"></span><p>Defines exceptions that are thrown by the Google Maps client.</p>
+<dl class="exception">
+<dt id="googlemaps.exceptions.ApiError">
+<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">ApiError</code><span class="sig-paren">(</span><em>status</em>, <em>message=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.ApiError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Represents an exception returned by the remote API.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="googlemaps.exceptions.HTTPError">
+<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">HTTPError</code><span class="sig-paren">(</span><em>status_code</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.HTTPError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#googlemaps.exceptions.TransportError" title="googlemaps.exceptions.TransportError"><code class="xref py py-class docutils literal"><span class="pre">googlemaps.exceptions.TransportError</span></code></a></p>
+<p>An unexpected HTTP error occurred.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="googlemaps.exceptions.Timeout">
+<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">Timeout</code><a class="headerlink" href="#googlemaps.exceptions.Timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>The request timed out.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="googlemaps.exceptions.TransportError">
+<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">TransportError</code><span class="sig-paren">(</span><em>base_exception=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.TransportError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Something went wrong while trying to execute the request.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Client for Google Maps Services</a><ul>
+<li><a class="reference internal" href="#module-googlemaps"><code class="docutils literal"><span class="pre">googlemaps</span></code> Module</a></li>
+<li><a class="reference internal" href="#googlemaps-exceptions-module"><code class="docutils literal"><span class="pre">googlemaps.exceptions</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">Python Client for Google Maps Services 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Google Inc..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>
