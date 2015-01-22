@@ -65,7 +65,8 @@ def directions(client, origin, destination,
     :type departure_time: int or datetime.datetime
 
     :param arrival_time: Specifies the desired time of arrival for transit
-        directions.
+        directions. Note: you can't specify both departure_time and
+        arrival_time.
     :type arrival_time: int or datetime.datetime
 
     :param optimize_waypoints: Optimize the provided route by rearranging the
@@ -91,6 +92,8 @@ def directions(client, origin, destination,
     }
 
     if mode:
+        # NOTE(broady): the mode parameter is not validated by the Maps API
+        # server. Check here to prevent silent failures.
         if mode not in ["driving", "walking", "bicycling", "transit"]:
             raise ValueError("Invalid travel mode.")
         params["mode"] = mode
@@ -124,6 +127,10 @@ def directions(client, origin, destination,
 
     if arrival_time:
         params["arrival_time"] = convert.time(arrival_time)
+
+    if departure_time and arrival_time:
+        raise ValueError("Should not specify both departure_time and"
+                         "arrival_time.")
 
     if transit_mode:
         params["transit_mode"] = convert.join_list("|", transit_mode)

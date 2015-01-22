@@ -22,7 +22,7 @@ from googlemaps.convert import as_list
 
 def distance_matrix(client, origins, destinations,
                     mode=None, language=None, avoid=None, units=None,
-                    departure_time=None, transit_mode=None,
+                    departure_time=None, arrival_time=None, transit_mode=None,
                     transit_routing_preference=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
@@ -54,12 +54,13 @@ def distance_matrix(client, origins, destinations,
         Valid values are "metric" or "imperial"
     :type units: string
 
-    :param departure_time: Specifies the desired time of departure as seconds
-        since midnight, January 1, 1970 UTC. The departure time may be
-        specified by Google Maps API for Work customers to receive trip
-        duration considering current traffic conditions. The departure_time
-        must be set to within a few minutes of the current time.
+    :param departure_time: Specifies the desired time of departure.
     :type departure_time: int or datetime.datetime
+
+    :param arrival_time: Specifies the desired time of arrival for transit
+        directions. Note: you can't specify both departure_time and
+        arrival_time.
+    :type arrival_time: int or datetime.datetime
 
     :param transit_mode: Specifies one or more preferred modes of transit.
         This parameter may only be specified for requests where the mode is
@@ -81,6 +82,8 @@ def distance_matrix(client, origins, destinations,
     }
 
     if mode:
+        # NOTE(broady): the mode parameter is not validated by the Maps API
+        # server. Check here to prevent silent failures.
         if mode not in ["driving", "walking", "bicycling", "transit"]:
             raise ValueError("Invalid travel mode.")
         params["mode"] = mode
@@ -98,6 +101,13 @@ def distance_matrix(client, origins, destinations,
 
     if departure_time:
         params["departure_time"] = convert.time(departure_time)
+
+    if arrival_time:
+        params["arrival_time"] = convert.time(arrival_time)
+
+    if departure_time and arrival_time:
+        raise ValueError("Should not specify both departure_time and"
+                         "arrival_time.")
 
     if transit_mode:
         params["transit_mode"] = convert.join_list("|", transit_mode)
