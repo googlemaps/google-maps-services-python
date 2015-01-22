@@ -22,7 +22,8 @@ from googlemaps.convert import as_list
 
 def distance_matrix(client, origins, destinations,
                     mode=None, language=None, avoid=None, units=None,
-                    departure_time=None):
+                    departure_time=None, transit_mode=None,
+                    transit_routing_preference=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param origins: One or more addresses and/or latitude/longitude values,
@@ -38,7 +39,8 @@ def distance_matrix(client, origins, destinations,
     :type destinations: list of strings, dicts or tuples
 
     :param mode: Specifies the mode of transport to use when calculating
-            directions. Valid values are "driving", "walking" or "bicycling".
+            directions. Valid values are "driving", "walking", "transit" or
+            "bicycling".
     :type mode: string
 
     :param language: The language in which to return results.
@@ -59,6 +61,16 @@ def distance_matrix(client, origins, destinations,
         must be set to within a few minutes of the current time.
     :type departure_time: int or datetime.datetime
 
+    :param transit_mode: Specifies one or more preferred modes of transit.
+        This parameter may only be specified for requests where the mode is
+        transit. Valid values are "bus", "subway", "train", "tram", "rail".
+        "rail" is equivalent to ["train", "tram", "subway"].
+    :type transit_mode: string or list of strings
+
+    :param transit_routing_preference: Specifies preferences for transit
+        requests. Valid values are "less_walking" or "fewer_transfers"
+    :type transit_routing_preference: string
+
     :rtype: matrix of distances. Results are returned in rows, each row
         containing one origin paired with each destination.
     """
@@ -69,7 +81,7 @@ def distance_matrix(client, origins, destinations,
     }
 
     if mode:
-        if mode not in ["driving", "walking", "bicycling"]:
+        if mode not in ["driving", "walking", "bicycling", "transit"]:
             raise ValueError("Invalid travel mode.")
         params["mode"] = mode
 
@@ -86,6 +98,12 @@ def distance_matrix(client, origins, destinations,
 
     if departure_time:
         params["departure_time"] = convert.time(departure_time)
+
+    if transit_mode:
+        params["transit_mode"] = convert.join_list("|", transit_mode)
+
+    if transit_routing_preference:
+        params["transit_routing_preference"] = transit_routing_preference
 
     return client._get("/maps/api/distancematrix/json", params)
 
