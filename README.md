@@ -127,7 +127,6 @@ customers can use their [API key][apikey], too.
 
 ## Building the Project
 
-**Note:** You will need an API key or Client ID to run the tests.
 
     # Installing tox
     $ pip install tox
