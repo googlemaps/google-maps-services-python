@@ -1,0 +1,30 @@
+# Compiled source #
+###################
+*.pyc
+ 
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Sphinx documentation #
+########################
+docs/_build/
+
+
+# vim
+*.swp
+
+# python testing things etc
+.coverage
+.tox
+env
+nosetests.xml
+googlemaps.egg-info
+*.egg
+
