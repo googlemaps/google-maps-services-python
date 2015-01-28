@@ -59,6 +59,9 @@ class ConvertTest(unittest.TestCase):
 
         self.assertEqual((1, 2), convert.as_list((1, 2)))
 
+        a_dict = {"a": 1}
+        self.assertEqual([a_dict], convert.as_list(a_dict))
+
     def test_time(self):
         self.assertEqual("1409810596", convert.time(1409810596))
 
