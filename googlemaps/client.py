@@ -112,14 +112,14 @@ class Client(object):
 
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=_DEFAULT_BASE_URL, extract_body=None):
+             base_url=_DEFAULT_BASE_URL, accepts_clientid=True, extract_body=None):
         """Performs HTTP GET request with credentials, returning the body as
         JSON.
 
         :param url: URL path for the request. Should begin with a slash.
         :type url: string
         :param params: HTTP GET parameters.
-        :type params: dict
+        :type params: dict or list of key/value tuples
         :param first_request_time: The time of the first request (None if no retries
                 have occurred).
         :type first_request_time: datetime.datetime
@@ -128,6 +128,9 @@ class Client(object):
         :param base_url: The base URL for the request. Defaults to the Maps API
                 server. Should not have a trailing slash.
         :type base_url: string
+        :param accepts_clientid: Whether this call supports the client/signature
+                params. Some APIs require API keys (e.g. Roads).
+        :type accepts_clientid: bool
         :param extract_body: A function that extracts the body from the request.
                 If the request was not successful, the function should raise a
                 googlemaps.HTTPError or googlemaps.ApiError as appropriate.
@@ -155,7 +158,7 @@ class Client(object):
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
-        authed_url = self._generate_auth_url(url, params)
+        authed_url = self._generate_auth_url(url, params, accepts_clientid)
 
         try:
             resp = requests.get(base_url + authed_url,
@@ -200,25 +203,33 @@ class Client(object):
         else:
             raise googlemaps.exceptions.ApiError(api_status)
 
-    def _generate_auth_url(self, path, params):
+    def _generate_auth_url(self, path, params, accepts_clientid):
         """Returns the path and query string portion of the request URL, first
         adding any necessary parameters.
         :param path: The path portion of the URL.
         :type path: string
         :param params: URL parameters.
-        :type params: dict
+        :type params: dict or list of key/value tuples
         :rtype: string
         """
-        if self.key:
-            params["key"] = self.key
-            return path + "?" + urlencode_params_sorted(params)
+        # Deterministic ordering through sorting by key.
+        # Useful for tests, and in the future, any caching.
+        if type(params) is dict:
+            params = sorted(params.items())
 
-        if self.client_id and self.client_secret:
-            params["client"] = self.client_id
+        if accepts_clientid and self.client_id and self.client_secret:
+            params.append(("client", self.client_id))
 
-            path = "?".join([path, urlencode_params_sorted(params)])
+            path = "?".join([path, urlencode_params(params)])
             sig = sign_hmac(self.client_secret, path)
             return path + "&signature=" + sig
+
+        if self.key:
+            params.append(("key", self.key))
+            return path + "?" + urlencode_params(params)
+
+        raise ValueError("Must provide API key for this API. It does not accept"
+                         "enterprise credentials.")
 
 
 from googlemaps.directions import directions
@@ -228,6 +239,9 @@ from googlemaps.elevation import elevation_along_path
 from googlemaps.geocoding import geocode
 from googlemaps.geocoding import reverse_geocode
 from googlemaps.timezone import timezone
+from googlemaps.roads import snap_to_roads
+from googlemaps.roads import speed_limits
+from googlemaps.roads import snapped_speed_limits
 
 Client.directions = directions
 Client.distance_matrix = distance_matrix
@@ -236,6 +250,9 @@ Client.elevation_along_path = elevation_along_path
 Client.geocode = geocode
 Client.reverse_geocode = reverse_geocode
 Client.timezone = timezone
+Client.snap_to_roads = snap_to_roads
+Client.speed_limits = speed_limits
+Client.snapped_speed_limits = snapped_speed_limits
 
 
 def sign_hmac(secret, payload):
@@ -253,14 +270,16 @@ def sign_hmac(secret, payload):
     return out.decode('utf-8')
 
 
-def urlencode_params_sorted(params):
-    """URL encodes the parameters, first sorting them to provide
-    deteriministic ordering. Useful for tests and in the future, any caches."""
-
+def urlencode_params(params):
+    """URL encodes the parameters.
+    :param params: The parameters
+    :type params: list of key/value tuples.
+    """
     # urlencode does not handle unicode strings in Python 2.
     # First normalize the values so they get encoded correctly.
-    params = [(key, normalize_for_urlencode(val)) for key, val in params.items()]
-    return urlencode(sorted(params))
+    params = [(key, normalize_for_urlencode(val)) for key, val in params]
+    return urlencode(params)
+
 
 try:
     unicode

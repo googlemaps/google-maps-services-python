@@ -64,6 +64,8 @@ def normalize_lat_lng(arg):
     if isinstance(arg, dict):
         if "lat" in arg and "lng" in arg:
             return arg["lat"], arg["lng"]
+        if "latitude" in arg and "longitude" in arg:
+            return arg["latitude"], arg["longitude"]
 
     # List or tuple.
     if _is_list(arg):
