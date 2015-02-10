@@ -155,10 +155,10 @@ class Client(object):
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
-        url = self._generate_auth_url(url, params)
+        authed_url = self._generate_auth_url(url, params)
 
         try:
-            resp = requests.get(base_url + url,
+            resp = requests.get(base_url + authed_url,
                 headers={"User-Agent": _USER_AGENT},
                 timeout=self.timeout,
                 verify=True) # NOTE(cbro): verify SSL certs.
