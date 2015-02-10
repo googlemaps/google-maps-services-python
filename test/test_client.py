@@ -123,6 +123,7 @@ class ClientTest(_test.TestCase):
         client.geocode("Sesame St.")
 
         self.assertEqual(2, len(responses.calls))
+        self.assertEqual(responses.calls[0].request.url, responses.calls[1].request.url)
 
     @responses.activate
     def test_transport_error(self):
