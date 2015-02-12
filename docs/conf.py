@@ -48,7 +48,7 @@ copyright = u'2014, Google Inc.'
 # built documents.
 #
 # The short X.Y version.
-version = '2.1.1'
+version = '2.1-dev'
 # The full version, including alpha/beta/rc tags.
 release = version
 
