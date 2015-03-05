@@ -55,6 +55,7 @@ To generate a server key for your project:
     * Elevation API
     * Geocoding API
     * Time Zone API
+    * Roads API
  1. Once you've enabled the APIs, click **Credentials** from the left navigation of the Developer
     Console.
  1. In the "Public API access", click **Create new Key**.
@@ -84,6 +85,7 @@ https://developers.google.com/maps/.
  - [Elevation API]
  - [Geocoding API]
  - [Time Zone API]
+ - [Roads API]
 
 ## Usage
 
@@ -150,11 +152,12 @@ customers can use their [API key][apikey], too.
 [clientid]: https://developers.google.com/maps/documentation/business/webservices/auth
 
 [Google Maps API Web Services]: https://developers.google.com/maps/documentation/webservices/
-[Directions API]: https://developers.google.com/maps/documentation/directions
-[Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix
-[Elevation API]: https://developers.google.com/maps/documentation/elevation
-[Geocoding API]: https://developers.google.com/maps/documentation/geocoding
-[Time Zone API]: https://developers.google.com/maps/documentation/timezone
+[Directions API]: https://developers.google.com/maps/documentation/directions/
+[Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix/
+[Elevation API]: https://developers.google.com/maps/documentation/elevation/
+[Geocoding API]: https://developers.google.com/maps/documentation/geocoding/
+[Time Zone API]: https://developers.google.com/maps/documentation/timezone/
+[Roads API]: https://developers.google.com/maps/documentation/roads/
 
 [issues]: https://github.com/googlemaps/google-maps-services-python/issues
 [contrib]: https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md
