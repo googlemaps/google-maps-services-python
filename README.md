@@ -16,6 +16,7 @@ APIs:
  - [Elevation API]
  - [Geocoding API]
  - [Time Zone API]
+ - [Roads API]
 
 Keep in mind that the same [terms and conditions](https://developers.google.com/maps/terms) apply
 to usage of the APIs when they're accessed through this library.
