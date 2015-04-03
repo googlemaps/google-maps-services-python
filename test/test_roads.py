@@ -96,3 +96,25 @@ class RoadsTest(_test.TestCase):
 
         with self.assertRaises(ValueError):
             client.speed_limits("foo")
+
+    @responses.activate
+    def test_retry(self):
+        class request_callback:
+            def __init__(self):
+                self.first_req = True
+
+            def __call__(self, req):
+                if self.first_req:
+                    self.first_req = False
+                    return (500, {}, 'Internal Server Error.')
+                return (200, {}, '{"speedLimits":[]}')
+
+        responses.add_callback(responses.GET,
+                "https://roads.googleapis.com/v1/speedLimits",
+                content_type="application/json",
+                callback=request_callback())
+
+        self.client.speed_limits([])
+
+        self.assertEqual(2, len(responses.calls))
+        self.assertEqual(responses.calls[0].request.url, responses.calls[1].request.url)

@@ -173,7 +173,7 @@ class Client(object):
         if resp.status_code in _RETRIABLE_STATUSES:
             # Retry request.
             return self._get(url, params, first_request_time, retry_counter + 1,
-                             base_url, extract_body)
+                             base_url, accepts_clientid, extract_body)
 
         try:
             if extract_body:
@@ -182,7 +182,7 @@ class Client(object):
         except googlemaps.exceptions._RetriableRequest:
             # Retry request.
             return self._get(url, params, first_request_time, retry_counter + 1,
-                             base_url, extract_body)
+                             base_url, accepts_clientid, extract_body)
 
     def _get_body(self, resp):
         if resp.status_code != 200:
@@ -216,6 +216,8 @@ class Client(object):
         # Useful for tests, and in the future, any caching.
         if type(params) is dict:
             params = sorted(params.items())
+        else:
+            params = params[:] # Take a copy.
 
         if accepts_clientid and self.client_id and self.client_secret:
             params.append(("client", self.client_id))
