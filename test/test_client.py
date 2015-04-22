@@ -36,6 +36,11 @@ class ClientTest(_test.TestCase):
             client = googlemaps.Client(key="Invalid key.")
             client.directions("Sydney", "Melbourne")
 
+    def test_urlencode(self):
+        # See GH #72.
+        encoded_params = _client.urlencode_params([("address", "=Sydney ~")])
+        self.assertEqual("address=%3DSydney+~", encoded_params)
+
     @responses.activate
     def test_key_sent(self):
         responses.add(responses.GET,
