@@ -278,9 +278,12 @@ def urlencode_params(params):
     :type params: list of key/value tuples.
     """
     # urlencode does not handle unicode strings in Python 2.
-    # First normalize the values so they get encoded correctly.
+    # Firstly, normalize the values so they get encoded correctly.
     params = [(key, normalize_for_urlencode(val)) for key, val in params]
-    return urlencode(params)
+    # Secondly, unquote unreserved chars which are incorrectly quoted
+    # by urllib.urlencode, causing invalid auth signatures. See GH #72
+    # for more info.
+    return requests.utils.unquote_unreserved(urlencode(params))
 
 
 try:
