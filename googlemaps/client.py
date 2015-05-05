@@ -82,7 +82,7 @@ class Client(object):
 
         :param queries_per_second: Manually specify the number of queries
             per second permitted, namely 10 for free clients or larger
-            for Maps for Work. If the rate limit is reach, the client will
+            for Maps for Work. If the rate limit is reached, the client will
             wait the appropriate amount of time before it runs the current
             query.
         :type queries_per_second: int
