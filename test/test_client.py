@@ -19,6 +19,7 @@
 """Tests for client module."""
 
 import responses
+import time
 
 import googlemaps
 from googlemaps import client as _client
@@ -40,6 +41,28 @@ class ClientTest(_test.TestCase):
         # See GH #72.
         encoded_params = _client.urlencode_params([("address", "=Sydney ~")])
         self.assertEqual("address=%3DSydney+~", encoded_params)
+
+    @responses.activate
+    def test_queries_per_second(self):
+        # This test assumes that the time to run a mocked query is
+        # relatively small, eg a few milliseconds. We define a rate of
+        # 3 queries per second, and run double that, which should take at
+        # least 1 second but no more than 2.
+        queries_per_second = 3
+        query_range = range(queries_per_second * 2)
+        for _ in query_range:
+            responses.add(responses.GET,
+                          "https://maps.googleapis.com/maps/api/geocode/json",
+                          body='{"status":"OK","results":[]}',
+                          status=200,
+                          content_type="application/json")
+        client = googlemaps.Client(key="AIzaasdf",
+                                   queries_per_second=queries_per_second)
+        start = time.time()
+        for _ in query_range:
+            client.geocode("Sesame St.")
+        end = time.time()
+        self.assertTrue(start + 1 < end < start + 2)
 
     @responses.activate
     def test_key_sent(self):
