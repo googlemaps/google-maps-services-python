@@ -49,7 +49,7 @@ class Client(object):
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=None):
+                 queries_per_second=10):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -80,11 +80,9 @@ class Client(object):
             seconds.
         :type retry_timeout: int
 
-        :param queries_per_second: Manually specify the number of queries
-            per second permitted, namely 10 for free clients or larger
-            for Maps for Work. If the rate limit is reached, the client will
-            wait the appropriate amount of time before it runs the current
-            query.
+        :param queries_per_second: Number of queries per second permitted.
+            If the rate limit is reached, the client will wait the
+            appropriate amount of time before it runs the current query.
         :type queries_per_second: int
 
         :raises ValueError: when either credentials are missing, incomplete
@@ -132,10 +130,7 @@ class Client(object):
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
 
-        # If `queries_per_second` isn't provided, default maxlen to 0.
-        # This ensures `sent_times` evals to False when we check whether
-        # to rate limit.
-        self.sent_times = collections.deque("", queries_per_second or 0)
+        self.sent_times = collections.deque("", queries_per_second)
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
              base_url=_DEFAULT_BASE_URL, accepts_clientid=True, extract_body=None):
@@ -198,10 +193,8 @@ class Client(object):
             return self._get(url, params, first_request_time, retry_counter + 1,
                              base_url, accepts_clientid, extract_body)
 
-        # If `queries_per_second` was configured and at least that many
-        # queries have been made, check if the time of the earliest query
-        # is under a second ago - if so, sleep for the difference between
-        # it, and a second.
+        # Check if the time of the nth previous query (where n is queries_per_second)
+        # is under a second ago - if so, sleep for the difference.
         if self.sent_times and len(self.sent_times) == self.sent_times.maxlen:
             elapsed_since_earliest = time.time() - self.sent_times[0]
             if elapsed_since_earliest < 1:
