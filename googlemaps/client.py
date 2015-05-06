@@ -81,7 +81,7 @@ class Client(object):
         :type retry_timeout: int
 
         :param queries_per_second: Number of queries per second permitted.
-            If the rate limit is reached, the client will wait the
+            If the rate limit is reached, the client will sleep for the
             appropriate amount of time before it runs the current query.
         :type queries_per_second: int
 
