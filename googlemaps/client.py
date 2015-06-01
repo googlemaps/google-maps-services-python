@@ -230,7 +230,7 @@ class Client(object):
             params.append(("key", self.key))
             return path + "?" + urlencode_params(params)
 
-        raise ValueError("Must provide API key for this API. It does not accept"
+        raise ValueError("Must provide API key for this API. It does not accept "
                          "enterprise credentials.")
 
 
