@@ -164,7 +164,7 @@ def components(arg):
         return "|".join(arg)
 
     raise TypeError(
-        "Expected a string or dict for components, "
+        "Expected a dict for components, "
         "but got %s" % type(arg).__name__)
 
 
