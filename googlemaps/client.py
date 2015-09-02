@@ -47,7 +47,7 @@ class Client(object):
 
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
-                 retry_timeout=60):
+                 retry_timeout=60, requests_kwargs=None):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -82,6 +82,13 @@ class Client(object):
             or invalid.
         :raises NotImplementedError: if connect_timeout and read_timeout are
             used with a version of requests prior to 2.4.0.
+
+        :param requests_kwargs: Extra keyword arguments for the requests
+            library, which among other things allow for proxy auth to be
+            implemented. See the official requests docs for more info:
+            http://docs.python-requests.org/en/latest/api/#main-interface
+        :type requests_kwargs: dict
+
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
@@ -109,7 +116,12 @@ class Client(object):
         self.client_id = client_id
         self.client_secret = client_secret
         self.retry_timeout = timedelta(seconds=retry_timeout)
-
+        self.requests_kwargs = requests_kwargs or {}
+        self.requests_kwargs.update({
+            "headers": {"User-Agent": _USER_AGENT},
+            "timeout": self.timeout,
+            "verify": True,  # NOTE(cbro): verify SSL certs.
+        })
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
              base_url=_DEFAULT_BASE_URL, accepts_clientid=True, extract_body=None):
@@ -161,10 +173,7 @@ class Client(object):
         authed_url = self._generate_auth_url(url, params, accepts_clientid)
 
         try:
-            resp = requests.get(base_url + authed_url,
-                headers={"User-Agent": _USER_AGENT},
-                timeout=self.timeout,
-                verify=True) # NOTE(cbro): verify SSL certs.
+            resp = requests.get(base_url + authed_url, **self.requests_kwargs)
         except requests.exceptions.Timeout:
             raise googlemaps.exceptions.Timeout()
         except Exception as e:
