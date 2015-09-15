@@ -21,6 +21,7 @@ HTTP requests).
 """
 
 import base64
+import collections
 from datetime import datetime
 from datetime import timedelta
 import hashlib
@@ -47,11 +48,19 @@ class Client(object):
 
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
-                 retry_timeout=60, requests_kwargs=None):
+                 retry_timeout=60, requests_kwargs=None,
+                 queries_per_second=10):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
         :type key: string
+
+        :param client_id: (for Maps API for Work customers) Your client ID.
+        :type client_id: string
+
+        :param client_secret: (for Maps API for Work customers) Your client
+            secret (base64 encoded).
+        :type client_secret: string
 
         :param timeout: Combined connect and read timeout for HTTP requests, in
             seconds. Specify "None" for no timeout.
@@ -71,12 +80,10 @@ class Client(object):
             seconds.
         :type retry_timeout: int
 
-        :param client_id: (for Maps API for Work customers) Your client ID.
-        :type client_id: string
-
-        :param client_secret: (for Maps API for Work customers) Your client
-            secret (base64 encoded).
-        :type client_secret: string
+        :param queries_per_second: Number of queries per second permitted.
+            If the rate limit is reached, the client will sleep for the
+            appropriate amount of time before it runs the current query.
+        :type queries_per_second: int
 
         :raises ValueError: when either credentials are missing, incomplete
             or invalid.
@@ -122,6 +129,8 @@ class Client(object):
             "timeout": self.timeout,
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
+
+        self.sent_times = collections.deque("", queries_per_second)
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
              base_url=_DEFAULT_BASE_URL, accepts_clientid=True, extract_body=None):
@@ -184,10 +193,20 @@ class Client(object):
             return self._get(url, params, first_request_time, retry_counter + 1,
                              base_url, accepts_clientid, extract_body)
 
+        # Check if the time of the nth previous query (where n is queries_per_second)
+        # is under a second ago - if so, sleep for the difference.
+        if self.sent_times and len(self.sent_times) == self.sent_times.maxlen:
+            elapsed_since_earliest = time.time() - self.sent_times[0]
+            if elapsed_since_earliest < 1:
+                time.sleep(1 - elapsed_since_earliest)
+
         try:
             if extract_body:
-                return extract_body(resp)
-            return self._get_body(resp)
+                result = extract_body(resp)
+            else:
+                result = self._get_body(resp)
+            self.sent_times.append(time.time())
+            return result
         except googlemaps.exceptions._RetriableRequest:
             # Retry request.
             return self._get(url, params, first_request_time, retry_counter + 1,
