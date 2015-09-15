@@ -40,15 +40,17 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
+from datetime import datetime
 project = u'Python Client for Google Maps Services'
-copyright = u'2014, Google Inc.'
+copyright = u'%s, Google Inc.' % datetime.now().year
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '2.2-dev'
+from googlemaps import __version__
+version = __version__
 # The full version, including alpha/beta/rc tags.
 release = version
 
