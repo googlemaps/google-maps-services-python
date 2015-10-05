@@ -55,6 +55,7 @@ class TimezoneTest(_test.TestCase):
 
         def now(self):
             return datetime.datetime.fromtimestamp(1608)
+        utcnow = now
 
     @responses.activate
     @mock.patch("googlemaps.timezone.datetime", MockDatetime())

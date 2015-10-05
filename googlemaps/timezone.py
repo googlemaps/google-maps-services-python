@@ -45,7 +45,7 @@ def timezone(client, location, timestamp=None, language=None):
 
     location = convert.latlng(location)
 
-    timestamp = convert.time(timestamp or datetime.now())
+    timestamp = convert.time(timestamp or datetime.utcnow())
 
     params = {
         "location": location,
