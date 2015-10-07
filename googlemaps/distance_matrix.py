@@ -77,8 +77,8 @@ def distance_matrix(client, origins, destinations,
     """
 
     params = {
-        "origins": _convert_path(origins),
-        "destinations": _convert_path(destinations)
+        "origins": convert.waypoints(origins),
+        "destinations": convert.waypoints(destinations)
     }
 
     if mode:
@@ -116,15 +116,3 @@ def distance_matrix(client, origins, destinations,
         params["transit_routing_preference"] = transit_routing_preference
 
     return client._get("/maps/api/distancematrix/json", params)
-
-
-def _convert_path(waypoints):
-    # Handle the single-tuple case
-    if type(waypoints) is tuple:
-        waypoints = [waypoints]
-    else:
-        waypoints = as_list(waypoints)
-
-    return convert.join_list("|",
-            [(k if convert.is_string(k) else convert.latlng(k))
-                for k in waypoints])

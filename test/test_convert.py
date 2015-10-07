@@ -94,6 +94,24 @@ class ConvertTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             convert.bounds("test")
 
+    def test_waypoint(self):
+        p = {"lat": 3, "lng": 4}
+        self.assertEqual("3.000000,4.000000",
+                          convert.waypoint(p))
+        p = "Sydney"
+        self.assertEqual("Sydney",
+                          convert.waypoint(p))
+
+    def test_waypoints(self):
+        p = [{"lat": 3, "lng": 4}, "Sydney"]
+        self.assertEqual("3.000000,4.000000|Sydney",
+                          convert.waypoints(p))
+
+    def test_locations(self):
+        p = [(1, 2), {"lat": 3, "lng": 4}]
+        self.assertEqual("1.000000,2.000000|3.000000,4.000000",
+                          convert.waypoints(p))
+
     def test_polyline_decode(self):
         syd_mel_route = ("rvumEis{y[`NsfA~tAbF`bEj^h{@{KlfA~eA~`AbmEghAt~D|e@j"
                          "lRpO~yH_\\v}LjbBh~FdvCxu@`nCplDbcBf_B|wBhIfhCnqEb~D~"
