@@ -87,8 +87,8 @@ def directions(client, origin, destination,
     """
 
     params = {
-        "origin": _convert_waypoint(origin),
-        "destination": _convert_waypoint(destination)
+        "origin": convert.waypoint(origin),
+        "destination": convert.waypoint(destination)
     }
 
     if mode:
@@ -100,7 +100,7 @@ def directions(client, origin, destination,
 
     if waypoints:
         waypoints = convert.as_list(waypoints)
-        waypoints = [_convert_waypoint(waypoint) for waypoint in waypoints]
+        waypoints = [convert.waypoint(waypoint) for waypoint in waypoints]
 
         if optimize_waypoints:
             waypoints = ["optimize:true"] + waypoints
@@ -139,9 +139,3 @@ def directions(client, origin, destination,
         params["transit_routing_preference"] = transit_routing_preference
 
     return client._get("/maps/api/directions/json", params)["routes"]
-
-def _convert_waypoint(waypoint):
-    if not convert.is_string(waypoint):
-        return convert.latlng(waypoint)
-
-    return waypoint

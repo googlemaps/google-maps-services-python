@@ -43,14 +43,8 @@ def snap_to_roads(client, path, interpolate=False):
     :rtype: A list of snapped points.
     """
 
-    if type(path) is tuple:
-        path = [path]
-
-    path = convert.join_list("|",
-            [convert.latlng(k) for k in convert.as_list(path)])
-
     params = {
-        "path": path
+        "path": convert.locations(path)
     }
 
     if interpolate:
@@ -94,14 +88,8 @@ def snapped_speed_limits(client, path):
             points.
     """
 
-    if type(path) is tuple:
-        path = [path]
-
-    path = convert.join_list("|",
-            [convert.latlng(k) for k in convert.as_list(path)])
-
     params = {
-        "path": path
+        "path": convert.locations(path)
     }
 
     return client._get("/v1/speedLimits", params,

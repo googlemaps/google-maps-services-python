@@ -205,6 +205,66 @@ def bounds(arg):
         "Expected a bounds (southwest/northeast) dict, "
         "but got %s" % type(arg).__name__)
 
+def waypoint(arg):
+    """Converts a lat/lon pair or place to the format expected by the Google Maps
+    server.
+
+    For example:
+    p = {"lat" : -33.867486, "lng" : 151.206990}
+    convert.waypoint(p)
+    # '-33.867486,151.206990'
+    p = 'Sydney'
+    convert.waypoint(p)
+    # 'Sydney'
+
+    :param arg: The waypoint.
+    :type arg: dict or list or tuple or string
+    :rtype: basestring
+    """
+    return arg if is_string(arg) else latlng(arg)
+
+def waypoints(waypoints):
+    """Converts a lat/lon pairs or places to the format expected by the Google Maps
+    server.
+
+    For example:
+    p = [{"lat" : -33.867486, "lng" : 151.206990}, "Sydney"]
+    convert.waypoint(p)
+    # '-33.867486,151.206990|Sydney'
+
+    :param arg: The waypoint list.
+    :type arg: list
+    :rtype: basestring
+    """
+
+    # Handle the single-tuple case
+    if type(waypoints) is tuple:
+        waypoints = [waypoints]
+    else:
+        waypoints = as_list(waypoints)
+
+    return join_list("|", [waypoint(k) for k in waypoints])
+
+def locations(locations):
+    """Converts a lat/lon pairs to the format expected by the Google Maps
+    server.
+
+    For example:
+    p = [{"lat" : -33.867486, "lng" : 151.206990}, {"lat" : -33.867486, "lng" : 151.306990}]
+    convert.waypoint(p)
+    # '-33.867486,151.206990|-33.867486,151.206990'
+
+    :param arg: The location list.
+    :type arg: list
+    :rtype: basestring
+    """
+
+    # Handle the single-tuple case
+    if type(locations) is tuple:
+        locations = [locations]
+    else:
+        locations = as_list(locations)
+    return join_list("|", [latlng(k) for k in locations])
 
 def decode_polyline(polyline):
     """Decodes a Polyline string into a list of lat/lng dicts.
