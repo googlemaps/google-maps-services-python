@@ -1,7 +1,7 @@
 # Compiled source #
 ###################
 *.pyc
- 
+
 # OS generated files #
 ######################
 .DS_Store
@@ -15,7 +15,13 @@ Thumbs.db
 # Sphinx documentation #
 ########################
 docs/_build/
+generated_docs/
 
+# Release generated files #
+###########################
+.eggs/
+build/
+dist/
 
 # vim
 *.swp
