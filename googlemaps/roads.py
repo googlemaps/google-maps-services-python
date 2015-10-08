@@ -36,11 +36,10 @@ def snap_to_roads(client, path, interpolate=False):
         location is a string, dict, list, or tuple
 
     :param interpolate: Whether to interpolate a path to include all points
-            forming the full road-geometry. When true, additional interpolated
-            points will also be returned, resulting in a path that smoothly
-            follows the geometry of the road, even around corners and through
-            tunnels.  Interpolated paths may contain more points than the
-            original path.
+        forming the full road-geometry. When true, additional interpolated
+        points will also be returned, resulting in a path that smoothly follows
+        the geometry of the road, even around corners and through tunnels.
+        Interpolated paths may contain more points than the original path.
     :type interpolate: bool
 
     :rtype: A list of snapped points.
@@ -61,7 +60,7 @@ def speed_limits(client, place_ids):
     """Returns the posted speed limit (in km/h) for given road segments.
 
     :param place_ids: The Place ID of the road segment. Place IDs are returned
-            by the snap_to_roads function. You can pass up to 100 Place IDs.
+        by the snap_to_roads function. You can pass up to 100 Place IDs.
     :type place_ids: str or list
 
     :rtype: list of speed limits.
@@ -85,8 +84,7 @@ def snapped_speed_limits(client, path):
     :type path: a single location, or a list of locations, where a
         location is a string, dict, list, or tuple
 
-    :rtype: a dict with both a list of speed limits and a list of the snapped
-            points.
+    :rtype: dict with a list of speed limits and a list of the snapped points.
     """
 
     params = {"path": convert.location_list(path)}

@@ -28,7 +28,7 @@ def directions(client, origin, destination,
     """Get directions between an origin point and a destination point.
 
     :param origin: The address or latitude/longitude value from which you wish
-            to calculate directions.
+        to calculate directions.
     :type origin: string, dict, list, or tuple
 
     :param destination: The address or latitude/longitude value from which

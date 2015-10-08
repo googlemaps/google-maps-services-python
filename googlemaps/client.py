@@ -144,35 +144,35 @@ class Client(object):
         :param params: HTTP GET parameters.
         :type params: dict or list of key/value tuples
 
-        :param first_request_time: The time of the first request (None if no retries
-                have occurred).
+        :param first_request_time: The time of the first request (None if no
+            retries have occurred).
         :type first_request_time: datetime.datetime
 
         :param retry_counter: The number of this retry, or zero for first attempt.
         :type retry_counter: int
 
         :param base_url: The base URL for the request. Defaults to the Maps API
-                server. Should not have a trailing slash.
+            server. Should not have a trailing slash.
         :type base_url: string
 
         :param accepts_clientid: Whether this call supports the client/signature
-                params. Some APIs require API keys (e.g. Roads).
+            params. Some APIs require API keys (e.g. Roads).
         :type accepts_clientid: bool
 
         :param extract_body: A function that extracts the body from the request.
-                If the request was not successful, the function should raise a
-                googlemaps.HTTPError or googlemaps.ApiError as appropriate.
+            If the request was not successful, the function should raise a
+            googlemaps.HTTPError or googlemaps.ApiError as appropriate.
         :type extract_body: function
 
         :param requests_kwargs: Same extra keywords arg for requests as per
-                __init__, but provided here to allow overriding internally
-                on a per-request basis.
+            __init__, but provided here to allow overriding internally on a
+            per-request basis.
         :type requests_kwargs: dict
 
         :raises ApiError: when the API returns an error.
         :raises Timeout: if the request timed out.
         :raises TransportError: when something went wrong while trying to
-                exceute a request.
+            exceute a request.
         """
 
         if not first_request_time:
@@ -249,11 +249,15 @@ class Client(object):
     def _generate_auth_url(self, path, params, accepts_clientid):
         """Returns the path and query string portion of the request URL, first
         adding any necessary parameters.
+
         :param path: The path portion of the URL.
         :type path: string
+
         :param params: URL parameters.
         :type params: dict or list of key/value tuples
+
         :rtype: string
+
         """
         # Deterministic ordering through sorting by key.
         # Useful for tests, and in the future, any caching.
@@ -310,10 +314,13 @@ Client.places_autocomplete = places_autocomplete
 
 def sign_hmac(secret, payload):
     """Returns a base64-encoded HMAC-SHA1 signature of a given string.
+
     :param secret: The key used for the signature, base64 encoded.
     :type secret: string
+
     :param payload: The payload to sign.
     :type payload: string
+
     :rtype: string
     """
     payload = payload.encode('ascii', 'strict')
@@ -325,8 +332,11 @@ def sign_hmac(secret, payload):
 
 def urlencode_params(params):
     """URL encodes the parameters.
+
     :param params: The parameters
     :type params: list of key/value tuples.
+
+    :rtype: string
     """
     # urlencode does not handle unicode strings in Python 2.
     # Firstly, normalize the values so they get encoded correctly.

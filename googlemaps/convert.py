@@ -91,6 +91,7 @@ def location_list(arg):
 
     :param arg: The lat/lng list.
     :type arg: list
+
     :rtype: string
     """
     if isinstance(arg, tuple):
@@ -102,10 +103,13 @@ def location_list(arg):
 
 def join_list(sep, arg):
     """If arg is list-like, then joins it with sep.
+
     :param sep: Separator string.
     :type sep: string
+
     :param arg: Value to coerce into a list.
     :type arg: string or list of strings
+
     :rtype: string
     """
     return sep.join(as_list(arg))
@@ -114,6 +118,7 @@ def join_list(sep, arg):
 def as_list(arg):
     """Coerces arg into a list. If arg is already list-like, returns arg.
     Otherwise, returns a one-element list containing arg.
+
     :rtype: list
     """
     if _is_list(arg):
@@ -165,8 +170,10 @@ def _has_method(arg, method):
     """Returns true if the given object has a method with the given name.
 
     :param arg: the object
+
     :param method: the method name
     :type method: string
+
     :rtype: bool
     """
     return hasattr(arg, method) and callable(getattr(arg, method))
@@ -183,6 +190,7 @@ def components(arg):
 
     :param arg: The component filter.
     :type arg: dict
+
     :rtype: basestring
     """
     if isinstance(arg, dict):

@@ -30,24 +30,22 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
     :param address: The address to geocode.
     :type address: string
 
-    :param components: A component filter for which you wish to obtain a geocode,
-                       for example:
-                       ``{'administrative_area': 'TX','country': 'US'}``
+    :param components: A component filter for which you wish to obtain a
+        geocode, for example: ``{'administrative_area': 'TX','country': 'US'}``
     :type components: dict
 
     :param bounds: The bounding box of the viewport within which to bias geocode
-                   results more prominently.
+        results more prominently.
     :type bounds: string or dict with northeast and southwest keys.
 
     :param region: The region code, specified as a ccTLD ("top-level domain")
-                   two-character value.
+        two-character value.
     :type region: string
 
     :param language: The language in which to return results.
     :type langauge: string
 
     :rtype: list of geocoding results.
-
     """
 
     params = {}
@@ -77,7 +75,7 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     human-readable address.
 
     :param latlng: The latitude/longitude value for which you wish to obtain the
-                   closest, human-readable address.
+        closest, human-readable address.
     :type latlng: string, dict, list, or tuple
 
     :param result_type: One or more address types to restrict results to.
@@ -90,7 +88,6 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     :type langauge: string
 
     :rtype: list of reverse geocoding results.
-
     """
 
     params = {"latlng": convert.latlng(latlng)}

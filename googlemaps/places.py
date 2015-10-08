@@ -24,13 +24,13 @@ def places(client, query, location=None, radius=None, language=None,
            min_price=None, max_price=None, open_now=False, types=None,
            page_token=None):
     """
-    Performs text search for places.
+    Places search.
 
     :param query: The text string on which to search, for example: "restaurant".
     :type query: string
 
     :param location: The latitude/longitude value for which you wish to obtain the
-                     closest, human-readable address.
+        closest, human-readable address.
     :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
@@ -40,32 +40,31 @@ def places(client, query, location=None, radius=None, language=None,
     :type langauge: string
 
     :param min_price: Restricts results to only those places with no less than
-                      this price level. Valid values are in the range from 0
-                      (most affordable) to 4 (most expensive).
+        this price level. Valid values are in the range from 0 (most affordable)
+        to 4 (most expensive).
     :type min_price: int
 
     :param max_price: Restricts results to only those places with no greater
-                      than this price level. Valid values are in the range
-                      from 0 (most affordable) to 4 (most expensive).
+        than this price level. Valid values are in the range from 0 (most
+        affordable) to 4 (most expensive).
     :type max_price: int
 
     :param open_now: Return only those places that are open for business at
-                     the time the query is sent.
+        the time the query is sent.
     :type open_now: bool
 
     :param types: Restricts the results to places matching at least one of the
-                  specified types.
+        specified types.
     :type types: string or list of strings
 
     :param page_token: Token from a previous search that when provided will
-                       returns the next page of results for the same search.
+        returns the next page of results for the same search.
     :type page_token: string
 
     :rtype: result dict with the following keys:
-            results: list of places
-            html_attributions: set of attributions which must be displayed
-            next_page_token: token for retrieving the next page of results
-
+        results: list of places
+        html_attributions: set of attributions which must be displayed
+        next_page_token: token for retrieving the next page of results
     """
     params = {"query": query}
 
@@ -92,16 +91,15 @@ def place(client, place_id, language=None):
     Comprehensive details for an individual place.
 
     :param place_id: A textual identifier that uniquely identifies a place,
-                     returned from a Places search.
+        returned from a Places search.
     :type place_id: string
 
     :param language: The language in which to return results.
     :type langauge: string
 
     :rtype: result dict with the following keys:
-            result: dict containing place details
-            html_attributions: set of attributions which must be displayed
-
+        result: dict containing place details
+        html_attributions: set of attributions which must be displayed
     """
     params = {"placeid": place_id}
     if language:
@@ -114,7 +112,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     Downloads a photo from the Places API.
 
     :param photo_reference: A string identifier that uniquely identifies a
-      photo, as provided by either a Places search or Places detail request.
+        photo, as provided by either a Places search or Places detail request.
     :type photo_reference: string
 
     :param max_width: Specifies the maximum desired width, in pixels.
@@ -124,16 +122,15 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     :type max_height: int
 
     :rtype: iterator containing the raw image data, which typically can be
-      used to save an image file locally, eg:
+        used to save an image file locally, eg:
 
-    ```
-    f = open(local_filename, 'wb')
-    for chunk in client.photo(photo_reference, max_width=100):
-        if chunk:
-            f.write(chunk)
-    f.close()
-    ```
-
+        ```
+        f = open(local_filename, 'wb')
+        for chunk in client.photo(photo_reference, max_width=100):
+            if chunk:
+                f.write(chunk)
+        f.close()
+        ```
     """
 
     if not (max_width or max_height):
@@ -165,13 +162,12 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     :type input_text: string
 
     :param offset: The position, in the input term, of the last character
-                   that the service uses to match predictions. For example,
-                   if the input is 'Google' and the offset is 3, the
-                   service will match on 'Goo'.
+        that the service uses to match predictions. For example, if the input
+        is 'Google' and the offset is 3, the service will match on 'Goo'.
     :type offset: int
 
     :param location: The latitude/longitude value for which you wish to obtain the
-                     closest, human-readable address.
+        closest, human-readable address.
     :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
@@ -181,7 +177,6 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     :type langauge: string
 
     :rtype: list of predictions
-
     """
 
     params = {"input": input_text}
