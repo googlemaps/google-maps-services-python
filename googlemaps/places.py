@@ -123,7 +123,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     :type max_height: int
 
     :rtype: iterator containing the raw image data, which typically can be
-        used to save an image file locally, eg:
+        used to save an image file locally. For example:
 
         ```
         f = open(local_filename, 'wb')
