@@ -133,29 +133,41 @@ class Client(object):
         self.sent_times = collections.deque("", queries_per_second)
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=_DEFAULT_BASE_URL, accepts_clientid=True, extract_body=None):
+             base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
+             extract_body=None, requests_kwargs=None):
         """Performs HTTP GET request with credentials, returning the body as
         JSON.
 
         :param url: URL path for the request. Should begin with a slash.
         :type url: string
+
         :param params: HTTP GET parameters.
         :type params: dict or list of key/value tuples
+
         :param first_request_time: The time of the first request (None if no retries
                 have occurred).
         :type first_request_time: datetime.datetime
+
         :param retry_counter: The number of this retry, or zero for first attempt.
         :type retry_counter: int
+
         :param base_url: The base URL for the request. Defaults to the Maps API
                 server. Should not have a trailing slash.
         :type base_url: string
+
         :param accepts_clientid: Whether this call supports the client/signature
                 params. Some APIs require API keys (e.g. Roads).
         :type accepts_clientid: bool
+
         :param extract_body: A function that extracts the body from the request.
                 If the request was not successful, the function should raise a
                 googlemaps.HTTPError or googlemaps.ApiError as appropriate.
         :type extract_body: function
+
+        :param requests_kwargs: Same extra keywords arg for requests as per
+                __init__, but provided here to allow overriding internally
+                on a per-request basis.
+        :type requests_kwargs: dict
 
         :raises ApiError: when the API returns an error.
         :raises Timeout: if the request timed out.
@@ -181,8 +193,11 @@ class Client(object):
 
         authed_url = self._generate_auth_url(url, params, accepts_clientid)
 
+        # Default to the client-level self.requests_kwargs, with method-level
+        # requests_kwargs arg overriding.
+        requests_kwargs = dict(self.requests_kwargs, **(requests_kwargs or {}))
         try:
-            resp = requests.get(base_url + authed_url, **self.requests_kwargs)
+            resp = requests.get(base_url + authed_url, **requests_kwargs)
         except requests.exceptions.Timeout:
             raise googlemaps.exceptions.Timeout()
         except Exception as e:
@@ -272,6 +287,13 @@ from googlemaps.timezone import timezone
 from googlemaps.roads import snap_to_roads
 from googlemaps.roads import speed_limits
 from googlemaps.roads import snapped_speed_limits
+from googlemaps.places import places
+from googlemaps.places import places_nearby
+from googlemaps.places import places_radar
+from googlemaps.places import place
+from googlemaps.places import photo
+from googlemaps.places import autocomplete
+from googlemaps.places import autocomplete_query
 
 Client.directions = directions
 Client.distance_matrix = distance_matrix
@@ -283,6 +305,13 @@ Client.timezone = timezone
 Client.snap_to_roads = snap_to_roads
 Client.speed_limits = speed_limits
 Client.snapped_speed_limits = snapped_speed_limits
+Client.places = places
+Client.places_nearby = places_nearby
+Client.places_radar = places_radar
+Client.place = place
+Client.photo = photo
+Client.autocomplete = autocomplete
+Client.autocomplete_query = autocomplete_query
 
 
 def sign_hmac(secret, payload):
