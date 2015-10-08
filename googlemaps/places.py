@@ -175,7 +175,7 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
-    :type radius: int
+    :type radius: number
 
     :param language: The language in which to return results.
     :type langauge: string
