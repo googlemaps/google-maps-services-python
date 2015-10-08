@@ -26,7 +26,7 @@ def elevation(client, locations):
     earth, including depth locations on the ocean floor (which return negative
     values)
 
-    :param locations: Array of latitude/longitude values from which you wish
+    :param locations: List of latitude/longitude values from which you wish
         to calculate elevation data.
     :type locations: a single location, or a list of locations, where a
         location is a string, dict, list, or tuple
