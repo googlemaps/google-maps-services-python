@@ -77,14 +77,14 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     human-readable address.
 
     :param latlng: The latitude/longitude value for which you wish to obtain the
-                   closest, human-readable address
+                   closest, human-readable address.
     :type latlng: dict or list or tuple
 
     :param result_type: One or more address types to restrict results to.
-    :type result_type: string or list of string
+    :type result_type: string or list of strings
 
     :param location_type: One or more location types to restrict results to.
-    :type location_type: list of string
+    :type location_type: list of strings
 
     :param language: The language in which to return results.
     :type langauge: string

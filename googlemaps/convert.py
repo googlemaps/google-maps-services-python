@@ -81,7 +81,7 @@ def join_list(sep, arg):
     :param sep: Separator string.
     :type sep: string
     :param arg: Value to coerce into a list.
-    :type arg: string or list of string
+    :type arg: string or list of strings
     :rtype: string
     """
     return sep.join(as_list(arg))
