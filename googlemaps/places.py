@@ -115,11 +115,10 @@ def place(client, place_id, language=None):
 
 def photo(client, photo_reference, max_width=None, max_height=None):
     """
-    Downloads a places photo.
+    Downloads a photo from the Places API.
 
     :param photo_reference: A string identifier that uniquely identifies a
-                            photo, as provided by either a Places search or
-                            Places detail request.
+      photo, as provided by either a Places search or Places detail request.
     :type photo_reference: string
 
     :param max_width: Specifies the maximum desired width, in pixels.
@@ -128,7 +127,16 @@ def photo(client, photo_reference, max_width=None, max_height=None):
     :param max_height: Specifies the maximum desired height, in pixels.
     :type max_height: int
 
-    :rtype: iterator containing the raw image data.
+    :rtype: iterator containing the raw image data, which typically can be
+      used to save an image file locally, eg:
+
+    ```
+    f = open(local_filename, 'wb')
+    for chunk in client.photo(photo_reference, max_width=100):
+        if chunk:
+            f.write(chunk)
+    f.close()
+    ```
 
     """
 
