@@ -72,7 +72,7 @@ class PlacesTest(_test.TestCase):
         responses.add(responses.GET, url, status=200)
 
         ref = 'CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0'
-        response = self.client.photo(ref, max_width=100)
+        response = self.client.places_photo(ref, max_width=100)
 
         self.assertTrue(isinstance(response, GeneratorType))
         self.assertEqual(1, len(responses.calls))
@@ -86,7 +86,7 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "predictions": []}',
                       status=200, content_type='application/json')
 
-        self.client.autocomplete('pizza near New York')
+        self.client.places_autocomplete('pizza near New York')
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?input=pizza+near+New+York&key=%s' %

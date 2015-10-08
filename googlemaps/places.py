@@ -111,7 +111,7 @@ def place(client, place_id, language=None):
     return client._get("/maps/api/place/details/json", params)
 
 
-def photo(client, photo_reference, max_width=None, max_height=None):
+def places_photo(client, photo_reference, max_width=None, max_height=None):
     """
     Downloads a photo from the Places API.
 
@@ -157,8 +157,8 @@ def photo(client, photo_reference, max_width=None, max_height=None):
     return response.iter_content()
 
 
-def autocomplete(client, input_text, offset=None, location=None,
-                       radius=None, language=None):
+def places_autocomplete(client, input_text, offset=None, location=None,
+                        radius=None, language=None):
     """
     Returns Place predictions given a textual search query, such as
     "pizza near New York", and optional geographic bounds.

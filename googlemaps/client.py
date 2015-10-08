@@ -289,8 +289,8 @@ from googlemaps.roads import speed_limits
 from googlemaps.roads import snapped_speed_limits
 from googlemaps.places import places
 from googlemaps.places import place
-from googlemaps.places import photo
-from googlemaps.places import autocomplete
+from googlemaps.places import places_photo
+from googlemaps.places import places_autocomplete
 
 Client.directions = directions
 Client.distance_matrix = distance_matrix
@@ -304,8 +304,8 @@ Client.speed_limits = speed_limits
 Client.snapped_speed_limits = snapped_speed_limits
 Client.places = places
 Client.place = place
-Client.photo = photo
-Client.autocomplete = autocomplete
+Client.places_photo = places_photo
+Client.places_autocomplete = places_autocomplete
 
 
 def sign_hmac(secret, payload):
