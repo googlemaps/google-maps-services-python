@@ -15,7 +15,7 @@
 # the License.
 #
 
-"""Performs requests to the Google Maps Places API."""
+"""Performs requests to the Google Places API."""
 
 from googlemaps import convert
 
