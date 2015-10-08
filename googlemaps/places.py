@@ -68,10 +68,8 @@ def places(client, query, location=None, radius=None, language=None,
             next_page_token: token for retrieving the next page of results
 
     """
-    params = {}
+    params = {"query": query}
 
-    if query:
-        params["query"] = query
     if location:
         params["location"] = convert.latlng(location)
     if radius:
