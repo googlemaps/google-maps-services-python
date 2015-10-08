@@ -54,7 +54,8 @@ def places(client, query, location=None, radius=None, language=None,
     :type open_now: bool
 
     :param types: Restricts the results to places matching at least one of the
-        specified types.
+        specified types. The full list of supported types is available here:
+        https://developers.google.com/places/supported_types
     :type types: string or list of strings
 
     :param page_token: Token from a previous search that when provided will
