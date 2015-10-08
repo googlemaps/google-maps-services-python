@@ -45,59 +45,13 @@ class PlacesTest(_test.TestCase):
 
         self.client.places('restaurant', location=self.location,
                            radius=self.radius, language=self.language,
-                           min_price=1, max_price=4, open_now=True,
-                           types=self.types)
+                           min_price=1, max_price=4, open_now=True)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?language=en-AU&location=-33.867460%%2C151.207090&'
-                            'maxprice=1&minprice=1&opennow=true&query=restaurant&'
-                            'radius=100&types=liquor_store%%7Cmosque&key=%s'
+                            'maxprice=4&minprice=1&opennow=true&query=restaurant&'
+                            'radius=100&key=%s'
                             % (url, self.key), responses.calls[0].request.url)
-
-    @responses.activate
-    def test_places_nearby_search(self):
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
-        responses.add(responses.GET, url,
-                      body='{"status": "OK", "results": [], "html_attributions": []}',
-                      status=200, content_type='application/json')
-
-        self.client.places_nearby(self.location, keyword='foo',
-                                  language=self.language, min_price=1,
-                                  max_price=4, name='bar', open_now=True,
-                                  rank_by='distance', types=self.types)
-
-        self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('%s?keyword=foo&language=en-AU&location=-33.867460%%2C151.207090&'
-                            'maxprice=4&minprice=1&name=bar&opennow=true&rankby=distance&'
-                            'types=liquor_store%%7Cmosque&key=%s'
-                            % (url, self.key), responses.calls[0].request.url)
-
-        with self.assertRaises(ValueError):
-            self.client.places_nearby(self.location, rank_by="distance")
-
-        with self.assertRaises(ValueError):
-            self.client.places_nearby(self.location, rank_by="distance",
-                                      keyword='foo', radius=self.radius)
-
-    @responses.activate
-    def test_places_radar_search(self):
-        url = 'https://maps.googleapis.com/maps/api/place/radarsearch/json'
-        responses.add(responses.GET, url,
-                      body='{"status": "OK", "results": [], "html_attributions": []}',
-                      status=200, content_type='application/json')
-
-        self.client.places_radar(self.location, self.radius, keyword='foo',
-                                 min_price=1, max_price=4, name='bar',
-                                 open_now=True, types=self.types)
-
-        self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('%s?keyword=foo&location=-33.867460%%2C151.207090&'
-                            'maxprice=1&minprice=1&name=bar&opennow=true&radius=100&'
-                            'types=liquor_store%%7Cmosque&key=%s'
-                            % (url, self.key), responses.calls[0].request.url)
-
-        with self.assertRaises(ValueError):
-            self.client.places_radar(self.location, self.radius)
 
     @responses.activate
     def test_place_detail(self):
@@ -127,29 +81,12 @@ class PlacesTest(_test.TestCase):
 
     @responses.activate
     def test_autocomplete(self):
-        url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
-        responses.add(responses.GET, url,
-                      body='{"status": "OK", "predictions": []}',
-                      status=200, content_type='application/json')
-
-        self.client.autocomplete('Google', offset=3, location=self.location,
-                                 radius=self.radius, language=self.language,
-                                 types='geocode', components={'country': 'au'})
-
-        self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('%s?components=country%%3Aau&input=Google&language=en-AU&'
-                            'location=-33.867460%%2C151.207090&offset=3&radius=100&'
-                            'types=geocode&key=%s' % (url, self.key),
-                            responses.calls[0].request.url)
-
-    @responses.activate
-    def test_autocomplete_query(self):
         url = 'https://maps.googleapis.com/maps/api/place/queryautocomplete/json'
         responses.add(responses.GET, url,
                       body='{"status": "OK", "predictions": []}',
                       status=200, content_type='application/json')
 
-        self.client.autocomplete_query('pizza near New York')
+        self.client.autocomplete('pizza near New York')
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?input=pizza+near+New+York&key=%s' %

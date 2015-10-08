@@ -288,12 +288,9 @@ from googlemaps.roads import snap_to_roads
 from googlemaps.roads import speed_limits
 from googlemaps.roads import snapped_speed_limits
 from googlemaps.places import places
-from googlemaps.places import places_nearby
-from googlemaps.places import places_radar
 from googlemaps.places import place
 from googlemaps.places import photo
 from googlemaps.places import autocomplete
-from googlemaps.places import autocomplete_query
 
 Client.directions = directions
 Client.distance_matrix = distance_matrix
@@ -306,12 +303,9 @@ Client.snap_to_roads = snap_to_roads
 Client.speed_limits = speed_limits
 Client.snapped_speed_limits = snapped_speed_limits
 Client.places = places
-Client.places_nearby = places_nearby
-Client.places_radar = places_radar
 Client.place = place
 Client.photo = photo
 Client.autocomplete = autocomplete
-Client.autocomplete_query = autocomplete_query
 
 
 def sign_hmac(secret, payload):
