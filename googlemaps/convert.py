@@ -44,10 +44,14 @@ def latlng(arg):
     convert.latlng(sydney)
     # '-33.8674869,151.2069902'
 
+    For convenience, also accepts lat/lon pair as a string, in
+    which case it's returned unchanged.
+
     :param arg: The lat/lon pair.
-    :type arg: dict or list or tuple
+    :type arg: string or dict or list or tuple
     """
-    return "%f,%f" % normalize_lat_lng(arg)
+    return arg if is_string(arg) else "%f,%f" % normalize_lat_lng(arg)
+
 
 def normalize_lat_lng(arg):
     """Take the various lat/lng representations and return a tuple.
@@ -74,6 +78,26 @@ def normalize_lat_lng(arg):
     raise TypeError(
         "Expected a lat/lng dict or tuple, "
         "but got %s" % type(arg).__name__)
+
+
+def location_list(arg):
+    """Joins a list of locations into a pipe separated string, handling
+    the various formats supported for lat/lng values.
+
+    For example:
+    p = [{"lat" : -33.867486, "lng" : 151.206990}, "Sydney"]
+    convert.waypoint(p)
+    # '-33.867486,151.206990|Sydney'
+
+    :param arg: The lat/lng list.
+    :type arg: list
+    :rtype: string
+    """
+    if isinstance(arg, tuple):
+        # Handle the single-tuple lat/lng case.
+        return latlng(arg)
+    else:
+        return "|".join([latlng(location) for location in as_list(arg)])
 
 
 def join_list(sep, arg):
@@ -107,6 +131,7 @@ def _is_list(arg):
             and _has_method(arg, "__getitem__")
             or _has_method(arg, "__iter__"))
 
+
 def is_string(val):
     """Determines whether the passed value is a string, safe for 2/3."""
     try:
@@ -114,6 +139,7 @@ def is_string(val):
     except NameError:
         return isinstance(val, str)
     return isinstance(val, basestring)
+
 
 def time(arg):
     """Converts the value into a unix time (seconds since unix epoch).

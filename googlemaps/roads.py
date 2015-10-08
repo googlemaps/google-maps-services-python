@@ -20,7 +20,9 @@
 import googlemaps
 from googlemaps import convert
 
+
 _ROADS_BASE_URL = "https://roads.googleapis.com"
+
 
 def snap_to_roads(client, path, interpolate=False):
     """Snaps a path to the most likely roads travelled.
@@ -29,8 +31,9 @@ def snap_to_roads(client, path, interpolate=False):
     set of data with the points snapped to the most likely roads the vehicle
     was traveling along.
 
-    :param path: The path to be snapped. A list of latitude/longitude tuples.
-    :type path: list
+    :param path: The path to be snapped.
+    :type path: a single location, or a list of locations, where a
+        location is a string, dict, list, or tuple
 
     :param interpolate: Whether to interpolate a path to include all points
             forming the full road-geometry. When true, additional interpolated
@@ -43,15 +46,7 @@ def snap_to_roads(client, path, interpolate=False):
     :rtype: A list of snapped points.
     """
 
-    if type(path) is tuple:
-        path = [path]
-
-    path = convert.join_list("|",
-            [convert.latlng(k) for k in convert.as_list(path)])
-
-    params = {
-        "path": path
-    }
+    params = {"path": convert.location_list(path)}
 
     if interpolate:
         params["interpolate"] = "true"
@@ -86,23 +81,15 @@ def snapped_speed_limits(client, path):
     The provided points will first be snapped to the most likely roads the
     vehicle was traveling along.
 
-    :param path: The path of points to be snapped. A list of (or single)
-            latitude/longitude tuples.
-    :type path: list or tuple
+    :param path: The path of points to be snapped.
+    :type path: a single location, or a list of locations, where a
+        location is a string, dict, list, or tuple
 
     :rtype: a dict with both a list of speed limits and a list of the snapped
             points.
     """
 
-    if type(path) is tuple:
-        path = [path]
-
-    path = convert.join_list("|",
-            [convert.latlng(k) for k in convert.as_list(path)])
-
-    params = {
-        "path": path
-    }
+    params = {"path": convert.location_list(path)}
 
     return client._get("/v1/speedLimits", params,
                        base_url=_ROADS_BASE_URL,

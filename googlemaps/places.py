@@ -31,7 +31,7 @@ def places(client, query, location=None, radius=None, language=None,
 
     :param location: The latitude/longitude value for which you wish to obtain the
                      closest, human-readable address.
-    :type location: dict or list or tuple
+    :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
     :type radius: int
@@ -82,7 +82,7 @@ def places_nearby(client, location, radius=None, keyword=None, language=None,
 
     :param location: The latitude/longitude value for which you wish to obtain the
                      closest, human-readable address.
-    :type location: dict or list or tuple
+    :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
     :type radius: int
@@ -152,7 +152,7 @@ def places_radar(client, location, radius, keyword=None, min_price=None,
 
     :param location: The latitude/longitude value for which you wish to obtain the
                      closest, human-readable address.
-    :type location: dict or list or tuple
+    :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
     :type radius: int
@@ -309,7 +309,7 @@ def autocomplete(client, input_text, offset=None, location=None, radius=None,
 
     :param location: The latitude/longitude value for which you wish to obtain the
                      closest, human-readable address.
-    :type location: dict or list or tuple
+    :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
     :type radius: int
@@ -351,7 +351,7 @@ def autocomplete_query(client, input_text, offset=None, location=None,
 
     :param location: The latitude/longitude value for which you wish to obtain the
                      closest, human-readable address.
-    :type location: dict or list or tuple
+    :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
     :type radius: int

@@ -26,20 +26,36 @@ from googlemaps import convert
 class ConvertTest(unittest.TestCase):
 
     def test_latlng(self):
+        expected = "1.000000,2.000000"
         ll = {"lat": 1, "lng": 2}
-        self.assertEqual("1.000000,2.000000", convert.latlng(ll))
+        self.assertEqual(expected, convert.latlng(ll))
 
         ll = [1, 2]
-        self.assertEqual("1.000000,2.000000", convert.latlng(ll))
+        self.assertEqual(expected, convert.latlng(ll))
 
         ll = (1, 2)
-        self.assertEqual("1.000000,2.000000", convert.latlng(ll))
+        self.assertEqual(expected, convert.latlng(ll))
+
+        self.assertEqual(expected, convert.latlng(expected))
 
         with self.assertRaises(TypeError):
             convert.latlng(1)
 
+    def test_location_list(self):
+        expected = "1.000000,2.000000|1.000000,2.000000"
+        ll = [{"lat": 1, "lng": 2}, {"lat": 1, "lng": 2}]
+        self.assertEqual(expected, convert.location_list(ll))
+
+        ll = [[1, 2], [1, 2]]
+        self.assertEqual(expected, convert.location_list(ll))
+
+        ll = [(1, 2), [1, 2]]
+        self.assertEqual(expected, convert.location_list(ll))
+
+        self.assertEqual(expected, convert.location_list(expected))
+
         with self.assertRaises(TypeError):
-            convert.latlng("test")
+            convert.latlng(1)
 
     def test_join_list(self):
         self.assertEqual("asdf", convert.join_list("|", "asdf"))

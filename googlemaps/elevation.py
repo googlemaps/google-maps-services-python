@@ -16,7 +16,9 @@
 #
 
 """Performs requests to the Google Maps Elevation API."""
+
 from googlemaps import convert
+
 
 def elevation(client, locations):
     """
@@ -24,33 +26,27 @@ def elevation(client, locations):
     earth, including depth locations on the ocean floor (which return negative
     values)
 
-    :param locations: A single latitude/longitude tuple or dict, or a list of
-            latitude/longitude tuples or dicts from which you wish to calculate
-            elevation data.
-    :type locations: list or tuple
+    :param locations: Array of latitude/longitude values from which you wish
+        to calculate elevation data.
+    :type locations: a single location, or a list of locations, where a
+        location is a string, dict, list, or tuple
 
     :rtype: list of elevation data responses
     """
-    params = {}
-    if type(locations) is tuple:
-        locations = [locations]
-
-    params["locations"] = convert.join_list("|",
-            [convert.latlng(k) for k in convert.as_list(locations)])
-
+    params = {"locations": convert.location_list(locations)}
     return client._get("/maps/api/elevation/json", params)["results"]
+
 
 def elevation_along_path(client, path, samples):
     """
     Provides elevation data sampled along a path on the surface of the earth.
 
-    :param path: A encoded polyline string, or a list of
-            latitude/longitude tuples from which you wish to calculate
-            elevation data.
-    :type path: str or list
+    :param path: A encoded polyline string, or a list of latitude/longitude
+        values from which you wish to calculate elevation data.
+    :type path: string, dict, list, or tuple
 
     :param samples: The number of sample points along a path for which to
-            return elevation data.
+        return elevation data.
     :type samples: int
 
     :rtype: list of elevation data responses
@@ -59,8 +55,7 @@ def elevation_along_path(client, path, samples):
     if type(path) is str:
         path = "enc:%s" % path
     else:
-        path = convert.join_list("|",
-                [convert.latlng(k) for k in convert.as_list(path)])
+        path = convert.location_list(path)
 
     params = {
         "path": path,

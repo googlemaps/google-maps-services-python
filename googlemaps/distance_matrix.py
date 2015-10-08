@@ -26,17 +26,19 @@ def distance_matrix(client, origins, destinations,
                     transit_routing_preference=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
-    :param origins: One or more addresses and/or latitude/longitude values,
+    :param origins: One or more locations and/or latitude/longitude values,
             from which to calculate distance and time. If you pass an address
             as a string, the service will geocode the string and convert it to
             a latitude/longitude coordinate to calculate directions.
-    :type origins: list of strings, dicts or tuples
+    :type origins: a single location, or a list of locations, where a
+        location is a string, dict, list, or tuple
 
     :param destinations: One or more addresses and/or lat/lng values, to
             which to calculate distance and time. If you pass an address as a
             string, the service will geocode the string and convert it to a
             latitude/longitude coordinate to calculate directions.
-    :type destinations: list of strings, dicts or tuples
+    :type destinations: a single location, or a list of locations, where a
+        location is a string, dict, list, or tuple
 
     :param mode: Specifies the mode of transport to use when calculating
             directions. Valid values are "driving", "walking", "transit" or
@@ -77,8 +79,8 @@ def distance_matrix(client, origins, destinations,
     """
 
     params = {
-        "origins": _convert_path(origins),
-        "destinations": _convert_path(destinations)
+        "origins": convert.location_list(origins),
+        "destinations": convert.location_list(destinations)
     }
 
     if mode:
@@ -116,15 +118,3 @@ def distance_matrix(client, origins, destinations,
         params["transit_routing_preference"] = transit_routing_preference
 
     return client._get("/maps/api/distancematrix/json", params)
-
-
-def _convert_path(waypoints):
-    # Handle the single-tuple case
-    if type(waypoints) is tuple:
-        waypoints = [waypoints]
-    else:
-        waypoints = as_list(waypoints)
-
-    return convert.join_list("|",
-            [(k if convert.is_string(k) else convert.latlng(k))
-                for k in waypoints])

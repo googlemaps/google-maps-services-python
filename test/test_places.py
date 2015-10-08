@@ -25,6 +25,7 @@ import responses
 import test as _test
 import googlemaps
 
+
 class PlacesTest(_test.TestCase):
 
     def setUp(self):
@@ -71,14 +72,12 @@ class PlacesTest(_test.TestCase):
                             'types=liquor_store%%7Cmosque&key=%s'
                             % (url, self.key), responses.calls[0].request.url)
 
-        def distance_missing_extra_args():
+        with self.assertRaises(ValueError):
             self.client.places_nearby(self.location, rank_by="distance")
-        self.assertRaises(ValueError, distance_missing_extra_args)
 
-        def distance_and_radius():
+        with self.assertRaises(ValueError):
             self.client.places_nearby(self.location, rank_by="distance",
                                       keyword='foo', radius=self.radius)
-        self.assertRaises(ValueError, distance_and_radius)
 
     @responses.activate
     def test_places_radar_search(self):
@@ -97,9 +96,8 @@ class PlacesTest(_test.TestCase):
                             'types=liquor_store%%7Cmosque&key=%s'
                             % (url, self.key), responses.calls[0].request.url)
 
-        def missing_extra_args():
+        with self.assertRaises(ValueError):
             self.client.places_radar(self.location, self.radius)
-        self.assertRaises(ValueError, missing_extra_args)
 
     @responses.activate
     def test_place_detail(self):
