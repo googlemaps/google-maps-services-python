@@ -41,7 +41,7 @@ def elevation_along_path(client, path, samples):
     """
     Provides elevation data sampled along a path on the surface of the earth.
 
-    :param path: A encoded polyline string, or a list of latitude/longitude
+    :param path: An encoded polyline string, or a list of latitude/longitude
         values from which you wish to calculate elevation data.
     :type path: string, dict, list, or tuple
 
