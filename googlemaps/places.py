@@ -62,7 +62,6 @@ def places(client, query, location=None, radius=None, language=None,
     :type page_token: string
 
     :rtype: result dict with the following keys:
-            status: status code
             results: list of places
             html_attributions: set of attributions which must be displayed
             next_page_token: token for retrieving the next page of results
@@ -100,7 +99,6 @@ def place(client, place_id, language=None):
     :type langauge: string
 
     :rtype: result dict with the following keys:
-            status: status code
             result: dict containing place details
             html_attributions: set of attributions which must be displayed
 
