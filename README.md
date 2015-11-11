@@ -17,6 +17,7 @@ APIs:
  - [Geocoding API]
  - [Time Zone API]
  - [Roads API]
+ - [Places API]
 
 Keep in mind that the same [terms and conditions](https://developers.google.com/maps/terms) apply
 to usage of the APIs when they're accessed through this library.
@@ -87,6 +88,7 @@ https://developers.google.com/maps/.
  - [Geocoding API]
  - [Time Zone API]
  - [Roads API]
+ - [Places API]
 
 ## Usage
 
@@ -139,7 +141,7 @@ customers can use their [API key][apikey], too.
 
     # Generating documentation
     $ tox -e docs
-    
+
     # Uploading a new release
     $ easy_install wheel twine
     $ python setup.py sdist bdist_wheel
@@ -159,6 +161,7 @@ customers can use their [API key][apikey], too.
 [Geocoding API]: https://developers.google.com/maps/documentation/geocoding/
 [Time Zone API]: https://developers.google.com/maps/documentation/timezone/
 [Roads API]: https://developers.google.com/maps/documentation/roads/
+[Places API]: https://developers.google.com/places/
 
 [issues]: https://github.com/googlemaps/google-maps-services-python/issues
 [contrib]: https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md

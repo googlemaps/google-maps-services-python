@@ -28,12 +28,12 @@ def directions(client, origin, destination,
     """Get directions between an origin point and a destination point.
 
     :param origin: The address or latitude/longitude value from which you wish
-            to calculate directions.
-    :type origin: string or dict or tuple
+        to calculate directions.
+    :type origin: string, dict, list, or tuple
 
     :param destination: The address or latitude/longitude value from which
         you wish to calculate directions.
-    :type destination: string or dict or tuple
+    :type destination: string, dict, list, or tuple
 
     :param mode: Specifies the mode of transport to use when calculating
         directions. One of "driving", "walking", "bicycling" or "transit"
@@ -41,6 +41,8 @@ def directions(client, origin, destination,
 
     :param waypoints: Specifies an array of waypoints. Waypoints alter a
         route by routing it through the specified location(s).
+    :type waypoints: a single location, or a list of locations, where a
+        location is a string, dict, list, or tuple
 
     :param alternatives: If True, more than one route may be returned in the
         response.
@@ -91,8 +93,8 @@ def directions(client, origin, destination,
     """
 
     params = {
-        "origin": _convert_waypoint(origin),
-        "destination": _convert_waypoint(destination)
+        "origin": convert.latlng(origin),
+        "destination": convert.latlng(destination)
     }
 
     if mode:
@@ -103,13 +105,10 @@ def directions(client, origin, destination,
         params["mode"] = mode
 
     if waypoints:
-        waypoints = convert.as_list(waypoints)
-        waypoints = [_convert_waypoint(waypoint) for waypoint in waypoints]
-
+        waypoints = convert.location_list(waypoints)
         if optimize_waypoints:
-            waypoints = ["optimize:true"] + waypoints
-
-        params["waypoints"] = convert.join_list("|", waypoints)
+            waypoints = "optimize:true|" + waypoints
+        params["waypoints"] = waypoints
 
     if alternatives:
         params["alternatives"] = "true"
@@ -146,9 +145,3 @@ def directions(client, origin, destination,
         params["traffic_model"] = traffic_model
 
     return client._get("/maps/api/directions/json", params)["routes"]
-
-def _convert_waypoint(waypoint):
-    if not convert.is_string(waypoint):
-        return convert.latlng(waypoint)
-
-    return waypoint

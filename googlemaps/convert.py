@@ -44,10 +44,14 @@ def latlng(arg):
     convert.latlng(sydney)
     # '-33.8674869,151.2069902'
 
+    For convenience, also accepts lat/lon pair as a string, in
+    which case it's returned unchanged.
+
     :param arg: The lat/lon pair.
-    :type arg: dict or list or tuple
+    :type arg: string or dict or list or tuple
     """
-    return "%f,%f" % normalize_lat_lng(arg)
+    return arg if is_string(arg) else "%f,%f" % normalize_lat_lng(arg)
+
 
 def normalize_lat_lng(arg):
     """Take the various lat/lng representations and return a tuple.
@@ -76,12 +80,36 @@ def normalize_lat_lng(arg):
         "but got %s" % type(arg).__name__)
 
 
+def location_list(arg):
+    """Joins a list of locations into a pipe separated string, handling
+    the various formats supported for lat/lng values.
+
+    For example:
+    p = [{"lat" : -33.867486, "lng" : 151.206990}, "Sydney"]
+    convert.waypoint(p)
+    # '-33.867486,151.206990|Sydney'
+
+    :param arg: The lat/lng list.
+    :type arg: list
+
+    :rtype: string
+    """
+    if isinstance(arg, tuple):
+        # Handle the single-tuple lat/lng case.
+        return latlng(arg)
+    else:
+        return "|".join([latlng(location) for location in as_list(arg)])
+
+
 def join_list(sep, arg):
     """If arg is list-like, then joins it with sep.
+
     :param sep: Separator string.
     :type sep: string
+
     :param arg: Value to coerce into a list.
-    :type arg: string or list of string
+    :type arg: string or list of strings
+
     :rtype: string
     """
     return sep.join(as_list(arg))
@@ -90,6 +118,7 @@ def join_list(sep, arg):
 def as_list(arg):
     """Coerces arg into a list. If arg is already list-like, returns arg.
     Otherwise, returns a one-element list containing arg.
+
     :rtype: list
     """
     if _is_list(arg):
@@ -107,6 +136,7 @@ def _is_list(arg):
             and _has_method(arg, "__getitem__")
             or _has_method(arg, "__iter__"))
 
+
 def is_string(val):
     """Determines whether the passed value is a string, safe for 2/3."""
     try:
@@ -114,6 +144,7 @@ def is_string(val):
     except NameError:
         return isinstance(val, str)
     return isinstance(val, basestring)
+
 
 def time(arg):
     """Converts the value into a unix time (seconds since unix epoch).
@@ -139,8 +170,10 @@ def _has_method(arg, method):
     """Returns true if the given object has a method with the given name.
 
     :param arg: the object
+
     :param method: the method name
     :type method: string
+
     :rtype: bool
     """
     return hasattr(arg, method) and callable(getattr(arg, method))
@@ -157,6 +190,7 @@ def components(arg):
 
     :param arg: The component filter.
     :type arg: dict
+
     :rtype: basestring
     """
     if isinstance(arg, dict):
