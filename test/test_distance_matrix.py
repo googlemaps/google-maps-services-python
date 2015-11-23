@@ -17,6 +17,9 @@
 
 """Tests for the distance matrix module."""
 
+from datetime import datetime
+import time
+
 import googlemaps
 import responses
 import test as _test
@@ -97,11 +100,14 @@ class DistanceMatrixTest(_test.TestCase):
                         "Bungle Bungles, Australia",
                         "The Pinnacles, Australia"]
 
+        now = datetime.now()
         matrix = self.client.distance_matrix(origins, destinations,
                                             mode="driving",
                                             language="en-AU",
                                             avoid="tolls",
-                                            units="imperial")
+                                            units="imperial",
+                                            departure_time=now,
+                                            traffic_model="optimistic")
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/distancematrix/json?'
@@ -112,7 +118,9 @@ class DistanceMatrixTest(_test.TestCase):
                             'avoid=tolls&mode=driving&key=%s&units=imperial&'
                             'destinations=Uluru%%2C+Australia%%7CKakadu%%2C+Australia%%7C'
                             'Blue+Mountains%%2C+Australia%%7CBungle+Bungles%%2C+Australia'
-                            '%%7CThe+Pinnacles%%2C+Australia' % self.key,
+                            '%%7CThe+Pinnacles%%2C+Australia&departure_time=%d'
+                            '&traffic_model=optimistic' %
+                            (self.key, time.mktime(now.timetuple())),
                             responses.calls[0].request.url)
 
 

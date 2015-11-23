@@ -24,7 +24,7 @@ from googlemaps.convert import as_list
 def distance_matrix(client, origins, destinations,
                     mode=None, language=None, avoid=None, units=None,
                     departure_time=None, arrival_time=None, transit_mode=None,
-                    transit_routing_preference=None):
+                    transit_routing_preference=None, traffic_model=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param origins: One or more locations and/or latitude/longitude values,
@@ -75,6 +75,10 @@ def distance_matrix(client, origins, destinations,
         requests. Valid values are "less_walking" or "fewer_transfers".
     :type transit_routing_preference: string
 
+    :param traffic_model: Specifies the predictive travel time model to use.
+        "best_guess" or "optimistic" or "pessimistic"
+    :type units: string
+
     :rtype: matrix of distances. Results are returned in rows, each row
         containing one origin paired with each destination.
     """
@@ -117,5 +121,8 @@ def distance_matrix(client, origins, destinations,
 
     if transit_routing_preference:
         params["transit_routing_preference"] = transit_routing_preference
+
+    if traffic_model:
+        params["traffic_model"] = traffic_model
 
     return client._get("/maps/api/distancematrix/json", params)

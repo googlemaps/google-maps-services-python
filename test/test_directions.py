@@ -89,12 +89,13 @@ class DirectionsTest(_test.TestCase):
         now = datetime.now()
         routes = self.client.directions("Sydney Town Hall", "Parramatta, NSW",
                                        mode="transit",
+                                       traffic_model="optimistic",
                                        departure_time=now)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/directions/json?origin='
                             'Sydney+Town+Hall&key=%s&destination=Parramatta%%2C+NSW&'
-                            'mode=transit&departure_time=%d' %
+                            'mode=transit&departure_time=%d&traffic_model=optimistic' %
                             (self.key, time.mktime(now.timetuple())),
                             responses.calls[0].request.url)
 
@@ -120,7 +121,7 @@ class DirectionsTest(_test.TestCase):
                             responses.calls[0].request.url)
 
 
-    def test_crazy_travel_mode(self):
+    def test_invalid_travel_mode(self):
         with self.assertRaises(ValueError):
             self.client.directions("48 Pirrama Road, Pyrmont, NSW",
                                   "Sydney Town Hall",

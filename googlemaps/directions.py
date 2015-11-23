@@ -84,7 +84,7 @@ def directions(client, origin, destination,
     :param transit_routing_preference: Specifies preferences for transit
         requests. Valid values are "less_walking" or "fewer_transfers"
     :type transit_routing_preference: string
-    
+
     :param traffic_model: Specifies the predictive travel time model to use.
         "best_guess" or "optimistic" or "pessimistic"
     :type units: string
@@ -140,7 +140,7 @@ def directions(client, origin, destination,
 
     if transit_routing_preference:
         params["transit_routing_preference"] = transit_routing_preference
-        
+
     if traffic_model:
         params["traffic_model"] = traffic_model
 
