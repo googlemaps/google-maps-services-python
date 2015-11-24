@@ -76,8 +76,10 @@ def distance_matrix(client, origins, destinations,
     :type transit_routing_preference: string
 
     :param traffic_model: Specifies the predictive travel time model to use.
-        "best_guess" or "optimistic" or "pessimistic"
-    :type units: string
+        Valid values are "best_guess" or "optimistic" or "pessimistic".
+        The traffic_model parameter may only be specified for requests where
+        the travel mode is driving, and where the request includes a
+        departure_time.
 
     :rtype: matrix of distances. Results are returned in rows, each row
         containing one origin paired with each destination.

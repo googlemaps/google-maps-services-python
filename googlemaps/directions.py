@@ -86,7 +86,10 @@ def directions(client, origin, destination,
     :type transit_routing_preference: string
 
     :param traffic_model: Specifies the predictive travel time model to use.
-        "best_guess" or "optimistic" or "pessimistic"
+        Valid values are "best_guess" or "optimistic" or "pessimistic".
+        The traffic_model parameter may only be specified for requests where
+        the travel mode is driving, and where the request includes a
+        departure_time.
     :type units: string
 
     :rtype: list of routes
