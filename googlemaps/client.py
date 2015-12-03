@@ -130,6 +130,7 @@ class Client(object):
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
 
+        self.queries_per_second = queries_per_second
         self.sent_times = collections.deque("", queries_per_second)
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
@@ -210,7 +211,7 @@ class Client(object):
 
         # Check if the time of the nth previous query (where n is queries_per_second)
         # is under a second ago - if so, sleep for the difference.
-        if self.sent_times and len(self.sent_times) == self.sent_times.maxlen:
+        if self.sent_times and len(self.sent_times) == self.queries_per_second:
             elapsed_since_earliest = time.time() - self.sent_times[0]
             if elapsed_since_earliest < 1:
                 time.sleep(1 - elapsed_since_earliest)
