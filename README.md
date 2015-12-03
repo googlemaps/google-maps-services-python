@@ -37,7 +37,7 @@ contribute, please read [How to Contribute][contrib].
 
 ## Requirements
 
- - Python 2.5 or later.
+ - Python 2.7 or later.
  - A Google Maps API key.
 
 ### API keys
@@ -92,15 +92,13 @@ https://developers.google.com/maps/.
 
 ## Usage
 
-This example uses the [Geocoding API].
-
-
+This example uses the [Geocoding API] and the [Directions API].
 
 ```python
 
 gmaps = googlemaps.Client(key='Add Your Key here')
 
-# Geocoding and address
+# Geocoding an address
 geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
 
 # Look up an address with reverse geocoding
