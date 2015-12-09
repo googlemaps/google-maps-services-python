@@ -58,3 +58,7 @@ class Timeout(Exception):
 class _RetriableRequest(Exception):
     """Signifies that the request can be retried."""
     pass
+
+class _InvalidRequest(Exception):
+    """Signifies that the request is invalid."""
+    pass

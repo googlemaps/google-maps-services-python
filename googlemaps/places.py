@@ -193,3 +193,100 @@ def places_autocomplete(client, input_text, offset=None, location=None,
 
     response = client._get("/maps/api/place/queryautocomplete/json", params)
     return response["predictions"]
+
+
+def nearbysearch(client, location, radius, keyword=None, language=None, min_price=None, max_price=None, name=None,
+                 open_now=None, rankby=None, types=None, pagetoken=None, zagatselected=None):
+    """
+    A Nearby Search lets you search for places within a specified area. You can refine your search request by supplying
+    keywords or specifying the type of place you are searching for.
+
+     :param location: The latitude/longitude value for which you wish to obtain the
+        closest, human-readable address.
+    :type location: string, dict, list, or tuple
+
+    :param radius: Distance in meters within which to bias results.
+    :type radius: int
+
+    :param keyword: A term to be matched against all content that Google has indexed for this place, including but not
+    limited to name, type, and address, as well as customer reviews and other third-party content.
+    :type keyword: string
+
+    :param language: The language in which to return results.
+    :type langauge: string
+
+    :param min_price: Restricts results to only those places with no less than
+        this price level. Valid values are in the range from 0 (most affordable)
+        to 4 (most expensive).
+    :type min_price: int
+
+    :param max_price: Restricts results to only those places with no greater
+        than this price level. Valid values are in the range from 0 (most
+        affordable) to 4 (most expensive).
+    :type max_price: int
+
+    :param name: One or more terms to be matched against the names of places, separated with a space character. Results
+    will be restricted to those containing the passed name values
+    :type name: string
+
+    :param open_now: Return only those places that are open for business at
+        the time the query is sent.
+    :type open_now: bool
+
+    :param rankby: prominence (default). This option sorts results based on their importance. Ranking will favor
+    prominent places within the specified area. Prominence can be affected by a place's ranking in Google's index,
+    global popularity, and other factors. distance. This option biases search results in ascending order by their
+    distance from the specified location. When distance is specified, one or more of keyword, name, or types is required.
+
+    :type rankby: prominence (default), distance
+
+    :param types: Restricts the results to places matching at least one of the
+        specified types. The full list of supported types is available here:
+        https://developers.google.com/places/supported_types
+    :type types: string or list of strings
+
+    :param pagetoken: Returns the next 20 results from a previously run search
+    :type pagetoken: string
+
+    :param zagatselected: add this parameter (just the parameter name, with no associated value) to restrict your search
+     to locations that are Zagat selected businesses. This parameter must not include a true or false value. The
+     zagatselected parameter is experimental, and is only available to Google Places API for Work customers
+    :type zagatselected: zagatselected
+
+    :rtype: result dict with the following keys:
+        results: list of places
+        html_attributions: set of attributions which must be displayed
+        next_page_token: token for retrieving the next page of results
+
+    """
+    if not (location and radius):
+        raise ValueError("a location and radius arg is required")
+    if rankby is not None and rankby == 'distance' and (keyword is None or name is None or types is None):
+        raise ValueError("When distance is specified, one or more of keyword, name, or types is required")
+    params = {}
+    if location:
+        params["location"] = convert.latlng(location)
+    if radius:
+        params["radius"] = radius
+    if rankby:
+        params["rankby"] = rankby
+    if keyword:
+        params["keyword"] = keyword
+    if language:
+        params["language"] = language
+    if min_price:
+        params["minprice"] = min_price
+    if max_price:
+        params["maxprice"] = max_price
+    if name:
+        params["name"] = name
+    if open_now:
+        params["opennow"] = open_now
+    if types:
+        params["types"] = types
+    if pagetoken:
+        params["pagetoken"] = pagetoken
+    if zagatselected:
+        params["zagatselected"] = zagatselected
+
+    return client._get("/maps/api/place/nearbysearch/json", params)

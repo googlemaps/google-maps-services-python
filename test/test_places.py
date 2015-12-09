@@ -91,3 +91,16 @@ class PlacesTest(_test.TestCase):
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?input=pizza+near+New+York&key=%s' %
                             (url, self.key), responses.calls[0].request.url)
+
+    @responses.activate
+    def test_nearbysearch(self):
+        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
+        responses.add(responses.GET, url,
+                      body='{"status": "OK", "results": [], "html_attributions": []}',
+                      status=200, content_type='application/json')
+
+        self.client.nearbysearch(location=self.location, radius=self.radius, language=self.language)
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual('%s?language=en-AU&location=-33.867460%%2C151.207090&'
+                            'radius=100&key=%s'
+                            % (url, self.key), responses.calls[0].request.url)
