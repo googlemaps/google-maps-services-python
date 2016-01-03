@@ -14,7 +14,7 @@ if sys.version_info <= (2, 4):
 
 
 requirements = [
-    'requests<=2.6',
+    'requests<=2.9.1',
 ]
 
 setup(name='googlemaps',
