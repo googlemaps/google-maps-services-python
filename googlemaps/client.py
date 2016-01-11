@@ -26,7 +26,7 @@ from datetime import datetime
 from datetime import timedelta
 import hashlib
 import hmac
-import requests
+from .http import requests
 import random
 import time
 
