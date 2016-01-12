@@ -49,7 +49,7 @@ class Client(object):
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=10):
+                 queries_per_second=10, retry_over_quota=True):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -96,6 +96,9 @@ class Client(object):
             http://docs.python-requests.org/en/latest/api/#main-interface
         :type requests_kwargs: dict
 
+        :param retry_over_quota: If the REST API returns over quota keep retrying
+        :type retry_over_quota: boolean
+
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
@@ -132,6 +135,7 @@ class Client(object):
 
         self.queries_per_second = queries_per_second
         self.sent_times = collections.deque("", queries_per_second)
+        self.retry_over_quota = retry_over_quota
 
     def _get(self, url, params, first_request_time=None, retry_counter=0,
              base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
@@ -238,7 +242,7 @@ class Client(object):
         if api_status == "OK" or api_status == "ZERO_RESULTS":
             return body
 
-        if api_status == "OVER_QUERY_LIMIT":
+        if api_status == "OVER_QUERY_LIMIT" and self.retry_over_quota:
             raise googlemaps.exceptions._RetriableRequest()
 
         if "error_message" in body:
