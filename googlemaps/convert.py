@@ -314,3 +314,26 @@ def encode_polyline(points):
         last_lng = lng
 
     return result
+
+
+def shortest_path(locations):
+    """Returns the shortest representation of the given locations.
+
+    The Elevations API limits requests to 2000 characters, and accepts
+    multiple locations either as pipe-delimited lat/lng values, or
+    an encoded polyline, so we determine which is shortest and use it.
+
+    :param locations: The lat/lng list.
+    :type locations: list
+
+    :rtype: string
+    """
+    if isinstance(locations, tuple):
+        # Handle the single-tuple lat/lng case.
+        locations = [locations]
+    encoded = "enc:%s" % encode_polyline(locations)
+    unencoded = location_list(locations)
+    if len(encoded) < len(unencoded):
+        return encoded
+    else:
+        return unencoded

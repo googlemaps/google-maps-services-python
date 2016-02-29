@@ -33,7 +33,7 @@ def elevation(client, locations):
 
     :rtype: list of elevation data responses
     """
-    params = {"locations": convert.location_list(locations)}
+    params = {"locations": convert.shortest_path(locations)}
     return client._get("/maps/api/elevation/json", params)["results"]
 
 
@@ -55,7 +55,7 @@ def elevation_along_path(client, path, samples):
     if type(path) is str:
         path = "enc:%s" % path
     else:
-        path = convert.location_list(path)
+        path = convert.shortest_path(path)
 
     params = {
         "path": path,
