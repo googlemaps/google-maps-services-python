@@ -26,7 +26,7 @@ from googlemaps import convert
 class ConvertTest(unittest.TestCase):
 
     def test_latlng(self):
-        expected = "1.000000,2.000000"
+        expected = "1,2"
         ll = {"lat": 1, "lng": 2}
         self.assertEqual(expected, convert.latlng(ll))
 
@@ -42,7 +42,7 @@ class ConvertTest(unittest.TestCase):
             convert.latlng(1)
 
     def test_location_list(self):
-        expected = "1.000000,2.000000|1.000000,2.000000"
+        expected = "1,2|1,2"
         ll = [{"lat": 1, "lng": 2}, {"lat": 1, "lng": 2}]
         self.assertEqual(expected, convert.location_list(ll))
 
@@ -104,7 +104,7 @@ class ConvertTest(unittest.TestCase):
         ne = {"lat": 1, "lng": 2}
         sw = (3, 4)
         b = {"northeast": ne, "southwest": sw}
-        self.assertEqual("3.000000,4.000000|1.000000,2.000000",
+        self.assertEqual("3,4|1,2",
                           convert.bounds(b))
 
         with self.assertRaises(TypeError):

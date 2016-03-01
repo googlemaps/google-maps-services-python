@@ -41,7 +41,7 @@ class ElevationTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
-                            'locations=40.714728%%2C-73.998672&key=%s' % self.key,
+                            'locations=enc:abowFtzsbM&key=%s' % self.key,
                             responses.calls[0].request.url)
 
     @responses.activate
@@ -56,7 +56,7 @@ class ElevationTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
-                            'locations=40.714728%%2C-73.998672&key=%s' % self.key,
+                            'locations=enc:abowFtzsbM&key=%s' % self.key,
                             responses.calls[0].request.url)
 
     @responses.activate
@@ -72,8 +72,7 @@ class ElevationTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
-                            'locations=40.714728%%2C-73.998672%%7C-34.397000%%2C'
-                            '150.644000&key=%s' % self.key,
+                            'locations=enc:abowFtzsbMhgmiMuobzi@&key=%s' % self.key,
                             responses.calls[0].request.url)
 
     def test_elevation_along_path_single(self):
@@ -95,7 +94,21 @@ class ElevationTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
-                            'path=40.714728%%2C-73.998672%%7C-34.397000%%2C150.644000&'
+                            'path=enc:abowFtzsbMhgmiMuobzi@&'
                             'key=%s&samples=5' % self.key,
                             responses.calls[0].request.url)
 
+    @responses.activate
+    def test_short_latlng(self):
+        responses.add(responses.GET,
+                      'https://maps.googleapis.com/maps/api/elevation/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = self.client.elevation((40, -73))
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
+                            'locations=40,-73&key=%s' % self.key,
+                            responses.calls[0].request.url)

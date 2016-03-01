@@ -58,7 +58,7 @@ class RoadsTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual("https://roads.googleapis.com/v1/speedLimits?"
-                            "path=1.000000%%2C2.000000|3.000000%%2C4.000000"
+                            "path=1%%2C2|3%%2C4"
                             "&key=%s" % self.key,
                             responses.calls[0].request.url)
 

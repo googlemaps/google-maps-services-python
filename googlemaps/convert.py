@@ -31,6 +31,29 @@
 import time as _time
 
 
+def format_float(arg):
+    """Formats a float value to be as short as possible.
+
+    Trims extraneous trailing zeros and period to give API
+    args the best possible chance of fitting within 2000 char
+    URL length restrictions.
+
+    For example:
+
+    format_float(40) -> "40"
+    format_float(40.0) -> "40"
+    format_float(40.1) -> "40.1"
+    format_float(40.001) -> "40.001"
+    format_float(40.0010) -> "40.001"
+
+    :param arg: The lat or lng float.
+    :type arg: float
+
+    :rtype: string
+    """
+    return ("%f" % float(arg)).rstrip("0").rstrip(".")
+
+
 def latlng(arg):
     """Converts a lat/lon pair to a comma-separated string.
 
@@ -50,7 +73,11 @@ def latlng(arg):
     :param arg: The lat/lon pair.
     :type arg: string or dict or list or tuple
     """
-    return arg if is_string(arg) else "%f,%f" % normalize_lat_lng(arg)
+    if is_string(arg):
+        return arg
+
+    normalized = normalize_lat_lng(arg)
+    return "%s,%s" % (format_float(normalized[0]), format_float(normalized[1]))
 
 
 def normalize_lat_lng(arg):
@@ -314,3 +341,26 @@ def encode_polyline(points):
         last_lng = lng
 
     return result
+
+
+def shortest_path(locations):
+    """Returns the shortest representation of the given locations.
+
+    The Elevations API limits requests to 2000 characters, and accepts
+    multiple locations either as pipe-delimited lat/lng values, or
+    an encoded polyline, so we determine which is shortest and use it.
+
+    :param locations: The lat/lng list.
+    :type locations: list
+
+    :rtype: string
+    """
+    if isinstance(locations, tuple):
+        # Handle the single-tuple lat/lng case.
+        locations = [locations]
+    encoded = "enc:%s" % encode_polyline(locations)
+    unencoded = location_list(locations)
+    if len(encoded) < len(unencoded):
+        return encoded
+    else:
+        return unencoded
