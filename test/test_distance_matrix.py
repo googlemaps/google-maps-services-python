@@ -77,7 +77,7 @@ class DistanceMatrixTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/distancematrix/json?'
-                            'key=%s&origins=Bobcaygeon+ON%%7C41.432060%%2C-81.389920&'
+                            'key=%s&origins=Bobcaygeon+ON%%7C41.43206%%2C-81.38992&'
                             'destinations=43.012486%%2C-83.696415%%7C42.886386%%2C'
                             '-78.878163' % self.key,
                             responses.calls[0].request.url)

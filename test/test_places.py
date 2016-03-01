@@ -48,7 +48,7 @@ class PlacesTest(_test.TestCase):
                            min_price=1, max_price=4, open_now=True)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('%s?language=en-AU&location=-33.867460%%2C151.207090&'
+        self.assertURLEqual('%s?language=en-AU&location=-33.86746%%2C151.20709&'
                             'maxprice=4&minprice=1&opennow=true&query=restaurant&'
                             'radius=100&key=%s'
                             % (url, self.key), responses.calls[0].request.url)

@@ -97,3 +97,18 @@ class ElevationTest(_test.TestCase):
                             'path=enc:abowFtzsbMhgmiMuobzi@&'
                             'key=%s&samples=5' % self.key,
                             responses.calls[0].request.url)
+
+    @responses.activate
+    def test_short_latlng(self):
+        responses.add(responses.GET,
+                      'https://maps.googleapis.com/maps/api/elevation/json',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        results = self.client.elevation((40, -73))
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual('https://maps.googleapis.com/maps/api/elevation/json?'
+                            'locations=40,-73&key=%s' % self.key,
+                            responses.calls[0].request.url)
