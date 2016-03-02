@@ -21,7 +21,7 @@ from googlemaps import convert
 
 
 def places(client, query, location=None, radius=None, language=None,
-           min_price=None, max_price=None, open_now=False, types=None,
+           min_price=None, max_price=None, open_now=False, type=None,
            page_token=None):
     """
     Places search.
@@ -53,10 +53,10 @@ def places(client, query, location=None, radius=None, language=None,
         the time the query is sent.
     :type open_now: bool
 
-    :param types: Restricts the results to places matching at least one of the
-        specified types. The full list of supported types is available here:
-        https://developers.google.com/places/supported_types
-    :type types: string or list of strings
+    :param type: Restricts the results to places matching the specified type.
+        The full list of supported types is available here:
+        https://developers.google.com/places/supported_type
+    :type type: string
 
     :param page_token: Token from a previous search that when provided will
         returns the next page of results for the same search.
@@ -67,24 +67,168 @@ def places(client, query, location=None, radius=None, language=None,
         html_attributions: set of attributions which must be displayed
         next_page_token: token for retrieving the next page of results
     """
-    params = {"query": query}
+    return _places(client, "text", query=query, location=location,
+                   radius=radius, language=language, min_price=min_price,
+                   max_price=max_price, open_now=open_now, type=type,
+                   page_token=page_token)
 
+
+def places_nearby(client, location, radius=None, keyword=None, language=None,
+                  min_price=None, max_price=None, name=None, open_now=False,
+                  rank_by=None, type=None, page_token=None):
+    """
+    Performs nearby search for places.
+
+    :param location: The latitude/longitude value for which you wish to obtain the
+                     closest, human-readable address.
+    :type location: string, dict, list, or tuple
+
+    :param radius: Distance in meters within which to bias results.
+    :type radius: int
+
+    :param keyword: A term to be matched against all content that Google has
+                    indexed for this place.
+    :type keyword: string
+
+    :param language: The language in which to return results.
+    :type langauge: string
+
+    :param min_price: Restricts results to only those places with no less than
+                      this price level. Valid values are in the range from 0
+                      (most affordable) to 4 (most expensive).
+    :type min_price: int
+
+    :param max_price: Restricts results to only those places with no greater
+                      than this price level. Valid values are in the range
+                      from 0 (most affordable) to 4 (most expensive).
+    :type max_price: int
+
+    :param name: One or more terms to be matched against the names of places.
+    :type name: string or list of strings
+
+    :param open_now: Return only those places that are open for business at
+                     the time the query is sent.
+    :type open_now: bool
+
+    :param rank_by: Specifies the order in which results are listed.
+                    Possible values are: prominence (default), distance
+    :type rank_by: string
+
+    :param type: Restricts the results to places matching the specified type.
+        The full list of supported types is available here:
+        https://developers.google.com/places/supported_type
+    :type type: string
+
+    :param page_token: Token from a previous search that when provided will
+                       returns the next page of results for the same search.
+    :type page_token: string
+
+    :rtype: result dict with the following keys:
+            status: status code
+            results: list of places
+            html_attributions: set of attributions which must be displayed
+            next_page_token: token for retrieving the next page of results
+
+    """
+    if rank_by == "distance":
+        if not (keyword or name or type):
+          raise ValueError("either a keyword, name, or type arg is required "
+                           "when rank_by is set to distance")
+        elif radius is not None:
+          raise ValueError("radius cannot be specified when rank_by is set to "
+                           "distance")
+
+    return _places(client, "nearby", location=location, radius=radius,
+                   keyword=keyword, language=language, min_price=min_price,
+                   max_price=max_price, name=name, open_now=open_now,
+                   rank_by=rank_by, type=type, page_token=page_token)
+
+
+def places_radar(client, location, radius, keyword=None, min_price=None,
+                 max_price=None, name=None, open_now=False, type=None):
+    """
+    Performs radar search for places.
+
+    :param location: The latitude/longitude value for which you wish to obtain the
+                     closest, human-readable address.
+    :type location: string, dict, list, or tuple
+
+    :param radius: Distance in meters within which to bias results.
+    :type radius: int
+
+    :param keyword: A term to be matched against all content that Google has
+                    indexed for this place.
+    :type keyword: string
+
+    :param min_price: Restricts results to only those places with no less than
+                      this price level. Valid values are in the range from 0
+                      (most affordable) to 4 (most expensive).
+    :type min_price: int
+
+    :param max_price: Restricts results to only those places with no greater
+                      than this price level. Valid values are in the range
+                      from 0 (most affordable) to 4 (most expensive).
+    :type max_price: int
+
+    :param name: One or more terms to be matched against the names of places.
+    :type name: string or list of strings
+
+    :param open_now: Return only those places that are open for business at
+                     the time the query is sent.
+    :type open_now: bool
+
+    :param type: Restricts the results to places matching the specified type.
+        The full list of supported types is available here:
+        https://developers.google.com/places/supported_type
+    :type type: string
+
+    :rtype: result dict with the following keys:
+            status: status code
+            results: list of places
+            html_attributions: set of attributions which must be displayed
+
+    """
+    if not (keyword or name or type):
+        raise ValueError("either a keyword, name, or type arg is required")
+
+    return _places(client, "radar", location=location, radius=radius,
+                   keyword=keyword, min_price=min_price, max_price=max_price,
+                   name=name, open_now=open_now, type=type)
+
+
+def _places(client, url_part, query=None, location=None, radius=None,
+            keyword=None, language=None, min_price=0, max_price=4, name=None,
+            open_now=False, rank_by=None, type=None, page_token=None):
+    """
+    Internal handler for ``places``, ``places_nearby``, and ``places_radar``.
+    See each method's docs for arg details.
+    """
+
+    params = {"minprice": min_price, "maxprice": max_price}
+
+    if query:
+        params["query"] = query
     if location:
         params["location"] = convert.latlng(location)
     if radius:
         params["radius"] = radius
+    if keyword:
+        params["keyword"] = keyword
     if language:
         params["language"] = language
-    if min_price:
-        params["minprice"] = min_price
-    if max_price:
-        params["maxprice"] = max_price
+    if name:
+        params["name"] = convert.join_list(" ", name)
     if open_now:
         params["opennow"] = "true"
+    if rank_by:
+        params["rankby"] = rank_by
+    if type:
+        params["type"] = type
     if page_token:
         params["pagetoken"] = page_token
 
-    return client._get("/maps/api/place/textsearch/json", params)
+    url = "/maps/api/place/%ssearch/json" % url_part
+    return client._get(url, params)
 
 
 def place(client, place_id, language=None):
@@ -154,7 +298,51 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
 
 
 def places_autocomplete(client, input_text, offset=None, location=None,
-                        radius=None, language=None):
+                        radius=None, language=None, type=None,
+                        components=None):
+    """
+    Returns Place predictions given a textual search string and optional
+    geographic bounds.
+
+    :param input_text: The text string on which to search.
+    :type input_text: string
+
+    :param offset: The position, in the input term, of the last character
+                   that the service uses to match predictions. For example,
+                   if the input is 'Google' and the offset is 3, the
+                   service will match on 'Goo'.
+    :type offset: int
+
+    :param location: The latitude/longitude value for which you wish to obtain the
+                     closest, human-readable address.
+    :type location: string, dict, list, or tuple
+
+    :param radius: Distance in meters within which to bias results.
+    :type radius: int
+
+    :param language: The language in which to return results.
+    :type langauge: string
+
+    :param type: Restricts the results to places matching the specified type.
+        The full list of supported types is available here:
+        https://developers.google.com/places/web-service/autocomplete#place_types
+    :type type: string
+
+    :param components: A component filter for which you wish to obtain a geocode,
+                       for example:
+                       ``{'administrative_area': 'TX','country': 'US'}``
+    :type components: dict
+
+    :rtype: list of predictions
+
+    """
+    return _autocomplete(client, "", input_text, offset=offset,
+                         location=location, radius=radius, language=language,
+                         type=type, components=components)
+
+
+def places_autocomplete_query(client, input_text, offset=None, location=None,
+                              radius=None, language=None):
     """
     Returns Place predictions given a textual search query, such as
     "pizza near New York", and optional geographic bounds.
@@ -179,6 +367,16 @@ def places_autocomplete(client, input_text, offset=None, location=None,
 
     :rtype: list of predictions
     """
+    return _autocomplete(client, "query", input_text, offset=offset,
+                         location=location, radius=radius, language=language)
+
+
+def _autocomplete(client, url_part, input_text, offset=None, location=None,
+                  radius=None, language=None, type=None, components=None):
+    """
+    Internal handler for ``autocomplete`` and ``autocomplete_query``.
+    See each method's docs for arg details.
+    """
 
     params = {"input": input_text}
 
@@ -190,6 +388,10 @@ def places_autocomplete(client, input_text, offset=None, location=None,
         params["radius"] = radius
     if language:
         params["language"] = language
+    if type:
+        params["type"] = type
+    if components:
+        params["components"] = convert.components(components)
 
-    response = client._get("/maps/api/place/queryautocomplete/json", params)
-    return response["predictions"]
+    url = "/maps/api/place/%sautocomplete/json" % url_part
+    return client._get(url, params)["predictions"]
