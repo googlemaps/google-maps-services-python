@@ -74,10 +74,10 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
 
-    :param latlng: The latitude/longitude value for which you wish to obtain the
-        closest, human-readable address.
+    :param latlng: The latitude/longitude value or place_id for which you wish
+        to obtain the closest, human-readable address.
     :type latlng: string, dict, list, or tuple
-
+    
     :param result_type: One or more address types to restrict results to.
     :type result_type: string or list of strings
 
@@ -90,7 +90,12 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     :rtype: list of reverse geocoding results.
     """
 
-    params = {"latlng": convert.latlng(latlng)}
+    # Check if latlng param is a place_id string.
+    #  place_id strings do not contain commas; latlng strings do.
+    if convert.is_string(latlng) and ',' not in latlng:
+        params = {"place_id": latlng}
+    else:
+        params = {"latlng": convert.latlng(latlng)}
 
     if result_type:
         params["result_type"] = convert.join_list("|", result_type)
