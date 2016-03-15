@@ -90,7 +90,7 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     :rtype: list of reverse geocoding results.
     """
 
-    if (type(latlng) == str) & (latlng[0] not in ("-+0123456789")):
+    if (convert.is_string(latlng) and (',' not in latlng)):
         params = {"place_id": latlng}
     else:
         params = {"latlng": convert.latlng(latlng)}
