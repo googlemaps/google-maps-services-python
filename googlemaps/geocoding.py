@@ -90,7 +90,9 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     :rtype: list of reverse geocoding results.
     """
 
-    if (convert.is_string(latlng) and (',' not in latlng)):
+    # Check if latlng param is a place_id string.
+    #  place_id strings do not contain commas; latlng strings do.
+    if convert.is_string(latlng) and ',' not in latlng:
         params = {"place_id": latlng}
     else:
         params = {"latlng": convert.latlng(latlng)}
