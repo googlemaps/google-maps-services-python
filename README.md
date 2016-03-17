@@ -95,6 +95,8 @@ https://developers.google.com/maps/.
 This example uses the [Geocoding API] and the [Directions API].
 
 ```python
+import googlemaps
+from datetime import datetime
 
 gmaps = googlemaps.Client(key='Add Your Key here')
 
