@@ -216,3 +216,32 @@ class ClientTest(_test.TestCase):
         client.geocode("Sesame St.")
 
         self.assertEqual(2, len(responses.calls))
+
+    def test_channel_with_api_key(self):
+        with self.assertRaises(ValueError):
+            client = googlemaps.Client(key="AIzaasdf", channel="mychannel")
+
+    def test_invalid_channel(self):
+        with self.assertRaises(ValueError):
+            client = googlemaps.Client(client_id="foo", client_secret="a2V5", channel="auieauie$? ")
+
+    @responses.activate
+    def test_channel_with_client_id(self):
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/maps/api/geocode/json",
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type="application/json")
+
+        client = googlemaps.Client(client_id="foo", client_secret="a2V5", channel="MyChannel_1")
+        client.geocode("Sesame St.")
+
+        self.assertEqual(1, len(responses.calls))
+
+        # Check ordering of parameters.
+        self.assertIn("address=Sesame+St.&channel=MyChannel_1&client=foo&signature",
+                responses.calls[0].request.url)
+        self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
+                            "address=Sesame+St.&channel=MyChannel_1&client=foo&"
+                            "signature=5s4Hw2AitGZlkipugXkjPuxhmME=",
+                            responses.calls[0].request.url)

@@ -26,6 +26,7 @@ from datetime import datetime
 from datetime import timedelta
 import hashlib
 import hmac
+import re
 import requests
 import random
 import time
@@ -49,7 +50,7 @@ class Client(object):
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=10):
+                 queries_per_second=10, channel=None):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -61,6 +62,12 @@ class Client(object):
         :param client_secret: (for Maps API for Work customers) Your client
             secret (base64 encoded).
         :type client_secret: string
+
+        :param channel: (for Maps API for Work customers) When set, a channel
+            parameter with this value will be added to the requests.
+            This can be used for tracking purpose.
+            Can not be used with a Maps API key.
+        :type channel: str
 
         :param timeout: Combined connect and read timeout for HTTP requests, in
             seconds. Specify "None" for no timeout.
@@ -104,10 +111,19 @@ class Client(object):
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
 
+        if channel:
+            if key:
+                raise ValueError("The channel argument can not be used with an "
+                             "API key")
+            if not re.match("^[a-zA-Z0-9._-]*$", channel):
+                raise ValueError("The channel argument must be an ASCII "
+                    "alphanumeric string. The period (.), underscore (_)"
+                    "and hyphen (-) characters are allowed.")
+
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
-            raise ValueError("Specify either timeout, or connect_timeout " +
+            raise ValueError("Specify either timeout, or connect_timeout "
                              "and read_timeout")
 
         if connect_timeout and read_timeout:
@@ -122,6 +138,7 @@ class Client(object):
 
         self.client_id = client_id
         self.client_secret = client_secret
+        self.channel = channel
         self.retry_timeout = timedelta(seconds=retry_timeout)
         self.requests_kwargs = requests_kwargs or {}
         self.requests_kwargs.update({
@@ -268,6 +285,8 @@ class Client(object):
             params = params[:] # Take a copy.
 
         if accepts_clientid and self.client_id and self.client_secret:
+            if self.channel:
+                params.append(("channel", self.channel))
             params.append(("client", self.client_id))
 
             path = "?".join([path, urlencode_params(params)])
