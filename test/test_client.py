@@ -217,13 +217,14 @@ class ClientTest(_test.TestCase):
 
         self.assertEqual(2, len(responses.calls))
 
-    def test_channel_with_api_key(self):
+    def test_channel_without_client_id(self):
         with self.assertRaises(ValueError):
             client = googlemaps.Client(key="AIzaasdf", channel="mychannel")
 
     def test_invalid_channel(self):
         with self.assertRaises(ValueError):
-            client = googlemaps.Client(client_id="foo", client_secret="a2V5", channel="auieauie$? ")
+            client = googlemaps.Client(client_id="foo", client_secret="a2V5", 
+                                       channel="auieauie$? ")
 
     @responses.activate
     def test_channel_with_client_id(self):
@@ -233,7 +234,8 @@ class ClientTest(_test.TestCase):
                       status=200,
                       content_type="application/json")
 
-        client = googlemaps.Client(client_id="foo", client_secret="a2V5", channel="MyChannel_1")
+        client = googlemaps.Client(key="AIzaasdf", client_id="foo", client_secret="a2V5", 
+                                   channel="MyChannel_1")
         client.geocode("Sesame St.")
 
         self.assertEqual(1, len(responses.calls))
