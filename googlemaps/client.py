@@ -114,7 +114,7 @@ class Client(object):
         if channel:
             if not client_id:
                 raise ValueError("The channel argument must be used with a "
-                             "client ID")
+                                 "client ID")
             if not re.match("^[a-zA-Z0-9._-]*$", channel):
                 raise ValueError("The channel argument must be an ASCII "
                     "alphanumeric string. The period (.), underscore (_)"

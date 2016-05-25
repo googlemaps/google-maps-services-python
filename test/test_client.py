@@ -222,28 +222,30 @@ class ClientTest(_test.TestCase):
             client = googlemaps.Client(key="AIzaasdf", channel="mychannel")
 
     def test_invalid_channel(self):
+        # Cf. limitations here:
+        # https://developers.google.com/maps/premium/reports
+        # /usage-reports#channels
         with self.assertRaises(ValueError):
             client = googlemaps.Client(client_id="foo", client_secret="a2V5", 
                                        channel="auieauie$? ")
 
-    @responses.activate
-    def test_channel_with_client_id(self):
-        responses.add(responses.GET,
-                      "https://maps.googleapis.com/maps/api/geocode/json",
-                      body='{"status":"OK","results":[]}',
-                      status=200,
-                      content_type="application/json")
-
-        client = googlemaps.Client(key="AIzaasdf", client_id="foo", client_secret="a2V5", 
+    def test_auth_url_with_channel(self):
+        client = googlemaps.Client(key="AIzaasdf", 
+                                   client_id="foo", 
+                                   client_secret="a2V5", 
                                    channel="MyChannel_1")
-        client.geocode("Sesame St.")
 
-        self.assertEqual(1, len(responses.calls))
+        # Check ordering of parameters + signature.
+        auth_url = client._generate_auth_url("/test", 
+                                             {"param": "param"}, 
+                                             accepts_clientid=True)
+        self.assertEqual(auth_url, "/test?param=param"
+                            "&channel=MyChannel_1"
+                            "&client=foo"
+                            "&signature=OH18GuQto_mEpxj99UimKskvo4k=")
 
-        # Check ordering of parameters.
-        self.assertIn("address=Sesame+St.&channel=MyChannel_1&client=foo&signature",
-                responses.calls[0].request.url)
-        self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
-                            "address=Sesame+St.&channel=MyChannel_1&client=foo&"
-                            "signature=5s4Hw2AitGZlkipugXkjPuxhmME=",
-                            responses.calls[0].request.url)
+        # Check if added to requests to API with accepts_clientid=False
+        auth_url = client._generate_auth_url("/test", 
+                                             {"param": "param"}, 
+                                             accepts_clientid=False)
+        self.assertEqual(auth_url, "/test?param=param&key=AIzaasdf")
