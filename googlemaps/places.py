@@ -55,7 +55,7 @@ def places(client, query, location=None, radius=None, language=None,
 
     :param type: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
-        https://developers.google.com/places/supported_type
+        https://developers.google.com/places/supported_types
     :type type: string
 
     :param page_token: Token from a previous search that when provided will
@@ -116,7 +116,7 @@ def places_nearby(client, location, radius=None, keyword=None, language=None,
 
     :param type: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
-        https://developers.google.com/places/supported_type
+        https://developers.google.com/places/supported_types
     :type type: string
 
     :param page_token: Token from a previous search that when provided will
@@ -179,7 +179,7 @@ def places_radar(client, location, radius, keyword=None, min_price=None,
 
     :param type: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
-        https://developers.google.com/places/supported_type
+        https://developers.google.com/places/supported_types
     :type type: string
 
     :rtype: result dict with the following keys:
