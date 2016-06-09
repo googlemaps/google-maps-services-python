@@ -66,7 +66,7 @@ class Client(object):
         :param channel: (for Maps API for Work customers) When set, a channel
             parameter with this value will be added to the requests.
             This can be used for tracking purpose.
-            Can not be used with a Maps API key.
+            Can only be used with a Maps API client ID.
         :type channel: str
 
         :param timeout: Combined connect and read timeout for HTTP requests, in
@@ -112,9 +112,9 @@ class Client(object):
             raise ValueError("Invalid API key provided.")
 
         if channel:
-            if key:
-                raise ValueError("The channel argument can not be used with an "
-                             "API key")
+            if not client_id:
+                raise ValueError("The channel argument must be used with a "
+                                 "client ID")
             if not re.match("^[a-zA-Z0-9._-]*$", channel):
                 raise ValueError("The channel argument must be an ASCII "
                     "alphanumeric string. The period (.), underscore (_)"
