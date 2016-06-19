@@ -53,7 +53,7 @@ def snap_to_roads(client, path, interpolate=False):
     return client._get("/v1/snapToRoads", params,
                        base_url=_ROADS_BASE_URL,
                        accepts_clientid=False,
-                       extract_body=_roads_extract)["snappedPoints"]
+                       extract_body=_roads_extract).get("snappedPoints", [])
 
 
 def speed_limits(client, place_ids):
