@@ -129,7 +129,7 @@ class Client(object):
         if connect_timeout and read_timeout:
             # Check that the version of requests is >= 2.4.0
             chunks = requests.__version__.split(".")
-            if chunks[0] < 2 or (chunks[0] == 2 and chunks[1] < 4):
+            if int(chunks[0]) < 2 or (int(chunks[0]) == 2 and int(chunks[1]) < 4):
                 raise NotImplementedError("Connect/Read timeouts require "
                                           "requests v2.4.0 or higher")
             self.timeout = (connect_timeout, read_timeout)

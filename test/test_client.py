@@ -24,6 +24,7 @@ import time
 import googlemaps
 from googlemaps import client as _client
 import test as _test
+import requests
 
 class ClientTest(_test.TestCase):
 
@@ -226,18 +227,18 @@ class ClientTest(_test.TestCase):
         # https://developers.google.com/maps/premium/reports
         # /usage-reports#channels
         with self.assertRaises(ValueError):
-            client = googlemaps.Client(client_id="foo", client_secret="a2V5", 
+            client = googlemaps.Client(client_id="foo", client_secret="a2V5",
                                        channel="auieauie$? ")
 
     def test_auth_url_with_channel(self):
-        client = googlemaps.Client(key="AIzaasdf", 
-                                   client_id="foo", 
-                                   client_secret="a2V5", 
+        client = googlemaps.Client(key="AIzaasdf",
+                                   client_id="foo",
+                                   client_secret="a2V5",
                                    channel="MyChannel_1")
 
         # Check ordering of parameters + signature.
-        auth_url = client._generate_auth_url("/test", 
-                                             {"param": "param"}, 
+        auth_url = client._generate_auth_url("/test",
+                                             {"param": "param"},
                                              accepts_clientid=True)
         self.assertEqual(auth_url, "/test?param=param"
                             "&channel=MyChannel_1"
@@ -245,7 +246,29 @@ class ClientTest(_test.TestCase):
                             "&signature=OH18GuQto_mEpxj99UimKskvo4k=")
 
         # Check if added to requests to API with accepts_clientid=False
-        auth_url = client._generate_auth_url("/test", 
-                                             {"param": "param"}, 
+        auth_url = client._generate_auth_url("/test",
+                                             {"param": "param"},
                                              accepts_clientid=False)
         self.assertEqual(auth_url, "/test?param=param&key=AIzaasdf")
+
+    def test_requests_version(self):
+        client_args_timeout = {
+            "key": "AIzaasdf",
+            "client_id": "foo",
+            "client_secret": "a2V5",
+            "channel": "MyChannel_1",
+            "connect_timeout": 5,
+            "read_timeout": 5
+        }
+        client_args = client_args_timeout.copy()
+        del client_args["connect_timeout"]
+        del client_args["read_timeout"]
+
+        requests.__version__ = '2.3.0'
+        with self.assertRaises(NotImplementedError):
+            googlemaps.Client(**client_args_timeout)
+        googlemaps.Client(**client_args)
+
+        requests.__version__ = '2.4.0'
+        googlemaps.Client(**client_args_timeout)
+        googlemaps.Client(**client_args)
