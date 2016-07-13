@@ -91,6 +91,9 @@ class ConvertTest(unittest.TestCase):
         c = {"country": "US", "foo": 1}
         self.assertEqual("country:US|foo:1", convert.components(c))
 
+        c = {"country": ["US", "AU"], "foo": 1}
+        self.assertEqual("country:AU|country:US|foo:1", convert.components(c))
+
         with self.assertRaises(TypeError):
             convert.components("test")
 

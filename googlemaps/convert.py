@@ -220,9 +220,17 @@ def components(arg):
 
     :rtype: basestring
     """
+
+    # Components may have multiple values per type, here we
+    # expand them into individual key/value items, eg:
+    # {"country": ["US", "AU"], "foo": 1} -> "country:AU", "country:US", "foo:1"
+    def expand(arg):
+        for k, v in arg.items():
+            for item in as_list(v):
+                yield "%s:%s" % (k, item)
+
     if isinstance(arg, dict):
-        arg = sorted(["%s:%s" % (k, arg[k]) for k in arg])
-        return "|".join(arg)
+        return "|".join(sorted(expand(arg)))
 
     raise TypeError(
         "Expected a dict for components, "
