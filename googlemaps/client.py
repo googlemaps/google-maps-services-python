@@ -256,7 +256,8 @@ class Client(object):
             return body
 
         if api_status == "OVER_QUERY_LIMIT":
-            raise googlemaps.exceptions._RetriableRequest()
+            return body
+            #raise googlemaps.exceptions._RetriableRequest()
 
         if "error_message" in body:
             raise googlemaps.exceptions.ApiError(api_status,
