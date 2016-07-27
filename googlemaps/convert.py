@@ -108,24 +108,24 @@ def normalize_lat_lng(arg):
 
 
 def location_list(arg):
-    """Joins a list of locations into a pipe separated string, handling
-    the various formats supported for lat/lng values.
+    """Joins a list of waypoint dictionary items into a pipe separated string, handling
+    the various formats supported for lat/lng and stopover values.
 
     For example:
-    p = [{"lat" : -33.867486, "lng" : 151.206990}, "Sydney"]
+    p = [{"location":{"lat" : -33.867486, "lng" : 151.206990},"stopover":True}, {"location":"Sydney","stopover":False}]
     convert.waypoint(p)
-    # '-33.867486,151.206990|Sydney'
+    # 'via:-33.867486,151.206990|Sydney'
 
-    :param arg: The lat/lng list.
-    :type arg: list
+    :param arg: The location (lat/lng) and stopover dictionary.
+    :type arg: dict
 
     :rtype: string
     """
-    if isinstance(arg, tuple):
+    if isinstance(arg, dict):
         # Handle the single-tuple lat/lng case.
-        return latlng(arg)
+        return latlng(arg['location']) if arg['stopover'] else "via:"+latlng(arg['location'])
     else:
-        return "|".join([latlng(location) for location in as_list(arg)])
+        return "|".join([latlng(location_dict['location']) if location_dict['stopover'] else "via:"+latlng(location_dict['location']) for location_dict in as_list(arg)])
 
 
 def join_list(sep, arg):
