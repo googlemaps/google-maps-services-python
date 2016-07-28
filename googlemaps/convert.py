@@ -108,21 +108,27 @@ def normalize_lat_lng(arg):
 
 
 def location_list(arg):
-    """Joins a list of waypoint dictionary items into a pipe separated string, handling
-    the various formats supported for lat/lng and stopover values.
+    """Joins a dictionary of waypoints into a pipe separated string, handling
+    the various formats supported for lat/lng location key values.
 
     For example:
-    p = [{"location":{"lat" : -33.867486, "lng" : 151.206990},"stopover":True}, {"location":"Sydney","stopover":False}]
+    p = [{"location":{"lat" : -33.867486, "lng" : 151.206990}, "stopover":False}, {"location":"Sydney", "stopover":True}]
     convert.waypoint(p)
     # 'via:-33.867486,151.206990|Sydney'
 
-    :param arg: The location (lat/lng) and stopover dictionary.
+    :param arg: The lat/lng and stopover dictionary.
     :type arg: dict
 
     :rtype: string
     """
+    if not isinstance(as_list(arg)[0], dict):
+        raise TypeError(
+        "Expected a waypoint lat/lng dict or list of dicts, "
+        "but got %s." % type(arg).__name__)
+    if not all (key in arg_one for arg_one in as_list(arg) for key in ("stopover","location")):
+        raise Exception('Waypoint is in incorrent dictionary format, should be: \n{\n\t"location":{\n\t\t"lat":0.0,\n\t\t"lng":0.0\n\t}, \n\t"stopover":True\n}')
     if isinstance(arg, dict):
-        # Handle the single-tuple lat/lng case.
+        # Handle the single-dict lat/lng case.
         return latlng(arg['location']) if arg['stopover'] else "via:"+latlng(arg['location'])
     else:
         return "|".join([latlng(location_dict['location']) if location_dict['stopover'] else "via:"+latlng(location_dict['location']) for location_dict in as_list(arg)])
