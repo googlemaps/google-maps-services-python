@@ -92,7 +92,7 @@ https://developers.google.com/maps/.
 
 ## Usage
 
-This example uses the [Geocoding API] and the [Directions API].
+This example uses the [Geocoding API] and the [Directions API] with an API key:
 
 ```python
 import googlemaps
@@ -114,7 +114,30 @@ directions_result = gmaps.directions("Sydney Town Hall",
                                      departure_time=now)
 ```
 
+Below is the same example, using client ID and client secret (digital signature)
+for authentication. This code assumes you have previously loaded the `client_id`
+and `client_secret` variables with appropriate values.
 
+For a guide on how to generate the `client_secret` (digital signature), see the
+documentation for the API you're using. For example, see the guide for the
+[Directions API][directions-client-id].
+
+```python
+gmaps = googlemaps.Client(client_id=client_id, client_secret=client_secret)
+
+# Geocoding and address
+geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
+
+# Look up an address with reverse geocoding
+reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
+
+# Request directions via public transit
+now = datetime.now()
+directions_result = gmaps.directions("Sydney Town Hall",
+                                     "Parramatta, NSW",
+                                     mode="transit",
+                                     departure_time=now)
+```
 
 For more usage examples, check out [the tests](test/).
 
@@ -156,6 +179,7 @@ customers can use their [API key][apikey], too.
 
 [Google Maps API Web Services]: https://developers.google.com/maps/documentation/webservices/
 [Directions API]: https://developers.google.com/maps/documentation/directions/
+[directions-client-id]: https://developers.google.com/maps/documentation/directions/get-api-key#client-id
 [Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix/
 [Elevation API]: https://developers.google.com/maps/documentation/elevation/
 [Geocoding API]: https://developers.google.com/maps/documentation/geocoding/
