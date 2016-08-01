@@ -42,30 +42,31 @@ contribute, please read [How to Contribute][contrib].
 
 ### API keys
 
-Each Google Maps Web Service requires an API key or Client ID. API keys are
-freely available with a Google Account at https://developers.google.com/console.
-To generate a server key for your project:
+Each Google Maps Web Service request requires an API key or client ID. API keys
+are freely available with a Google Account at
+https://developers.google.com/console. The type of API key you need is a 
+**Server key**. 
+
+To get an API key:
 
  1. Visit https://developers.google.com/console and log in with
     a Google Account.
- 1. Select an existing project, or create a new project.
- 1. Click **Enable an API**.
- 1. Browse for the API, and set its status to "On". The Python Client for Google Maps Services
+ 1. Select one of your existing projects, or create a new project.
+ 1. Enable the API(s) you want to use. The Python Client for Google Maps Services
     accesses the following APIs:
     * Directions API
     * Distance Matrix API
     * Elevation API
     * Geocoding API
-    * Time Zone API
+    * Places API
     * Roads API
- 1. Once you've enabled the APIs, click **Credentials** from the left navigation of the Developer
-    Console.
- 1. In the "Public API access", click **Create new Key**.
- 1. Choose **Server Key**.
+    * Time Zone API
+ 1. Create a new **Server key**.
  1. If you'd like to restrict requests to a specific IP address, do so now.
- 1. Click **Create**.
-
-Your API key should be 40 characters long, and begin with `AIza`.
+ 
+For guided help, follow the instructions for the [Directions API][directions-key]. 
+You only need one API key, but remember to enable all the APIs you need.
+For even more information, see the guide to [API keys][apikey].
 
 **Important:** This key should be kept secret on your server.
 
@@ -148,10 +149,10 @@ For more usage examples, check out [the tests](test/).
 Automatically retry when intermittent failures occur. That is, when any of the retriable 5xx errors
 are returned from the API.
 
-### Keys *and* Client IDs
+### Client IDs
 
-Maps API for Work customers can use their [client ID and secret][clientid] to authenticate. Free
-customers can use their [API key][apikey], too.
+Google Maps APIs Premium Plan customers can use their [client ID and secret][clientid] to authenticate,
+instead of an API key.
 
 ## Building the Project
 
@@ -179,6 +180,7 @@ customers can use their [API key][apikey], too.
 
 [Google Maps API Web Services]: https://developers.google.com/maps/documentation/webservices/
 [Directions API]: https://developers.google.com/maps/documentation/directions/
+[directions-key]: https://developers.google.com/maps/documentation/directions/get-api-key#key
 [directions-client-id]: https://developers.google.com/maps/documentation/directions/get-api-key#client-id
 [Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix/
 [Elevation API]: https://developers.google.com/maps/documentation/elevation/
