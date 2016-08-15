@@ -1,6 +1,8 @@
 Python Client for Google Maps Services
 ====================================
 
+[![Build Status](https://travis-ci.org/googlemaps/google-maps-services-python.svg?branch=master)](https://travis-ci.org/googlemaps/google-maps-services-python)
+
 ## Description
 
 Use Python? Want to [geocode][Geocoding API] something? Looking for [directions][Directions API]?
