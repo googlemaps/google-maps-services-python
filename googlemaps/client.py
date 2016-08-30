@@ -309,6 +309,7 @@ from googlemaps.geocoding import geocode
 from googlemaps.geocoding import reverse_geocode
 from googlemaps.timezone import timezone
 from googlemaps.roads import snap_to_roads
+from googlemaps.roads import nearest_roads
 from googlemaps.roads import speed_limits
 from googlemaps.roads import snapped_speed_limits
 from googlemaps.places import places
@@ -327,6 +328,7 @@ Client.geocode = geocode
 Client.reverse_geocode = reverse_geocode
 Client.timezone = timezone
 Client.snap_to_roads = snap_to_roads
+Client.nearest_roads = nearest_roads
 Client.speed_limits = speed_limits
 Client.snapped_speed_limits = snapped_speed_limits
 Client.places = places

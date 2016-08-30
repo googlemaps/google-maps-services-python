@@ -55,6 +55,27 @@ def snap_to_roads(client, path, interpolate=False):
                        accepts_clientid=False,
                        extract_body=_roads_extract).get("snappedPoints", [])
 
+def nearest_roads(client, points):
+    """Find the closest road segments for each point
+
+    Takes up to 100 independent coordinates, and returns the closest road
+    segment for each point. The points passed do not need to be part of a
+    continuous path.
+
+    :param points: The points for which the nearest road segments are to be
+        located.
+    :type points: a single location, or a list of locations, where a
+        location is a string, dict, list, or tuple
+
+    :rtype: A list of snapped points.
+    """
+
+    params = {"points": convert.location_list(points)}
+
+    return client._get("/v1/nearestRoads", params,
+                       base_url=_ROADS_BASE_URL,
+                       accepts_clientid=False,
+                       extract_body=_roads_extract).get("snappedPoints", [])
 
 def speed_limits(client, place_ids):
     """Returns the posted speed limit (in km/h) for given road segments.
