@@ -46,6 +46,22 @@ class RoadsTest(_test.TestCase):
                             responses.calls[0].request.url)
 
     @responses.activate
+    def test_nearest_roads(self):
+        responses.add(responses.GET,
+                      "https://roads.googleapis.com/v1/nearestRoads",
+                      body='{"snappedPoints":["foo"]}',
+                      status=200,
+                      content_type="application/json")
+
+        results = self.client.nearest_roads((40.714728, -73.998672))
+        self.assertEqual("foo", results[0])
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual("https://roads.googleapis.com/v1/nearestRoads?"
+                            "points=40.714728%%2C-73.998672&key=%s" % self.key,
+                            responses.calls[0].request.url)
+
+    @responses.activate
     def test_path(self):
         responses.add(responses.GET,
                       "https://roads.googleapis.com/v1/speedLimits",
