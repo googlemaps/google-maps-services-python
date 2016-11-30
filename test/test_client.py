@@ -81,6 +81,22 @@ class ClientTest(_test.TestCase):
                             "key=AIzaasdf&address=Sesame+St.",
                             responses.calls[0].request.url)
 
+    @responses.activate
+    def test_extra_params(self):
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/maps/api/geocode/json",
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type="application/json")
+
+        client = googlemaps.Client(key="AIzaasdf")
+        client.geocode("Sesame St.", extra_params={"foo": "bar"})
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual("https://maps.googleapis.com/maps/api/geocode/json?"
+                            "key=AIzaasdf&address=Sesame+St.&foo=bar",
+                            responses.calls[0].request.url)
+
     def test_hmac(self):
         """
         From http://en.wikipedia.org/wiki/Hash-based_message_authentication_code

@@ -24,6 +24,7 @@ import base64
 import collections
 from datetime import datetime
 from datetime import timedelta
+import functools
 import hashlib
 import hmac
 import re
@@ -279,10 +280,11 @@ class Client(object):
         """
         # Deterministic ordering through sorting by key.
         # Useful for tests, and in the future, any caching.
+        extra_params = getattr(self, "_extra_params", None) or {}
         if type(params) is dict:
-            params = sorted(params.items())
+            params = sorted(dict(extra_params, **params).items())
         else:
-            params = params[:] # Take a copy.
+            params = sorted(extra_params.items()) + params[:] # Take a copy.
 
         if accepts_clientid and self.client_id and self.client_secret:
             if self.channel:
@@ -320,24 +322,42 @@ from googlemaps.places import places_photo
 from googlemaps.places import places_autocomplete
 from googlemaps.places import places_autocomplete_query
 
-Client.directions = directions
-Client.distance_matrix = distance_matrix
-Client.elevation = elevation
-Client.elevation_along_path = elevation_along_path
-Client.geocode = geocode
-Client.reverse_geocode = reverse_geocode
-Client.timezone = timezone
-Client.snap_to_roads = snap_to_roads
-Client.nearest_roads = nearest_roads
-Client.speed_limits = speed_limits
-Client.snapped_speed_limits = snapped_speed_limits
-Client.places = places
-Client.places_nearby = places_nearby
-Client.places_radar = places_radar
-Client.place = place
-Client.places_photo = places_photo
-Client.places_autocomplete = places_autocomplete
-Client.places_autocomplete_query = places_autocomplete_query
+
+def make_api_method(func):
+    """
+    Provides a single entry point for modifying all API methods.
+    For now this is limited to allowing the client object to be modified
+    with an `extra_params` keyword arg to each method, that is then used
+    as the params for each web service request. Please note that this is
+    an unsupported feature for advanced use only.
+    """
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        args[0]._extra_params = kwargs.pop("extra_params", None)
+        result = func(*args, **kwargs)
+        del args[0]._extra_params
+        return result
+    return wrapper
+
+
+Client.directions = make_api_method(directions)
+Client.distance_matrix = make_api_method(distance_matrix)
+Client.elevation = make_api_method(elevation)
+Client.elevation_along_path = make_api_method(elevation_along_path)
+Client.geocode = make_api_method(geocode)
+Client.reverse_geocode = make_api_method(reverse_geocode)
+Client.timezone = make_api_method(timezone)
+Client.snap_to_roads = make_api_method(snap_to_roads)
+Client.nearest_roads = make_api_method(nearest_roads)
+Client.speed_limits = make_api_method(speed_limits)
+Client.snapped_speed_limits = make_api_method(snapped_speed_limits)
+Client.places = make_api_method(places)
+Client.places_nearby = make_api_method(places_nearby)
+Client.places_radar = make_api_method(places_radar)
+Client.place = make_api_method(place)
+Client.places_photo = make_api_method(places_photo)
+Client.places_autocomplete = make_api_method(places_autocomplete)
+Client.places_autocomplete_query = make_api_method(places_autocomplete_query)
 
 
 def sign_hmac(secret, payload):
