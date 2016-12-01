@@ -46,8 +46,8 @@ contribute, please read [How to Contribute][contrib].
 
 Each Google Maps Web Service request requires an API key or client ID. API keys
 are freely available with a Google Account at
-https://developers.google.com/console. The type of API key you need is a 
-**Server key**. 
+https://developers.google.com/console. The type of API key you need is a
+**Server key**.
 
 To get an API key:
 
@@ -65,8 +65,8 @@ To get an API key:
     * Time Zone API
  1. Create a new **Server key**.
  1. If you'd like to restrict requests to a specific IP address, do so now.
- 
-For guided help, follow the instructions for the [Directions API][directions-key]. 
+
+For guided help, follow the instructions for the [Directions API][directions-key].
 You only need one API key, but remember to enable all the APIs you need.
 For even more information, see the guide to [API keys][apikey].
 
@@ -80,7 +80,7 @@ Note that you will need requests 2.4.0 or higher if you want to specify connect/
 
 ## Developer Documentation
 
-View the [reference documentation](https://googlemaps.github.io/google-maps-services-python/docs/2.4.4/)
+View the [reference documentation](https://googlemaps.github.io/google-maps-services-python/docs/2.4.5/)
 
 Additional documentation for the included web services is available at
 https://developers.google.com/maps/.
