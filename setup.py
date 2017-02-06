@@ -35,6 +35,7 @@ setup(name='googlemaps',
                    'Programming Language :: Python :: 3.2',
                    'Programming Language :: Python :: 3.4',
                    'Programming Language :: Python :: 3.5',
+                   'Programming Language :: Python :: 3.6',
                    'Topic :: Internet',
                    ]
       )
