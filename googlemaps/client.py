@@ -151,10 +151,10 @@ class Client(object):
         self.queries_per_second = queries_per_second
         self.sent_times = collections.deque("", queries_per_second)
 
-    def _get(self, url, params, first_request_time=None, retry_counter=0,
+    def _request(self, url, params, first_request_time=None, retry_counter=0,
              base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
-             extract_body=None, requests_kwargs=None):
-        """Performs HTTP GET request with credentials, returning the body as
+             extract_body=None, requests_kwargs=None, post_body=None):
+        """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
         :param url: URL path for the request. Should begin with a slash.
@@ -214,21 +214,32 @@ class Client(object):
 
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
-        requests_kwargs = dict(self.requests_kwargs, **(requests_kwargs or {}))
+        requests_kwargs = requests_kwargs or {}
+        final_requests_kwargs = dict(self.requests_kwargs, **requests_kwargs)
+
+        # Determine GET/POST.
+        requests_method = requests.get
+        if post_body is not None:
+            requests_method = requests.post
+            final_requests_kwargs["data"] = post_body
+
         try:
-            resp = requests.get(base_url + authed_url, **requests_kwargs)
+            response = requests_method(base_url + authed_url,
+                                       **final_requests_kwargs)
         except requests.exceptions.Timeout:
             raise googlemaps.exceptions.Timeout()
         except Exception as e:
             raise googlemaps.exceptions.TransportError(e)
 
-        if resp.status_code in _RETRIABLE_STATUSES:
+        if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
-            return self._get(url, params, first_request_time, retry_counter + 1,
-                             base_url, accepts_clientid, extract_body)
+            return self._request(url, params, first_request_time,
+                                 retry_counter + 1, base_url, accepts_clientid,
+                                 extract_body, requests_kwargs, post_body)
 
-        # Check if the time of the nth previous query (where n is queries_per_second)
-        # is under a second ago - if so, sleep for the difference.
+        # Check if the time of the nth previous query (where n is
+        # queries_per_second) is under a second ago - if so, sleep for
+        # the difference.
         if self.sent_times and len(self.sent_times) == self.queries_per_second:
             elapsed_since_earliest = time.time() - self.sent_times[0]
             if elapsed_since_earliest < 1:
@@ -236,21 +247,25 @@ class Client(object):
 
         try:
             if extract_body:
-                result = extract_body(resp)
+                result = extract_body(response)
             else:
-                result = self._get_body(resp)
+                result = self._get_body(response)
             self.sent_times.append(time.time())
             return result
         except googlemaps.exceptions._RetriableRequest:
             # Retry request.
-            return self._get(url, params, first_request_time, retry_counter + 1,
-                             base_url, accepts_clientid, extract_body)
+            return self._request(url, params, first_request_time,
+                                 retry_counter + 1, base_url, accepts_clientid,
+                                 extract_body, requests_kwargs, post_body)
 
-    def _get_body(self, resp):
-        if resp.status_code != 200:
-            raise googlemaps.exceptions.HTTPError(resp.status_code)
+    def _get(self, *args, **kwargs):
+        return self._request(*args, **kwargs)
 
-        body = resp.json()
+    def _get_body(self, response):
+        if response.status_code != 200:
+            raise googlemaps.exceptions.HTTPError(response.status_code)
+
+        body = response.json()
 
         api_status = body["status"]
         if api_status == "OK" or api_status == "ZERO_RESULTS":

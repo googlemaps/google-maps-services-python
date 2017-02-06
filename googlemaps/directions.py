@@ -147,4 +147,4 @@ def directions(client, origin, destination,
     if traffic_model:
         params["traffic_model"] = traffic_model
 
-    return client._get("/maps/api/directions/json", params)["routes"]
+    return client._request("/maps/api/directions/json", params)["routes"]

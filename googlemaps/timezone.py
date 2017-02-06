@@ -51,4 +51,4 @@ def timezone(client, location, timestamp=None, language=None):
     if language:
         params["language"] = language
 
-    return client._get( "/maps/api/timezone/json", params)
+    return client._request( "/maps/api/timezone/json", params)
