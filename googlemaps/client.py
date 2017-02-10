@@ -51,7 +51,7 @@ class Client(object):
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=10, channel=None, requests_session=None):
+                 queries_per_second=10, channel=None):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -104,9 +104,6 @@ class Client(object):
             http://docs.python-requests.org/en/latest/api/#main-interface
         :type requests_kwargs: dict
 
-        :param requests_session: Re-usable requests.session object for re-using connections
-        :type requests_session: request.Session
-
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
@@ -114,11 +111,6 @@ class Client(object):
 
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
-
-        if requests_session is None:
-            self.session = requests.Session()
-        else:
-            self.session = requests_session
 
         if channel:
             if not client_id:
@@ -129,6 +121,7 @@ class Client(object):
                     "alphanumeric string. The period (.), underscore (_)"
                     "and hyphen (-) characters are allowed.")
 
+        self.session = requests.Session()
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):

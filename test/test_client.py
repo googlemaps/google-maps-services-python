@@ -52,8 +52,8 @@ class ClientTest(_test.TestCase):
                       status=200,
                       content_type="application/json")
         client = googlemaps.Client(key="AIzaasdf",
-                                   queries_per_second=3,
-                                   requests_session=session)
+                                   queries_per_second=3)
+        client.session = session
         client.geocode("Sesame St.")
 
 
