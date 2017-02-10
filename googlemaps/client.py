@@ -47,7 +47,6 @@ _RETRIABLE_STATUSES = set([500, 503, 504])
 
 class Client(object):
     """Performs requests to the Google Maps API web services."""
-    session = requests.Session()
 
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
@@ -116,7 +115,9 @@ class Client(object):
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
 
-        if requests_session is not None:
+        if requests_session is None:
+            self.session = requests.Session()
+        else:
             self.session = requests_session
 
         if channel:
