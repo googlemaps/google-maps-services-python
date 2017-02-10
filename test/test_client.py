@@ -44,6 +44,20 @@ class ClientTest(_test.TestCase):
         self.assertEqual("address=%3DSydney+~", encoded_params)
 
     @responses.activate
+    def test_query_with_session(self):
+        session = requests.Session()
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/maps/api/geocode/json",
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type="application/json")
+        client = googlemaps.Client(key="AIzaasdf",
+                                   queries_per_second=3,
+                                   requests_session=session)
+        client.geocode("Sesame St.")
+
+
+    @responses.activate
     def test_queries_per_second(self):
         # This test assumes that the time to run a mocked query is
         # relatively small, eg a few milliseconds. We define a rate of

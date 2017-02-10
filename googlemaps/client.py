@@ -47,11 +47,12 @@ _RETRIABLE_STATUSES = set([500, 503, 504])
 
 class Client(object):
     """Performs requests to the Google Maps API web services."""
+    session = requests.Session()
 
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=10, channel=None):
+                 queries_per_second=10, channel=None, requests_session=None):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -104,6 +105,9 @@ class Client(object):
             http://docs.python-requests.org/en/latest/api/#main-interface
         :type requests_kwargs: dict
 
+        :param requests_session: Re-usable requests.session object for re-using connections
+        :type requests_session: request.Session
+
         """
         if not key and not (client_secret and client_id):
             raise ValueError("Must provide API key or enterprise credentials "
@@ -111,6 +115,9 @@ class Client(object):
 
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
+
+        if requests_session is not None:
+            self.session = requests_session
 
         if channel:
             if not client_id:
@@ -216,7 +223,7 @@ class Client(object):
         # requests_kwargs arg overriding.
         requests_kwargs = dict(self.requests_kwargs, **(requests_kwargs or {}))
         try:
-            resp = requests.get(base_url + authed_url, **requests_kwargs)
+            resp = self.session.get(base_url + authed_url, **requests_kwargs)
         except requests.exceptions.Timeout:
             raise googlemaps.exceptions.Timeout()
         except Exception as e:
