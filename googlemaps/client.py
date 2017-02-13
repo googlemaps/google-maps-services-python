@@ -121,6 +121,7 @@ class Client(object):
                     "alphanumeric string. The period (.), underscore (_)"
                     "and hyphen (-) characters are allowed.")
 
+        self.session = requests.Session()
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
@@ -216,7 +217,7 @@ class Client(object):
         # requests_kwargs arg overriding.
         requests_kwargs = dict(self.requests_kwargs, **(requests_kwargs or {}))
         try:
-            resp = requests.get(base_url + authed_url, **requests_kwargs)
+            resp = self.session.get(base_url + authed_url, **requests_kwargs)
         except requests.exceptions.Timeout:
             raise googlemaps.exceptions.Timeout()
         except Exception as e:
