@@ -121,6 +121,7 @@ class Client(object):
                     "alphanumeric string. The period (.), underscore (_)"
                     "and hyphen (-) characters are allowed.")
 
+        self.session = requests.Session()
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
@@ -218,9 +219,9 @@ class Client(object):
         final_requests_kwargs = dict(self.requests_kwargs, **requests_kwargs)
 
         # Determine GET/POST.
-        requests_method = requests.get
+        requests_method = self.session.get
         if post_json is not None:
-            requests_method = requests.post
+            requests_method = self.session.post
             final_requests_kwargs["json"] = post_json
 
         try:
