@@ -127,4 +127,4 @@ def distance_matrix(client, origins, destinations,
     if traffic_model:
         params["traffic_model"] = traffic_model
 
-    return client._get("/maps/api/distancematrix/json", params)
+    return client._request("/maps/api/distancematrix/json", params)

@@ -65,7 +65,7 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
     if language:
         params["language"] = language
 
-    return client._get("/maps/api/geocode/json", params)["results"]
+    return client._request("/maps/api/geocode/json", params)["results"]
 
 
 def reverse_geocode(client, latlng, result_type=None, location_type=None,
@@ -77,7 +77,7 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     :param latlng: The latitude/longitude value or place_id for which you wish
         to obtain the closest, human-readable address.
     :type latlng: string, dict, list, or tuple
-    
+
     :param result_type: One or more address types to restrict results to.
     :type result_type: string or list of strings
 
@@ -106,4 +106,4 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
     if language:
         params["language"] = language
 
-    return client._get("/maps/api/geocode/json", params)["results"]
+    return client._request("/maps/api/geocode/json", params)["results"]
