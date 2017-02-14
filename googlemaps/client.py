@@ -153,7 +153,7 @@ class Client(object):
 
     def _request(self, url, params, first_request_time=None, retry_counter=0,
              base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
-             extract_body=None, requests_kwargs=None, post_body=None):
+             extract_body=None, requests_kwargs=None, post_json=None):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
@@ -219,9 +219,9 @@ class Client(object):
 
         # Determine GET/POST.
         requests_method = requests.get
-        if post_body is not None:
+        if post_json is not None:
             requests_method = requests.post
-            final_requests_kwargs["data"] = post_body
+            final_requests_kwargs["json"] = post_json
 
         try:
             response = requests_method(base_url + authed_url,
@@ -235,7 +235,7 @@ class Client(object):
             # Retry request.
             return self._request(url, params, first_request_time,
                                  retry_counter + 1, base_url, accepts_clientid,
-                                 extract_body, requests_kwargs, post_body)
+                                 extract_body, requests_kwargs, post_json)
 
         # Check if the time of the nth previous query (where n is
         # queries_per_second) is under a second ago - if so, sleep for
@@ -256,9 +256,9 @@ class Client(object):
             # Retry request.
             return self._request(url, params, first_request_time,
                                  retry_counter + 1, base_url, accepts_clientid,
-                                 extract_body, requests_kwargs, post_body)
+                                 extract_body, requests_kwargs, post_json)
 
-    def _get(self, *args, **kwargs):
+    def _get(self, *args, **kwargs):  # Backwards compatibility.
         return self._request(*args, **kwargs)
 
     def _get_body(self, response):
@@ -324,6 +324,7 @@ from googlemaps.elevation import elevation
 from googlemaps.elevation import elevation_along_path
 from googlemaps.geocoding import geocode
 from googlemaps.geocoding import reverse_geocode
+from googlemaps.geolocation import geolocate
 from googlemaps.timezone import timezone
 from googlemaps.roads import snap_to_roads
 from googlemaps.roads import nearest_roads
@@ -366,6 +367,7 @@ Client.elevation = make_api_method(elevation)
 Client.elevation_along_path = make_api_method(elevation_along_path)
 Client.geocode = make_api_method(geocode)
 Client.reverse_geocode = make_api_method(reverse_geocode)
+Client.geolocate = make_api_method(geolocate)
 Client.timezone = make_api_method(timezone)
 Client.snap_to_roads = make_api_method(snap_to_roads)
 Client.nearest_roads = make_api_method(nearest_roads)
