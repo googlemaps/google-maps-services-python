@@ -228,7 +228,7 @@ def _places(client, url_part, query=None, location=None, radius=None,
         params["pagetoken"] = page_token
 
     url = "/maps/api/place/%ssearch/json" % url_part
-    return client._get(url, params)
+    return client._request(url, params)
 
 
 def place(client, place_id, language=None):
@@ -249,7 +249,7 @@ def place(client, place_id, language=None):
     params = {"placeid": place_id}
     if language:
         params["language"] = language
-    return client._get("/maps/api/place/details/json", params)
+    return client._request("/maps/api/place/details/json", params)
 
 
 def places_photo(client, photo_reference, max_width=None, max_height=None):
@@ -291,7 +291,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     # "extract_body" and "stream" args here are used to return an iterable
     # response containing the image file data, rather than converting from
     # json.
-    response = client._get("/maps/api/place/photo", params,
+    response = client._request("/maps/api/place/photo", params,
                            extract_body=lambda response: response,
                            requests_kwargs={"stream": True})
     return response.iter_content()
@@ -394,4 +394,4 @@ def _autocomplete(client, url_part, input_text, offset=None, location=None,
         params["components"] = convert.components(components)
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
-    return client._get(url, params)["predictions"]
+    return client._request(url, params)["predictions"]
