@@ -17,6 +17,7 @@ APIs:
  - [Distance Matrix API]
  - [Elevation API]
  - [Geocoding API]
+ - [Geolocation API]
  - [Time Zone API]
  - [Roads API]
  - [Places API]
@@ -187,6 +188,7 @@ instead of an API key.
 [Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix/
 [Elevation API]: https://developers.google.com/maps/documentation/elevation/
 [Geocoding API]: https://developers.google.com/maps/documentation/geocoding/
+[Geolocation API]: https://developers.google.com/maps/documentation/geolocation/
 [Time Zone API]: https://developers.google.com/maps/documentation/timezone/
 [Roads API]: https://developers.google.com/maps/documentation/roads/
 [Places API]: https://developers.google.com/places/
