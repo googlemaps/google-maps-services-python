@@ -61,6 +61,7 @@ To get an API key:
     * Distance Matrix API
     * Elevation API
     * Geocoding API
+    * Geolocation API
     * Places API
     * Roads API
     * Time Zone API
@@ -90,6 +91,7 @@ https://developers.google.com/maps/.
  - [Distance Matrix API]
  - [Elevation API]
  - [Geocoding API]
+ - [Geolocation API]
  - [Time Zone API]
  - [Roads API]
  - [Places API]
