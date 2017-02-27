@@ -81,7 +81,7 @@ Note that you will need requests 2.4.0 or higher if you want to specify connect/
 
 ## Developer Documentation
 
-View the [reference documentation](https://googlemaps.github.io/google-maps-services-python/docs/2.4.5/)
+View the [reference documentation](https://googlemaps.github.io/google-maps-services-python/docs/2.4.6/)
 
 Additional documentation for the included web services is available at
 https://developers.google.com/maps/.
