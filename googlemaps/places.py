@@ -297,9 +297,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     return response.iter_content()
 
 
-def places_autocomplete(client, input_text, offset=None, location=None,
-                        radius=None, language=None, type=None,
-                        components=None):
+def places_autocomplete(client, input_text, **params):
     """
     Returns Place predictions given a textual search string and optional
     geographic bounds.
@@ -336,13 +334,10 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     :rtype: list of predictions
 
     """
-    return _autocomplete(client, "", input_text, offset=offset,
-                         location=location, radius=radius, language=language,
-                         type=type, components=components)
+    return _autocomplete(client, "", input_text, **params)
 
 
-def places_autocomplete_query(client, input_text, offset=None, location=None,
-                              radius=None, language=None):
+def places_autocomplete_query(client, input_text, **params):
     """
     Returns Place predictions given a textual search query, such as
     "pizza near New York", and optional geographic bounds.
@@ -367,31 +362,21 @@ def places_autocomplete_query(client, input_text, offset=None, location=None,
 
     :rtype: list of predictions
     """
-    return _autocomplete(client, "query", input_text, offset=offset,
-                         location=location, radius=radius, language=language)
+    return _autocomplete(client, "query", input_text, **params)
 
 
-def _autocomplete(client, url_part, input_text, offset=None, location=None,
-                  radius=None, language=None, type=None, components=None):
+def _autocomplete(client, url_part, input_text, **params):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
     See each method's docs for arg details.
     """
 
-    params = {"input": input_text}
+    params['input'] = input_text
 
-    if offset:
-        params["offset"] = offset
-    if location:
-        params["location"] = convert.latlng(location)
-    if radius:
-        params["radius"] = radius
-    if language:
-        params["language"] = language
-    if type:
-        params["type"] = type
-    if components:
-        params["components"] = convert.components(components)
+    if 'location' in params:
+        params["location"] = convert.latlng(params["location"])
+    if 'components' in params:
+        params["components"] = convert.components(params["components"])
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
     return client._request(url, params)["predictions"]
