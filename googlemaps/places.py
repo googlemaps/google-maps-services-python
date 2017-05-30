@@ -299,7 +299,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
 
 def places_autocomplete(client, input_text, offset=None, location=None,
                         radius=None, language=None, type=None,
-                        components=None):
+                        components=None, strict_bounds=False):
     """
     Returns Place predictions given a textual search string and optional
     geographic bounds.
@@ -332,6 +332,10 @@ def places_autocomplete(client, input_text, offset=None, location=None,
                        for example:
                        ``{'administrative_area': 'TX','country': 'US'}``
     :type components: dict
+
+    :param strict_bounds: Returns only those places that are strictly within
+        the region defined by location and radius.
+    :type strict_bounds: bool
 
     :rtype: list of predictions
 
@@ -372,7 +376,8 @@ def places_autocomplete_query(client, input_text, offset=None, location=None,
 
 
 def _autocomplete(client, url_part, input_text, offset=None, location=None,
-                  radius=None, language=None, type=None, components=None):
+                  radius=None, language=None, type=None, components=None,
+                  strict_bounds=False):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
     See each method's docs for arg details.
@@ -392,6 +397,8 @@ def _autocomplete(client, url_part, input_text, offset=None, location=None,
         params["type"] = type
     if components:
         params["components"] = convert.components(components)
+    if strict_bounds:
+        params["strictbounds"] = "true"
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
     return client._request(url, params)["predictions"]

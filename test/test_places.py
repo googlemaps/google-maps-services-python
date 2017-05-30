@@ -136,13 +136,14 @@ class PlacesTest(_test.TestCase):
                                         location=self.location,
                                         radius=self.radius,
                                         language=self.language, type='geocode',
-                                        components={'country': 'au'})
+                                        components={'country': 'au'},
+                                        strict_bounds=True)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?components=country%%3Aau&input=Google&language=en-AU&'
                             'location=-33.86746%%2C151.20709&offset=3&radius=100&'
-                            'type=geocode&key=%s' % (url, self.key),
-                            responses.calls[0].request.url)
+                            'strictbounds=true&type=geocode&key=%s' %
+                            (url, self.key), responses.calls[0].request.url)
 
     @responses.activate
     def test_autocomplete_query(self):
