@@ -342,7 +342,8 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     """
     return _autocomplete(client, "", input_text, offset=offset,
                          location=location, radius=radius, language=language,
-                         type=type, components=components)
+                         type=type, components=components,
+                         strict_bounds=strict_bounds)
 
 
 def places_autocomplete_query(client, input_text, offset=None, location=None,
