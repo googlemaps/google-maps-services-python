@@ -298,7 +298,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
 
 
 def places_autocomplete(client, input_text, offset=None, location=None,
-                        radius=None, language=None, type=None,
+                        radius=None, language=None, types=None,
                         components=None, strict_bounds=False):
     """
     Returns Place predictions given a textual search string and optional
@@ -323,7 +323,7 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     :param language: The language in which to return results.
     :type langauge: string
 
-    :param type: Restricts the results to places matching the specified type.
+    :param types: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
         https://developers.google.com/places/web-service/autocomplete#place_types
     :type type: string
@@ -342,7 +342,7 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     """
     return _autocomplete(client, "", input_text, offset=offset,
                          location=location, radius=radius, language=language,
-                         type=type, components=components,
+                         types=types, components=components,
                          strict_bounds=strict_bounds)
 
 
@@ -377,7 +377,7 @@ def places_autocomplete_query(client, input_text, offset=None, location=None,
 
 
 def _autocomplete(client, url_part, input_text, offset=None, location=None,
-                  radius=None, language=None, type=None, components=None,
+                  radius=None, language=None, types=None, components=None,
                   strict_bounds=False):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
@@ -394,8 +394,8 @@ def _autocomplete(client, url_part, input_text, offset=None, location=None,
         params["radius"] = radius
     if language:
         params["language"] = language
-    if type:
-        params["type"] = type
+    if types:
+        params["types"] = types
     if components:
         params["components"] = convert.components(components)
     if strict_bounds:

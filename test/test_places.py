@@ -135,14 +135,15 @@ class PlacesTest(_test.TestCase):
         self.client.places_autocomplete('Google', offset=3,
                                         location=self.location,
                                         radius=self.radius,
-                                        language=self.language, type='geocode',
+                                        language=self.language,
+                                        types='geocode',
                                         components={'country': 'au'},
                                         strict_bounds=True)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?components=country%%3Aau&input=Google&language=en-AU&'
                             'location=-33.86746%%2C151.20709&offset=3&radius=100&'
-                            'strictbounds=true&type=geocode&key=%s' %
+                            'strictbounds=true&types=geocode&key=%s' %
                             (url, self.key), responses.calls[0].request.url)
 
     @responses.activate
