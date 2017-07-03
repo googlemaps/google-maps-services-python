@@ -191,6 +191,10 @@ def places_radar(client, location, radius, keyword=None, min_price=None,
     if not (keyword or name or type):
         raise ValueError("either a keyword, name, or type arg is required")
 
+    from warnings import warn
+    warn("places_radar is deprecated, see http://goo.gl/BGiumE",
+         DeprecationWarning)
+
     return _places(client, "radar", location=location, radius=radius,
                    keyword=keyword, min_price=min_price, max_price=max_price,
                    name=name, open_now=open_now, type=type)
