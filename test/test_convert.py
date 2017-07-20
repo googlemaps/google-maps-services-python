@@ -84,6 +84,10 @@ class ConvertTest(unittest.TestCase):
         dt = datetime.datetime.fromtimestamp(1409810596)
         self.assertEqual("1409810596", convert.time(dt))
 
+        tz = datetime.timezone(datetime.timedelta(hours=1))
+        dt = datetime.datetime.fromtimestamp(1409810596, tz=tz)
+        self.assertEqual(str(1409810596), convert.time(dt))
+
     def test_components(self):
         c = {"country": "US"}
         self.assertEqual("country:US", convert.components(c))

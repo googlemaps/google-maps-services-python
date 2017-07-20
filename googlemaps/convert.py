@@ -184,8 +184,8 @@ def time(arg):
     :type arg: datetime.datetime or int
     """
     # handle datetime instances.
-    if _has_method(arg, "timetuple"):
-        arg = _time.mktime(arg.timetuple())
+    if _has_method(arg, "timestamp"):
+        arg = arg.timestamp()
 
     if isinstance(arg, float):
         arg = int(arg)
