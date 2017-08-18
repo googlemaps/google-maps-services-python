@@ -406,4 +406,4 @@ def _autocomplete(client, url_part, input_text, offset=None, location=None,
         params["strictbounds"] = "true"
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
-    return client._request(url, params)["predictions"]
+    return client._request(url, params).get("predictions", [])

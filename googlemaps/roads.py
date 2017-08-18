@@ -92,7 +92,7 @@ def speed_limits(client, place_ids):
     return client._request("/v1/speedLimits", params,
                        base_url=_ROADS_BASE_URL,
                        accepts_clientid=False,
-                       extract_body=_roads_extract)["speedLimits"]
+                       extract_body=_roads_extract).get("speedLimits", [])
 
 
 def snapped_speed_limits(client, path):
