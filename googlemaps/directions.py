@@ -32,7 +32,8 @@ def directions(client, origin, destination,
     :type origin: string, dict, list, or tuple
 
     :param destination: The address or latitude/longitude value from which
-        you wish to calculate directions.
+        you wish to calculate directions. You can use a place_id as destination
+        using 'place_id' as a preffix in the passing parameter.
     :type destination: string, dict, list, or tuple
 
     :param mode: Specifies the mode of transport to use when calculating
