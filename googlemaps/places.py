@@ -275,7 +275,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
 
         ```
         f = open(local_filename, 'wb')
-        for chunk in client.photo(photo_reference, max_width=100):
+        for chunk in client.places_photo(photo_reference, max_width=100):
             if chunk:
                 f.write(chunk)
         f.close()
