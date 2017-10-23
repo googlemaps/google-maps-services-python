@@ -153,7 +153,7 @@ class Client(object):
         self.sent_times = collections.deque("", queries_per_second)
 
     def _request(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
+             base_url=None, accepts_clientid=True,
              extract_body=None, requests_kwargs=None, post_json=None):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
@@ -197,6 +197,9 @@ class Client(object):
 
         if not first_request_time:
             first_request_time = datetime.now()
+
+        if not base_url:
+            base_url = _DEFAULT_BASE_URL
 
         elapsed = datetime.now() - first_request_time
         if elapsed > self.retry_timeout:
