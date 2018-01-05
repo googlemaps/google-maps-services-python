@@ -59,7 +59,7 @@ class _RetriableRequest(Exception):
     """Signifies that the request can be retried."""
     pass
 
-class _OverQueryLimit(_RetriableRequest):
+class _OverQueryLimit(ApiError, _RetriableRequest):
     """Signifies that the request failed because the client exceeded its query rate limit.
 
     Normally we treat this as a retriable condition, but we allow the calling code to specify that these requests should

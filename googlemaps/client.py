@@ -283,13 +283,11 @@ class Client(object):
             return body
 
         if api_status == "OVER_QUERY_LIMIT":
-            raise googlemaps.exceptions._OverQueryLimit()
+            raise googlemaps.exceptions._OverQueryLimit(
+                api_status, body.get("error_message"))
 
-        if "error_message" in body:
-            raise googlemaps.exceptions.ApiError(api_status,
-                    body["error_message"])
-        else:
-            raise googlemaps.exceptions.ApiError(api_status)
+        raise googlemaps.exceptions.ApiError(api_status,
+                                             body.get("error_message"))
 
     def _generate_auth_url(self, path, params, accepts_clientid):
         """Returns the path and query string portion of the request URL, first
