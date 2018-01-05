@@ -51,7 +51,8 @@ class Client(object):
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=10, channel=None):
+                 queries_per_second=10, channel=None,
+                 retry_over_query_limit=True):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -92,6 +93,11 @@ class Client(object):
             If the rate limit is reached, the client will sleep for the
             appropriate amount of time before it runs the current query.
         :type queries_per_second: int
+
+        :param retry_over_query_limit: If True, requests that result in a
+            response indicating the query rate limit was exceeded will be
+            retried. Defaults to True.
+        :type retry_over_query_limit: bool
 
         :raises ValueError: when either credentials are missing, incomplete
             or invalid.
@@ -150,6 +156,7 @@ class Client(object):
         })
 
         self.queries_per_second = queries_per_second
+        self.retry_over_query_limit = retry_over_query_limit
         self.sent_times = collections.deque("", queries_per_second)
 
     def _request(self, url, params, first_request_time=None, retry_counter=0,
@@ -253,7 +260,10 @@ class Client(object):
                 result = self._get_body(response)
             self.sent_times.append(time.time())
             return result
-        except googlemaps.exceptions._RetriableRequest:
+        except googlemaps.exceptions._RetriableRequest as e:
+            if isinstance(e, googlemaps.exceptions._OverQueryLimit) and not self.retry_over_query_limit:
+                raise
+
             # Retry request.
             return self._request(url, params, first_request_time,
                                  retry_counter + 1, base_url, accepts_clientid,
@@ -273,7 +283,7 @@ class Client(object):
             return body
 
         if api_status == "OVER_QUERY_LIMIT":
-            raise googlemaps.exceptions._RetriableRequest()
+            raise googlemaps.exceptions._OverQueryLimit()
 
         if "error_message" in body:
             raise googlemaps.exceptions.ApiError(api_status,

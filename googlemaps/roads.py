@@ -133,7 +133,7 @@ def _roads_extract(resp):
         status = error["status"]
 
         if status == "RESOURCE_EXHAUSTED":
-            raise googlemaps.exceptions._RetriableRequest()
+            raise googlemaps.exceptions._OverQueryLimit()
 
         if "message" in error:
             raise googlemaps.exceptions.ApiError(status, error["message"])

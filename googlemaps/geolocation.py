@@ -31,7 +31,7 @@ def _geolocation_extract(response):
     if response.status_code in (200, 404):
         return body
     elif response.status_code == 403:
-        raise exceptions._RetriableRequest()
+        raise exceptions._OverQueryLimit()
     else:
         try:
             error = body["error"]["errors"][0]["reason"]
