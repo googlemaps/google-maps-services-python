@@ -51,7 +51,7 @@ class Client(object):
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=10, channel=None):
+                 queries_per_second=50, channel=None):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
