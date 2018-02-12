@@ -288,3 +288,19 @@ class ClientTest(_test.TestCase):
         requests.__version__ = '2.4.0'
         googlemaps.Client(**client_args_timeout)
         googlemaps.Client(**client_args)
+
+    @responses.activate
+    def test_no_retry_over_query_limit(self):
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/foo",
+                      body='{"status":"OVER_QUERY_LIMIT"}',
+                      status=200,
+                      content_type="application/json")
+
+        client = googlemaps.Client(key="AIzaasdf",
+                                   retry_over_query_limit=False)
+
+        with self.assertRaises(googlemaps.exceptions.ApiError):
+            client._request("/foo", {})
+
+        self.assertEqual(1, len(responses.calls))
