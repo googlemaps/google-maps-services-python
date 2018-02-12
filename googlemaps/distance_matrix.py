@@ -24,7 +24,7 @@ from googlemaps.convert import as_list
 def distance_matrix(client, origins, destinations,
                     mode=None, language=None, avoid=None, units=None,
                     departure_time=None, arrival_time=None, transit_mode=None,
-                    transit_routing_preference=None, traffic_model=None):
+                    transit_routing_preference=None, traffic_model=None, region=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param origins: One or more locations and/or latitude/longitude values,
@@ -81,6 +81,11 @@ def distance_matrix(client, origins, destinations,
         the travel mode is driving, and where the request includes a
         departure_time.
 
+    :param region: Specifies the prefered region the geocoder should search
+        first, but it will not restrict the results to only this region. Valid
+        values are a ccTLD code.
+    :type region: string
+
     :rtype: matrix of distances. Results are returned in rows, each row
         containing one origin paired with each destination.
     """
@@ -126,5 +131,8 @@ def distance_matrix(client, origins, destinations,
 
     if traffic_model:
         params["traffic_model"] = traffic_model
+
+    if region:
+        params["region"] = region
 
     return client._request("/maps/api/distancematrix/json", params)
