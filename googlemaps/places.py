@@ -401,7 +401,7 @@ def _autocomplete(client, url_part, input_text, offset=None, location=None,
     if types:
         params["types"] = types
     if components:
-        if len(components) != 1 or components.keys()[0] != "country":
+        if len(components) != 1 or list(components.keys())[0] != "country":
             raise ValueError("Only country components are supported")
         params["components"] = convert.components(components)
     if strict_bounds:
