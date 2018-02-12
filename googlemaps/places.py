@@ -332,9 +332,9 @@ def places_autocomplete(client, input_text, offset=None, location=None,
         https://developers.google.com/places/web-service/autocomplete#place_types
     :type type: string
 
-    :param components: A component filter for which you wish to obtain a geocode,
-                       for example:
-                       ``{'administrative_area': 'TX','country': 'US'}``
+    :param components: A component filter for which you wish to obtain a geocode.
+        Currently, you can use components to filter by up to 5 countries for
+        example: ``{'country': ['US', 'AU']}``
     :type components: dict
 
     :param strict_bounds: Returns only those places that are strictly within
@@ -401,6 +401,8 @@ def _autocomplete(client, url_part, input_text, offset=None, location=None,
     if types:
         params["types"] = types
     if components:
+        if len(components) != 1 or components.keys()[0] != "country":
+            raise ValueError("Only country components are supported")
         params["components"] = convert.components(components)
     if strict_bounds:
         params["strictbounds"] = "true"
