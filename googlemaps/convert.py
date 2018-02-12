@@ -265,7 +265,9 @@ def bounds(arg):
     :type arg: dict
     """
 
-    if isinstance(arg, dict):
+    if is_string(arg) and arg.count("|") == 1 and arg.count(",") == 2:
+        return arg
+    elif isinstance(arg, dict):
         if "southwest" in arg and "northeast" in arg:
             return "%s|%s" % (latlng(arg["southwest"]),
                               latlng(arg["northeast"]))
