@@ -25,7 +25,7 @@ def directions(client, origin, destination,
                language=None, units=None, region=None, departure_time=None,
                arrival_time=None, optimize_waypoints=False, transit_mode=None,
                transit_routing_preference=None, traffic_model=None,
-               avoid_stopovers=None):
+               avoid_stopovers=False):
     """Get directions between an origin point and a destination point.
 
     :param origin: The address or latitude/longitude value from which you wish
