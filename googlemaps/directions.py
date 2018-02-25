@@ -24,7 +24,8 @@ def directions(client, origin, destination,
                mode=None, waypoints=None, alternatives=False, avoid=None,
                language=None, units=None, region=None, departure_time=None,
                arrival_time=None, optimize_waypoints=False, transit_mode=None,
-               transit_routing_preference=None, traffic_model=None):
+               transit_routing_preference=None, traffic_model=None,
+               avoid_stopovers=None):
     """Get directions between an origin point and a destination point.
 
     :param origin: The address or latitude/longitude value from which you wish
@@ -44,6 +45,12 @@ def directions(client, origin, destination,
         route by routing it through the specified location(s).
     :type waypoints: a single location, or a list of locations, where a
         location is a string, dict, list, or tuple
+
+    :param avoid_stopovers: If True, and waypoints are given, then this
+        option adds "via:" prefix before each waypoint to indicate that
+        the waypoints are not stops. Important for when wishing to receive
+        "duration_in_traffic" result.
+    :type avoid_stopovers: bool
 
     :param alternatives: If True, more than one route may be returned in the
         response.
@@ -110,6 +117,8 @@ def directions(client, origin, destination,
 
     if waypoints:
         waypoints = convert.location_list(waypoints)
+        if avoid_stopovers:
+            waypoints = "via:" + waypoints.replace('|','|via:')
         if optimize_waypoints:
             waypoints = "optimize:true|" + waypoints
         params["waypoints"] = waypoints
