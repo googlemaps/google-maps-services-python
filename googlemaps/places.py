@@ -69,7 +69,7 @@ def places(client, query, location=None, radius=None, language=None,
     """
     return _places(client, "text", query=query, location=location,
                    radius=radius, language=language, min_price=min_price,
-                   max_price=max_price, open_now=open_now, type=type,region=region
+                   max_price=max_price, open_now=open_now, type=type, region=region
                    page_token=page_token)
 
 
@@ -84,6 +84,9 @@ def places_nearby(client, location, radius=None, keyword=None, language=None,
     :type location: string, dict, list, or tuple
 
     :param radius: Distance in meters within which to bias results.
+    :type radius: int
+    
+    :param region: Distance in meters within which to bias results.
     :type radius: int
 
     :param keyword: A term to be matched against all content that Google has
