@@ -58,7 +58,8 @@ def places(client, query, location=None, radius=None, language=None,
         https://developers.google.com/places/supported_types
     :type type: string
     
-    :param region: The region in which to return results.
+    :param region: The region code, optional parameter.
+        See more @ https://developers.google.com/places/web-service/search
     :type region: string
 
     :param page_token: Token from a previous search that when provided will
