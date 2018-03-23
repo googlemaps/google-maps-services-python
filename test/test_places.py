@@ -34,6 +34,7 @@ class PlacesTest(_test.TestCase):
         self.location = (-33.86746, 151.207090)
         self.type = 'liquor_store'
         self.language = 'en-AU'
+        self.region = 'AU'
         self.radius = 100
 
     @responses.activate
@@ -44,14 +45,14 @@ class PlacesTest(_test.TestCase):
                       status=200, content_type='application/json')
 
         self.client.places('restaurant', location=self.location,
-                           radius=self.radius, language=self.language,
+                           radius=self.radius, region=self.region, language=self.language,
                            min_price=1, max_price=4, open_now=True,
                            type=self.type)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?language=en-AU&location=-33.86746%%2C151.20709&'
                             'maxprice=4&minprice=1&opennow=true&query=restaurant&'
-                            'radius=100&type=liquor_store&key=%s'
+                            'radius=100&region=AU&type=liquor_store&key=%s'
                             % (url, self.key), responses.calls[0].request.url)
 
     @responses.activate
