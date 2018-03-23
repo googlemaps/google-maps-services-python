@@ -90,8 +90,9 @@ def places_nearby(client, location, radius=None, keyword=None, language=None,
     :param radius: Distance in meters within which to bias results.
     :type radius: int
     
-    :param region: Distance in meters within which to bias results.
-    :type radius: int
+    :param region: The region code, optional parameter.
+        See more @ https://developers.google.com/places/web-service/search
+    :type region: string
 
     :param keyword: A term to be matched against all content that Google has
                     indexed for this place.
