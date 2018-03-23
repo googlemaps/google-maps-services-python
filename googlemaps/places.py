@@ -73,7 +73,7 @@ def places(client, query, location=None, radius=None, language=None,
     """
     return _places(client, "text", query=query, location=location,
                    radius=radius, language=language, min_price=min_price,
-                   max_price=max_price, open_now=open_now, type=type, region=region ,
+                   max_price=max_price, open_now=open_now, type=type, region=region,
                    page_token=page_token)
 
 
