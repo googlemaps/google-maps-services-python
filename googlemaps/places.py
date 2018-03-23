@@ -21,7 +21,7 @@ from googlemaps import convert
 
 
 def places(client, query, location=None, radius=None, language=None,
-           min_price=None, max_price=None, open_now=False, type=None,
+           min_price=None, max_price=None, open_now=False, type=None, region=None,
            page_token=None):
     """
     Places search.
@@ -69,7 +69,7 @@ def places(client, query, location=None, radius=None, language=None,
     """
     return _places(client, "text", query=query, location=location,
                    radius=radius, language=language, min_price=min_price,
-                   max_price=max_price, open_now=open_now, type=type,
+                   max_price=max_price, open_now=open_now, type=type,region=region
                    page_token=page_token)
 
 
@@ -202,7 +202,7 @@ def places_radar(client, location, radius, keyword=None, min_price=None,
 
 def _places(client, url_part, query=None, location=None, radius=None,
             keyword=None, language=None, min_price=0, max_price=4, name=None,
-            open_now=False, rank_by=None, type=None, page_token=None):
+            open_now=False, rank_by=None, type=None, region=None, page_token=None):
     """
     Internal handler for ``places``, ``places_nearby``, and ``places_radar``.
     See each method's docs for arg details.
@@ -228,6 +228,8 @@ def _places(client, url_part, query=None, location=None, radius=None,
         params["rankby"] = rank_by
     if type:
         params["type"] = type
+    if region:
+        params["region"] = region
     if page_token:
         params["pagetoken"] = page_token
 
