@@ -57,6 +57,9 @@ def places(client, query, location=None, radius=None, language=None,
         The full list of supported types is available here:
         https://developers.google.com/places/supported_types
     :type type: string
+    
+    :param region: The region in which to return results.
+    :type region: string
 
     :param page_token: Token from a previous search that when provided will
         returns the next page of results for the same search.
@@ -69,7 +72,7 @@ def places(client, query, location=None, radius=None, language=None,
     """
     return _places(client, "text", query=query, location=location,
                    radius=radius, language=language, min_price=min_price,
-                   max_price=max_price, open_now=open_now, type=type, region=region
+                   max_price=max_price, open_now=open_now, type=type, region=region ,
                    page_token=page_token)
 
 
