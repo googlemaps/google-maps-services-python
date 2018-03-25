@@ -21,7 +21,7 @@ from googlemaps import convert
 
 
 def places(client, query, location=None, radius=None, language=None,
-           min_price=None, max_price=None, open_now=False, type=None,
+           min_price=None, max_price=None, open_now=False, type=None, region=None,
            page_token=None):
     """
     Places search.
@@ -57,6 +57,10 @@ def places(client, query, location=None, radius=None, language=None,
         The full list of supported types is available here:
         https://developers.google.com/places/supported_types
     :type type: string
+    
+    :param region: The region code, optional parameter.
+        See more @ https://developers.google.com/places/web-service/search
+    :type region: string
 
     :param page_token: Token from a previous search that when provided will
         returns the next page of results for the same search.
@@ -69,7 +73,7 @@ def places(client, query, location=None, radius=None, language=None,
     """
     return _places(client, "text", query=query, location=location,
                    radius=radius, language=language, min_price=min_price,
-                   max_price=max_price, open_now=open_now, type=type,
+                   max_price=max_price, open_now=open_now, type=type, region=region,
                    page_token=page_token)
 
 
@@ -85,6 +89,10 @@ def places_nearby(client, location, radius=None, keyword=None, language=None,
 
     :param radius: Distance in meters within which to bias results.
     :type radius: int
+    
+    :param region: The region code, optional parameter.
+        See more @ https://developers.google.com/places/web-service/search
+    :type region: string
 
     :param keyword: A term to be matched against all content that Google has
                     indexed for this place.
@@ -202,7 +210,7 @@ def places_radar(client, location, radius, keyword=None, min_price=None,
 
 def _places(client, url_part, query=None, location=None, radius=None,
             keyword=None, language=None, min_price=0, max_price=4, name=None,
-            open_now=False, rank_by=None, type=None, page_token=None):
+            open_now=False, rank_by=None, type=None, region=None, page_token=None):
     """
     Internal handler for ``places``, ``places_nearby``, and ``places_radar``.
     See each method's docs for arg details.
@@ -228,6 +236,8 @@ def _places(client, url_part, query=None, location=None, radius=None,
         params["rankby"] = rank_by
     if type:
         params["type"] = type
+    if region:
+        params["region"] = region
     if page_token:
         params["pagetoken"] = page_token
 
