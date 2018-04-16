@@ -107,8 +107,7 @@ class ConvertTest(unittest.TestCase):
         ne = {"lat": 1, "lng": 2}
         sw = (3, 4)
         b = {"northeast": ne, "southwest": sw}
-        self.assertEqual("3,4|1,2",
-                          convert.bounds(b))
+        self.assertEqual("3,4|1,2", convert.bounds(b))
 
         with self.assertRaises(TypeError):
             convert.bounds("test")

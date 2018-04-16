@@ -73,9 +73,9 @@ def places(client, query, location=None, radius=None, language=None,
                    page_token=page_token)
 
 
-def places_nearby(client, location, radius=None, keyword=None, language=None,
-                  min_price=None, max_price=None, name=None, open_now=False,
-                  rank_by=None, type=None, page_token=None):
+def places_nearby(client, location=None, radius=None, keyword=None,
+                  language=None, min_price=None, max_price=None, name=None,
+                  open_now=False, rank_by=None, type=None, page_token=None):
     """
     Performs nearby search for places.
 
@@ -130,13 +130,15 @@ def places_nearby(client, location, radius=None, keyword=None, language=None,
             next_page_token: token for retrieving the next page of results
 
     """
+    if not location and not page_token:
+        raise ValueError("either a location or page_token arg is required")
     if rank_by == "distance":
         if not (keyword or name or type):
-          raise ValueError("either a keyword, name, or type arg is required "
-                           "when rank_by is set to distance")
+            raise ValueError("either a keyword, name, or type arg is required "
+                             "when rank_by is set to distance")
         elif radius is not None:
-          raise ValueError("radius cannot be specified when rank_by is set to "
-                           "distance")
+            raise ValueError("radius cannot be specified when rank_by is set to "
+                             "distance")
 
     return _places(client, "nearby", location=location, radius=radius,
                    keyword=keyword, language=language, min_price=min_price,

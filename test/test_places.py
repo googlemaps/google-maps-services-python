@@ -61,7 +61,7 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "results": [], "html_attributions": []}',
                       status=200, content_type='application/json')
 
-        self.client.places_nearby(self.location, keyword='foo',
+        self.client.places_nearby(location=self.location, keyword='foo',
                                   language=self.language, min_price=1,
                                   max_price=4, name='bar', open_now=True,
                                   rank_by='distance', type=self.type)
@@ -73,10 +73,12 @@ class PlacesTest(_test.TestCase):
                             % (url, self.key), responses.calls[0].request.url)
 
         with self.assertRaises(ValueError):
+            self.client.places_nearby(radius=self.radius)
+        with self.assertRaises(ValueError):
             self.client.places_nearby(self.location, rank_by="distance")
 
         with self.assertRaises(ValueError):
-            self.client.places_nearby(self.location, rank_by="distance",
+            self.client.places_nearby(location=self.location, rank_by="distance",
                                       keyword='foo', radius=self.radius)
 
     @responses.activate
