@@ -342,7 +342,7 @@ def places_autocomplete(client, input_text, offset=None, location=None,
     :param types: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
         https://developers.google.com/places/web-service/autocomplete#place_types
-    :type type: string
+    :type types: string
 
     :param components: A component filter for which you wish to obtain a geocode.
         Currently, you can use components to filter by up to 5 countries for
