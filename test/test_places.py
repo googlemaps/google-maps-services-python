@@ -38,6 +38,28 @@ class PlacesTest(_test.TestCase):
         self.radius = 100
 
     @responses.activate
+    def test_places_find(self):
+        url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
+        responses.add(responses.GET, url,
+                      body='{"status": "OK", "candidates": []}',
+                      status=200, content_type='application/json')
+
+        self.client.find_places('restaurant', 'textquery',
+                                fields=['geometry', 'id'],
+                                language=self.language)
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual('%s?language=en-AU&inputtype=textquery&'
+                            'input=restaurant&fields=geometry,id&key=%s'
+                            % (url, self.key), responses.calls[0].request.url)
+
+        with self.assertRaises(ValueError):
+            self.client.find_places('restaurant', 'invalid')
+        with self.assertRaises(ValueError):
+            self.client.find_places('restaurant', 'textquery',
+                                    fields=['geometry', 'invalid'])
+
+    @responses.activate
     def test_places_text_search(self):
         url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
         responses.add(responses.GET, url,
@@ -109,11 +131,17 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "result": {}, "html_attributions": []}',
                       status=200, content_type='application/json')
 
-        self.client.place('ChIJN1t_tDeuEmsRUsoyG83frY4', language=self.language)
+        self.client.place('ChIJN1t_tDeuEmsRUsoyG83frY4',
+                          fields=['geometry', 'id'], language=self.language)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=%s'
+        self.assertURLEqual('%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4'
+                            '&key=%s&fields=geometry,id'
                             % (url, self.key), responses.calls[0].request.url)
+
+        with self.assertRaises(ValueError):
+            self.client.place('ChIJN1t_tDeuEmsRUsoyG83frY4',
+                              fields=['geometry', 'invalid'])
 
     @responses.activate
     def test_photo(self):

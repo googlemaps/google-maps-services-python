@@ -20,6 +20,70 @@
 from googlemaps import convert
 
 
+PLACES_FIND_FIELDS = set([
+    "alt_id", "formatted_address", "geometry", "icon", "id", "name",
+    "permanently_closed", "photos", "place_id", "scope", "types",
+    "vicinity", "opening_hours", "price_level", "rating",
+])
+
+PLACES_DETAIL_FIELDS = set([
+    "address_component", "adr_address", "alt_id", "formatted_address",
+    "geometry", "icon", "id", "name", "permanently_closed", "photo",
+    "place_id", "scope", "type", "url", "utc_offset", "vicinity",
+    "formatted_phone_number", "international_phone_number", "opening_hours",
+    "website", "price_level", "rating", "review",
+])
+
+
+def find_places(client, input, input_type, fields=None, language=None):
+    """
+    A Find Place request takes a text input, and returns a place.
+    The text input can be any kind of Places data, for example,
+    a name, address, or phone number.
+
+    :param input: The text input specifying which place to search for (for
+                  example, a name, address, or phone number).
+    :type input: string
+
+    :param input_type: The type of input. This can be one of either 'textquery'
+                  or 'phonenumber'.
+    :type input_type: string
+
+    :param fields: The fields specifying the types of place data to return,
+                   separated by a comma. For full details see:
+                   https://cloud.google.com/maps-platform/user-guide/product-changes/#places
+    :type input: list
+
+    :param language: The language in which to return results.
+    :type langauge: string
+
+    :rtype: result dict with the following keys:
+            status: status code
+            candidates: list of places
+    """
+    params = {"input": input, "inputtype": input_type}
+
+    if input_type != "textquery" and input_type != "phonenumber":
+        raise ValueError("Valid values for the `input_type` param for "
+                         "`find_places` are 'textquery' or 'phonenumber', "
+                         "the given value is invalid: '%s'" % input_type)
+
+    if fields:
+        invalid_fields = set(fields) - PLACES_FIND_FIELDS
+        if invalid_fields:
+            raise ValueError("Valid values for the `fields` param for "
+                             "`find_places` are '%s', these given field(s) "
+                             "are invalid: '%s'" % (
+                                "', '".join(PLACES_FIND_FIELDS),
+                                "', '".join(invalid_fields)))
+        params["fields"] = convert.join_list(",", fields)
+
+    if language:
+        params["language"] = language
+
+    return client._request("/maps/api/place/findplacefromtext/json", params)
+
+
 def places(client, query, location=None, radius=None, language=None,
            min_price=None, max_price=None, open_now=False, type=None, region=None,
            page_token=None):
@@ -57,7 +121,7 @@ def places(client, query, location=None, radius=None, language=None,
         The full list of supported types is available here:
         https://developers.google.com/places/supported_types
     :type type: string
-    
+
     :param region: The region code, optional parameter.
         See more @ https://developers.google.com/places/web-service/search
     :type region: string
@@ -89,7 +153,7 @@ def places_nearby(client, location=None, radius=None, keyword=None,
 
     :param radius: Distance in meters within which to bias results.
     :type radius: int
-    
+
     :param region: The region code, optional parameter.
         See more @ https://developers.google.com/places/web-service/search
     :type region: string
@@ -247,13 +311,18 @@ def _places(client, url_part, query=None, location=None, radius=None,
     return client._request(url, params)
 
 
-def place(client, place_id, language=None):
+def place(client, place_id, fields=None, language=None):
     """
     Comprehensive details for an individual place.
 
     :param place_id: A textual identifier that uniquely identifies a place,
         returned from a Places search.
     :type place_id: string
+
+    :param fields: The fields specifying the types of place data to return,
+                   separated by a comma. For full details see:
+                   https://cloud.google.com/maps-platform/user-guide/product-changes/#places
+    :type input: list
 
     :param language: The language in which to return results.
     :type langauge: string
@@ -263,8 +332,20 @@ def place(client, place_id, language=None):
         html_attributions: set of attributions which must be displayed
     """
     params = {"placeid": place_id}
+
+    if fields:
+        invalid_fields = set(fields) - PLACES_DETAIL_FIELDS
+        if invalid_fields:
+            raise ValueError("Valid values for the `fields` param for "
+                             "`place` are '%s', these given field(s) "
+                             "are invalid: '%s'" % (
+                                "', '".join(PLACES_DETAIL_FIELDS),
+                                "', '".join(invalid_fields)))
+        params["fields"] = convert.join_list(",", fields)
+
     if language:
         params["language"] = language
+
     return client._request("/maps/api/place/details/json", params)
 
 
