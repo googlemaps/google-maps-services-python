@@ -101,10 +101,10 @@ https://developers.google.com/maps/.
 This example uses the [Geocoding API] and the [Directions API] with an API key:
 
 ```python
-import googlemaps
+from googlemaps import Client
 from datetime import datetime
 
-gmaps = googlemaps.Client(key='Add Your Key here')
+gmaps = Client(key='Add Your Key here')
 
 # Geocoding an address
 geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
@@ -129,7 +129,7 @@ documentation for the API you're using. For example, see the guide for the
 [Directions API][directions-client-id].
 
 ```python
-gmaps = googlemaps.Client(client_id=client_id, client_secret=client_secret)
+gmaps = Client(client_id=client_id, client_secret=client_secret)
 
 # Geocoding and address
 geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
