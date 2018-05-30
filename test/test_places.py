@@ -24,6 +24,7 @@ import responses
 
 import test as _test
 import googlemaps
+from googlemaps.places import places_autocomplete_session_token
 
 
 class PlacesTest(_test.TestCase):
@@ -163,7 +164,9 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "predictions": []}',
                       status=200, content_type='application/json')
 
-        self.client.places_autocomplete('Google', offset=3,
+        session_token = places_autocomplete_session_token()
+
+        self.client.places_autocomplete('Google', session_token, offset=3,
                                         location=self.location,
                                         radius=self.radius,
                                         language=self.language,
@@ -174,8 +177,9 @@ class PlacesTest(_test.TestCase):
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?components=country%%3Aau&input=Google&language=en-AU&'
                             'location=-33.86746%%2C151.20709&offset=3&radius=100&'
-                            'strictbounds=true&types=geocode&key=%s' %
-                            (url, self.key), responses.calls[0].request.url)
+                            'strictbounds=true&types=geocode&key=%s&sessiontoken=' %
+                            (url, self.key), responses.calls[0].request.url,
+                             session_token)
 
     @responses.activate
     def test_autocomplete_query(self):

@@ -17,6 +17,7 @@
 
 """Performs requests to the Google Places API."""
 
+from uuid import uuid4 as places_autocomplete_session_token
 from googlemaps import convert
 
 
@@ -394,8 +395,8 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     return response.iter_content()
 
 
-def places_autocomplete(client, input_text, offset=None, location=None,
-                        radius=None, language=None, types=None,
+def places_autocomplete(client, input_text, session_token, offset=None,
+                        location=None, radius=None, language=None, types=None,
                         components=None, strict_bounds=False):
     """
     Returns Place predictions given a textual search string and optional
@@ -403,6 +404,10 @@ def places_autocomplete(client, input_text, offset=None, location=None,
 
     :param input_text: The text string on which to search.
     :type input_text: string
+
+    :param session_token: A random string which identifies an autocomplete
+                          session for billing purposes.
+    :type session_token: string
 
     :param offset: The position, in the input term, of the last character
                    that the service uses to match predictions. For example,
@@ -473,9 +478,9 @@ def places_autocomplete_query(client, input_text, offset=None, location=None,
                          location=location, radius=radius, language=language)
 
 
-def _autocomplete(client, url_part, input_text, offset=None, location=None,
-                  radius=None, language=None, types=None, components=None,
-                  strict_bounds=False):
+def _autocomplete(client, url_part, input_text, session_token=None,
+                  offset=None, location=None, radius=None, language=None,
+                  types=None, components=None, strict_bounds=False):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
     See each method's docs for arg details.
@@ -483,6 +488,8 @@ def _autocomplete(client, url_part, input_text, offset=None, location=None,
 
     params = {"input": input_text}
 
+    if session_token:
+        params["sessiontoken"] = session_token
     if offset:
         params["offset"] = offset
     if location:
