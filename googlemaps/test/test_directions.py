@@ -19,11 +19,13 @@
 
 from datetime import datetime
 from datetime import timedelta
-import responses
 import time
 
+import responses
+
 import googlemaps
-import test as _test
+import googlemaps.test as _test
+
 
 class DirectionsTest(_test.TestCase):
 

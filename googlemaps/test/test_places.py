@@ -22,8 +22,8 @@ from types import GeneratorType
 
 import responses
 
-import test as _test
 import googlemaps
+import googlemaps.test as _test
 
 
 class PlacesTest(_test.TestCase):

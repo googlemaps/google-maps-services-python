@@ -18,12 +18,13 @@
 
 """Tests for the timezone module."""
 
-import responses
-import mock
 import datetime
 
+import responses
+import mock
+
 import googlemaps
-import test as _test
+import googlemaps.test as _test
 
 
 class TimezoneTest(_test.TestCase):

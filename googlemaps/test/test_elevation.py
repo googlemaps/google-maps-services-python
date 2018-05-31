@@ -18,10 +18,12 @@
 """Tests for the elevation module."""
 
 import datetime
+
 import responses
 
 import googlemaps
-import test as _test
+import googlemaps.test as _test
+
 
 class ElevationTest(_test.TestCase):
 

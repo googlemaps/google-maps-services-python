@@ -18,13 +18,15 @@
 
 """Tests for client module."""
 
-import responses
 import time
 
-import googlemaps
-from googlemaps import client as _client
-import test as _test
+import responses
 import requests
+
+import googlemaps
+import googlemaps.client as _client
+import googlemaps.test as _test
+
 
 class ClientTest(_test.TestCase):
 
