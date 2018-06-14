@@ -36,7 +36,8 @@ PLACES_DETAIL_FIELDS = set([
 ])
 
 
-def find_places(client, input, input_type, fields=None, language=None):
+def find_places(client, input, input_type, fields=None, location_bias=None,
+                language=None):
     """
     A Find Place request takes a text input, and returns a place.
     The text input can be any kind of Places data, for example,
@@ -52,8 +53,14 @@ def find_places(client, input, input_type, fields=None, language=None):
 
     :param fields: The fields specifying the types of place data to return,
                    separated by a comma. For full details see:
-                   https://cloud.google.com/maps-platform/user-guide/product-changes/#places
+                   https://developers.google.com/places/web-service/search#FindPlaceRequests
     :type input: list
+
+    :param location_bias: Prefer results in a specified area, by specifying
+                          either a radius plus lat/lng, or two lat/lng pairs
+                          representing the points of a rectangle. See:
+                          https://developers.google.com/places/web-service/search#FindPlaceRequests
+    :type location_bias: string
 
     :param language: The language in which to return results.
     :type langauge: string
@@ -79,6 +86,12 @@ def find_places(client, input, input_type, fields=None, language=None):
                                 "', '".join(invalid_fields)))
         params["fields"] = convert.join_list(",", fields)
 
+    if location_bias:
+        valid = ["ipbias", "point", "circle", "rectangle"]
+        if location_bias.split(":")[0] not in valid:
+            raise ValueError("location_bias should be prefixed with one of: %s"
+                             % valid)
+        params["locationbias"] = location_bias
     if language:
         params["language"] = language
 

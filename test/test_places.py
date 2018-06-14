@@ -47,11 +47,13 @@ class PlacesTest(_test.TestCase):
 
         self.client.find_places('restaurant', 'textquery',
                                 fields=['geometry', 'id'],
+                                location_bias='point:90,90',
                                 language=self.language)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?language=en-AU&inputtype=textquery&'
-                            'input=restaurant&fields=geometry,id&key=%s'
+                            'locationbias=point:90,90&input=restaurant'
+                            '&fields=geometry,id&key=%s'
                             % (url, self.key), responses.calls[0].request.url)
 
         with self.assertRaises(ValueError):
@@ -59,6 +61,9 @@ class PlacesTest(_test.TestCase):
         with self.assertRaises(ValueError):
             self.client.find_places('restaurant', 'textquery',
                                     fields=['geometry', 'invalid'])
+        with self.assertRaises(ValueError):
+            self.client.find_places('restaurant', 'textquery',
+                                    location_bias='invalid')
 
     @responses.activate
     def test_places_text_search(self):
