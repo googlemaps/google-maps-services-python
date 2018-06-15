@@ -19,8 +19,9 @@
 from googlemaps import convert
 
 
-def geocode(client, address=None, components=None, bounds=None, region=None,
-            language=None):
+def geocode(
+    client, address=None, components=None, bounds=None, region=None, language=None
+):
     """
     Geocoding is the process of converting addresses
     (like ``"1600 Amphitheatre Parkway, Mountain View, CA"``) into geographic
@@ -68,8 +69,9 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
     return client._request("/maps/api/geocode/json", params).get("results", [])
 
 
-def reverse_geocode(client, latlng, result_type=None, location_type=None,
-                    language=None):
+def reverse_geocode(
+    client, latlng, result_type=None, location_type=None, language=None
+):
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
@@ -92,7 +94,7 @@ def reverse_geocode(client, latlng, result_type=None, location_type=None,
 
     # Check if latlng param is a place_id string.
     #  place_id strings do not contain commas; latlng strings do.
-    if convert.is_string(latlng) and ',' not in latlng:
+    if convert.is_string(latlng) and "," not in latlng:
         params = {"place_id": latlng}
     else:
         params = {"latlng": convert.latlng(latlng)}

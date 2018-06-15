@@ -103,8 +103,8 @@ def normalize_lat_lng(arg):
         return arg[0], arg[1]
 
     raise TypeError(
-        "Expected a lat/lng dict or tuple, "
-        "but got %s" % type(arg).__name__)
+        "Expected a lat/lng dict or tuple, " "but got %s" % type(arg).__name__
+    )
 
 
 def location_list(arg):
@@ -157,11 +157,13 @@ def _is_list(arg):
     """Checks if arg is list-like. This excludes strings and dicts."""
     if isinstance(arg, dict):
         return False
-    if isinstance(arg, str): # Python 3-only, as str has __iter__
+    if isinstance(arg, str):  # Python 3-only, as str has __iter__
         return False
-    return (not _has_method(arg, "strip")
-            and _has_method(arg, "__getitem__")
-            or _has_method(arg, "__iter__"))
+    return (
+        not _has_method(arg, "strip")
+        and _has_method(arg, "__getitem__")
+        or _has_method(arg, "__iter__")
+    )
 
 
 def is_string(val):
@@ -233,8 +235,8 @@ def components(arg):
         return "|".join(sorted(expand(arg)))
 
     raise TypeError(
-        "Expected a dict for components, "
-        "but got %s" % type(arg).__name__)
+        "Expected a dict for components, " "but got %s" % type(arg).__name__
+    )
 
 
 def bounds(arg):
@@ -269,12 +271,12 @@ def bounds(arg):
         return arg
     elif isinstance(arg, dict):
         if "southwest" in arg and "northeast" in arg:
-            return "%s|%s" % (latlng(arg["southwest"]),
-                              latlng(arg["northeast"]))
+            return "%s|%s" % (latlng(arg["southwest"]), latlng(arg["northeast"]))
 
     raise TypeError(
         "Expected a bounds (southwest/northeast) dict, "
-        "but got %s" % type(arg).__name__)
+        "but got %s" % type(arg).__name__
+    )
 
 
 def decode_polyline(polyline):
@@ -343,9 +345,9 @@ def encode_polyline(points):
         for v in [d_lat, d_lng]:
             v = ~(v << 1) if v < 0 else v << 1
             while v >= 0x20:
-                result += (chr((0x20 | (v & 0x1f)) + 63))
+                result += chr((0x20 | (v & 0x1f)) + 63)
                 v >>= 5
-            result += (chr(v + 63))
+            result += chr(v + 63)
 
         last_lat = lat
         last_lng = lng

@@ -21,10 +21,21 @@ from googlemaps import convert
 from googlemaps.convert import as_list
 
 
-def distance_matrix(client, origins, destinations,
-                    mode=None, language=None, avoid=None, units=None,
-                    departure_time=None, arrival_time=None, transit_mode=None,
-                    transit_routing_preference=None, traffic_model=None, region=None):
+def distance_matrix(
+    client,
+    origins,
+    destinations,
+    mode=None,
+    language=None,
+    avoid=None,
+    units=None,
+    departure_time=None,
+    arrival_time=None,
+    transit_mode=None,
+    transit_routing_preference=None,
+    traffic_model=None,
+    region=None,
+):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param origins: One or more locations and/or latitude/longitude values,
@@ -92,7 +103,7 @@ def distance_matrix(client, origins, destinations,
 
     params = {
         "origins": convert.location_list(origins),
-        "destinations": convert.location_list(destinations)
+        "destinations": convert.location_list(destinations),
     }
 
     if mode:
@@ -120,8 +131,7 @@ def distance_matrix(client, origins, destinations,
         params["arrival_time"] = convert.time(arrival_time)
 
     if departure_time and arrival_time:
-        raise ValueError("Should not specify both departure_time and"
-                         "arrival_time.")
+        raise ValueError("Should not specify both departure_time and" "arrival_time.")
 
     if transit_mode:
         params["transit_mode"] = convert.join_list("|", transit_mode)
