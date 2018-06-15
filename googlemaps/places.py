@@ -36,10 +36,12 @@ def places(
     """
     Places search.
 
-    :param query: The text string on which to search, for example: "restaurant".
+    :param query: The text string on which to search, for example:
+    "restaurant".
     :type query: string
 
-    :param location: The latitude/longitude value for which you wish to obtain the
+    :param location: The latitude/longitude value for which you wish to
+    obtain the
         closest, human-readable address.
     :type location: string, dict, list, or tuple
 
@@ -50,7 +52,8 @@ def places(
     :type langauge: string
 
     :param min_price: Restricts results to only those places with no less than
-        this price level. Valid values are in the range from 0 (most affordable)
+        this price level. Valid values are in the range from 0 (most
+        affordable)
         to 4 (most expensive).
     :type min_price: int
 
@@ -114,7 +117,8 @@ def places_nearby(
     """
     Performs nearby search for places.
 
-    :param location: The latitude/longitude value for which you wish to obtain the
+    :param location: The latitude/longitude value for which you wish to
+    obtain the
                      closest, human-readable address.
     :type location: string, dict, list, or tuple
 
@@ -213,7 +217,8 @@ def places_radar(
     """
     Performs radar search for places.
 
-    :param location: The latitude/longitude value for which you wish to obtain the
+    :param location: The latitude/longitude value for which you wish to
+    obtain the
                      closest, human-readable address.
     :type location: string, dict, list, or tuple
 
@@ -257,7 +262,8 @@ def places_radar(
 
     from warnings import warn
 
-    warn("places_radar is deprecated, see http://goo.gl/BGiumE", DeprecationWarning)
+    warn("places_radar is deprecated, see http://goo.gl/BGiumE",
+         DeprecationWarning)
 
     return _places(
         client,
@@ -324,7 +330,7 @@ def _places(
     return client._request(url, params)
 
 
-def place(client, place_id, language=None, fields=None):
+def place(client, place_id, language=None, fields=None, categories=None):
     """
     Comprehensive details for an individual place.
 
@@ -333,7 +339,14 @@ def place(client, place_id, language=None, fields=None):
     :type place_id: string
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
+
+    :param language: The fields that will be returned by Place details.
+    :type langauge: list
+
+    :param language: The invoice categories. Values are "Basic", "Contact",
+    "Atmosphere"
+    :type langauge: list
 
     :rtype: result dict with the following keys:
         result: dict containing place details
@@ -343,7 +356,47 @@ def place(client, place_id, language=None, fields=None):
     if language:
         params["language"] = language
     if fields:
-        params[fields] = fields
+        params["fields"] = fields
+    if categories:
+        if not "fields" in params:
+            params["fields"] = []
+        if "Basic" in categories:
+            params["fields"].extend(
+                [
+                    "place_id",
+                    "name",
+                    "type",
+                    "address_components",
+                    "formatted_address",
+                    "url",
+                    "utc_offset",
+                    "permanently_closed",
+                    "geometry.location",
+                    "geometry.viewport",
+                    "photo.photo_reference",
+                    "icon",
+                    "types",
+                    "adr_address",
+                    "scope",
+                    "vicinity",
+                ]
+            )
+        if "Contact" in categories:
+            params["fields"].extend(
+                [
+                    "opening_hours.weekday_text",
+                    "opening_hours.open_now",
+                    "opening_hours.period",
+                    "website",
+                    "formatted_phone_number",
+                    "international_phone_number",
+                ]
+            )
+        if "Atmosphere" in categories:
+            params["fields"].extend(["price_level", "rating", "reviews"])
+        if not params["fields"]:
+            del params["fields"]
+
     return client._request("/maps/api/place/details/json", params)
 
 
@@ -419,7 +472,8 @@ def places_autocomplete(
                    service will match on 'Goo'.
     :type offset: int
 
-    :param location: The latitude/longitude value for which you wish to obtain the
+    :param location: The latitude/longitude value for which you wish to
+    obtain the
                      closest, human-readable address.
     :type location: string, dict, list, or tuple
 
@@ -431,10 +485,12 @@ def places_autocomplete(
 
     :param types: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
-        https://developers.google.com/places/web-service/autocomplete#place_types
+        https://developers.google.com/places/web-service/autocomplete
+        #place_types
     :type types: string
 
-    :param components: A component filter for which you wish to obtain a geocode.
+    :param components: A component filter for which you wish to obtain a
+    geocode.
         Currently, you can use components to filter by up to 5 countries for
         example: ``{'country': ['US', 'AU']}``
     :type components: dict
@@ -475,7 +531,8 @@ def places_autocomplete_query(
         is 'Google' and the offset is 3, the service will match on 'Goo'.
     :type offset: int
 
-    :param location: The latitude/longitude value for which you wish to obtain the
+    :param location: The latitude/longitude value for which you wish to
+    obtain the
         closest, human-readable address.
     :type location: string, dict, list, or tuple
 
