@@ -22,7 +22,7 @@ from googlemaps import convert
 
 
 PLACES_FIND_FIELDS = set([
-    "alt_id", "formatted_address", "geometry", "icon", "id", "name",
+    "formatted_address", "geometry", "icon", "id", "name",
     "permanently_closed", "photos", "place_id", "scope", "types",
     "vicinity", "opening_hours", "price_level", "rating",
 ])
