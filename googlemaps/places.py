@@ -292,8 +292,7 @@ def places_radar(
 
     from warnings import warn
 
-    warn("places_radar is deprecated, see http://goo.gl/BGiumE",
-         DeprecationWarning)
+    warn("places_radar is deprecated, see http://goo.gl/BGiumE", DeprecationWarning)
 
     return _places(
         client,
@@ -459,6 +458,7 @@ def places_autocomplete(
     types=None,
     components=None,
     strict_bounds=False,
+    session_token=None,
 ):
     """
     Returns Place predictions given a textual search string and optional
@@ -500,6 +500,10 @@ def places_autocomplete(
         the region defined by location and radius.
     :type strict_bounds: bool
 
+    :param session_token: A random unique string which identifies an
+    autocomplete session used for billing.
+    :type session_token: string
+
     :rtype: list of predictions
 
     """
@@ -514,11 +518,18 @@ def places_autocomplete(
         types=types,
         components=components,
         strict_bounds=strict_bounds,
+        session_token=session_token,
     )
 
 
 def places_autocomplete_query(
-    client, input_text, offset=None, location=None, radius=None, language=None
+    client,
+    input_text,
+    offset=None,
+    location=None,
+    radius=None,
+    language=None,
+    session_token=None,
 ):
     """
     Returns Place predictions given a textual search query, such as
@@ -543,6 +554,11 @@ def places_autocomplete_query(
     :param language: The language in which to return results.
     :type langauge: string
 
+    :param session_token: A random unique string which identifies an
+    autocomplete session used for billing.
+    :type session_token: string
+
+
     :rtype: list of predictions
     """
     return _autocomplete(
@@ -553,6 +569,7 @@ def places_autocomplete_query(
         location=location,
         radius=radius,
         language=language,
+        session_token=session_token,
     )
 
 
@@ -567,6 +584,7 @@ def _autocomplete(
     types=None,
     components=None,
     strict_bounds=False,
+    session_token=None,
 ):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
@@ -591,6 +609,9 @@ def _autocomplete(
         params["components"] = convert.components(components)
     if strict_bounds:
         params["strictbounds"] = "true"
+
+    if session_token:
+        params["session_token"] = session_token
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
     return client._request(url, params).get("predictions", [])
