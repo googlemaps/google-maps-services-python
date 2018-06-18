@@ -57,9 +57,6 @@ def elevation_along_path(client, path, samples):
     else:
         path = convert.shortest_path(path)
 
-    params = {
-        "path": path,
-        "samples": samples
-    }
+    params = {"path": path, "samples": samples}
 
     return client._request("/maps/api/elevation/json", params).get("results", [])

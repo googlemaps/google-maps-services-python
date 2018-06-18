@@ -42,9 +42,16 @@ def _geolocation_extract(response):
         raise exceptions.ApiError(response.status_code, error)
 
 
-def geolocate(client, home_mobile_country_code=None,
-              home_mobile_network_code=None, radio_type=None, carrier=None,
-              consider_ip=None, cell_towers=None, wifi_access_points=None):
+def geolocate(
+    client,
+    home_mobile_country_code=None,
+    home_mobile_network_code=None,
+    radio_type=None,
+    carrier=None,
+    consider_ip=None,
+    cell_towers=None,
+    wifi_access_points=None,
+):
     """
     The Google Maps Geolocation API returns a location and accuracy
     radius based on information about cell towers and WiFi nodes given.
@@ -101,7 +108,10 @@ def geolocate(client, home_mobile_country_code=None,
     if wifi_access_points is not None:
         params["wifiAccessPoints"] = wifi_access_points
 
-    return client._request("/geolocation/v1/geolocate", {},  # No GET params
-                           base_url=_GEOLOCATION_BASE_URL,
-                           extract_body=_geolocation_extract,
-                           post_json=params)
+    return client._request(
+        "/geolocation/v1/geolocate",
+        {},  # No GET params
+        base_url=_GEOLOCATION_BASE_URL,
+        extract_body=_geolocation_extract,
+        post_json=params,
+    )

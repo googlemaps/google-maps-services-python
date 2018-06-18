@@ -25,88 +25,107 @@ import googlemaps.test as _test
 
 
 class RoadsTest(_test.TestCase):
-
     def setUp(self):
         self.key = "AIzaasdf"
         self.client = googlemaps.Client(self.key)
 
     @responses.activate
     def test_snap(self):
-        responses.add(responses.GET,
-                      "https://roads.googleapis.com/v1/snapToRoads",
-                      body='{"snappedPoints":["foo"]}',
-                      status=200,
-                      content_type="application/json")
+        responses.add(
+            responses.GET,
+            "https://roads.googleapis.com/v1/snapToRoads",
+            body='{"snappedPoints":["foo"]}',
+            status=200,
+            content_type="application/json",
+        )
 
         results = self.client.snap_to_roads((40.714728, -73.998672))
         self.assertEqual("foo", results[0])
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual("https://roads.googleapis.com/v1/snapToRoads?"
-                            "path=40.714728%%2C-73.998672&key=%s" % self.key,
-                            responses.calls[0].request.url)
+        self.assertURLEqual(
+            "https://roads.googleapis.com/v1/snapToRoads?"
+            "path=40.714728%%2C-73.998672&key=%s" % self.key,
+            responses.calls[0].request.url,
+        )
 
     @responses.activate
     def test_nearest_roads(self):
-        responses.add(responses.GET,
-                      "https://roads.googleapis.com/v1/nearestRoads",
-                      body='{"snappedPoints":["foo"]}',
-                      status=200,
-                      content_type="application/json")
+        responses.add(
+            responses.GET,
+            "https://roads.googleapis.com/v1/nearestRoads",
+            body='{"snappedPoints":["foo"]}',
+            status=200,
+            content_type="application/json",
+        )
 
         results = self.client.nearest_roads((40.714728, -73.998672))
         self.assertEqual("foo", results[0])
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual("https://roads.googleapis.com/v1/nearestRoads?"
-                            "points=40.714728%%2C-73.998672&key=%s" % self.key,
-                            responses.calls[0].request.url)
+        self.assertURLEqual(
+            "https://roads.googleapis.com/v1/nearestRoads?"
+            "points=40.714728%%2C-73.998672&key=%s" % self.key,
+            responses.calls[0].request.url,
+        )
 
     @responses.activate
     def test_path(self):
-        responses.add(responses.GET,
-                      "https://roads.googleapis.com/v1/speedLimits",
-                      body='{"speedLimits":["foo"]}',
-                      status=200,
-                      content_type="application/json")
+        responses.add(
+            responses.GET,
+            "https://roads.googleapis.com/v1/speedLimits",
+            body='{"speedLimits":["foo"]}',
+            status=200,
+            content_type="application/json",
+        )
 
-        results = self.client.snapped_speed_limits([(1, 2),(3, 4)])
+        results = self.client.snapped_speed_limits([(1, 2), (3, 4)])
         self.assertEqual("foo", results["speedLimits"][0])
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual("https://roads.googleapis.com/v1/speedLimits?"
-                            "path=1%%2C2|3%%2C4"
-                            "&key=%s" % self.key,
-                            responses.calls[0].request.url)
+        self.assertURLEqual(
+            "https://roads.googleapis.com/v1/speedLimits?"
+            "path=1%%2C2|3%%2C4"
+            "&key=%s" % self.key,
+            responses.calls[0].request.url,
+        )
 
     @responses.activate
     def test_speedlimits(self):
-        responses.add(responses.GET,
-                      "https://roads.googleapis.com/v1/speedLimits",
-                      body='{"speedLimits":["foo"]}',
-                      status=200,
-                      content_type="application/json")
+        responses.add(
+            responses.GET,
+            "https://roads.googleapis.com/v1/speedLimits",
+            body='{"speedLimits":["foo"]}',
+            status=200,
+            content_type="application/json",
+        )
 
         results = self.client.speed_limits("id1")
         self.assertEqual("foo", results[0])
-        self.assertEqual("https://roads.googleapis.com/v1/speedLimits?"
-                         "placeId=id1&key=%s" % self.key,
-                         responses.calls[0].request.url)
+        self.assertEqual(
+            "https://roads.googleapis.com/v1/speedLimits?"
+            "placeId=id1&key=%s" % self.key,
+            responses.calls[0].request.url,
+        )
 
     @responses.activate
     def test_speedlimits_multiple(self):
-        responses.add(responses.GET,
-                      "https://roads.googleapis.com/v1/speedLimits",
-                      body='{"speedLimits":["foo"]}',
-                      status=200,
-                      content_type="application/json")
+        responses.add(
+            responses.GET,
+            "https://roads.googleapis.com/v1/speedLimits",
+            body='{"speedLimits":["foo"]}',
+            status=200,
+            content_type="application/json",
+        )
 
         results = self.client.speed_limits(["id1", "id2", "id3"])
         self.assertEqual("foo", results[0])
-        self.assertEqual("https://roads.googleapis.com/v1/speedLimits?"
-                         "placeId=id1&placeId=id2&placeId=id3"
-                         "&key=%s" % self.key,
-                         responses.calls[0].request.url)
+        self.assertEqual(
+            "https://roads.googleapis.com/v1/speedLimits?"
+            "placeId=id1&placeId=id2&placeId=id3"
+            "&key=%s" % self.key,
+            responses.calls[0].request.url,
+        )
 
     def test_clientid_not_accepted(self):
         client = googlemaps.Client(client_id="asdf", client_secret="asdf")
@@ -123,13 +142,15 @@ class RoadsTest(_test.TestCase):
             def __call__(self, req):
                 if self.first_req:
                     self.first_req = False
-                    return (500, {}, 'Internal Server Error.')
+                    return (500, {}, "Internal Server Error.")
                 return (200, {}, '{"speedLimits":[]}')
 
-        responses.add_callback(responses.GET,
-                "https://roads.googleapis.com/v1/speedLimits",
-                content_type="application/json",
-                callback=request_callback())
+        responses.add_callback(
+            responses.GET,
+            "https://roads.googleapis.com/v1/speedLimits",
+            content_type="application/json",
+            callback=request_callback(),
+        )
 
         self.client.speed_limits([])
 

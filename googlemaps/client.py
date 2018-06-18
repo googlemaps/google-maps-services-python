@@ -34,9 +34,9 @@ import time
 
 import googlemaps
 
-try: # Python 3
+try:  # Python 3
     from urllib.parse import urlencode
-except ImportError: # Python 2
+except ImportError:  # Python 2
     from urllib import urlencode
 
 
@@ -45,14 +45,24 @@ _DEFAULT_BASE_URL = "https://maps.googleapis.com"
 
 _RETRIABLE_STATUSES = set([500, 503, 504])
 
+
 class Client(object):
     """Performs requests to the Google Maps API web services."""
 
-    def __init__(self, key=None, client_id=None, client_secret=None,
-                 timeout=None, connect_timeout=None, read_timeout=None,
-                 retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=50, channel=None,
-                 retry_over_query_limit=True):
+    def __init__(
+        self,
+        key=None,
+        client_id=None,
+        client_secret=None,
+        timeout=None,
+        connect_timeout=None,
+        read_timeout=None,
+        retry_timeout=60,
+        requests_kwargs=None,
+        queries_per_second=50,
+        channel=None,
+        retry_over_query_limit=True,
+    ):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set.
@@ -112,34 +122,41 @@ class Client(object):
 
         """
         if not key and not (client_secret and client_id):
-            raise ValueError("Must provide API key or enterprise credentials "
-                             "when creating client.")
+            raise ValueError(
+                "Must provide API key or enterprise credentials "
+                "when creating client."
+            )
 
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
 
         if channel:
             if not client_id:
-                raise ValueError("The channel argument must be used with a "
-                                 "client ID")
+                raise ValueError(
+                    "The channel argument must be used with a " "client ID"
+                )
             if not re.match("^[a-zA-Z0-9._-]*$", channel):
-                raise ValueError("The channel argument must be an ASCII "
+                raise ValueError(
+                    "The channel argument must be an ASCII "
                     "alphanumeric string. The period (.), underscore (_)"
-                    "and hyphen (-) characters are allowed.")
+                    "and hyphen (-) characters are allowed."
+                )
 
         self.session = requests.Session()
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
-            raise ValueError("Specify either timeout, or connect_timeout "
-                             "and read_timeout")
+            raise ValueError(
+                "Specify either timeout, or connect_timeout " "and read_timeout"
+            )
 
         if connect_timeout and read_timeout:
             # Check that the version of requests is >= 2.4.0
             chunks = requests.__version__.split(".")
             if int(chunks[0]) < 2 or (int(chunks[0]) == 2 and int(chunks[1]) < 4):
-                raise NotImplementedError("Connect/Read timeouts require "
-                                          "requests v2.4.0 or higher")
+                raise NotImplementedError(
+                    "Connect/Read timeouts require " "requests v2.4.0 or higher"
+                )
             self.timeout = (connect_timeout, read_timeout)
         else:
             self.timeout = timeout
@@ -149,19 +166,30 @@ class Client(object):
         self.channel = channel
         self.retry_timeout = timedelta(seconds=retry_timeout)
         self.requests_kwargs = requests_kwargs or {}
-        self.requests_kwargs.update({
-            "headers": {"User-Agent": _USER_AGENT},
-            "timeout": self.timeout,
-            "verify": True,  # NOTE(cbro): verify SSL certs.
-        })
+        self.requests_kwargs.update(
+            {
+                "headers": {"User-Agent": _USER_AGENT},
+                "timeout": self.timeout,
+                "verify": True,  # NOTE(cbro): verify SSL certs.
+            }
+        )
 
         self.queries_per_second = queries_per_second
         self.retry_over_query_limit = retry_over_query_limit
         self.sent_times = collections.deque("", queries_per_second)
 
-    def _request(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
-             extract_body=None, requests_kwargs=None, post_json=None):
+    def _request(
+        self,
+        url,
+        params,
+        first_request_time=None,
+        retry_counter=0,
+        base_url=_DEFAULT_BASE_URL,
+        accepts_clientid=True,
+        extract_body=None,
+        requests_kwargs=None,
+        post_json=None,
+    ):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
@@ -232,8 +260,7 @@ class Client(object):
             final_requests_kwargs["json"] = post_json
 
         try:
-            response = requests_method(base_url + authed_url,
-                                       **final_requests_kwargs)
+            response = requests_method(base_url + authed_url, **final_requests_kwargs)
         except requests.exceptions.Timeout:
             raise googlemaps.exceptions.Timeout()
         except Exception as e:
@@ -241,9 +268,17 @@ class Client(object):
 
         if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
-            return self._request(url, params, first_request_time,
-                                 retry_counter + 1, base_url, accepts_clientid,
-                                 extract_body, requests_kwargs, post_json)
+            return self._request(
+                url,
+                params,
+                first_request_time,
+                retry_counter + 1,
+                base_url,
+                accepts_clientid,
+                extract_body,
+                requests_kwargs,
+                post_json,
+            )
 
         # Check if the time of the nth previous query (where n is
         # queries_per_second) is under a second ago - if so, sleep for
@@ -261,13 +296,24 @@ class Client(object):
             self.sent_times.append(time.time())
             return result
         except googlemaps.exceptions._RetriableRequest as e:
-            if isinstance(e, googlemaps.exceptions._OverQueryLimit) and not self.retry_over_query_limit:
+            if (
+                isinstance(e, googlemaps.exceptions._OverQueryLimit)
+                and not self.retry_over_query_limit
+            ):
                 raise
 
             # Retry request.
-            return self._request(url, params, first_request_time,
-                                 retry_counter + 1, base_url, accepts_clientid,
-                                 extract_body, requests_kwargs, post_json)
+            return self._request(
+                url,
+                params,
+                first_request_time,
+                retry_counter + 1,
+                base_url,
+                accepts_clientid,
+                extract_body,
+                requests_kwargs,
+                post_json,
+            )
 
     def _get(self, *args, **kwargs):  # Backwards compatibility.
         return self._request(*args, **kwargs)
@@ -284,10 +330,10 @@ class Client(object):
 
         if api_status == "OVER_QUERY_LIMIT":
             raise googlemaps.exceptions._OverQueryLimit(
-                api_status, body.get("error_message"))
+                api_status, body.get("error_message")
+            )
 
-        raise googlemaps.exceptions.ApiError(api_status,
-                                             body.get("error_message"))
+        raise googlemaps.exceptions.ApiError(api_status, body.get("error_message"))
 
     def _generate_auth_url(self, path, params, accepts_clientid):
         """Returns the path and query string portion of the request URL, first
@@ -308,7 +354,7 @@ class Client(object):
         if type(params) is dict:
             params = sorted(dict(extra_params, **params).items())
         else:
-            params = sorted(extra_params.items()) + params[:] # Take a copy.
+            params = sorted(extra_params.items()) + params[:]  # Take a copy.
 
         if accepts_clientid and self.client_id and self.client_secret:
             if self.channel:
@@ -323,8 +369,10 @@ class Client(object):
             params.append(("key", self.key))
             return path + "?" + urlencode_params(params)
 
-        raise ValueError("Must provide API key for this API. It does not accept "
-                         "enterprise credentials.")
+        raise ValueError(
+            "Must provide API key for this API. It does not accept "
+            "enterprise credentials."
+        )
 
 
 from googlemaps.directions import directions
@@ -358,6 +406,7 @@ def make_api_method(func):
     Please note that this is an unsupported feature for advanced use only.
     It's also currently incompatibile with multiple threads, see GH #160.
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         args[0]._extra_params = kwargs.pop("extra_params", None)
@@ -367,6 +416,7 @@ def make_api_method(func):
         except AttributeError:
             pass
         return result
+
     return wrapper
 
 
@@ -402,11 +452,11 @@ def sign_hmac(secret, payload):
 
     :rtype: string
     """
-    payload = payload.encode('ascii', 'strict')
-    secret = secret.encode('ascii', 'strict')
+    payload = payload.encode("ascii", "strict")
+    secret = secret.encode("ascii", "strict")
     sig = hmac.new(base64.urlsafe_b64decode(secret), payload, hashlib.sha1)
     out = base64.urlsafe_b64encode(sig.digest())
-    return out.decode('utf-8')
+    return out.decode("utf-8")
 
 
 def urlencode_params(params):
@@ -434,14 +484,16 @@ try:
     def normalize_for_urlencode(value):
         """(Python 2) Converts the value to a `str` (raw bytes)."""
         if isinstance(value, unicode):
-            return value.encode('utf8')
+            return value.encode("utf8")
 
         if isinstance(value, str):
             return value
 
         return normalize_for_urlencode(str(value))
 
+
 except NameError:
+
     def normalize_for_urlencode(value):
         """(Python 3) No-op."""
         # urlencode in Python 3 handles all the types we are passing it.
