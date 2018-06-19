@@ -1,19 +1,16 @@
 import sys
 
-
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-
 if sys.version_info <= (2, 4):
     error = "Requires Python Version 2.5 or above... exiting."
-    print >>sys.stderr, error
+    print >> sys.stderr, error
     sys.exit(1)
 
-
-requirements = ["requests>=2.11.1,<3.0"]
+requirements = ["requests>=2.11.1"]
 
 setup(
     name="googlemaps",
