@@ -45,7 +45,7 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "candidates": []}',
                       status=200, content_type='application/json')
 
-        self.client.find_places('restaurant', 'textquery',
+        self.client.find_place('restaurant', 'textquery',
                                 fields=['geometry', 'id'],
                                 location_bias='point:90,90',
                                 language=self.language)
@@ -57,12 +57,12 @@ class PlacesTest(_test.TestCase):
                             % (url, self.key), responses.calls[0].request.url)
 
         with self.assertRaises(ValueError):
-            self.client.find_places('restaurant', 'invalid')
+            self.client.find_place('restaurant', 'invalid')
         with self.assertRaises(ValueError):
-            self.client.find_places('restaurant', 'textquery',
+            self.client.find_place('restaurant', 'textquery',
                                     fields=['geometry', 'invalid'])
         with self.assertRaises(ValueError):
-            self.client.find_places('restaurant', 'textquery',
+            self.client.find_place('restaurant', 'textquery',
                                     location_bias='invalid')
 
     @responses.activate

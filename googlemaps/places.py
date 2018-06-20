@@ -36,7 +36,7 @@ PLACES_DETAIL_FIELDS = set([
 ])
 
 
-def find_places(client, input, input_type, fields=None, location_bias=None,
+def find_place(client, input, input_type, fields=None, location_bias=None,
                 language=None):
     """
     A Find Place request takes a text input, and returns a place.
@@ -73,14 +73,14 @@ def find_places(client, input, input_type, fields=None, location_bias=None,
 
     if input_type != "textquery" and input_type != "phonenumber":
         raise ValueError("Valid values for the `input_type` param for "
-                         "`find_places` are 'textquery' or 'phonenumber', "
+                         "`find_place` are 'textquery' or 'phonenumber', "
                          "the given value is invalid: '%s'" % input_type)
 
     if fields:
         invalid_fields = set(fields) - PLACES_FIND_FIELDS
         if invalid_fields:
             raise ValueError("Valid values for the `fields` param for "
-                             "`find_places` are '%s', these given field(s) "
+                             "`find_place` are '%s', these given field(s) "
                              "are invalid: '%s'" % (
                                 "', '".join(PLACES_FIND_FIELDS),
                                 "', '".join(invalid_fields)))
