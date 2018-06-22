@@ -22,9 +22,9 @@ from types import GeneratorType
 
 import responses
 
-import test as _test
 import googlemaps
 from googlemaps.places import places_autocomplete_session_token
+import googlemaps.test as _test
 
 
 class PlacesTest(_test.TestCase):

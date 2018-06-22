@@ -20,9 +20,11 @@
 from datetime import datetime
 import time
 
-import googlemaps
 import responses
-import test as _test
+
+import googlemaps
+import googlemaps.test as _test
+
 
 class DistanceMatrixTest(_test.TestCase):
 

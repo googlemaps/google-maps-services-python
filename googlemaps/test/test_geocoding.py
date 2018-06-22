@@ -19,10 +19,12 @@
 """Tests for the geocoding module."""
 
 import datetime
+
 import responses
 
-import test as _test
 import googlemaps
+import googlemaps.test as _test
+
 
 class GeocodingTest(_test.TestCase):
 
