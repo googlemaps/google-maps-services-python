@@ -22,15 +22,15 @@ HTTP requests).
 
 import base64
 import collections
-from datetime import datetime
-from datetime import timedelta
 import functools
 import hashlib
 import hmac
-import re
-import requests
 import random
+import re
 import time
+from datetime import datetime, timedelta
+
+import requests
 
 import googlemaps
 
@@ -38,7 +38,6 @@ try:  # Python 3
     from urllib.parse import urlencode
 except ImportError:  # Python 2
     from urllib import urlencode
-
 
 _USER_AGENT = "GoogleGeoApiClientPython/%s" % googlemaps.__version__
 _DEFAULT_BASE_URL = "https://maps.googleapis.com"
@@ -252,7 +251,6 @@ class Client(object):
         # requests_kwargs arg overriding.
         requests_kwargs = requests_kwargs or {}
         final_requests_kwargs = dict(self.requests_kwargs, **requests_kwargs)
-
         # Determine GET/POST.
         requests_method = self.session.get
         if post_json is not None:
@@ -478,6 +476,8 @@ def urlencode_params(params):
 
 try:
     unicode
+
+
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
     # raised here, and caught below.
 

@@ -27,9 +27,8 @@ PLACE_DETAILS_FIELDS = {
         "url",
         "utc_offset",
         "permanently_closed",
-        "geometry.location",
-        "geometry.viewport",
-        "photo.photo_reference",
+        "geometry",
+        "photo",
         "icon",
         "types",
         "adr_address",
@@ -37,9 +36,7 @@ PLACE_DETAILS_FIELDS = {
         "vicinity",
     ],
     "contact": [
-        "opening_hours.weekday_text",
-        "opening_hours.open_now",
-        "opening_hours.period",
+        "opening_hours",
         "website",
         "formatted_phone_number",
         "international_phone_number",
@@ -396,6 +393,8 @@ def place(client, place_id, language=None, fields=None, categories=None):
                 params["fields"].extend(fields)
     if not params["fields"]:
         del params["fields"]
+    else:
+        params['fields'] = convert.join_list(',', params['fields'])
 
     return client._request("/maps/api/place/details/json", params)
 
