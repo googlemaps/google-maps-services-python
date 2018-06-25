@@ -1,10 +1,10 @@
 /*
- * classic.css_t
+ * default.css_t
  * ~~~~~~~~~~~~~
  *
- * Sphinx stylesheet -- classic theme.
+ * Sphinx stylesheet -- default theme.
  *
- * :copyright: Copyright 2007-2017 by the Sphinx team, see AUTHORS.
+ * :copyright: Copyright 2007-2015 by the Sphinx team, see AUTHORS.
  * :license: BSD, see LICENSE for details.
  *
  */
@@ -169,7 +169,7 @@ a.headerlink:hover {
     color: white;
 }
 
-div.body p, div.body dd, div.body li, div.body blockquote {
+div.body p, div.body dd, div.body li {
     text-align: justify;
     line-height: 130%;
 }

@@ -1,12 +1,12 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python Client for Google Maps Services &#8212; Python Client for Google Maps Services 2.5.1 documentation</title>
+    <title>Python Client for Google Maps Services &mdash; Python Client for Google Maps Services 3.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,20 +14,18 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.5.1',
+        VERSION:     '3.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="top" title="Python Client for Google Maps Services 3.0.0 documentation" href="#" /> 
   </head>
-  <body>
+  <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -37,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 2.5.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 3.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,7 +50,7 @@
 <span id="googlemaps-module"></span><h2><a class="reference internal" href="#module-googlemaps" title="googlemaps"><code class="xref py py-mod docutils literal"><span class="pre">googlemaps</span></code></a> Module<a class="headerlink" href="#module-googlemaps" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="googlemaps.Client">
-<em class="property">class </em><code class="descclassname">googlemaps.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>key=None</em>, <em>client_id=None</em>, <em>client_secret=None</em>, <em>timeout=None</em>, <em>connect_timeout=None</em>, <em>read_timeout=None</em>, <em>retry_timeout=60</em>, <em>requests_kwargs=None</em>, <em>queries_per_second=10</em>, <em>channel=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">googlemaps.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>key=None</em>, <em>client_id=None</em>, <em>client_secret=None</em>, <em>timeout=None</em>, <em>connect_timeout=None</em>, <em>read_timeout=None</em>, <em>retry_timeout=60</em>, <em>requests_kwargs=None</em>, <em>queries_per_second=50</em>, <em>channel=None</em>, <em>retry_over_query_limit=True</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Performs requests to the Google Maps API web services.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -60,29 +58,32 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>key</strong> (<em>string</em>) – Maps API key. Required, unless “client_id” and
-“client_secret” are set.</li>
-<li><strong>client_id</strong> (<em>string</em>) – (for Maps API for Work customers) Your client ID.</li>
-<li><strong>client_secret</strong> (<em>string</em>) – (for Maps API for Work customers) Your client
+<li><strong>key</strong> (<em>string</em>) &#8211; Maps API key. Required, unless &#8220;client_id&#8221; and
+&#8220;client_secret&#8221; are set.</li>
+<li><strong>client_id</strong> (<em>string</em>) &#8211; (for Maps API for Work customers) Your client ID.</li>
+<li><strong>client_secret</strong> (<em>string</em>) &#8211; (for Maps API for Work customers) Your client
 secret (base64 encoded).</li>
-<li><strong>channel</strong> (<em>str</em>) – (for Maps API for Work customers) When set, a channel
+<li><strong>channel</strong> (<em>str</em>) &#8211; (for Maps API for Work customers) When set, a channel
 parameter with this value will be added to the requests.
 This can be used for tracking purpose.
 Can only be used with a Maps API client ID.</li>
-<li><strong>timeout</strong> (<em>int</em>) – Combined connect and read timeout for HTTP requests, in
-seconds. Specify “None” for no timeout.</li>
-<li><strong>connect_timeout</strong> (<em>int</em>) – Connection timeout for HTTP requests, in
+<li><strong>timeout</strong> (<em>int</em>) &#8211; Combined connect and read timeout for HTTP requests, in
+seconds. Specify &#8220;None&#8221; for no timeout.</li>
+<li><strong>connect_timeout</strong> (<em>int</em>) &#8211; Connection timeout for HTTP requests, in
 seconds. You should specify read_timeout in addition to this option.
 Note that this requires requests &gt;= 2.4.0.</li>
-<li><strong>read_timeout</strong> (<em>int</em>) – Read timeout for HTTP requests, in
+<li><strong>read_timeout</strong> (<em>int</em>) &#8211; Read timeout for HTTP requests, in
 seconds. You should specify connect_timeout in addition to this
 option. Note that this requires requests &gt;= 2.4.0.</li>
-<li><strong>retry_timeout</strong> (<em>int</em>) – Timeout across multiple retriable requests, in
+<li><strong>retry_timeout</strong> (<em>int</em>) &#8211; Timeout across multiple retriable requests, in
 seconds.</li>
-<li><strong>queries_per_second</strong> (<em>int</em>) – Number of queries per second permitted.
+<li><strong>queries_per_second</strong> (<em>int</em>) &#8211; Number of queries per second permitted.
 If the rate limit is reached, the client will sleep for the
 appropriate amount of time before it runs the current query.</li>
-<li><strong>requests_kwargs</strong> (<em>dict</em>) – Extra keyword arguments for the requests
+<li><strong>retry_over_query_limit</strong> (<em>bool</em>) &#8211; If True, requests that result in a
+response indicating the query rate limit was exceeded will be
+retried. Defaults to True.</li>
+<li><strong>requests_kwargs</strong> (<em>dict</em>) &#8211; Extra keyword arguments for the requests
 library, which among other things allow for proxy auth to be
 implemented. See the official requests docs for more info:
 <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#main-interface">http://docs.python-requests.org/en/latest/api/#main-interface</a></li>
@@ -90,9 +91,9 @@ implemented. See the official requests docs for more info:
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ValueError</strong> – when either credentials are missing, incomplete
+<li><strong>ValueError</strong> &#8211; when either credentials are missing, incomplete
 or invalid.</li>
-<li><strong>NotImplementedError</strong> – if connect_timeout and read_timeout are
+<li><strong>NotImplementedError</strong> &#8211; if connect_timeout and read_timeout are
 used with a version of requests prior to 2.4.0.</li>
 </ul>
 </td>
@@ -108,38 +109,39 @@ used with a version of requests prior to 2.4.0.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>origin</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The address or latitude/longitude value from which you wish
+<li><strong>origin</strong> (<em>string, dict, list, or tuple</em>) &#8211; The address or latitude/longitude value from which you wish
 to calculate directions.</li>
-<li><strong>destination</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The address or latitude/longitude value from which
-you wish to calculate directions.</li>
-<li><strong>mode</strong> (<em>string</em>) – Specifies the mode of transport to use when calculating
-directions. One of “driving”, “walking”, “bicycling” or “transit”</li>
-<li><strong>waypoints</strong> (<em>a single location</em><em>, or </em><em>a list of locations</em><em>, </em><em>where a
-location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – Specifies an array of waypoints. Waypoints alter a
+<li><strong>destination</strong> (<em>string, dict, list, or tuple</em>) &#8211; The address or latitude/longitude value from which
+you wish to calculate directions. You can use a place_id as destination
+by putting &#8216;place_id:&#8217; as a preffix in the passing parameter.</li>
+<li><strong>mode</strong> (<em>string</em>) &#8211; Specifies the mode of transport to use when calculating
+directions. One of &#8220;driving&#8221;, &#8220;walking&#8221;, &#8220;bicycling&#8221; or &#8220;transit&#8221;</li>
+<li><strong>waypoints</strong> (<em>a single location, or a list of locations, where a
+location is a string, dict, list, or tuple</em>) &#8211; Specifies an array of waypoints. Waypoints alter a
 route by routing it through the specified location(s).</li>
-<li><strong>alternatives</strong> (<em>bool</em>) – If True, more than one route may be returned in the
+<li><strong>alternatives</strong> (<em>bool</em>) &#8211; If True, more than one route may be returned in the
 response.</li>
-<li><strong>avoid</strong> (<em>list</em><em> or </em><em>string</em>) – Indicates that the calculated route(s) should avoid the
+<li><strong>avoid</strong> (<em>list or string</em>) &#8211; Indicates that the calculated route(s) should avoid the
 indicated features.</li>
-<li><strong>language</strong> (<em>string</em>) – The language in which to return results.</li>
-<li><strong>units</strong> (<em>string</em>) – Specifies the unit system to use when displaying results.
-“metric” or “imperial”</li>
-<li><strong>region</strong> (<em>string</em>) – The region code, specified as a ccTLD (“top-level domain”
+<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
+<li><strong>units</strong> (<em>string</em>) &#8211; Specifies the unit system to use when displaying results.
+&#8220;metric&#8221; or &#8220;imperial&#8221;</li>
+<li><strong>region</strong> (<em>string</em>) &#8211; The region code, specified as a ccTLD (&#8220;top-level domain&#8221;
 two-character value.</li>
-<li><strong>departure_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of departure.</li>
-<li><strong>arrival_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of arrival for transit
-directions. Note: you can’t specify both departure_time and
+<li><strong>departure_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of departure.</li>
+<li><strong>arrival_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of arrival for transit
+directions. Note: you can&#8217;t specify both departure_time and
 arrival_time.</li>
-<li><strong>optimize_waypoints</strong> (<em>bool</em>) – Optimize the provided route by rearranging the
+<li><strong>optimize_waypoints</strong> (<em>bool</em>) &#8211; Optimize the provided route by rearranging the
 waypoints in a more efficient order.</li>
-<li><strong>transit_mode</strong> (<em>string</em><em> or </em><em>list of strings</em>) – Specifies one or more preferred modes of transit.
+<li><strong>transit_mode</strong> (<em>string or list of strings</em>) &#8211; Specifies one or more preferred modes of transit.
 This parameter may only be specified for requests where the mode is
-transit. Valid values are “bus”, “subway”, “train”, “tram”, “rail”.
-“rail” is equivalent to [“train”, “tram”, “subway”].</li>
-<li><strong>transit_routing_preference</strong> (<em>string</em>) – Specifies preferences for transit
-requests. Valid values are “less_walking” or “fewer_transfers”</li>
-<li><strong>traffic_model</strong> – Specifies the predictive travel time model to use.
-Valid values are “best_guess” or “optimistic” or “pessimistic”.
+transit. Valid values are &#8220;bus&#8221;, &#8220;subway&#8221;, &#8220;train&#8221;, &#8220;tram&#8221;, &#8220;rail&#8221;.
+&#8220;rail&#8221; is equivalent to [&#8220;train&#8221;, &#8220;tram&#8221;, &#8220;subway&#8221;].</li>
+<li><strong>transit_routing_preference</strong> (<em>string</em>) &#8211; Specifies preferences for transit
+requests. Valid values are &#8220;less_walking&#8221; or &#8220;fewer_transfers&#8221;</li>
+<li><strong>traffic_model</strong> &#8211; Specifies the predictive travel time model to use.
+Valid values are &#8220;best_guess&#8221; or &#8220;optimistic&#8221; or &#8220;pessimistic&#8221;.
 The traffic_model parameter may only be specified for requests where
 the travel mode is driving, and where the request includes a
 departure_time.</li>
@@ -162,39 +164,42 @@ departure_time.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>origins</strong> (<em>a single location</em><em>, or </em><em>a list of locations</em><em>, </em><em>where a
-location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – One or more locations and/or latitude/longitude values,
+<li><strong>origins</strong> (<em>a single location, or a list of locations, where a
+location is a string, dict, list, or tuple</em>) &#8211; One or more locations and/or latitude/longitude values,
 from which to calculate distance and time. If you pass an address as
 a string, the service will geocode the string and convert it to a
 latitude/longitude coordinate to calculate directions.</li>
-<li><strong>destinations</strong> (<em>a single location</em><em>, or </em><em>a list of locations</em><em>, </em><em>where a
-location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – One or more addresses and/or lat/lng values, to
+<li><strong>destinations</strong> (<em>a single location, or a list of locations, where a
+location is a string, dict, list, or tuple</em>) &#8211; One or more addresses and/or lat/lng values, to
 which to calculate distance and time. If you pass an address as a
 string, the service will geocode the string and convert it to a
 latitude/longitude coordinate to calculate directions.</li>
-<li><strong>mode</strong> (<em>string</em>) – Specifies the mode of transport to use when calculating
-directions. Valid values are “driving”, “walking”, “transit” or
-“bicycling”.</li>
-<li><strong>language</strong> (<em>string</em>) – The language in which to return results.</li>
-<li><strong>avoid</strong> (<em>string</em>) – Indicates that the calculated route(s) should avoid the
-indicated features. Valid values are “tolls”, “highways” or “ferries”.</li>
-<li><strong>units</strong> (<em>string</em>) – Specifies the unit system to use when displaying results.
-Valid values are “metric” or “imperial”.</li>
-<li><strong>departure_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of departure.</li>
-<li><strong>arrival_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of arrival for transit
-directions. Note: you can’t specify both departure_time and
+<li><strong>mode</strong> (<em>string</em>) &#8211; Specifies the mode of transport to use when calculating
+directions. Valid values are &#8220;driving&#8221;, &#8220;walking&#8221;, &#8220;transit&#8221; or
+&#8220;bicycling&#8221;.</li>
+<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
+<li><strong>avoid</strong> (<em>string</em>) &#8211; Indicates that the calculated route(s) should avoid the
+indicated features. Valid values are &#8220;tolls&#8221;, &#8220;highways&#8221; or &#8220;ferries&#8221;.</li>
+<li><strong>units</strong> (<em>string</em>) &#8211; Specifies the unit system to use when displaying results.
+Valid values are &#8220;metric&#8221; or &#8220;imperial&#8221;.</li>
+<li><strong>departure_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of departure.</li>
+<li><strong>arrival_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of arrival for transit
+directions. Note: you can&#8217;t specify both departure_time and
 arrival_time.</li>
-<li><strong>transit_mode</strong> (<em>string</em><em> or </em><em>list of strings</em>) – Specifies one or more preferred modes of transit.
+<li><strong>transit_mode</strong> (<em>string or list of strings</em>) &#8211; Specifies one or more preferred modes of transit.
 This parameter may only be specified for requests where the mode is
-transit. Valid values are “bus”, “subway”, “train”, “tram”, “rail”.
-“rail” is equivalent to [“train”, “tram”, “subway”].</li>
-<li><strong>transit_routing_preference</strong> (<em>string</em>) – Specifies preferences for transit
-requests. Valid values are “less_walking” or “fewer_transfers”.</li>
-<li><strong>traffic_model</strong> – Specifies the predictive travel time model to use.
-Valid values are “best_guess” or “optimistic” or “pessimistic”.
+transit. Valid values are &#8220;bus&#8221;, &#8220;subway&#8221;, &#8220;train&#8221;, &#8220;tram&#8221;, &#8220;rail&#8221;.
+&#8220;rail&#8221; is equivalent to [&#8220;train&#8221;, &#8220;tram&#8221;, &#8220;subway&#8221;].</li>
+<li><strong>transit_routing_preference</strong> (<em>string</em>) &#8211; Specifies preferences for transit
+requests. Valid values are &#8220;less_walking&#8221; or &#8220;fewer_transfers&#8221;.</li>
+<li><strong>traffic_model</strong> &#8211; Specifies the predictive travel time model to use.
+Valid values are &#8220;best_guess&#8221; or &#8220;optimistic&#8221; or &#8220;pessimistic&#8221;.
 The traffic_model parameter may only be specified for requests where
 the travel mode is driving, and where the request includes a
 departure_time.</li>
+<li><strong>region</strong> (<em>string</em>) &#8211; Specifies the prefered region the geocoder should search
+first, but it will not restrict the results to only this region. Valid
+values are a ccTLD code.</li>
 </ul>
 </td>
 </tr>
@@ -216,8 +221,8 @@ values)</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locations</strong> (<em>a single location</em><em>, or </em><em>a list of locations</em><em>, </em><em>where a
-location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – List of latitude/longitude values from which you wish
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locations</strong> (<em>a single location, or a list of locations, where a
+location is a string, dict, list, or tuple</em>) &#8211; List of latitude/longitude values from which you wish
 to calculate elevation data.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of elevation data responses</td>
@@ -235,14 +240,49 @@ to calculate elevation data.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – An encoded polyline string, or a list of latitude/longitude
+<li><strong>path</strong> (<em>string, dict, list, or tuple</em>) &#8211; An encoded polyline string, or a list of latitude/longitude
 values from which you wish to calculate elevation data.</li>
-<li><strong>samples</strong> (<em>int</em>) – The number of sample points along a path for which to
+<li><strong>samples</strong> (<em>int</em>) &#8211; The number of sample points along a path for which to
 return elevation data.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of elevation data responses</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="googlemaps.Client.find_place">
+<code class="descname">find_place</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.find_place" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Find Place request takes a text input, and returns a place.
+The text input can be any kind of Places data, for example,
+a name, address, or phone number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>input</strong> (<em>list</em>) &#8211; The text input specifying which place to search for (for
+example, a name, address, or phone number).</li>
+<li><strong>input_type</strong> (<em>string</em>) &#8211; The type of input. This can be one of either &#8216;textquery&#8217;
+or &#8216;phonenumber&#8217;.</li>
+<li><strong>fields</strong> &#8211; The fields specifying the types of place data to return,
+separated by a comma. For full details see:
+<a class="reference external" href="https://developers.google.com/places/web-service/search#FindPlaceRequests">https://developers.google.com/places/web-service/search#FindPlaceRequests</a></li>
+<li><strong>location_bias</strong> (<em>string</em>) &#8211; Prefer results in a specified area, by specifying
+either a radius plus lat/lng, or two lat/lng pairs
+representing the points of a rectangle. See:
+<a class="reference external" href="https://developers.google.com/places/web-service/search#FindPlaceRequests">https://developers.google.com/places/web-service/search#FindPlaceRequests</a></li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">result dict with the following keys:
+status: status code
+candidates: list of places</p>
 </td>
 </tr>
 </tbody>
@@ -261,14 +301,14 @@ can use to place markers or position the map.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>address</strong> (<em>string</em>) – The address to geocode.</li>
-<li><strong>components</strong> (<em>dict</em>) – A component filter for which you wish to obtain a
+<li><strong>address</strong> (<em>string</em>) &#8211; The address to geocode.</li>
+<li><strong>components</strong> (<em>dict</em>) &#8211; A component filter for which you wish to obtain a
 geocode, for example: <code class="docutils literal"><span class="pre">{'administrative_area':</span> <span class="pre">'TX','country':</span> <span class="pre">'US'}</span></code></li>
-<li><strong>bounds</strong> (<em>string</em><em> or </em><em>dict with northeast and southwest keys.</em>) – The bounding box of the viewport within which to bias geocode
+<li><strong>bounds</strong> (<em>string or dict with northeast and southwest keys.</em>) &#8211; The bounding box of the viewport within which to bias geocode
 results more prominently.</li>
-<li><strong>region</strong> (<em>string</em>) – The region code, specified as a ccTLD (“top-level domain”)
+<li><strong>region</strong> (<em>string</em>) &#8211; The region code, specified as a ccTLD (&#8220;top-level domain&#8221;)
 two-character value.</li>
-<li><strong>language</strong> – The language in which to return results.</li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
 </ul>
 </td>
 </tr>
@@ -291,22 +331,22 @@ for more info, including more detail for each parameter below.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>home_mobile_country_code</strong> (<em>string</em>) – The mobile country code (MCC) for
-the device’s home network.</li>
-<li><strong>home_mobile_network_code</strong> (<em>string</em>) – The mobile network code (MCC) for
-the device’s home network.</li>
-<li><strong>radio_type</strong> (<em>string</em>) – The mobile radio type. Supported values are
+<li><strong>home_mobile_country_code</strong> (<em>string</em>) &#8211; The mobile country code (MCC) for
+the device&#8217;s home network.</li>
+<li><strong>home_mobile_network_code</strong> (<em>string</em>) &#8211; The mobile network code (MCC) for
+the device&#8217;s home network.</li>
+<li><strong>radio_type</strong> (<em>string</em>) &#8211; The mobile radio type. Supported values are
 lte, gsm, cdma, and wcdma. While this field is optional, it
 should be included if a value is available, for more accurate
 results.</li>
-<li><strong>carrier</strong> (<em>string</em>) – The carrier name.</li>
-<li><strong>consider_ip</strong> (<em>bool</em>) – Specifies whether to fall back to IP geolocation
+<li><strong>carrier</strong> (<em>string</em>) &#8211; The carrier name.</li>
+<li><strong>consider_ip</strong> (<em>bool</em>) &#8211; Specifies whether to fall back to IP geolocation
 if wifi and cell tower signals are not available. Note that the
 IP address in the request header may not be the IP of the device.</li>
-<li><strong>cell_towers</strong> (<em>list of dicts</em>) – A list of cell tower dicts. See
+<li><strong>cell_towers</strong> (<em>list of dicts</em>) &#8211; A list of cell tower dicts. See
 <a class="reference external" href="https://developers.google.com/maps/documentation/geolocation/intro#cell_tower_object">https://developers.google.com/maps/documentation/geolocation/intro#cell_tower_object</a>
 for more detail.</li>
-<li><strong>wifi_access_points</strong> (<em>list of dicts</em>) – A list of WiFi access point dicts. See
+<li><strong>wifi_access_points</strong> (<em>list of dicts</em>) &#8211; A list of WiFi access point dicts. See
 <a class="reference external" href="https://developers.google.com/maps/documentation/geolocation/intro#wifi_access_point_object">https://developers.google.com/maps/documentation/geolocation/intro#wifi_access_point_object</a>
 for more detail.</li>
 </ul>
@@ -327,8 +367,8 @@ continuous path.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>a single location</em><em>, or </em><em>a list of locations</em><em>, </em><em>where a
-location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The points for which the nearest road segments are to be
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>a single location, or a list of locations, where a
+location is a string, dict, list, or tuple</em>) &#8211; The points for which the nearest road segments are to be
 located.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">A list of snapped points.</td>
@@ -346,9 +386,12 @@ located.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>place_id</strong> (<em>string</em>) – A textual identifier that uniquely identifies a place,
+<li><strong>place_id</strong> (<em>string</em>) &#8211; A textual identifier that uniquely identifies a place,
 returned from a Places search.</li>
-<li><strong>language</strong> – The language in which to return results.</li>
+<li><strong>fields</strong> &#8211; The fields specifying the types of place data to return,
+separated by a comma. For full details see:
+<a class="reference external" href="https://cloud.google.com/maps-platform/user-guide/product-changes/#places">https://cloud.google.com/maps-platform/user-guide/product-changes/#places</a></li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
 </ul>
 </td>
 </tr>
@@ -370,23 +413,25 @@ html_attributions: set of attributions which must be displayed</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query</strong> (<em>string</em>) – The text string on which to search, for example: “restaurant”.</li>
-<li><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+<li><strong>query</strong> (<em>string</em>) &#8211; The text string on which to search, for example: &#8220;restaurant&#8221;.</li>
+<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
 closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) – Distance in meters within which to bias results.</li>
-<li><strong>language</strong> – The language in which to return results.</li>
-<li><strong>min_price</strong> (<em>int</em>) – Restricts results to only those places with no less than
+<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
+<li><strong>min_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no less than
 this price level. Valid values are in the range from 0 (most affordable)
 to 4 (most expensive).</li>
-<li><strong>max_price</strong> (<em>int</em>) – Restricts results to only those places with no greater
+<li><strong>max_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no greater
 than this price level. Valid values are in the range from 0 (most
 affordable) to 4 (most expensive).</li>
-<li><strong>open_now</strong> (<em>bool</em>) – Return only those places that are open for business at
+<li><strong>open_now</strong> (<em>bool</em>) &#8211; Return only those places that are open for business at
 the time the query is sent.</li>
-<li><strong>type</strong> (<em>string</em>) – Restricts the results to places matching the specified type.
+<li><strong>type</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
 The full list of supported types is available here:
 <a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></li>
-<li><strong>page_token</strong> (<em>string</em>) – Token from a previous search that when provided will
+<li><strong>region</strong> (<em>string</em>) &#8211; The region code, optional parameter.
+See more &#64; <a class="reference external" href="https://developers.google.com/places/web-service/search">https://developers.google.com/places/web-service/search</a></li>
+<li><strong>page_token</strong> (<em>string</em>) &#8211; Token from a previous search that when provided will
 returns the next page of results for the same search.</li>
 </ul>
 </td>
@@ -411,22 +456,24 @@ geographic bounds.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>input_text</strong> (<em>string</em>) – The text string on which to search.</li>
-<li><strong>offset</strong> (<em>int</em>) – The position, in the input term, of the last character
+<li><strong>input_text</strong> (<em>string</em>) &#8211; The text string on which to search.</li>
+<li><strong>session_token</strong> (<em>string</em>) &#8211; A random string which identifies an autocomplete
+session for billing purposes.</li>
+<li><strong>offset</strong> (<em>int</em>) &#8211; The position, in the input term, of the last character
 that the service uses to match predictions. For example,
-if the input is ‘Google’ and the offset is 3, the
-service will match on ‘Goo’.</li>
-<li><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+if the input is &#8216;Google&#8217; and the offset is 3, the
+service will match on &#8216;Goo&#8217;.</li>
+<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
 closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) – Distance in meters within which to bias results.</li>
-<li><strong>language</strong> – The language in which to return results.</li>
-<li><strong>types</strong> – Restricts the results to places matching the specified type.
+<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
+<li><strong>types</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
 The full list of supported types is available here:
 <a class="reference external" href="https://developers.google.com/places/web-service/autocomplete#place_types">https://developers.google.com/places/web-service/autocomplete#place_types</a></li>
-<li><strong>components</strong> (<em>dict</em>) – A component filter for which you wish to obtain a geocode,
-for example:
-<code class="docutils literal"><span class="pre">{'administrative_area':</span> <span class="pre">'TX','country':</span> <span class="pre">'US'}</span></code></li>
-<li><strong>strict_bounds</strong> (<em>bool</em>) – Returns only those places that are strictly within
+<li><strong>components</strong> (<em>dict</em>) &#8211; A component filter for which you wish to obtain a geocode.
+Currently, you can use components to filter by up to 5 countries for
+example: <code class="docutils literal"><span class="pre">{'country':</span> <span class="pre">['US',</span> <span class="pre">'AU']}</span></code></li>
+<li><strong>strict_bounds</strong> (<em>bool</em>) &#8211; Returns only those places that are strictly within
 the region defined by location and radius.</li>
 </ul>
 </td>
@@ -442,20 +489,20 @@ the region defined by location and radius.</li>
 <dt id="googlemaps.Client.places_autocomplete_query">
 <code class="descname">places_autocomplete_query</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_autocomplete_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Place predictions given a textual search query, such as
-“pizza near New York”, and optional geographic bounds.</p>
+&#8220;pizza near New York&#8221;, and optional geographic bounds.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>input_text</strong> (<em>string</em>) – The text query on which to search.</li>
-<li><strong>offset</strong> (<em>int</em>) – The position, in the input term, of the last character
+<li><strong>input_text</strong> (<em>string</em>) &#8211; The text query on which to search.</li>
+<li><strong>offset</strong> (<em>int</em>) &#8211; The position, in the input term, of the last character
 that the service uses to match predictions. For example, if the input
-is ‘Google’ and the offset is 3, the service will match on ‘Goo’.</li>
-<li><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+is &#8216;Google&#8217; and the offset is 3, the service will match on &#8216;Goo&#8217;.</li>
+<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
 closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>number</em>) – Distance in meters within which to bias results.</li>
-<li><strong>language</strong> – The language in which to return results.</li>
+<li><strong>radius</strong> (<em>number</em>) &#8211; Distance in meters within which to bias results.</li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
 </ul>
 </td>
 </tr>
@@ -475,27 +522,29 @@ closest, human-readable address.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
 closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) – Distance in meters within which to bias results.</li>
-<li><strong>keyword</strong> (<em>string</em>) – A term to be matched against all content that Google has
+<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
+<li><strong>region</strong> (<em>string</em>) &#8211; The region code, optional parameter.
+See more &#64; <a class="reference external" href="https://developers.google.com/places/web-service/search">https://developers.google.com/places/web-service/search</a></li>
+<li><strong>keyword</strong> (<em>string</em>) &#8211; A term to be matched against all content that Google has
 indexed for this place.</li>
-<li><strong>language</strong> – The language in which to return results.</li>
-<li><strong>min_price</strong> (<em>int</em>) – Restricts results to only those places with no less than
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
+<li><strong>min_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no less than
 this price level. Valid values are in the range from 0
 (most affordable) to 4 (most expensive).</li>
-<li><strong>max_price</strong> (<em>int</em>) – Restricts results to only those places with no greater
+<li><strong>max_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no greater
 than this price level. Valid values are in the range
 from 0 (most affordable) to 4 (most expensive).</li>
-<li><strong>name</strong> (<em>string</em><em> or </em><em>list of strings</em>) – One or more terms to be matched against the names of places.</li>
-<li><strong>open_now</strong> (<em>bool</em>) – Return only those places that are open for business at
+<li><strong>name</strong> (<em>string or list of strings</em>) &#8211; One or more terms to be matched against the names of places.</li>
+<li><strong>open_now</strong> (<em>bool</em>) &#8211; Return only those places that are open for business at
 the time the query is sent.</li>
-<li><strong>rank_by</strong> (<em>string</em>) – Specifies the order in which results are listed.
+<li><strong>rank_by</strong> (<em>string</em>) &#8211; Specifies the order in which results are listed.
 Possible values are: prominence (default), distance</li>
-<li><strong>type</strong> (<em>string</em>) – Restricts the results to places matching the specified type.
+<li><strong>type</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
 The full list of supported types is available here:
 <a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></li>
-<li><strong>page_token</strong> (<em>string</em>) – Token from a previous search that when provided will
+<li><strong>page_token</strong> (<em>string</em>) &#8211; Token from a previous search that when provided will
 returns the next page of results for the same search.</li>
 </ul>
 </td>
@@ -520,18 +569,18 @@ next_page_token: token for retrieving the next page of results</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>photo_reference</strong> (<em>string</em>) – A string identifier that uniquely identifies a
+<li><strong>photo_reference</strong> (<em>string</em>) &#8211; A string identifier that uniquely identifies a
 photo, as provided by either a Places search or Places detail request.</li>
-<li><strong>max_width</strong> (<em>int</em>) – Specifies the maximum desired width, in pixels.</li>
-<li><strong>max_height</strong> (<em>int</em>) – Specifies the maximum desired height, in pixels.</li>
+<li><strong>max_width</strong> (<em>int</em>) &#8211; Specifies the maximum desired width, in pixels.</li>
+<li><strong>max_height</strong> (<em>int</em>) &#8211; Specifies the maximum desired height, in pixels.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><p>iterator containing the raw image data, which typically can be
 used to save an image file locally. For example:</p>
 <p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
-f = open(local_filename, ‘wb’)
-for chunk in client.photo(photo_reference, max_width=100):</p>
+f = open(local_filename, &#8216;wb&#8217;)
+for chunk in client.places_photo(photo_reference, max_width=100):</p>
 <blockquote>
 <div><dl class="docutils">
 <dt>if chunk:</dt>
@@ -557,21 +606,21 @@ for chunk in client.photo(photo_reference, max_width=100):</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
 closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) – Distance in meters within which to bias results.</li>
-<li><strong>keyword</strong> (<em>string</em>) – A term to be matched against all content that Google has
+<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
+<li><strong>keyword</strong> (<em>string</em>) &#8211; A term to be matched against all content that Google has
 indexed for this place.</li>
-<li><strong>min_price</strong> (<em>int</em>) – Restricts results to only those places with no less than
+<li><strong>min_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no less than
 this price level. Valid values are in the range from 0
 (most affordable) to 4 (most expensive).</li>
-<li><strong>max_price</strong> (<em>int</em>) – Restricts results to only those places with no greater
+<li><strong>max_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no greater
 than this price level. Valid values are in the range
 from 0 (most affordable) to 4 (most expensive).</li>
-<li><strong>name</strong> (<em>string</em><em> or </em><em>list of strings</em>) – One or more terms to be matched against the names of places.</li>
-<li><strong>open_now</strong> (<em>bool</em>) – Return only those places that are open for business at
+<li><strong>name</strong> (<em>string or list of strings</em>) &#8211; One or more terms to be matched against the names of places.</li>
+<li><strong>open_now</strong> (<em>bool</em>) &#8211; Return only those places that are open for business at
 the time the query is sent.</li>
-<li><strong>type</strong> (<em>string</em>) – Restricts the results to places matching the specified type.
+<li><strong>type</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
 The full list of supported types is available here:
 <a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></li>
 </ul>
@@ -597,11 +646,11 @@ human-readable address.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>latlng</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value or place_id for which you wish
+<li><strong>latlng</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value or place_id for which you wish
 to obtain the closest, human-readable address.</li>
-<li><strong>result_type</strong> (<em>string</em><em> or </em><em>list of strings</em>) – One or more address types to restrict results to.</li>
-<li><strong>location_type</strong> (<em>list of strings</em>) – One or more location types to restrict results to.</li>
-<li><strong>language</strong> – The language in which to return results.</li>
+<li><strong>result_type</strong> (<em>string or list of strings</em>) &#8211; One or more address types to restrict results to.</li>
+<li><strong>location_type</strong> (<em>list of strings</em>) &#8211; One or more location types to restrict results to.</li>
+<li><strong>language</strong> &#8211; The language in which to return results.</li>
 </ul>
 </td>
 </tr>
@@ -624,9 +673,9 @@ was traveling along.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>a single location</em><em>, or </em><em>a list of locations</em><em>, </em><em>where a
-location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The path to be snapped.</li>
-<li><strong>interpolate</strong> (<em>bool</em>) – Whether to interpolate a path to include all points
+<li><strong>path</strong> (<em>a single location, or a list of locations, where a
+location is a string, dict, list, or tuple</em>) &#8211; The path to be snapped.</li>
+<li><strong>interpolate</strong> (<em>bool</em>) &#8211; Whether to interpolate a path to include all points
 forming the full road-geometry. When true, additional interpolated
 points will also be returned, resulting in a path that smoothly follows
 the geometry of the road, even around corners and through tunnels.
@@ -651,8 +700,8 @@ vehicle was traveling along.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>a single location</em><em>, or </em><em>a list of locations</em><em>, </em><em>where a
-location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The path of points to be snapped.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>a single location, or a list of locations, where a
+location is a string, dict, list, or tuple</em>) &#8211; The path of points to be snapped.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict with a list of speed limits and a list of the snapped points.</td>
 </tr>
@@ -668,7 +717,7 @@ location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, o
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>place_ids</strong> (<em>str</em><em> or </em><em>list</em>) – The Place ID of the road segment. Place IDs are returned
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>place_ids</strong> (<em>str or list</em>) &#8211; The Place ID of the road segment. Place IDs are returned
 by the snap_to_roads function. You can pass up to 100 Place IDs.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of speed limits.</td>
@@ -680,21 +729,21 @@ by the snap_to_roads function. You can pass up to 100 Place IDs.</td>
 <dl class="method">
 <dt id="googlemaps.Client.timezone">
 <code class="descname">timezone</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.timezone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get time zone for a location on the earth, as well as that location’s
+<dd><p>Get time zone for a location on the earth, as well as that location&#8217;s
 time offset from UTC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value representing the location to
+<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value representing the location to
 look up.</li>
-<li><strong>timestamp</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Timestamp specifies the desired time as seconds since
+<li><strong>timestamp</strong> (<em>int or datetime.datetime</em>) &#8211; Timestamp specifies the desired time as seconds since
 midnight, January 1, 1970 UTC. The Time Zone API uses the timestamp to
 determine whether or not Daylight Savings should be applied. Times
 before 1970 can be expressed as negative values. Optional. Defaults to
 <code class="docutils literal"><span class="pre">datetime.utcnow()</span></code>.</li>
-<li><strong>language</strong> (<em>string</em>) – The language in which to return results.</li>
+<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
 </ul>
 </td>
 </tr>
@@ -760,18 +809,21 @@ before 1970 can be expressed as negative values. Optional. Defaults to
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
+      <li><a href="_sources/index.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -787,12 +839,12 @@ before 1970 can be expressed as negative values. Optional. Defaults to
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 2.5.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 3.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Google Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+        &copy; Copyright 2018, Google Inc..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
