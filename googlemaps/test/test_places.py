@@ -23,6 +23,7 @@ from types import GeneratorType
 import responses
 
 import googlemaps
+from googlemaps.places import places_autocomplete_session_token
 import googlemaps.test as _test
 
 
@@ -36,6 +37,33 @@ class PlacesTest(_test.TestCase):
         self.language = 'en-AU'
         self.region = 'AU'
         self.radius = 100
+
+    @responses.activate
+    def test_places_find(self):
+        url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
+        responses.add(responses.GET, url,
+                      body='{"status": "OK", "candidates": []}',
+                      status=200, content_type='application/json')
+
+        self.client.find_place('restaurant', 'textquery',
+                                fields=['geometry', 'id'],
+                                location_bias='point:90,90',
+                                language=self.language)
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual('%s?language=en-AU&inputtype=textquery&'
+                            'locationbias=point:90,90&input=restaurant'
+                            '&fields=geometry,id&key=%s'
+                            % (url, self.key), responses.calls[0].request.url)
+
+        with self.assertRaises(ValueError):
+            self.client.find_place('restaurant', 'invalid')
+        with self.assertRaises(ValueError):
+            self.client.find_place('restaurant', 'textquery',
+                                    fields=['geometry', 'invalid'])
+        with self.assertRaises(ValueError):
+            self.client.find_place('restaurant', 'textquery',
+                                    location_bias='invalid')
 
     @responses.activate
     def test_places_text_search(self):
@@ -109,11 +137,17 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "result": {}, "html_attributions": []}',
                       status=200, content_type='application/json')
 
-        self.client.place('ChIJN1t_tDeuEmsRUsoyG83frY4', language=self.language)
+        self.client.place('ChIJN1t_tDeuEmsRUsoyG83frY4',
+                          fields=['geometry', 'id'], language=self.language)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=%s'
+        self.assertURLEqual('%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4'
+                            '&key=%s&fields=geometry,id'
                             % (url, self.key), responses.calls[0].request.url)
+
+        with self.assertRaises(ValueError):
+            self.client.place('ChIJN1t_tDeuEmsRUsoyG83frY4',
+                              fields=['geometry', 'invalid'])
 
     @responses.activate
     def test_photo(self):
@@ -135,7 +169,9 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "predictions": []}',
                       status=200, content_type='application/json')
 
-        self.client.places_autocomplete('Google', offset=3,
+        session_token = places_autocomplete_session_token()
+
+        self.client.places_autocomplete('Google', session_token, offset=3,
                                         location=self.location,
                                         radius=self.radius,
                                         language=self.language,
@@ -146,8 +182,9 @@ class PlacesTest(_test.TestCase):
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?components=country%%3Aau&input=Google&language=en-AU&'
                             'location=-33.86746%%2C151.20709&offset=3&radius=100&'
-                            'strictbounds=true&types=geocode&key=%s' %
-                            (url, self.key), responses.calls[0].request.url)
+                            'strictbounds=true&types=geocode&key=%s&sessiontoken=' %
+                            (url, self.key), responses.calls[0].request.url,
+                             session_token)
 
     @responses.activate
     def test_autocomplete_query(self):
