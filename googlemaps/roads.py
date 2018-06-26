@@ -20,7 +20,6 @@
 import googlemaps
 from googlemaps import convert
 
-
 _ROADS_BASE_URL = "https://roads.googleapis.com"
 
 
@@ -50,10 +49,14 @@ def snap_to_roads(client, path, interpolate=False):
     if interpolate:
         params["interpolate"] = "true"
 
-    return client._request("/v1/snapToRoads", params,
-                       base_url=_ROADS_BASE_URL,
-                       accepts_clientid=False,
-                       extract_body=_roads_extract).get("snappedPoints", [])
+    return client._request(
+        "/v1/snapToRoads",
+        params,
+        base_url=_ROADS_BASE_URL,
+        accepts_clientid=False,
+        extract_body=_roads_extract,
+    ).get("snappedPoints", [])
+
 
 def nearest_roads(client, points):
     """Find the closest road segments for each point
@@ -72,10 +75,14 @@ def nearest_roads(client, points):
 
     params = {"points": convert.location_list(points)}
 
-    return client._request("/v1/nearestRoads", params,
-                       base_url=_ROADS_BASE_URL,
-                       accepts_clientid=False,
-                       extract_body=_roads_extract).get("snappedPoints", [])
+    return client._request(
+        "/v1/nearestRoads",
+        params,
+        base_url=_ROADS_BASE_URL,
+        accepts_clientid=False,
+        extract_body=_roads_extract,
+    ).get("snappedPoints", [])
+
 
 def speed_limits(client, place_ids):
     """Returns the posted speed limit (in km/h) for given road segments.
@@ -89,10 +96,13 @@ def speed_limits(client, place_ids):
 
     params = [("placeId", place_id) for place_id in convert.as_list(place_ids)]
 
-    return client._request("/v1/speedLimits", params,
-                       base_url=_ROADS_BASE_URL,
-                       accepts_clientid=False,
-                       extract_body=_roads_extract).get("speedLimits", [])
+    return client._request(
+        "/v1/speedLimits",
+        params,
+        base_url=_ROADS_BASE_URL,
+        accepts_clientid=False,
+        extract_body=_roads_extract,
+    ).get("speedLimits", [])
 
 
 def snapped_speed_limits(client, path):
@@ -110,10 +120,13 @@ def snapped_speed_limits(client, path):
 
     params = {"path": convert.location_list(path)}
 
-    return client._request("/v1/speedLimits", params,
-                       base_url=_ROADS_BASE_URL,
-                       accepts_clientid=False,
-                       extract_body=_roads_extract)
+    return client._request(
+        "/v1/speedLimits",
+        params,
+        base_url=_ROADS_BASE_URL,
+        accepts_clientid=False,
+        extract_body=_roads_extract,
+    )
 
 
 def _roads_extract(resp):
@@ -125,16 +138,16 @@ def _roads_extract(resp):
         if resp.status_code != 200:
             raise googlemaps.exceptions.HTTPError(resp.status_code)
 
-        raise googlemaps.exceptions.ApiError("UNKNOWN_ERROR",
-                                             "Received a malformed response.")
+        raise googlemaps.exceptions.ApiError(
+            "UNKNOWN_ERROR", "Received a malformed response."
+        )
 
     if "error" in j:
         error = j["error"]
         status = error["status"]
 
         if status == "RESOURCE_EXHAUSTED":
-            raise googlemaps.exceptions._OverQueryLimit(status,
-                                                        error.get("message"))
+            raise googlemaps.exceptions._OverQueryLimit(status, error.get("message"))
 
         raise googlemaps.exceptions.ApiError(status, error.get("message"))
 

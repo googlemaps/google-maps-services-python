@@ -20,11 +20,24 @@
 from googlemaps import convert
 
 
-def directions(client, origin, destination,
-               mode=None, waypoints=None, alternatives=False, avoid=None,
-               language=None, units=None, region=None, departure_time=None,
-               arrival_time=None, optimize_waypoints=False, transit_mode=None,
-               transit_routing_preference=None, traffic_model=None):
+def directions(
+    client,
+    origin,
+    destination,
+    mode=None,
+    waypoints=None,
+    alternatives=False,
+    avoid=None,
+    language=None,
+    units=None,
+    region=None,
+    departure_time=None,
+    arrival_time=None,
+    optimize_waypoints=False,
+    transit_mode=None,
+    transit_routing_preference=None,
+    traffic_model=None,
+):
     """Get directions between an origin point and a destination point.
 
     :param origin: The address or latitude/longitude value from which you wish
@@ -98,7 +111,7 @@ def directions(client, origin, destination,
 
     params = {
         "origin": convert.latlng(origin),
-        "destination": convert.latlng(destination)
+        "destination": convert.latlng(destination),
     }
 
     if mode:
@@ -136,8 +149,7 @@ def directions(client, origin, destination,
         params["arrival_time"] = convert.time(arrival_time)
 
     if departure_time and arrival_time:
-        raise ValueError("Should not specify both departure_time and"
-                         "arrival_time.")
+        raise ValueError("Should not specify both departure_time and" "arrival_time.")
 
     if transit_mode:
         params["transit_mode"] = convert.join_list("|", transit_mode)
