@@ -19,6 +19,7 @@
 """Tests for the places module."""
 
 from types import GeneratorType
+from uuid import uuid4 as places_autocomplete_session_token
 
 import responses
 
@@ -35,6 +36,42 @@ class PlacesTest(_test.TestCase):
         self.language = "en-AU"
         self.region = "AU"
         self.radius = 100
+
+    @responses.activate
+    def test_places_find(self):
+        url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+        responses.add(
+            responses.GET,
+            url,
+            body='{"status": "OK", "candidates": []}',
+            status=200,
+            content_type="application/json",
+        )
+
+        self.client.find_place(
+            "restaurant",
+            "textquery",
+            fields=["geometry", "id"],
+            location_bias="point:90,90",
+            language=self.language,
+        )
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual(
+            "%s?language=en-AU&inputtype=textquery&"
+            "locationbias=point:90,90&input=restaurant"
+            "&fields=geometry,id&key=%s" % (url, self.key),
+            responses.calls[0].request.url,
+        )
+
+        with self.assertRaises(ValueError):
+            self.client.find_place("restaurant", "invalid")
+        with self.assertRaises(ValueError):
+            self.client.find_place(
+                "restaurant", "textquery", fields=["geometry", "invalid"]
+            )
+        with self.assertRaises(ValueError):
+            self.client.find_place("restaurant", "textquery", location_bias="invalid")
 
     @responses.activate
     def test_places_text_search(self):
@@ -155,21 +192,30 @@ class PlacesTest(_test.TestCase):
             content_type="application/json",
         )
 
-        self.client.place("ChIJN1t_tDeuEmsRUsoyG83frY4", language=self.language)
+        self.client.place(
+            "ChIJN1t_tDeuEmsRUsoyG83frY4",
+            fields=["geometry", "id"],
+            language=self.language,
+        )
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=%s"
-            % (url, self.key),
+            "%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
+            "&key=%s&fields=geometry,id" % (url, self.key),
             responses.calls[0].request.url,
         )
+
+        with self.assertRaises(ValueError):
+            self.client.place(
+                "ChIJN1t_tDeuEmsRUsoyG83frY4", fields=["geometry", "invalid"]
+            )
 
     @responses.activate
     def test_photo(self):
         url = "https://maps.googleapis.com/maps/api/place/photo"
         responses.add(responses.GET, url, status=200)
 
-        ref = "CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0"
+        ref = "CnRvAAAAwMpdHeWlXl-lH0vp7lez4znKPIWSWvgvZFISdKx45AwJVP1Qp37YOrH7sqHMJ8C" "-vBDC546decipPHchJhHZL94RcTUfPa1jWzo-rSHaTlbNtjh" "-N68RkcToUCuY9v2HNpo5mziqkir37WU8FJEqVBIQ4k938TI3e7bf8xq" "-uwDZcxoUbO_ZJzPxremiQurAYzCTwRhE_V0"
         response = self.client.places_photo(ref, max_width=100)
 
         self.assertTrue(isinstance(response, GeneratorType))
@@ -190,8 +236,11 @@ class PlacesTest(_test.TestCase):
             content_type="application/json",
         )
 
+        session_token = places_autocomplete_session_token()
+
         self.client.places_autocomplete(
             "Google",
+            session_token=session_token,
             offset=3,
             location=self.location,
             radius=self.radius,
@@ -203,9 +252,11 @@ class PlacesTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "%s?components=country%%3Aau&input=Google&language=en-AU&"
+            "{}?components=country%%3Aau&input=Google&language=en-AU&"
             "location=-33.86746%%2C151.20709&offset=3&radius=100&"
-            "strictbounds=true&types=geocode&key=%s" % (url, self.key),
+            "strictbounds=true&types=geocode&key={}&sessiontoken={}".format(
+                url, self.key, session_token
+            ),
             responses.calls[0].request.url,
         )
 

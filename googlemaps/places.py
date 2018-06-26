@@ -44,7 +44,121 @@ PLACE_DETAILS_FIELDS = {
     "atmosphere": ["price_level", "rating", "reviews"],
 }
 
+PLACES_FIND_FIELDS = set(
+    [
+        "formatted_address",
+        "geometry",
+        "icon",
+        "id",
+        "name",
+        "permanently_closed",
+        "photos",
+        "place_id",
+        "scope",
+        "types",
+        "vicinity",
+        "opening_hours",
+        "price_level",
+        "rating",
+    ]
+)
+
+PLACES_DETAIL_FIELDS = set(
+    [
+        "address_component",
+        "adr_address",
+        "alt_id",
+        "formatted_address",
+        "geometry",
+        "icon",
+        "id",
+        "name",
+        "permanently_closed",
+        "photo",
+        "place_id",
+        "scope",
+        "type",
+        "url",
+        "utc_offset",
+        "vicinity",
+        "formatted_phone_number",
+        "international_phone_number",
+        "opening_hours",
+        "website",
+        "price_level",
+        "rating",
+        "review",
+    ]
+)
+
 from googlemaps import convert
+
+
+def find_place(
+    client, input, input_type, fields=None, location_bias=None, language=None
+):
+    """
+    A Find Place request takes a text input, and returns a place.
+    The text input can be any kind of Places data, for example,
+    a name, address, or phone number.
+
+    :param input: The text input specifying which place to search for (for
+                  example, a name, address, or phone number).
+    :type input: string
+
+    :param input_type: The type of input. This can be one of either 'textquery'
+                  or 'phonenumber'.
+    :type input_type: string
+
+    :param fields: The fields specifying the types of place data to return,
+                   separated by a comma. For full details see:
+                   https://developers.google.com/places/web-service/search
+                   #FindPlaceRequests
+    :type input: list
+
+    :param location_bias: Prefer results in a specified area, by specifying
+                          either a radius plus lat/lng, or two lat/lng pairs
+                          representing the points of a rectangle. See:
+                          https://developers.google.com/places/web-service/search
+                          #FindPlaceRequests
+    :type location_bias: string
+
+    :param language: The language in which to return results.
+    :type langauge: string
+
+    :rtype: result dict with the following keys:
+            status: status code
+            candidates: list of places
+    """
+    params = {"input": input, "inputtype": input_type}
+
+    if input_type != "textquery" and input_type != "phonenumber":
+        raise ValueError(
+            "Valid values for the `input_type` param for "
+            "`find_place` are 'textquery' or 'phonenumber', "
+            "the given value is invalid: '%s'" % input_type
+        )
+
+    if fields:
+        invalid_fields = set(fields) - PLACES_FIND_FIELDS
+        if invalid_fields:
+            raise ValueError(
+                "Valid values for the `fields` param for "
+                "`find_place` are '%s', these given field(s) "
+                "are invalid: '%s'"
+                % ("', '".join(PLACES_FIND_FIELDS), "', '".join(invalid_fields))
+            )
+        params["fields"] = convert.join_list(",", fields)
+
+    if location_bias:
+        valid = ["ipbias", "point", "circle", "rectangle"]
+        if location_bias.split(":")[0] not in valid:
+            raise ValueError("location_bias should be prefixed with one of: %s" % valid)
+        params["locationbias"] = location_bias
+    if language:
+        params["language"] = language
+
+    return client._request("/maps/api/place/findplacefromtext/json", params)
 
 
 def places(
@@ -97,7 +211,7 @@ def places(
         The full list of supported types is available here:
         https://developers.google.com/places/supported_types
     :type type: string
-    
+
     :param region: The region code, optional parameter.
         See more @ https://developers.google.com/places/web-service/search
     :type region: string
@@ -364,6 +478,12 @@ def place(client, place_id, language=None, fields=None, categories=None):
         returned from a Places search.
     :type place_id: string
 
+    :param fields: The fields specifying the types of place data to return,
+                   separated by a comma. For full details see:
+                   https://cloud.google.com/maps-platform/user-guide/product-changes
+                   /#places
+    :type input: list
+
     :param language: The language in which to return results.
     :type language: string
 
@@ -385,6 +505,14 @@ def place(client, place_id, language=None, fields=None, categories=None):
         params["language"] = language
     if fields:
         params["fields"] = fields
+        invalid_fields = set(fields) - PLACES_DETAIL_FIELDS
+        if invalid_fields:
+            raise ValueError(
+                "Valid values for the `fields` param for "
+                "`place` are '%s', these given field(s) "
+                "are invalid: '%s'"
+                % ("', '".join(PLACES_DETAIL_FIELDS), "', '".join(invalid_fields))
+            )
     if categories:
         for category in categories:
             category = category.lower()
@@ -394,7 +522,7 @@ def place(client, place_id, language=None, fields=None, categories=None):
     if not params["fields"]:
         del params["fields"]
     else:
-        params['fields'] = convert.join_list(',', params['fields'])
+        params["fields"] = convert.join_list(",", params["fields"])
 
     return client._request("/maps/api/place/details/json", params)
 
@@ -450,6 +578,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
 def places_autocomplete(
     client,
     input_text,
+    session_token=None,
     offset=None,
     location=None,
     radius=None,
@@ -457,59 +586,58 @@ def places_autocomplete(
     types=None,
     components=None,
     strict_bounds=False,
-    session_token=None,
 ):
     """
     Returns Place predictions given a textual search string and optional
     geographic bounds.
-
+    
     :param input_text: The text string on which to search.
     :type input_text: string
-
+    
+    :param session_token: A random string which identifies an autocomplete
+                          session for billing purposes.
+    :type session_token: string
+    
     :param offset: The position, in the input term, of the last character
                    that the service uses to match predictions. For example,
                    if the input is 'Google' and the offset is 3, the
                    service will match on 'Goo'.
     :type offset: int
-
+    
     :param location: The latitude/longitude value for which you wish to
-    obtain the
-                     closest, human-readable address.
+    obtain the closest, human-readable address.
     :type location: string, dict, list, or tuple
-
+    
     :param radius: Distance in meters within which to bias results.
     :type radius: int
-
+    
     :param language: The language in which to return results.
     :type langauge: string
-
+    
     :param types: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
         https://developers.google.com/places/web-service/autocomplete
         #place_types
     :type types: string
-
+    
     :param components: A component filter for which you wish to obtain a
     geocode.
         Currently, you can use components to filter by up to 5 countries for
         example: ``{'country': ['US', 'AU']}``
     :type components: dict
-
+    
     :param strict_bounds: Returns only those places that are strictly within
         the region defined by location and radius.
     :type strict_bounds: bool
-
-    :param session_token: A random unique string which identifies an
-    autocomplete session used for billing.
-    :type session_token: string
-
+    
     :rtype: list of predictions
-
+    
     """
     return _autocomplete(
         client,
         "",
         input_text,
+        session_token=session_token,
         offset=offset,
         location=location,
         radius=radius,
@@ -517,18 +645,17 @@ def places_autocomplete(
         types=types,
         components=components,
         strict_bounds=strict_bounds,
-        session_token=session_token,
     )
 
 
 def places_autocomplete_query(
     client,
     input_text,
+    session_token=None,
     offset=None,
     location=None,
     radius=None,
     language=None,
-    session_token=None,
 ):
     """
     Returns Place predictions given a textual search query, such as
@@ -536,6 +663,10 @@ def places_autocomplete_query(
 
     :param input_text: The text query on which to search.
     :type input_text: string
+
+    :param session_token: A random unique string which identifies an
+    autocomplete session used for billing.
+    :type session_token: string
 
     :param offset: The position, in the input term, of the last character
         that the service uses to match predictions. For example, if the input
@@ -553,22 +684,17 @@ def places_autocomplete_query(
     :param language: The language in which to return results.
     :type langauge: string
 
-    :param session_token: A random unique string which identifies an
-    autocomplete session used for billing.
-    :type session_token: string
-
-
     :rtype: list of predictions
     """
     return _autocomplete(
         client,
         "query",
         input_text,
+        session_token=session_token,
         offset=offset,
         location=location,
         radius=radius,
         language=language,
-        session_token=session_token,
     )
 
 
@@ -576,6 +702,7 @@ def _autocomplete(
     client,
     url_part,
     input_text,
+    session_token=None,
     offset=None,
     location=None,
     radius=None,
@@ -583,7 +710,6 @@ def _autocomplete(
     types=None,
     components=None,
     strict_bounds=False,
-    session_token=None,
 ):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
@@ -592,6 +718,8 @@ def _autocomplete(
 
     params = {"input": input_text}
 
+    if session_token:
+        params["sessiontoken"] = session_token
     if offset:
         params["offset"] = offset
     if location:
@@ -608,9 +736,6 @@ def _autocomplete(
         params["components"] = convert.components(components)
     if strict_bounds:
         params["strictbounds"] = "true"
-
-    if session_token:
-        params["session_token"] = session_token
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
     return client._request(url, params).get("predictions", [])
