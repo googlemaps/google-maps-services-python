@@ -455,9 +455,9 @@ def places_autocomplete(client, input_text, session_token, offset=None,
     :rtype: list of predictions
 
     """
-    return _autocomplete(client, "", input_text, offset=offset,
-                         location=location, radius=radius, language=language,
-                         types=types, components=components,
+    return _autocomplete(client, "", input_text, session_token=session_token,
+                         offset=offset, location=location, radius=radius,
+                         language=language, types=types, components=components,
                          strict_bounds=strict_bounds)
 
 
