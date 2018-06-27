@@ -21,19 +21,36 @@ from uuid import uuid4 as places_autocomplete_session_token
 from googlemaps import convert
 
 
-PLACES_FIND_FIELDS = set([
+PLACES_FIND_FIELDS_BASIC = set([
     "formatted_address", "geometry", "icon", "id", "name",
-    "permanently_closed", "photos", "place_id", "scope", "types",
-    "vicinity", "opening_hours", "price_level", "rating",
+    "permanently_closed", "photos", "place_id", "plus_code", "scope",
+    "types",
 ])
 
-PLACES_DETAIL_FIELDS = set([
+PLACES_FIND_FIELDS_CONTACT = set(["opening_hours",])
+
+PLACES_FIND_FIELDS_ATMOSPHERE = set(["price_level", "rating"])
+
+PLACES_FIND_FIELDS = (PLACES_FIND_FIELDS_BASIC ^
+                      PLACES_FIND_FIELDS_CONTACT ^
+                      PLACES_FIND_FIELDS_ATMOSPHERE)
+
+PLACES_DETAIL_FIELDS_BASIC = set([
     "address_component", "adr_address", "alt_id", "formatted_address",
     "geometry", "icon", "id", "name", "permanently_closed", "photo",
-    "place_id", "scope", "type", "url", "utc_offset", "vicinity",
-    "formatted_phone_number", "international_phone_number", "opening_hours",
-    "website", "price_level", "rating", "review",
+    "place_id", "plus_code", "scope", "type", "url", "utc_offset", "vicinity",
 ])
+
+PLACES_DETAIL_FIELDS_CONTACT = set([
+    "formatted_phone_number", "international_phone_number", "opening_hours",
+    "website",
+])
+
+PLACES_DETAIL_FIELDS_ATMOSPHERE = set(["price_level", "rating", "review",])
+
+PLACES_DETAIL_FIELDS = (PLACES_DETAIL_FIELDS_BASIC ^
+                        PLACES_DETAIL_FIELDS_CONTACT ^
+                        PLACES_DETAIL_FIELDS_ATMOSPHERE)
 
 
 def find_place(client, input, input_type, fields=None, location_bias=None,
