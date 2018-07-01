@@ -342,7 +342,7 @@ def _places(client, url_part, query=None, location=None, radius=None,
     return client._request(url, params)
 
 
-def place(client, place_id, fields=None, language=None):
+def place(client, place_id, session_token=None, fields=None, language=None):
     """
     Comprehensive details for an individual place.
 
@@ -350,13 +350,17 @@ def place(client, place_id, fields=None, language=None):
         returned from a Places search.
     :type place_id: string
 
+    :param session_token: A random string which identifies an autocomplete
+                          session for billing purposes.
+    :type session_token: string
+
     :param fields: The fields specifying the types of place data to return,
                    separated by a comma. For full details see:
                    https://cloud.google.com/maps-platform/user-guide/product-changes/#places
     :type input: list
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :rtype: result dict with the following keys:
         result: dict containing place details
@@ -376,6 +380,8 @@ def place(client, place_id, fields=None, language=None):
 
     if language:
         params["language"] = language
+    if session_token:
+        params["sessiontoken"] = session_token
 
     return client._request("/maps/api/place/details/json", params)
 
