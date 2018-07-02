@@ -145,7 +145,7 @@ directions_result = gmaps.directions("Sydney Town Hall",
                                      departure_time=now)
 ```
 
-For more usage examples, check out [the tests](test/).
+For more usage examples, check out [the tests](googlemaps/test/).
 
 ## Features
 
