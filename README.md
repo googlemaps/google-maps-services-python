@@ -165,6 +165,9 @@ instead of an API key.
     # Installing tox
     $ pip install tox
 
+    # Or using pipenv
+    $ pipenv install --dev && pipenv shell
+
     # Running tests
     $ tox
 
