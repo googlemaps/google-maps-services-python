@@ -149,8 +149,10 @@ class Client(object):
         self.channel = channel
         self.retry_timeout = timedelta(seconds=retry_timeout)
         self.requests_kwargs = requests_kwargs or {}
+        headers = self.request_kwargs.pop('headers', {})
+        headers.update({"User-Agent": _USER_AGENT})        
         self.requests_kwargs.update({
-            "headers": {"User-Agent": _USER_AGENT},
+            "headers": headers,
             "timeout": self.timeout,
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
