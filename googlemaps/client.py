@@ -149,7 +149,7 @@ class Client(object):
         self.channel = channel
         self.retry_timeout = timedelta(seconds=retry_timeout)
         self.requests_kwargs = requests_kwargs or {}
-        headers = self.request_kwargs.pop('headers', {})
+        headers = self.requests_kwargs.pop('headers', {})
         headers.update({"User-Agent": _USER_AGENT})        
         self.requests_kwargs.update({
             "headers": headers,
