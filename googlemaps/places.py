@@ -80,7 +80,7 @@ def find_place(client, input, input_type, fields=None, location_bias=None,
     :type location_bias: string
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :rtype: result dict with the following keys:
             status: status code
@@ -132,7 +132,7 @@ def places(client, query, location=None, radius=None, language=None,
     :type radius: int
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :param min_price: Restricts results to only those places with no less than
         this price level. Valid values are in the range from 0 (most affordable)
@@ -194,7 +194,7 @@ def places_nearby(client, location=None, radius=None, keyword=None,
     :type keyword: string
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :param min_price: Restricts results to only those places with no less than
                       this price level. Valid values are in the range from 0
@@ -459,7 +459,7 @@ def places_autocomplete(client, input_text, session_token, offset=None,
     :type radius: int
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :param types: Restricts the results to places matching the specified type.
         The full list of supported types is available here:
@@ -506,7 +506,7 @@ def places_autocomplete_query(client, input_text, offset=None, location=None,
     :type radius: number
 
     :param language: The language in which to return results.
-    :type langauge: string
+    :type language: string
 
     :rtype: list of predictions
     """
