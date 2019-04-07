@@ -38,7 +38,7 @@ PLACES_FIND_FIELDS = (PLACES_FIND_FIELDS_BASIC ^
 PLACES_DETAIL_FIELDS_BASIC = set([
     "address_component", "adr_address", "alt_id", "formatted_address",
     "geometry", "icon", "id", "name", "permanently_closed", "photo",
-    "place_id", "plus_code", "scope", "type", "url", "utc_offset", "vicinity",
+    "place_id", "plus_code", "scope", "type", "url", "user_ratings_total", "utc_offset", "vicinity",
 ])
 
 PLACES_DETAIL_FIELDS_CONTACT = set([
