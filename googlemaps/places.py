@@ -435,7 +435,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     return response.iter_content()
 
 
-def places_autocomplete(client, input_text, session_token, offset=None,
+def places_autocomplete(client, input_text, session_token=None, offset=None,
                         location=None, radius=None, language=None, types=None,
                         components=None, strict_bounds=False):
     """

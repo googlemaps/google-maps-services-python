@@ -171,7 +171,7 @@ class PlacesTest(_test.TestCase):
 
         session_token = places_autocomplete_session_token()
 
-        self.client.places_autocomplete('Google', session_token, offset=3,
+        self.client.places_autocomplete('Google', session_token=session_token, offset=3,
                                         location=self.location,
                                         radius=self.radius,
                                         language=self.language,
