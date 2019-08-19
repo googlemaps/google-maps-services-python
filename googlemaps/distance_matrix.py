@@ -18,7 +18,6 @@
 """Performs requests to the Google Maps Distance Matrix API."""
 
 from googlemaps import convert
-from googlemaps.convert import as_list
 
 
 def distance_matrix(client, origins, destinations,

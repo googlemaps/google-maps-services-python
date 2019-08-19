@@ -17,7 +17,6 @@
 
 """Performs requests to the Google Places API."""
 
-from uuid import uuid4 as places_autocomplete_session_token
 from googlemaps import convert
 
 
