@@ -111,26 +111,6 @@ class PlacesTest(_test.TestCase):
                                       keyword='foo', radius=self.radius)
 
     @responses.activate
-    def test_places_radar_search(self):
-        url = 'https://maps.googleapis.com/maps/api/place/radarsearch/json'
-        responses.add(responses.GET, url,
-                      body='{"status": "OK", "results": [], "html_attributions": []}',
-                      status=200, content_type='application/json')
-
-        self.client.places_radar(self.location, self.radius, keyword='foo',
-                                 min_price=1, max_price=4, name='bar',
-                                 open_now=True, type=self.type)
-
-        self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('%s?keyword=foo&location=-33.86746%%2C151.20709&'
-                            'maxprice=4&minprice=1&name=bar&opennow=true&radius=100&'
-                            'type=liquor_store&key=%s'
-                            % (url, self.key), responses.calls[0].request.url)
-
-        with self.assertRaises(ValueError):
-            self.client.places_radar(self.location, self.radius)
-
-    @responses.activate
     def test_place_detail(self):
         url = 'https://maps.googleapis.com/maps/api/place/details/json'
         responses.add(responses.GET, url,
