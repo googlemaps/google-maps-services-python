@@ -344,7 +344,6 @@ from googlemaps.roads import snapped_speed_limits
 from googlemaps.places import find_place
 from googlemaps.places import places
 from googlemaps.places import places_nearby
-from googlemaps.places import places_radar
 from googlemaps.places import place
 from googlemaps.places import places_photo
 from googlemaps.places import places_autocomplete
@@ -388,7 +387,6 @@ Client.snapped_speed_limits = make_api_method(snapped_speed_limits)
 Client.find_place = make_api_method(find_place)
 Client.places = make_api_method(places)
 Client.places_nearby = make_api_method(places_nearby)
-Client.places_radar = make_api_method(places_radar)
 Client.place = make_api_method(place)
 Client.places_photo = make_api_method(places_photo)
 Client.places_autocomplete = make_api_method(places_autocomplete)

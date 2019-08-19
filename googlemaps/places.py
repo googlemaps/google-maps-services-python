@@ -253,67 +253,11 @@ def places_nearby(client, location=None, radius=None, keyword=None,
                    rank_by=rank_by, type=type, page_token=page_token)
 
 
-def places_radar(client, location, radius, keyword=None, min_price=None,
-                 max_price=None, name=None, open_now=False, type=None):
-    """
-    Performs radar search for places.
-
-    :param location: The latitude/longitude value for which you wish to obtain the
-                     closest, human-readable address.
-    :type location: string, dict, list, or tuple
-
-    :param radius: Distance in meters within which to bias results.
-    :type radius: int
-
-    :param keyword: A term to be matched against all content that Google has
-                    indexed for this place.
-    :type keyword: string
-
-    :param min_price: Restricts results to only those places with no less than
-                      this price level. Valid values are in the range from 0
-                      (most affordable) to 4 (most expensive).
-    :type min_price: int
-
-    :param max_price: Restricts results to only those places with no greater
-                      than this price level. Valid values are in the range
-                      from 0 (most affordable) to 4 (most expensive).
-    :type max_price: int
-
-    :param name: One or more terms to be matched against the names of places.
-    :type name: string or list of strings
-
-    :param open_now: Return only those places that are open for business at
-                     the time the query is sent.
-    :type open_now: bool
-
-    :param type: Restricts the results to places matching the specified type.
-        The full list of supported types is available here:
-        https://developers.google.com/places/supported_types
-    :type type: string
-
-    :rtype: result dict with the following keys:
-            status: status code
-            results: list of places
-            html_attributions: set of attributions which must be displayed
-
-    """
-    if not (keyword or name or type):
-        raise ValueError("either a keyword, name, or type arg is required")
-
-    from warnings import warn
-    warn("places_radar is deprecated, see http://goo.gl/BGiumE",
-         DeprecationWarning)
-
-    return _places(client, "radar", location=location, radius=radius,
-                   keyword=keyword, min_price=min_price, max_price=max_price,
-                   name=name, open_now=open_now, type=type)
-
-
 def _places(client, url_part, query=None, location=None, radius=None,
             keyword=None, language=None, min_price=0, max_price=4, name=None,
             open_now=False, rank_by=None, type=None, region=None, page_token=None):
     """
-    Internal handler for ``places``, ``places_nearby``, and ``places_radar``.
+    Internal handler for ``places`` and ``places_nearby``.
     See each method's docs for arg details.
     """
 
