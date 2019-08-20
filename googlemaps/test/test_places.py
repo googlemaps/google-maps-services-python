@@ -18,12 +18,13 @@
 
 """Tests for the places module."""
 
+import uuid
+
 from types import GeneratorType
 
 import responses
 
 import googlemaps
-from googlemaps.places import places_autocomplete_session_token
 import googlemaps.test as _test
 
 
@@ -149,7 +150,7 @@ class PlacesTest(_test.TestCase):
                       body='{"status": "OK", "predictions": []}',
                       status=200, content_type='application/json')
 
-        session_token = places_autocomplete_session_token()
+        session_token = uuid.uuid4().hex
 
         self.client.places_autocomplete('Google', session_token=session_token, offset=3,
                                         location=self.location,
