@@ -162,14 +162,14 @@ instead of an API key.
 ## Building the Project
 
 
-    # Installing tox
-    $ pip install tox
+    # Installing nox
+    $ pip install nox
 
     # Running tests
-    $ tox
+    $ nox
 
     # Generating documentation
-    $ tox -e docs
+    $ nox -e docs
 
     # Uploading a new release
     $ easy_install wheel twine
@@ -177,7 +177,7 @@ instead of an API key.
     $ twine upload dist/*
 
     # Copy docs to gh-pages
-    $ tox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
+    $ nox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
 
 
 [apikey]: https://developers.google.com/maps/faq#keysystem

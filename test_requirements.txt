@@ -1,2 +1,3 @@
-nose
-responses==0.3
+pytest
+responses
+mock
