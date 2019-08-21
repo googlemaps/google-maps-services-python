@@ -1,16 +1,20 @@
-dist: xenial
-
 language: python
-
-python:
-  - '2.7'
-  - '3.4'
-  - '3.5'
-  - '3.6'
-  - '3.7'
-
+matrix:
+  include:
+  - python: '2.7'
+    env: NOXSESSION="tests-2.7"
+  - python: '3.4'
+    env: NOXSESSION="tests-3.4"
+  - python: '3.5'
+    env: NOXSESSION="tests-3.5"
+  - python: '3.6'
+    env: NOXSESSION="tests-3.6"
+  - python: '3.7'
+    env: NOXSESSION="tests-3.7"
+    dist: xenial  # required for Python 3.7 (github.com/travis-ci/travis-ci#9069)
+    sudo: required  # required for Python 3.7 (github.com/travis-ci/travis-ci#9069)
+  - python: '2.7'
+    env: NOXSESSION="docs"
 install:
-  - pip install nox
-
-script:
-  - nox
+- pip install nox
+script: nox --session "$NOXSESSION"
