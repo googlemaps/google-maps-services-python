@@ -1,3 +1,4 @@
 include LICENSE README.md
+recursive-include googlemaps/test *.py
 global-exclude __pycache__
 global-exclude *.py[co]
