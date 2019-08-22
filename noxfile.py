@@ -13,7 +13,7 @@ def _install_doc_dependencies(session):
     session.install("sphinx")
 
 
-@nox.session(python=["2.7", "3.5", "3.5", "3.6"])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
 def tests(session):
     _install_dev_packages(session)
     _install_test_dependencies(session)
