@@ -21,6 +21,18 @@ def tests(session):
     session.install("pytest")
     session.run("pytest")
 
+    session.notify("cover")
+
+
+@nox.session
+def cover(session):
+    """Coverage analysis."""
+    session.install("coverage")
+    session.install("codecov")
+    session.run("coverage", "report", "--show-missing")
+    session.run("codecov")
+    session.run("coverage", "erase")
+
 
 @nox.session(python="2.7")
 def docs(session):
