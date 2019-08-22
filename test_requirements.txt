@@ -1,2 +1,4 @@
-nose
-responses==0.3
+pytest
+pytest-cov
+responses
+mock

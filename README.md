@@ -2,6 +2,7 @@ Python Client for Google Maps Services
 ====================================
 
 [![Build Status](https://travis-ci.org/googlemaps/google-maps-services-python.svg?branch=master)](https://travis-ci.org/googlemaps/google-maps-services-python)
+[![codecov](https://codecov.io/gh/googlemaps/google-maps-services-python/branch/master/graph/badge.svg)](https://codecov.io/gh/googlemaps/google-maps-services-python)
 [![PyPI version](https://badge.fury.io/py/googlemaps.svg)](https://badge.fury.io/py/googlemaps)
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/googlemaps)
 ![GitHub contributors](https://img.shields.io/github/contributors/googlemaps/google-maps-services-python)
@@ -165,14 +166,14 @@ instead of an API key.
 ## Building the Project
 
 
-    # Installing tox
-    $ pip install tox
+    # Installing nox
+    $ pip install nox
 
     # Running tests
-    $ tox
+    $ nox
 
     # Generating documentation
-    $ tox -e docs
+    $ nox -e docs
 
     # Uploading a new release
     $ easy_install wheel twine
@@ -180,13 +181,13 @@ instead of an API key.
     $ twine upload dist/*
 
     # Copy docs to gh-pages
-    $ tox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
+    $ nox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
 
 
 [apikey]: https://developers.google.com/maps/faq#keysystem
 [clientid]: https://developers.google.com/maps/documentation/business/webservices/auth
 
-[Google Maps API Web Services]: https://developers.google.com/maps/apis-by-platform#web_service_apis
+[Google Maps Platform web services]: https://developers.google.com/maps/apis-by-platform#web_service_apis
 [Directions API]: https://developers.google.com/maps/documentation/directions/
 [directions-key]: https://developers.google.com/maps/documentation/directions/get-api-key#key
 [directions-client-id]: https://developers.google.com/maps/documentation/directions/get-api-key#client-id

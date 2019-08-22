@@ -1,16 +1,22 @@
 language: python
+dist: xenial
 
 matrix:
   include:
-    - { python: '2.7', env: TOXENV=py27 }
-    - { python: '3.4', env: TOXENV=py34 }
-    - { python: '3.5', env: TOXENV=py35 }
-    - { python: '3.6', env: TOXENV=py36 }
-    - { python: '3.6', env: TOXENV=docs }
+  - python: '2.7'
+    env: NOXSESSION="tests-2.7"
+  - python: '3.5'
+    env: NOXSESSION="tests-3.5"
+  - python: '3.6'
+    env: NOXSESSION="tests-3.6"
+  - python: '3.7'
+    env: NOXSESSION="tests-3.7"
+    sudo: required  # required for Python 3.7 (github.com/travis-ci/travis-ci#9069)
+  - python: '2.7'
+    env: NOXSESSION="docs"
 
 install:
-  - pip install requests
-  - pip install tox
+- ./.travis/install.sh
 
 script:
-  - tox
+- python3 -m nox --session "$NOXSESSION"
