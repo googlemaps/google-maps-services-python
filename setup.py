@@ -1,10 +1,6 @@
 import sys
-
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+import io
+from setuptools import setup
 
 
 if sys.version_info <= (2, 4):
@@ -15,7 +11,8 @@ if sys.version_info <= (2, 4):
 
 requirements = ["requests>=2.20.0,<3.0"]
 
-with open("README.md", encoding="utf-8") as f:
+# use io.open until python2.7 support is dropped
+with io.open("README.md", encoding="utf8") as f:
     readme = f.read()
 
 setup(
