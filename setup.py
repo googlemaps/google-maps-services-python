@@ -18,7 +18,7 @@ with io.open("README.md", encoding="utf8") as f:
 setup(
     name="googlemaps",
     version="3.0.2",
-    description="Python client library for Google Maps API Web Services",
+    description="Python client library for Google Maps Platform",
     long_description=readme,
     long_description_content_type="text/markdown",
     scripts=[],
