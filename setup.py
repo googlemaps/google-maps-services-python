@@ -1,42 +1,43 @@
 import sys
-
-
-try:
-  from setuptools import setup
-except ImportError:
-  from distutils.core import setup
+import io
+from setuptools import setup
 
 
 if sys.version_info <= (2, 4):
-  error = 'Requires Python Version 2.5 or above... exiting.'
-  print >> sys.stderr, error
-  sys.exit(1)
+    error = "Requires Python Version 2.5 or above... exiting."
+    print >>sys.stderr, error
+    sys.exit(1)
 
 
-requirements = [
-    'requests>=2.20.0,<3.0',
-]
+requirements = ["requests>=2.20.0,<3.0"]
 
-setup(name='googlemaps',
-      version='3.0.2',
-      description='Python client library for Google Maps API Web Services',
-      scripts=[],
-      url='https://github.com/googlemaps/google-maps-services-python',
-      packages=['googlemaps'],
-      license='Apache 2.0',
-      platforms='Posix; MacOS X; Windows',
-      setup_requires=requirements,
-      install_requires=requirements,
-      test_suite='googlemaps.test',
-      classifiers=['Development Status :: 4 - Beta',
-                   'Intended Audience :: Developers',
-                   'License :: OSI Approved :: Apache Software License',
-                   'Operating System :: OS Independent',
-                   'Programming Language :: Python :: 2.7',
-                   'Programming Language :: Python :: 3.2',
-                   'Programming Language :: Python :: 3.4',
-                   'Programming Language :: Python :: 3.5',
-                   'Programming Language :: Python :: 3.6',
-                   'Topic :: Internet',
-                   ]
-      )
+# use io.open until python2.7 support is dropped
+with io.open("README.md", encoding="utf8") as f:
+    readme = f.read()
+
+setup(
+    name="googlemaps",
+    version="3.0.2",
+    description="Python client library for Google Maps Platform",
+    long_description=readme,
+    long_description_content_type="text/markdown",
+    scripts=[],
+    url="https://github.com/googlemaps/google-maps-services-python",
+    packages=["googlemaps"],
+    license="Apache 2.0",
+    platforms="Posix; MacOS X; Windows",
+    setup_requires=requirements,
+    install_requires=requirements,
+    test_suite="googlemaps.test",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Internet",
+    ],
+)
