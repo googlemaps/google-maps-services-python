@@ -28,3 +28,4 @@ deploy:
     python: '3.6'
   provider: pypi
   distributions: 'sdist bdist_wheel'
+  user: __token__
