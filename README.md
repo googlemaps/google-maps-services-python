@@ -50,12 +50,9 @@ contribute, please read [How to Contribute][contrib].
 ## API Keys
 
 Each Google Maps Web Service request requires an API key or client ID. API keys
-are available with a Google Account at https://developers.google.com/console. 
-You only need one API key, but remember to enable all the APIs you need.
+are generated in the 'Credentials' page of the 'APIs & Services' tab of [Google Cloud console](https://console.cloud.google.com/apis/credentials).
 
-
-**For guided help, follow the instructions in the [Getting Started][Getting Started] document.**
-For even more information, see the guide to [API keys][apikey].
+For even more information on getting started with Google Maps Platform and generating/restricting an API key, see [Get Started with Google Maps Platform](https://developers.google.com/maps/gmp-get-started) in our docs.
 
 **Important:** This key should be kept secret on your server.
 
@@ -164,22 +161,25 @@ instead of an API key.
     # Copy docs to gh-pages
     $ nox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
 
+## Documentation & resources
+### Getting started
+- [Get Started with Google Maps Platform](https://developers.google.com/maps/gmp-get-started)
+- [Generating/restricting an API key](https://developers.google.com/maps/gmp-get-started#api-key)
+- [Authenticating with a client ID](https://developers.google.com/maps/documentation/directions/get-api-key#client-id)
 
-[apikey]: https://developers.google.com/maps/faq#keysystem
-[clientid]: https://developers.google.com/maps/documentation/business/webservices/auth
+### API docs
+- [Google Maps Platform web services](https://developers.google.com/maps/apis-by-platform#web_service_apis)
+- [Directions API](https://developers.google.com/maps/documentation/directions/)
+- [directions-key](https://developers.google.com/maps/documentation/directions/get-api-key#key)
+- [directions-client-id](https://developers.google.com/maps/documentation/directions/get-api-key#client-id)
+- [Distance Matrix API](https://developers.google.com/maps/documentation/distancematrix/)
+- [Elevation API](https://developers.google.com/maps/documentation/elevation/)
+- [Geocoding API](https://developers.google.com/maps/documentation/geocoding/)
+- [Geolocation API](https://developers.google.com/maps/documentation/geolocation/)
+- [Time Zone API](https://developers.google.com/maps/documentation/timezone/)
+- [Roads API](https://developers.google.com/maps/documentation/roads/)
+- [Places API](https://developers.google.com/places/)
 
-[Getting Started]: https://developers.google.com/maps/gmp-get-started
-[Google Maps Platform web services]: https://developers.google.com/maps/apis-by-platform#web_service_apis
-[Directions API]: https://developers.google.com/maps/documentation/directions/
-[directions-key]: https://developers.google.com/maps/documentation/directions/get-api-key#key
-[directions-client-id]: https://developers.google.com/maps/documentation/directions/get-api-key#client-id
-[Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix/
-[Elevation API]: https://developers.google.com/maps/documentation/elevation/
-[Geocoding API]: https://developers.google.com/maps/documentation/geocoding/
-[Geolocation API]: https://developers.google.com/maps/documentation/geolocation/
-[Time Zone API]: https://developers.google.com/maps/documentation/timezone/
-[Roads API]: https://developers.google.com/maps/documentation/roads/
-[Places API]: https://developers.google.com/places/
-
-[issues]: https://github.com/googlemaps/google-maps-services-python/issues
-[contrib]: https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md
+### Support
+- [Report an issue](https://github.com/googlemaps/google-maps-services-python/issues)
+- [Contribute](https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md)
