@@ -9,22 +9,22 @@ Python Client for Google Maps Services
 
 ## Description
 
-Use Python? Want to [geocode][Geocoding API] something? Looking for [directions][Directions API]?
-Maybe [matrices of directions][Distance Matrix API]? This library brings the [Google Maps API Web
-Services] to your Python application.
+Use Python? Want to geocode something? Looking for directions?
+Maybe matrices of directions? This library brings the Google Maps Platform Web
+Services to your Python application.
 ![Analytics](https://maps-ga-beacon.appspot.com/UA-12846745-20/google-maps-services-python/readme?pixel)
 
 The Python Client for Google Maps Services is a Python Client library for the following Google Maps
 APIs:
 
- - [Directions API]
- - [Distance Matrix API]
- - [Elevation API]
- - [Geocoding API]
- - [Geolocation API]
- - [Time Zone API]
- - [Roads API]
- - [Places API]
+ - Directions API
+ - Distance Matrix API
+ - Elevation API
+ - Geocoding API
+ - Geolocation API
+ - Time Zone API
+ - Roads API
+ - Places API
 
 Keep in mind that the same [terms and conditions](https://developers.google.com/maps/terms) apply
 to usage of the APIs when they're accessed through this library.
@@ -39,42 +39,20 @@ to make backwards-incompatible changes. If we do remove some functionality (typi
 better functionality exists or if the feature proved infeasible), our intention is to deprecate
 and give developers a year to update their code.
 
-If you find a bug, or have a feature suggestion, please [log an issue][issues]. If you'd like to
-contribute, please read [How to Contribute][contrib].
+If you find a bug, or have a feature suggestion, please log an issue. If you'd like to
+contribute, please read contribute.
 
 ## Requirements
 
  - Python 2.7 or later.
  - A Google Maps API key.
 
-### API keys
+## API Keys
 
 Each Google Maps Web Service request requires an API key or client ID. API keys
-are freely available with a Google Account at
-https://developers.google.com/console. The type of API key you need is a
-**Server key**.
+are generated in the 'Credentials' page of the 'APIs & Services' tab of [Google Cloud console](https://console.cloud.google.com/apis/credentials).
 
-To get an API key:
-
- 1. Visit https://developers.google.com/console and log in with
-    a Google Account.
- 1. Select one of your existing projects, or create a new project.
- 1. Enable the API(s) you want to use. The Python Client for Google Maps Services
-    accesses the following APIs:
-    * Directions API
-    * Distance Matrix API
-    * Elevation API
-    * Geocoding API
-    * Geolocation API
-    * Places API
-    * Roads API
-    * Time Zone API
- 1. Create a new **Server key**.
- 1. If you'd like to restrict requests to a specific IP address, do so now.
-
-For guided help, follow the instructions for the [Directions API][directions-key].
-You only need one API key, but remember to enable all the APIs you need.
-For even more information, see the guide to [API keys][apikey].
+For even more information on getting started with Google Maps Platform and generating/restricting an API key, see [Get Started with Google Maps Platform](https://developers.google.com/maps/gmp-get-started) in our docs.
 
 **Important:** This key should be kept secret on your server.
 
@@ -84,25 +62,9 @@ For even more information, see the guide to [API keys][apikey].
 
 Note that you will need requests 2.4.0 or higher if you want to specify connect/read timeouts.
 
-## Developer Documentation
-
-View the [reference documentation](https://googlemaps.github.io/google-maps-services-python/docs/)
-
-Additional documentation for the included web services is available at
-https://developers.google.com/maps/.
-
- - [Directions API]
- - [Distance Matrix API]
- - [Elevation API]
- - [Geocoding API]
- - [Geolocation API]
- - [Time Zone API]
- - [Roads API]
- - [Places API]
-
 ## Usage
 
-This example uses the [Geocoding API] and the [Directions API] with an API key:
+This example uses the Geocoding API and the Directions API with an API key:
 
 ```python
 import googlemaps
@@ -130,7 +92,7 @@ and `client_secret` variables with appropriate values.
 
 For a guide on how to generate the `client_secret` (digital signature), see the
 documentation for the API you're using. For example, see the guide for the
-[Directions API][directions-client-id].
+[Directions API](https://developers.google.com/maps/documentation/directions/get-api-key#client-id).
 
 ```python
 gmaps = googlemaps.Client(client_id=client_id, client_secret=client_secret)
@@ -160,7 +122,7 @@ are returned from the API.
 
 ### Client IDs
 
-Google Maps APIs Premium Plan customers can use their [client ID and secret][clientid] to authenticate,
+Google Maps APIs Premium Plan customers can use their client ID and secret to authenticate,
 instead of an API key.
 
 ## Building the Project
@@ -183,21 +145,23 @@ instead of an API key.
     # Copy docs to gh-pages
     $ nox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
 
+## Documentation & resources
+### Getting started
+- [Get Started with Google Maps Platform](https://developers.google.com/maps/gmp-get-started)
+- [Generating/restricting an API key](https://developers.google.com/maps/gmp-get-started#api-key)
+- [Authenticating with a client ID](https://developers.google.com/maps/documentation/directions/get-api-key#client-id)
 
-[apikey]: https://developers.google.com/maps/faq#keysystem
-[clientid]: https://developers.google.com/maps/documentation/business/webservices/auth
+### API docs
+- [Google Maps Platform web services](https://developers.google.com/maps/apis-by-platform#web_service_apis)
+- [Directions API](https://developers.google.com/maps/documentation/directions/)
+- [Distance Matrix API](https://developers.google.com/maps/documentation/distancematrix/)
+- [Elevation API](https://developers.google.com/maps/documentation/elevation/)
+- [Geocoding API](https://developers.google.com/maps/documentation/geocoding/)
+- [Geolocation API](https://developers.google.com/maps/documentation/geolocation/)
+- [Time Zone API](https://developers.google.com/maps/documentation/timezone/)
+- [Roads API](https://developers.google.com/maps/documentation/roads/)
+- [Places API](https://developers.google.com/places/)
 
-[Google Maps Platform web services]: https://developers.google.com/maps/apis-by-platform#web_service_apis
-[Directions API]: https://developers.google.com/maps/documentation/directions/
-[directions-key]: https://developers.google.com/maps/documentation/directions/get-api-key#key
-[directions-client-id]: https://developers.google.com/maps/documentation/directions/get-api-key#client-id
-[Distance Matrix API]: https://developers.google.com/maps/documentation/distancematrix/
-[Elevation API]: https://developers.google.com/maps/documentation/elevation/
-[Geocoding API]: https://developers.google.com/maps/documentation/geocoding/
-[Geolocation API]: https://developers.google.com/maps/documentation/geolocation/
-[Time Zone API]: https://developers.google.com/maps/documentation/timezone/
-[Roads API]: https://developers.google.com/maps/documentation/roads/
-[Places API]: https://developers.google.com/places/
-
-[issues]: https://github.com/googlemaps/google-maps-services-python/issues
-[contrib]: https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md
+### Support
+- [Report an issue](https://github.com/googlemaps/google-maps-services-python/issues)
+- [Contribute](https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md)
