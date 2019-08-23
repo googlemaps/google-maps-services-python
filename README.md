@@ -111,7 +111,7 @@ directions_result = gmaps.directions("Sydney Town Hall",
                                      departure_time=now)
 ```
 
-For more usage examples, check out [the tests](googlemaps/test/).
+For more usage examples, check out [the tests](https://github.com/googlemaps/google-maps-services-python/tree/master/googlemaps/test).
 
 ## Features
 
@@ -136,11 +136,6 @@ instead of an API key.
 
     # Generating documentation
     $ nox -e docs
-
-    # Uploading a new release
-    $ easy_install wheel twine
-    $ python setup.py sdist bdist_wheel
-    $ twine upload dist/*
 
     # Copy docs to gh-pages
     $ nox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages

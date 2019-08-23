@@ -20,3 +20,15 @@ install:
 
 script:
 - python3 -m nox --session "$NOXSESSION"
+
+deploy:
+  on:
+    repo: googlemaps/google-maps-services-python
+    tag: true
+    python: '3.6'  # only run this deploy once with python 3.6
+  provider: pypi
+  distributions: 'sdist bdist_wheel'
+  user: __token__  # api token encrypted within travis
+
+notifications:
+  email: false
