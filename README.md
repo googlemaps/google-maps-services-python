@@ -17,14 +17,14 @@ Services] to your Python application.
 The Python Client for Google Maps Services is a Python Client library for the following Google Maps
 APIs:
 
- - [Directions API]
- - [Distance Matrix API]
- - [Elevation API]
- - [Geocoding API]
- - [Geolocation API]
- - [Time Zone API]
- - [Roads API]
- - [Places API]
+ - Directions API
+ - Distance Matrix API
+ - Elevation API
+ - Geocoding API
+ - Geolocation API
+ - Time Zone API
+ - Roads API
+ - Places API
 
 Keep in mind that the same [terms and conditions](https://developers.google.com/maps/terms) apply
 to usage of the APIs when they're accessed through this library.
@@ -154,8 +154,6 @@ instead of an API key.
 ### API docs
 - [Google Maps Platform web services](https://developers.google.com/maps/apis-by-platform#web_service_apis)
 - [Directions API](https://developers.google.com/maps/documentation/directions/)
-- [directions-key](https://developers.google.com/maps/documentation/directions/get-api-key#key)
-- [directions-client-id](https://developers.google.com/maps/documentation/directions/get-api-key#client-id)
 - [Distance Matrix API](https://developers.google.com/maps/documentation/distancematrix/)
 - [Elevation API](https://developers.google.com/maps/documentation/elevation/)
 - [Geocoding API](https://developers.google.com/maps/documentation/geocoding/)
