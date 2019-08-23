@@ -62,22 +62,6 @@ For even more information on getting started with Google Maps Platform and gener
 
 Note that you will need requests 2.4.0 or higher if you want to specify connect/read timeouts.
 
-## Developer Documentation
-
-View the [reference documentation](https://googlemaps.github.io/google-maps-services-python/docs/)
-
-Additional documentation for the included web services is available at
-https://developers.google.com/maps/.
-
- - [Directions API]
- - [Distance Matrix API]
- - [Elevation API]
- - [Geocoding API]
- - [Geolocation API]
- - [Time Zone API]
- - [Roads API]
- - [Places API]
-
 ## Usage
 
 This example uses the [Geocoding API] and the [Directions API] with an API key:
