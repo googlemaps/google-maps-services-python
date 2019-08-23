@@ -20,3 +20,11 @@ install:
 
 script:
 - python3 -m nox --session "$NOXSESSION"
+
+deploy:
+  on:
+    repo: googlemaps/google-maps-services-python
+    branch: pypi
+    python: '3.6'
+  provider: pypi
+  distributions: 'sdist bdist_wheel'
