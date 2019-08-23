@@ -149,7 +149,7 @@ directions_result = gmaps.directions("Sydney Town Hall",
                                      departure_time=now)
 ```
 
-For more usage examples, check out [the tests](googlemaps/test/).
+For more usage examples, check out [the tests][tests].
 
 ## Features
 
@@ -196,3 +196,4 @@ instead of an API key.
 
 [issues]: https://github.com/googlemaps/google-maps-services-python/issues
 [contrib]: https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md
+[tests]: https://github.com/googlemaps/google-maps-services-python/tree/master/googlemaps/test
