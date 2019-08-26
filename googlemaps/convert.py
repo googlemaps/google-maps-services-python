@@ -34,9 +34,10 @@ import time as _time
 def format_float(arg):
     """Formats a float value to be as short as possible.
 
-    Trims extraneous trailing zeros and period to give API
-    args the best possible chance of fitting within 2000 char
-    URL length restrictions.
+    Truncates float to 8 decimal places and trims extraneous
+    trailing zeros and period to give API args the best
+    possible chance of fitting within 2000 char URL length
+    restrictions.
 
     For example:
 
@@ -45,13 +46,15 @@ def format_float(arg):
     format_float(40.1) -> "40.1"
     format_float(40.001) -> "40.001"
     format_float(40.0010) -> "40.001"
+    format_float(40.000000001) -> "40"
+    format_float(40.000000009) -> "40.00000001"
 
     :param arg: The lat or lng float.
     :type arg: float
 
     :rtype: string
     """
-    return ("%f" % float(arg)).rstrip("0").rstrip(".")
+    return ("%.8f" % float(arg)).rstrip("0").rstrip(".")
 
 
 def latlng(arg):

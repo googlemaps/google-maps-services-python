@@ -19,6 +19,7 @@
 
 import datetime
 import unittest
+import pytest
 
 from googlemaps import convert
 
@@ -152,3 +153,18 @@ class ConvertTest(unittest.TestCase):
         points = convert.decode_polyline(test_polyline)
         actual_polyline = convert.encode_polyline(points)
         self.assertEqual(test_polyline, actual_polyline)
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (40, "40"),
+        (40.0, "40"),
+        (40.1, "40.1"),
+        (40.00000001, "40.00000001"),
+        (40.000000009, "40.00000001"),
+        (40.000000001, "40"),
+    ],
+)
+def test_format_float(value, expected):
+    assert convert.format_float(value) == expected
