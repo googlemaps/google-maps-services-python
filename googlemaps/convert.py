@@ -47,6 +47,7 @@ def format_float(arg):
     format_float(40.001) -> "40.001"
     format_float(40.0010) -> "40.001"
     format_float(40.000000001) -> "40"
+    format_float(40.000000009) -> "40.00000001"
 
     :param arg: The lat or lng float.
     :type arg: float

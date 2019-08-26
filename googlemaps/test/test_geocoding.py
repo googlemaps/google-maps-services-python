@@ -59,7 +59,7 @@ class GeocodingTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://maps.googleapis.com/maps/api/geocode/json?'
-                            'latlng=-33.867487%%2C151.20699&key=%s' % self.key,
+                            'latlng=-33.8674869,151.2069902&key=%s' % self.key,
                             responses.calls[0].request.url)
 
     @responses.activate
