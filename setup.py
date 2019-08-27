@@ -15,11 +15,15 @@ requirements = ["requests>=2.20.0,<3.0"]
 with io.open("README.md", encoding="utf8") as f:
     readme = f.read()
 
+with io.open("CHANGELOG.md", encoding="utf8") as f:
+    changelog = f.read()
+
+
 setup(
     name="googlemaps",
-    version="3.0.2",
+    version="3.1.0",
     description="Python client library for Google Maps Platform",
-    long_description=readme,
+    long_description=readme + changelog,
     long_description_content_type="text/markdown",
     scripts=[],
     url="https://github.com/googlemaps/google-maps-services-python",
