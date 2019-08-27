@@ -26,6 +26,7 @@ deploy:
     repo: googlemaps/google-maps-services-python
     tag: true
     python: '3.6'  # only run this deploy once with python 3.6
+    all_branches: true
   provider: pypi
   distributions: 'sdist bdist_wheel'
   user: __token__  # api token encrypted within travis
