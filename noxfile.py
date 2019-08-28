@@ -1,5 +1,7 @@
 import nox
 
+SUPPORTED_PY_VERSIONS = ["2.7", "3.5", "3.6", "3.7"]
+
 
 def _install_dev_packages(session):
     session.install("-e", ".")
@@ -13,7 +15,7 @@ def _install_doc_dependencies(session):
     session.install("sphinx")
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
+@nox.session(python=SUPPORTED_PY_VERSIONS)
 def tests(session):
     _install_dev_packages(session)
     _install_test_dependencies(session)
@@ -55,3 +57,9 @@ def docs(session):
     sphinx_cmd = "sphinx-build"
 
     session.run(sphinx_cmd, *sphinx_args)
+
+
+@nox.session()
+def distribution(session):
+    session.run("bash", ".travis/distribution.sh", external=True)
+    session.run("python", "-c", "import googlemaps")
