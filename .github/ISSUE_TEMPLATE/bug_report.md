@@ -15,6 +15,8 @@ Discover additional support services for the Google Maps Platform, including dev
 
 If your bug or feature request is not related to this particular library, please visit the Google Maps Platform [issue trackers](https://developers.google.com/maps/support/#issue_tracker).
 
+Check for answers on StackOverflow with the [google-maps](http://stackoverflow.com/questions/tagged/google-maps) tag.
+
 ---
 
 Please be sure to include as much information as possible:
