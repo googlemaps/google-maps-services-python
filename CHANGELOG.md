@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Changed
 ### Added
+- Tests for distribution tar as part of CI
 ### Removed
 
 ## [v3.1.1]

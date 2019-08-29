@@ -20,6 +20,7 @@ install:
 
 script:
 - python3 -m nox --session "$NOXSESSION"
+- python3 -m nox -e distribution
 
 deploy:
   on:
