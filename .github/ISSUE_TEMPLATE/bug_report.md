@@ -2,6 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 label: type: bug, triage me
+
 ---
 
 Thanks for stopping by to let us know something could be better!
