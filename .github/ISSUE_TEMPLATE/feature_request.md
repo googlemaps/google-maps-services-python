@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this library
-label: type: feature request, triage me
+label: 'type: feature request, triage me'
 
 ---
 
