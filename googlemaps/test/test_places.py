@@ -47,14 +47,14 @@ class PlacesTest(_test.TestCase):
                       status=200, content_type='application/json')
 
         self.client.find_place('restaurant', 'textquery',
-                                fields=['geometry', 'id'],
+                                fields=['geometry/location', 'id'],
                                 location_bias='point:90,90',
                                 language=self.language)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?language=en-AU&inputtype=textquery&'
                             'locationbias=point:90,90&input=restaurant'
-                            '&fields=geometry,id&key=%s'
+                            '&fields=geometry/location,id&key=%s'
                             % (url, self.key), responses.calls[0].request.url)
 
         with self.assertRaises(ValueError):
@@ -119,11 +119,11 @@ class PlacesTest(_test.TestCase):
                       status=200, content_type='application/json')
 
         self.client.place('ChIJN1t_tDeuEmsRUsoyG83frY4',
-                          fields=['geometry', 'id'], language=self.language)
+                          fields=['geometry/location', 'id'], language=self.language)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4'
-                            '&key=%s&fields=geometry,id'
+                            '&key=%s&fields=geometry/location,id'
                             % (url, self.key), responses.calls[0].request.url)
 
         with self.assertRaises(ValueError):

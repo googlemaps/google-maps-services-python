@@ -20,44 +20,92 @@
 from googlemaps import convert
 
 
-PLACES_FIND_FIELDS_BASIC = set([
-    "formatted_address", "geometry", "icon", "id", "name",
-    "permanently_closed", "photos", "place_id", "plus_code", "scope",
-    "types",
-])
+PLACES_FIND_FIELDS_BASIC = set(
+    [
+        "formatted_address",
+        "geometry",
+        "geometry/location",
+        "geometry/location/lat",
+        "geometry/location/lng",
+        "geometry/viewport",
+        "geometry/viewport/northeast",
+        "geometry/viewport/northeast/lat",
+        "geometry/viewport/northeast/lng",
+        "geometry/viewport/southwest",
+        "geometry/viewport/southwest/lat",
+        "geometry/viewport/southwest/lng",
+        "icon",
+        "id",
+        "name",
+        "permanently_closed",
+        "photos",
+        "place_id",
+        "plus_code",
+        "scope",
+        "types",
+    ]
+)
 
-PLACES_FIND_FIELDS_CONTACT = set(["opening_hours",])
+PLACES_FIND_FIELDS_CONTACT = set(["opening_hours"])
 
-PLACES_FIND_FIELDS_ATMOSPHERE = set([
-    "price_level", "rating", "user_ratings_total",
-])
+PLACES_FIND_FIELDS_ATMOSPHERE = set(["price_level", "rating", "user_ratings_total"])
 
-PLACES_FIND_FIELDS = (PLACES_FIND_FIELDS_BASIC ^
-                      PLACES_FIND_FIELDS_CONTACT ^
-                      PLACES_FIND_FIELDS_ATMOSPHERE)
+PLACES_FIND_FIELDS = (
+    PLACES_FIND_FIELDS_BASIC
+    ^ PLACES_FIND_FIELDS_CONTACT
+    ^ PLACES_FIND_FIELDS_ATMOSPHERE
+)
 
-PLACES_DETAIL_FIELDS_BASIC = set([
-    "address_component", "adr_address", "alt_id", "formatted_address",
-    "geometry", "icon", "id", "name", "permanently_closed", "photo",
-    "place_id", "plus_code", "scope", "type", "url", "utc_offset", "vicinity",
-])
+PLACES_DETAIL_FIELDS_BASIC = set(
+    [
+        "address_component",
+        "adr_address",
+        "alt_id",
+        "formatted_address",
+        "geometry",
+        "geometry/location",
+        "geometry/location/lat",
+        "geometry/location/lng",
+        "geometry/viewport",
+        "geometry/viewport/northeast",
+        "geometry/viewport/northeast/lat",
+        "geometry/viewport/northeast/lng",
+        "geometry/viewport/southwest",
+        "geometry/viewport/southwest/lat",
+        "geometry/viewport/southwest/lng",
+        "icon",
+        "id",
+        "name",
+        "permanently_closed",
+        "photo",
+        "place_id",
+        "plus_code",
+        "scope",
+        "type",
+        "url",
+        "utc_offset",
+        "vicinity",
+    ]
+)
 
-PLACES_DETAIL_FIELDS_CONTACT = set([
-    "formatted_phone_number", "international_phone_number", "opening_hours",
-    "website",
-])
+PLACES_DETAIL_FIELDS_CONTACT = set(
+    ["formatted_phone_number", "international_phone_number", "opening_hours", "website"]
+)
 
-PLACES_DETAIL_FIELDS_ATMOSPHERE = set([
-    "price_level", "rating", "review", "user_ratings_total",
-])
+PLACES_DETAIL_FIELDS_ATMOSPHERE = set(
+    ["price_level", "rating", "review", "user_ratings_total"]
+)
 
-PLACES_DETAIL_FIELDS = (PLACES_DETAIL_FIELDS_BASIC ^
-                        PLACES_DETAIL_FIELDS_CONTACT ^
-                        PLACES_DETAIL_FIELDS_ATMOSPHERE)
+PLACES_DETAIL_FIELDS = (
+    PLACES_DETAIL_FIELDS_BASIC
+    ^ PLACES_DETAIL_FIELDS_CONTACT
+    ^ PLACES_DETAIL_FIELDS_ATMOSPHERE
+)
 
 
-def find_place(client, input, input_type, fields=None, location_bias=None,
-                language=None):
+def find_place(
+    client, input, input_type, fields=None, location_bias=None, language=None
+):
     """
     A Find Place request takes a text input, and returns a place.
     The text input can be any kind of Places data, for example,
@@ -92,25 +140,27 @@ def find_place(client, input, input_type, fields=None, location_bias=None,
     params = {"input": input, "inputtype": input_type}
 
     if input_type != "textquery" and input_type != "phonenumber":
-        raise ValueError("Valid values for the `input_type` param for "
-                         "`find_place` are 'textquery' or 'phonenumber', "
-                         "the given value is invalid: '%s'" % input_type)
+        raise ValueError(
+            "Valid values for the `input_type` param for "
+            "`find_place` are 'textquery' or 'phonenumber', "
+            "the given value is invalid: '%s'" % input_type
+        )
 
     if fields:
         invalid_fields = set(fields) - PLACES_FIND_FIELDS
         if invalid_fields:
-            raise ValueError("Valid values for the `fields` param for "
-                             "`find_place` are '%s', these given field(s) "
-                             "are invalid: '%s'" % (
-                                "', '".join(PLACES_FIND_FIELDS),
-                                "', '".join(invalid_fields)))
+            raise ValueError(
+                "Valid values for the `fields` param for "
+                "`find_place` are '%s', these given field(s) "
+                "are invalid: '%s'"
+                % ("', '".join(PLACES_FIND_FIELDS), "', '".join(invalid_fields))
+            )
         params["fields"] = convert.join_list(",", fields)
 
     if location_bias:
         valid = ["ipbias", "point", "circle", "rectangle"]
         if location_bias.split(":")[0] not in valid:
-            raise ValueError("location_bias should be prefixed with one of: %s"
-                             % valid)
+            raise ValueError("location_bias should be prefixed with one of: %s" % valid)
         params["locationbias"] = location_bias
     if language:
         params["language"] = language
@@ -118,9 +168,19 @@ def find_place(client, input, input_type, fields=None, location_bias=None,
     return client._request("/maps/api/place/findplacefromtext/json", params)
 
 
-def places(client, query, location=None, radius=None, language=None,
-           min_price=None, max_price=None, open_now=False, type=None, region=None,
-           page_token=None):
+def places(
+    client,
+    query,
+    location=None,
+    radius=None,
+    language=None,
+    min_price=None,
+    max_price=None,
+    open_now=False,
+    type=None,
+    region=None,
+    page_token=None,
+):
     """
     Places search.
 
@@ -169,15 +229,36 @@ def places(client, query, location=None, radius=None, language=None,
         html_attributions: set of attributions which must be displayed
         next_page_token: token for retrieving the next page of results
     """
-    return _places(client, "text", query=query, location=location,
-                   radius=radius, language=language, min_price=min_price,
-                   max_price=max_price, open_now=open_now, type=type, region=region,
-                   page_token=page_token)
+    return _places(
+        client,
+        "text",
+        query=query,
+        location=location,
+        radius=radius,
+        language=language,
+        min_price=min_price,
+        max_price=max_price,
+        open_now=open_now,
+        type=type,
+        region=region,
+        page_token=page_token,
+    )
 
 
-def places_nearby(client, location=None, radius=None, keyword=None,
-                  language=None, min_price=None, max_price=None, name=None,
-                  open_now=False, rank_by=None, type=None, page_token=None):
+def places_nearby(
+    client,
+    location=None,
+    radius=None,
+    keyword=None,
+    language=None,
+    min_price=None,
+    max_price=None,
+    name=None,
+    open_now=False,
+    rank_by=None,
+    type=None,
+    page_token=None,
+):
     """
     Performs nearby search for places.
 
@@ -240,21 +321,49 @@ def places_nearby(client, location=None, radius=None, keyword=None,
         raise ValueError("either a location or page_token arg is required")
     if rank_by == "distance":
         if not (keyword or name or type):
-            raise ValueError("either a keyword, name, or type arg is required "
-                             "when rank_by is set to distance")
+            raise ValueError(
+                "either a keyword, name, or type arg is required "
+                "when rank_by is set to distance"
+            )
         elif radius is not None:
-            raise ValueError("radius cannot be specified when rank_by is set to "
-                             "distance")
+            raise ValueError(
+                "radius cannot be specified when rank_by is set to " "distance"
+            )
 
-    return _places(client, "nearby", location=location, radius=radius,
-                   keyword=keyword, language=language, min_price=min_price,
-                   max_price=max_price, name=name, open_now=open_now,
-                   rank_by=rank_by, type=type, page_token=page_token)
+    return _places(
+        client,
+        "nearby",
+        location=location,
+        radius=radius,
+        keyword=keyword,
+        language=language,
+        min_price=min_price,
+        max_price=max_price,
+        name=name,
+        open_now=open_now,
+        rank_by=rank_by,
+        type=type,
+        page_token=page_token,
+    )
 
 
-def _places(client, url_part, query=None, location=None, radius=None,
-            keyword=None, language=None, min_price=0, max_price=4, name=None,
-            open_now=False, rank_by=None, type=None, region=None, page_token=None):
+def _places(
+    client,
+    url_part,
+    query=None,
+    location=None,
+    radius=None,
+    keyword=None,
+    language=None,
+    min_price=0,
+    max_price=4,
+    name=None,
+    open_now=False,
+    rank_by=None,
+    type=None,
+    region=None,
+    page_token=None,
+):
     """
     Internal handler for ``places`` and ``places_nearby``.
     See each method's docs for arg details.
@@ -318,11 +427,12 @@ def place(client, place_id, session_token=None, fields=None, language=None):
     if fields:
         invalid_fields = set(fields) - PLACES_DETAIL_FIELDS
         if invalid_fields:
-            raise ValueError("Valid values for the `fields` param for "
-                             "`place` are '%s', these given field(s) "
-                             "are invalid: '%s'" % (
-                                "', '".join(PLACES_DETAIL_FIELDS),
-                                "', '".join(invalid_fields)))
+            raise ValueError(
+                "Valid values for the `fields` param for "
+                "`place` are '%s', these given field(s) "
+                "are invalid: '%s'"
+                % ("', '".join(PLACES_DETAIL_FIELDS), "', '".join(invalid_fields))
+            )
         params["fields"] = convert.join_list(",", fields)
 
     if language:
@@ -372,15 +482,27 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     # "extract_body" and "stream" args here are used to return an iterable
     # response containing the image file data, rather than converting from
     # json.
-    response = client._request("/maps/api/place/photo", params,
-                           extract_body=lambda response: response,
-                           requests_kwargs={"stream": True})
+    response = client._request(
+        "/maps/api/place/photo",
+        params,
+        extract_body=lambda response: response,
+        requests_kwargs={"stream": True},
+    )
     return response.iter_content()
 
 
-def places_autocomplete(client, input_text, session_token=None, offset=None,
-                        location=None, radius=None, language=None, types=None,
-                        components=None, strict_bounds=False):
+def places_autocomplete(
+    client,
+    input_text,
+    session_token=None,
+    offset=None,
+    location=None,
+    radius=None,
+    language=None,
+    types=None,
+    components=None,
+    strict_bounds=False,
+):
     """
     Returns Place predictions given a textual search string and optional
     geographic bounds.
@@ -425,14 +547,24 @@ def places_autocomplete(client, input_text, session_token=None, offset=None,
     :rtype: list of predictions
 
     """
-    return _autocomplete(client, "", input_text, session_token=session_token,
-                         offset=offset, location=location, radius=radius,
-                         language=language, types=types, components=components,
-                         strict_bounds=strict_bounds)
+    return _autocomplete(
+        client,
+        "",
+        input_text,
+        session_token=session_token,
+        offset=offset,
+        location=location,
+        radius=radius,
+        language=language,
+        types=types,
+        components=components,
+        strict_bounds=strict_bounds,
+    )
 
 
-def places_autocomplete_query(client, input_text, offset=None, location=None,
-                              radius=None, language=None):
+def places_autocomplete_query(
+    client, input_text, offset=None, location=None, radius=None, language=None
+):
     """
     Returns Place predictions given a textual search query, such as
     "pizza near New York", and optional geographic bounds.
@@ -457,13 +589,30 @@ def places_autocomplete_query(client, input_text, offset=None, location=None,
 
     :rtype: list of predictions
     """
-    return _autocomplete(client, "query", input_text, offset=offset,
-                         location=location, radius=radius, language=language)
+    return _autocomplete(
+        client,
+        "query",
+        input_text,
+        offset=offset,
+        location=location,
+        radius=radius,
+        language=language,
+    )
 
 
-def _autocomplete(client, url_part, input_text, session_token=None,
-                  offset=None, location=None, radius=None, language=None,
-                  types=None, components=None, strict_bounds=False):
+def _autocomplete(
+    client,
+    url_part,
+    input_text,
+    session_token=None,
+    offset=None,
+    location=None,
+    radius=None,
+    language=None,
+    types=None,
+    components=None,
+    strict_bounds=False,
+):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
     See each method's docs for arg details.
