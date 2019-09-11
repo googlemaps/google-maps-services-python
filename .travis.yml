@@ -24,10 +24,8 @@ script:
 
 deploy:
   on:
-    repo: googlemaps/google-maps-services-python
-    tag: true
+    tags: true
     python: '3.6'  # only run this deploy once with python 3.6
-    branch: env(tag)  # branch is equal to tag name
   provider: pypi
   distributions: 'sdist bdist_wheel'
   user: __token__  # api token encrypted within travis
