@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Changed
 ### Added
-- Tests for distribution tar as part of CI
-- Support for subfields such as `geometry/location` or `geometry/viewport` in Places.
-
 ### Removed
+
+## [v3.1.2]
+### Added
+- Tests for distribution tar as part of CI
+- Support for subfields such as `geometry/location` and `geometry/viewport` in Places.
 
 ## [v3.1.1]
 ### Changed
@@ -31,7 +33,8 @@ All notable changes to this project will be documented in this file.
 
 **Note:** Start of changelog is 2019-08-27, [v3.0.2].
 
-[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.1...HEAD
+[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.2...HEAD
+[v3.1.2]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.1...3.1.2
 [v3.1.1]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.0...3.1.1
 [v3.1.0]: https://github.com/googlemaps/google-maps-services-python/compare/3.0.2...3.1.0
 [v3.0.2]: https://github.com/googlemaps/google-maps-services-python/compare/3.0.1...3.0.2
