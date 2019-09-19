@@ -36,13 +36,13 @@ PLACES_FIND_FIELDS_BASIC = set(
         "geometry/viewport/southwest/lat",
         "geometry/viewport/southwest/lng",
         "icon",
-        "id",
+        "id",  # deprecated: https://developers.google.com/maps/deprecations
         "name",
         "permanently_closed",
         "photos",
         "place_id",
         "plus_code",
-        "scope",
+        "scope",  # deprecated: https://developers.google.com/maps/deprecations
         "types",
     ]
 )
@@ -61,7 +61,7 @@ PLACES_DETAIL_FIELDS_BASIC = set(
     [
         "address_component",
         "adr_address",
-        "alt_id",
+        "alt_id",  # deprecated: https://developers.google.com/maps/deprecations
         "formatted_address",
         "geometry",
         "geometry/location",
@@ -75,13 +75,13 @@ PLACES_DETAIL_FIELDS_BASIC = set(
         "geometry/viewport/southwest/lat",
         "geometry/viewport/southwest/lng",
         "icon",
-        "id",
+        "id",  # deprecated: https://developers.google.com/maps/deprecations
         "name",
         "permanently_closed",
         "photo",
         "place_id",
         "plus_code",
-        "scope",
+        "scope",  # deprecated: https://developers.google.com/maps/deprecations
         "type",
         "url",
         "utc_offset",
