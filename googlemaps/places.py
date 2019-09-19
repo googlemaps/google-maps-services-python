@@ -16,6 +16,7 @@
 #
 
 """Performs requests to the Google Places API."""
+import warnings
 
 from googlemaps import convert
 
@@ -102,6 +103,11 @@ PLACES_DETAIL_FIELDS = (
     ^ PLACES_DETAIL_FIELDS_ATMOSPHERE
 )
 
+DEPRECATED_FIELDS = {"alt_id", "id", "reference", "scope"}
+DEPRECATED_FIELDS_MESSAGE = (
+    "Use of deprecated fields, %s."
+    "Read more here at https://developers.google.com/maps/deprecations"
+)
 
 def find_place(
     client, input, input_type, fields=None, location_bias=None, language=None
@@ -147,6 +153,13 @@ def find_place(
         )
 
     if fields:
+        deprecated_fields = set(fields) & DEPRECATED_FIELDS
+        if deprecated_fields:
+            warnings.warn(
+                DEPRECATED_FIELDS_MESSAGE % str(list(deprecated_fields)), 
+                DeprecationWarning
+            )
+            
         invalid_fields = set(fields) - PLACES_FIND_FIELDS
         if invalid_fields:
             raise ValueError(
