@@ -105,7 +105,7 @@ PLACES_DETAIL_FIELDS = (
 
 DEPRECATED_FIELDS = {"alt_id", "id", "reference", "scope"}
 DEPRECATED_FIELDS_MESSAGE = (
-    "Field %s is deprecated. "
+    "Fields, %s, are deprecated. "
     "Read more at https://developers.google.com/maps/deprecations."
 )
 
