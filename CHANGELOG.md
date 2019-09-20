@@ -3,9 +3,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Changed
+- deprecation warning for place fields: `alt_id`, `id`, `reference`, and `scope`. Read more about this at https://developers.google.com/maps/deprecations.
+
+## [v3.1.2]
 ### Added
 - Tests for distribution tar as part of CI
-### Removed
 
 ## [v3.1.1]
 ### Changed
@@ -29,7 +31,8 @@ All notable changes to this project will be documented in this file.
 
 **Note:** Start of changelog is 2019-08-27, [v3.0.2].
 
-[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.1...HEAD
+[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.2...HEAD
+[v3.1.2]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.1...3.1.2
 [v3.1.1]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.0...3.1.1
 [v3.1.0]: https://github.com/googlemaps/google-maps-services-python/compare/3.0.2...3.1.0
 [v3.0.2]: https://github.com/googlemaps/google-maps-services-python/compare/3.0.1...3.0.2
