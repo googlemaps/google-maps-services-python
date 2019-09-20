@@ -3,8 +3,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Changed
+- deprecation warning for place fields: `alt_id`, `id`, `reference`, and `scope`. Read more about this at https://developers.google.com/maps/deprecations.
+
+## [v3.1.2]
 ### Added
-### Removed
+- Tests for distribution tar as part of CI
 
 ## [v3.1.2]
 ### Added

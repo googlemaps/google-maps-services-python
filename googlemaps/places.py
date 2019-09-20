@@ -16,6 +16,7 @@
 #
 
 """Performs requests to the Google Places API."""
+import warnings
 
 from googlemaps import convert
 
@@ -35,13 +36,13 @@ PLACES_FIND_FIELDS_BASIC = set(
         "geometry/viewport/southwest/lat",
         "geometry/viewport/southwest/lng",
         "icon",
-        "id",
+        "id",  # deprecated: https://developers.google.com/maps/deprecations
         "name",
         "permanently_closed",
         "photos",
         "place_id",
         "plus_code",
-        "scope",
+        "scope",  # deprecated: https://developers.google.com/maps/deprecations
         "types",
     ]
 )
@@ -60,7 +61,7 @@ PLACES_DETAIL_FIELDS_BASIC = set(
     [
         "address_component",
         "adr_address",
-        "alt_id",
+        "alt_id",  # deprecated: https://developers.google.com/maps/deprecations
         "formatted_address",
         "geometry",
         "geometry/location",
@@ -74,13 +75,13 @@ PLACES_DETAIL_FIELDS_BASIC = set(
         "geometry/viewport/southwest/lat",
         "geometry/viewport/southwest/lng",
         "icon",
-        "id",
+        "id",  # deprecated: https://developers.google.com/maps/deprecations
         "name",
         "permanently_closed",
         "photo",
         "place_id",
         "plus_code",
-        "scope",
+        "scope",  # deprecated: https://developers.google.com/maps/deprecations
         "type",
         "url",
         "utc_offset",
@@ -102,6 +103,11 @@ PLACES_DETAIL_FIELDS = (
     ^ PLACES_DETAIL_FIELDS_ATMOSPHERE
 )
 
+DEPRECATED_FIELDS = {"alt_id", "id", "reference", "scope"}
+DEPRECATED_FIELDS_MESSAGE = (
+    "Fields, %s, are deprecated. "
+    "Read more at https://developers.google.com/maps/deprecations."
+)
 
 def find_place(
     client, input, input_type, fields=None, location_bias=None, language=None
@@ -147,6 +153,13 @@ def find_place(
         )
 
     if fields:
+        deprecated_fields = set(fields) & DEPRECATED_FIELDS
+        if deprecated_fields:
+            warnings.warn(
+                DEPRECATED_FIELDS_MESSAGE % str(list(deprecated_fields)), 
+                DeprecationWarning
+            )
+            
         invalid_fields = set(fields) - PLACES_FIND_FIELDS
         if invalid_fields:
             raise ValueError(
