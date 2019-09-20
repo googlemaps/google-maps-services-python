@@ -21,7 +21,7 @@ with io.open("CHANGELOG.md", encoding="utf8") as f:
 
 setup(
     name="googlemaps",
-    version="3.1.1",
+    version="3.1.2",
     description="Python client library for Google Maps Platform",
     long_description=readme + changelog,
     long_description_content_type="text/markdown",

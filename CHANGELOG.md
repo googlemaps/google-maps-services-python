@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Tests for distribution tar as part of CI
 
+## [v3.1.2]
+### Added
+- Tests for distribution tar as part of CI
+- Support for subfields such as `geometry/location` and `geometry/viewport` in Places.
+
 ## [v3.1.1]
 ### Changed
 - Added changelog to manifest
