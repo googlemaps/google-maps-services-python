@@ -105,8 +105,8 @@ PLACES_DETAIL_FIELDS = (
 
 DEPRECATED_FIELDS = {"alt_id", "id", "reference", "scope"}
 DEPRECATED_FIELDS_MESSAGE = (
-    "Use of deprecated fields, %s."
-    "Read more here at https://developers.google.com/maps/deprecations"
+    "Field %s is deprecated. "
+    "Read more at https://developers.google.com/maps/deprecations."
 )
 
 def find_place(
