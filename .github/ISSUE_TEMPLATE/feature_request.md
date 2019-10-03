@@ -1,7 +1,9 @@
 ---
 name: Feature request
 about: Suggest an idea for this library
-label: 'type: feature request, triage me'
+title: ''
+labels: 'type: feature request, triage me'
+assignees: ''
 
 ---
 

@@ -1,9 +1,13 @@
 ---
 name: Support request
-about: If you have a support contract with Google, please create an issue in the Google Cloud Support console.
-label: 'triage me, type: question'
+about: If you have a support contract with Google, please create an issue in the Google
+  Cloud Support console.
+title: ''
+labels: 'triage me, type: question'
+assignees: ''
 
 ---
+
 **PLEASE READ** 
 
 If you have a support contract with Google, please create an issue in the [support console](https://cloud.google.com/support/). This will ensure a timely response. 
