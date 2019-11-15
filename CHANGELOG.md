@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+## [v3.1.4]
+### Changed
+- `APIError.__str__` should always return a str (#328)
+
 ## [v3.1.3]
 ### Changed
 - deprecation warning for place fields: `alt_id`, `id`, `reference`, and `scope`. Read more about this at https://developers.google.com/maps/deprecations.
@@ -33,7 +37,8 @@ All notable changes to this project will be documented in this file.
 
 **Note:** Start of changelog is 2019-08-27, [v3.0.2].
 
-[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.3...HEAD
+[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.4...HEAD
+[v3.1.4]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.3...3.1.4
 [v3.1.3]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.2...3.1.3
 [v3.1.2]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.1...3.1.2
 [v3.1.1]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.0...3.1.1
