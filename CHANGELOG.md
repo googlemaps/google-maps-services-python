@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Removed
+- Python 2 is no longer supported
+
 ## [v3.1.4]
 ### Changed
 - `APIError.__str__` should always return a str (#328)
