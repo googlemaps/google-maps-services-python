@@ -2,7 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-### Removed
+### Changed
+- Python 2 is no longer supported
 - Removed place fields: `alt_id`, `id`, `reference`, and `scope`. Read more about this at https://developers.google.com/maps/deprecations.
 
 ## [v3.1.4]

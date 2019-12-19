@@ -3,12 +3,6 @@ import io
 from setuptools import setup
 
 
-if sys.version_info <= (2, 4):
-    error = "Requires Python Version 2.5 or above... exiting."
-    print >>sys.stderr, error
-    sys.exit(1)
-
-
 requirements = ["requests>=2.20.0,<3.0"]
 
 # use io.open until python2.7 support is dropped
@@ -38,10 +32,10 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Internet",
     ],
 )
