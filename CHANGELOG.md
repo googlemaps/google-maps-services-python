@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Removed
+- Removed place fields: `alt_id`, `id`, `reference`, and `scope`. Read more about this at https://developers.google.com/maps/deprecations.
+
 ## [v3.1.4]
 ### Changed
 - `APIError.__str__` should always return a str (#328)
