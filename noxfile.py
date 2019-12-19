@@ -1,6 +1,6 @@
 import nox
 
-SUPPORTED_PY_VERSIONS = ["2.7", "3.5", "3.6", "3.7"]
+SUPPORTED_PY_VERSIONS = ["3.5", "3.6", "3.7", "3.8"]
 
 
 def _install_dev_packages(session):
