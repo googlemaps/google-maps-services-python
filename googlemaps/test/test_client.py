@@ -22,6 +22,7 @@ import time
 
 import responses
 import requests
+import uuid
 
 import googlemaps
 import googlemaps.client as _client
@@ -320,6 +321,33 @@ class ClientTest(_test.TestCase):
         client.set_experience_id("ExpId")
         client.clear_experience_id()
         self.assertIsNone(client.get_experience_id())
+
+    def test_experience_id_sample(self):
+        # [START maps_experience_id]
+        experience_id = str(uuid.uuid4())
+
+        # instantiate client with experience id
+        client = googlemaps.Client(
+            key="AIza-Maps-API-Key",
+            experience_id=experience_id
+        )
+
+        # clear the current experience id
+        client.clear_experience_id()
+
+        # set a new experience id
+        other_experience_id = str(uuid.uuid4())
+        client.set_experience_id(experience_id, other_experience_id)
+
+        # make API request, the client will set the header
+        # X-GOOG-MAPS-EXPERIENCE-ID: experienceId,otherExperienceId
+
+        # get current experience id
+        ids = client.get_experience_id()
+        # [END maps_experience_id]
+
+        result = "%s,%s" % (experience_id, other_experience_id)
+        self.assertEqual(result, ids)
 
     @responses.activate
     def _perform_mock_request(self, experience_id=None):
