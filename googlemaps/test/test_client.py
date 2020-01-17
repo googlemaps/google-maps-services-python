@@ -340,7 +340,7 @@ class ClientTest(_test.TestCase):
         client.set_experience_id(experience_id, other_experience_id)
 
         # make API request, the client will set the header
-        # X-GOOG-MAPS-EXPERIENCE-ID: experienceId,otherExperienceId
+        # X-GOOG-MAPS-EXPERIENCE-ID: experience_id,other_experience_id
 
         # get current experience id
         ids = client.get_experience_id()
