@@ -22,10 +22,12 @@ import time
 
 import responses
 import requests
+import uuid
 
 import googlemaps
 import googlemaps.client as _client
 import googlemaps.test as _test
+from googlemaps.client import _X_GOOG_MAPS_EXPERIENCE_ID
 
 
 class ClientTest(_test.TestCase):
@@ -290,6 +292,87 @@ class ClientTest(_test.TestCase):
         requests.__version__ = '2.4.0'
         googlemaps.Client(**client_args_timeout)
         googlemaps.Client(**client_args)
+
+    def test_single_experience_id(self):
+        experience_id1 = "Exp1"
+        client = googlemaps.Client(key="AIzaasdf", experience_id=experience_id1)
+        self.assertEqual(experience_id1, client.get_experience_id())
+
+        experience_id2 = "Exp2"
+        client.set_experience_id(experience_id2)
+        self.assertEqual(experience_id2, client.get_experience_id())
+
+    def test_multiple_experience_id(self):
+        client = googlemaps.Client(key="AIzaasdf")
+
+        experience_id1 = "Exp1"
+        experience_id2 = "Exp2"
+        client.set_experience_id(experience_id1, experience_id2)
+
+        result = "%s,%s" % (experience_id1, experience_id2)
+        self.assertEqual(result, client.get_experience_id())
+
+    def test_no_experience_id(self):
+        client = googlemaps.Client(key="AIzaasdf")
+        self.assertIsNone(client.get_experience_id())
+
+    def test_clearing_experience_id(self):
+        client = googlemaps.Client(key="AIzaasdf")
+        client.set_experience_id("ExpId")
+        client.clear_experience_id()
+        self.assertIsNone(client.get_experience_id())
+
+    def test_experience_id_sample(self):
+        # [START maps_experience_id]
+        experience_id = str(uuid.uuid4())
+
+        # instantiate client with experience id
+        client = googlemaps.Client(
+            key="AIza-Maps-API-Key",
+            experience_id=experience_id
+        )
+
+        # clear the current experience id
+        client.clear_experience_id()
+
+        # set a new experience id
+        other_experience_id = str(uuid.uuid4())
+        client.set_experience_id(experience_id, other_experience_id)
+
+        # make API request, the client will set the header
+        # X-GOOG-MAPS-EXPERIENCE-ID: experience_id,other_experience_id
+
+        # get current experience id
+        ids = client.get_experience_id()
+        # [END maps_experience_id]
+
+        result = "%s,%s" % (experience_id, other_experience_id)
+        self.assertEqual(result, ids)
+
+    @responses.activate
+    def _perform_mock_request(self, experience_id=None):
+        # Mock response
+        responses.add(responses.GET,
+                      "https://maps.googleapis.com/maps/api/geocode/json",
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type="application/json")
+
+        # Perform network call
+        client = googlemaps.Client(key="AIzaasdf")
+        client.set_experience_id(experience_id)
+        client.geocode("Sesame St.")
+        return responses.calls[0].request
+
+    def test_experience_id_in_header(self):
+        experience_id = "Exp1"
+        request = self._perform_mock_request(experience_id)
+        header_value = request.headers[_X_GOOG_MAPS_EXPERIENCE_ID]
+        self.assertEqual(experience_id, header_value)
+
+    def test_experience_id_no_in_header(self):
+        request = self._perform_mock_request()
+        self.assertIsNone(request.headers.get(_X_GOOG_MAPS_EXPERIENCE_ID))
 
     @responses.activate
     def test_no_retry_over_query_limit(self):
