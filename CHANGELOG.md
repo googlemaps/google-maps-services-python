@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v4.1.0]
+### Added
+- Adding support for passing in `experience_id` to Client class (#338)
+
 ## [v4.0.0]
 ### Changed
 - Python 2 is no longer supported
@@ -41,7 +45,8 @@ All notable changes to this project will be documented in this file.
 
 **Note:** Start of changelog is 2019-08-27, [v3.0.2].
 
-[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/4.1.0...HEAD
+[v4.1.0]: https://github.com/googlemaps/google-maps-services-python/compare/4.0.0...4.1.0
 [v4.0.0]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.4...4.0.0
 [v3.1.4]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.3...3.1.4
 [v3.1.3]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.2...3.1.3
