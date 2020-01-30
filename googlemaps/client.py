@@ -56,14 +56,15 @@ class Client(object):
                  retry_over_query_limit=True, experience_id=None):
         """
         :param key: Maps API key. Required, unless "client_id" and
-            "client_secret" are set.
+            "client_secret" are set. Most users should use an API key.
         :type key: string
 
         :param client_id: (for Maps API for Work customers) Your client ID.
+            Most users should use an API key instead.
         :type client_id: string
 
         :param client_secret: (for Maps API for Work customers) Your client
-            secret (base64 encoded).
+            secret (base64 encoded). Most users should use an API key instead.
         :type client_secret: string
 
         :param channel: (for Maps API for Work customers) When set, a channel
