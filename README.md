@@ -86,31 +86,6 @@ directions_result = gmaps.directions("Sydney Town Hall",
                                      departure_time=now)
 ```
 
-Below is the same example, using client ID and client secret (digital signature)
-for authentication. This code assumes you have previously loaded the `client_id`
-and `client_secret` variables with appropriate values.
-
-For a guide on how to generate the `client_secret` (digital signature), see the
-documentation for the API you're using. For example, see the guide for the
-[Directions API](https://developers.google.com/maps/documentation/directions/get-api-key#client-id).
-
-```python
-gmaps = googlemaps.Client(client_id=client_id, client_secret=client_secret)
-
-# Geocoding and address
-geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
-
-# Look up an address with reverse geocoding
-reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
-
-# Request directions via public transit
-now = datetime.now()
-directions_result = gmaps.directions("Sydney Town Hall",
-                                     "Parramatta, NSW",
-                                     mode="transit",
-                                     departure_time=now)
-```
-
 For more usage examples, check out [the tests](https://github.com/googlemaps/google-maps-services-python/tree/master/googlemaps/test).
 
 ## Features
@@ -120,10 +95,6 @@ For more usage examples, check out [the tests](https://github.com/googlemaps/goo
 Automatically retry when intermittent failures occur. That is, when any of the retriable 5xx errors
 are returned from the API.
 
-### Client IDs
-
-Google Maps APIs Premium Plan customers can use their client ID and secret to authenticate,
-instead of an API key.
 
 ## Building the Project
 
