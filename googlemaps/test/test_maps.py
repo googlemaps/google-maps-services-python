@@ -39,6 +39,7 @@ class MapsTest(_test.TestCase):
         response = self.client.maps_download(
             size=(400, 400), zoom=6, center=(63.259591,-144.667969),
             maptype="hybrid", format="png", scale=2, visible=["Tok,AK"],
+
             path={
                 "weight": 5, "color": "red",
                 "points": [(62.107733,-145.541936),
@@ -61,3 +62,14 @@ class MapsTest(_test.TestCase):
             'path=weight%%3A5%%7Ccolor%%3Ared%%7C62.107733%%2C-145.541936%%7CDelta%%2BJunction%%2CAK&'
             'scale=2&size=400x400&visible=Tok%%2CAK&zoom=6&key=%s'
             % (url, self.key), responses.calls[0].request.url)
+
+        with self.assertRaises(ValueError):
+            self.client.maps_download(size=(400, 400))
+
+        with self.assertRaises(ValueError):
+            self.client.maps_download(size=(400, 400), center=(63.259591,-144.667969),
+                                      zoom=6, format='test')
+
+        with self.assertRaises(ValueError):
+            self.client.maps_download(size=(400, 400), center=(63.259591,-144.667969),
+                                      zoom=6, maptype='test')

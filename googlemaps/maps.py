@@ -39,7 +39,7 @@ def maps_download(client, size,
     for more info, including more detail for each parameter below.
 
     :param size: Defines the rectangular dimensions of the map image.
-    :type param: list
+    :type param: int or list
 
     :param center: Defines the center of the map, equidistant from all edges
         of the map.
@@ -98,12 +98,7 @@ def maps_download(client, size,
         ```
     """
 
-    params = {}
-
-    if len(size) != 2:
-        raise ValueError("Invalid size")
-
-    params["size"] = convert.join_list("x", map(str, size))
+    params = {"size": convert.size(size)}
 
     if not markers:
         if not (center or zoom is not None):

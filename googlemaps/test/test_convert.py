@@ -113,6 +113,14 @@ class ConvertTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             convert.bounds("test")
 
+    def test_size(self):
+        self.assertEqual("1x1", convert.size(1))
+
+        self.assertEqual("2x3", convert.size((2, 3)))
+
+        with self.assertRaises(TypeError):
+            convert.size("test")
+
     def test_markers(self):
         c = {"size": "small", "color": "blue", "label": "S",
              "locations": [

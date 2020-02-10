@@ -280,6 +280,18 @@ def bounds(arg):
         "but got %s" % type(arg).__name__)
 
 
+def size(arg):
+    if isinstance(arg, int):
+        return "%sx%s" % (arg, arg)
+    elif _is_list(arg):
+        return "%sx%s" % (arg[0], arg[1])
+
+    raise TypeError(
+        "Expected a size int or list, "
+        "but got %s" % type(arg).__name__)
+        
+
+
 def markers(arg):
     """Converts a dict of marker descriptors to the format expected by
     the Google Maps server.
