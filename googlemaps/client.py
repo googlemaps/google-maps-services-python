@@ -390,6 +390,7 @@ from googlemaps.places import place
 from googlemaps.places import places_photo
 from googlemaps.places import places_autocomplete
 from googlemaps.places import places_autocomplete_query
+from googlemaps.maps import maps_download
 
 
 def make_api_method(func):
@@ -433,6 +434,7 @@ Client.place = make_api_method(place)
 Client.places_photo = make_api_method(places_photo)
 Client.places_autocomplete = make_api_method(places_autocomplete)
 Client.places_autocomplete_query = make_api_method(places_autocomplete_query)
+Client.maps_download = make_api_method(maps_download)
 
 
 def sign_hmac(secret, payload):
@@ -463,11 +465,17 @@ def urlencode_params(params):
     """
     # urlencode does not handle unicode strings in Python 2.
     # Firstly, normalize the values so they get encoded correctly.
-    params = [(key, normalize_for_urlencode(val)) for key, val in params]
+    extended = []
+    for key, val in params:
+        if isinstance(val, list):
+            for v in val:
+                extended.append((key, normalize_for_urlencode(v)))
+        else:
+            extended.append((key, normalize_for_urlencode(val)))
     # Secondly, unquote unreserved chars which are incorrectly quoted
     # by urllib.urlencode, causing invalid auth signatures. See GH #72
     # for more info.
-    return requests.utils.unquote_unreserved(urlencode(params))
+    return requests.utils.unquote_unreserved(urlencode(extended))
 
 
 try:
