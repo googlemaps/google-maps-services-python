@@ -123,7 +123,7 @@ class ConvertTest(unittest.TestCase):
             convert.markers(c))
 
         with self.assertRaises(TypeError):
-            convert.bounds("test")
+            convert.markers("test")
 
     def test_paths(self):
         c = {"weight": 5, "color": "red",
@@ -136,7 +136,7 @@ class ConvertTest(unittest.TestCase):
             convert.paths(c))
 
         with self.assertRaises(TypeError):
-            convert.bounds("test")
+            convert.paths("test")
 
     def test_polyline_decode(self):
         syd_mel_route = ("rvumEis{y[`NsfA~tAbF`bEj^h{@{KlfA~eA~`AbmEghAt~D|e@j"
