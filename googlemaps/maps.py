@@ -127,10 +127,10 @@ class StaticMapPath(StaticMapParam):
         self.params.append(convert.location_list(points))
 
 
-def maps_download(client, size,
-                  center=None, zoom=None, scale=None, 
-                  format=None, maptype=None, language=None, region=None,
-                  markers=None, path=None, visible=None, style=None):
+def static_map(client, size,
+               center=None, zoom=None, scale=None, 
+               format=None, maptype=None, language=None, region=None,
+               markers=None, path=None, visible=None, style=None):
     """
     Downloads a map image from the Maps Static API.
 
@@ -188,9 +188,9 @@ def maps_download(client, size,
 
         ```
         f = open(local_filename, 'wb')
-        for chunk in client.maps_download(size=(400, 400),
-                                          center=(52.520103, 13.404871),
-                                          zoom=15):
+        for chunk in client.static_map(size=(400, 400),
+                                       center=(52.520103, 13.404871),
+                                       zoom=15):
             if chunk:
                 f.write(chunk)
         f.close()
@@ -202,7 +202,7 @@ def maps_download(client, size,
     if not markers:
         if not (center or zoom is not None):
             raise ValueError(
-                "both center and zoom are requered"
+                "both center and zoom are required"
                 "when markers is not specifed"
             )
 

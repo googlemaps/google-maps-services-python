@@ -88,7 +88,7 @@ class MapsTest(_test.TestCase):
             size="mid", color="0xFFFF00", label="C"
         )
 
-        response = self.client.maps_download(
+        response = self.client.static_map(
             size=(400, 400), zoom=6, center=(63.259591,-144.667969),
             maptype="hybrid", format="png", scale=2, visible=["Tok,AK"],
             path=path, markers=[m1, m2, m3]
@@ -106,12 +106,12 @@ class MapsTest(_test.TestCase):
             % (url, self.key), responses.calls[0].request.url)
 
         with self.assertRaises(ValueError):
-            self.client.maps_download(size=(400, 400))
+            self.client.static_map(size=(400, 400))
 
         with self.assertRaises(ValueError):
-            self.client.maps_download(size=(400, 400), center=(63.259591,-144.667969),
-                                      zoom=6, format='test')
+            self.client.static_map(size=(400, 400), center=(63.259591,-144.667969),
+                                   zoom=6, format='test')
 
         with self.assertRaises(ValueError):
-            self.client.maps_download(size=(400, 400), center=(63.259591,-144.667969),
-                                      zoom=6, maptype='test')
+            self.client.static_map(size=(400, 400), center=(63.259591,-144.667969),
+                                   zoom=6, maptype='test')

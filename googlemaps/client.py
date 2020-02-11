@@ -390,7 +390,7 @@ from googlemaps.places import place
 from googlemaps.places import places_photo
 from googlemaps.places import places_autocomplete
 from googlemaps.places import places_autocomplete_query
-from googlemaps.maps import maps_download
+from googlemaps.maps import static_map
 
 
 def make_api_method(func):
@@ -434,7 +434,7 @@ Client.place = make_api_method(place)
 Client.places_photo = make_api_method(places_photo)
 Client.places_autocomplete = make_api_method(places_autocomplete)
 Client.places_autocomplete_query = make_api_method(places_autocomplete_query)
-Client.maps_download = make_api_method(maps_download)
+Client.static_map = make_api_method(static_map)
 
 
 def sign_hmac(secret, payload):
