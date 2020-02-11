@@ -28,6 +28,105 @@ MAPS_MAP_TYPES = set(
     ['roadmap', 'satellite', 'terrain', 'hybrid']
 )
 
+
+class StaticMapParam(object):
+    """Base class to handle parameters for Maps Static API."""
+
+    def __init__(self):
+        self.params = []
+
+    def __str__(self):
+        """Converts a list of parameters to the format expected by
+        the Google Maps server.
+
+        :rtype: str
+
+        """
+        return convert.join_list('|', self.params)
+
+
+class StaticMapMarker(StaticMapParam):
+    """Handles marker parameters for Maps Static API."""
+
+    def __init__(self, locations,
+                 size=None, color=None, label=None):
+        """
+        :param locations: Specifies the locations of the markers on
+            the map.
+        :type locations: list
+
+        :param size: Specifies the size of the marker.
+        :type size: str
+
+        :param color: Specifies a color of the marker.
+        :type color: str
+
+        :param label: Specifies a single uppercase alphanumeric
+            character to be displaied on marker.
+        :type label: str
+        """
+
+        super(StaticMapMarker, self).__init__()
+
+        if size:
+            self.params.append("size:%s" % size)
+
+        if color:
+            self.params.append("color:%s" % color)
+
+        if label:
+            if len(label) != 1 or not label.isupper() or not label.isalnum():
+                raise ValueError("Invalid label")
+            self.params.append("label:%s" % label)
+
+        self.params.append(convert.location_list(locations))
+
+
+class StaticMapPath(StaticMapParam):
+    """Handles path parameters for Maps Static API."""
+
+    def __init__(self, points,
+                 weight=None, color=None,
+                 fillcolor=None, geodesic=None):
+        """
+        :param points: Specifies the point through which the path
+            will be built.
+        :type points: list
+
+        :param weight: Specifies the thickness of the path in pixels.
+        :type weight: int
+
+        :param color: Specifies a color of the path.
+        :type color: str
+
+        :param fillcolor: Indicates both that the path marks off a
+            polygonal area and specifies the fill color to use as an
+            overlay within that area.
+        :type fillcolor: str
+
+        :param geodesic: Indicates that the requested path should be
+            interpreted as a geodesic line that follows the curvature
+            of the earth.
+        :type geodesic: bool
+        """
+
+        super(StaticMapPath, self).__init__()
+
+        if weight:
+            self.params.append("weight:%s" % weight)
+
+        if color:
+            self.params.append("color:%s" % color)
+
+        if fillcolor:
+            self.params.append("fillcolor:%s" % fillcolor)
+
+        if geodesic:
+            self.params.append("geodesic:%s" % geodesic)
+
+        self.params.append(convert.location_list(points))
+
+
 def maps_download(client, size,
                   center=None, zoom=None, scale=None, 
                   format=None, maptype=None, language=None, region=None,
@@ -70,11 +169,11 @@ def maps_download(client, size,
 
     :param markers: define one or more markers to attach to the image at
         specified locations.
-    :type markers: list of dict
+    :type markers: StaticMapMarker
 
     :param path: defines a single path of two or more connected points to
         overlay on the image at specified locations.
-    :type path: dict
+    :type path: StaticMapPath
 
     :param visible: specifies one or more locations that should remain visible
         on the map, though no markers or other indicators will be displayed.
@@ -133,10 +232,10 @@ def maps_download(client, size,
         params["region"] = region
 
     if markers:
-        params["markers"] = [convert.markers(m) for m in markers]
+        params["markers"] = markers
 
     if path:
-        params["path"] = convert.paths(path)
+        params["path"] = path
 
     if visible:
         params["visible"] = convert.location_list(visible)

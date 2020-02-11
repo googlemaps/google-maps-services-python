@@ -24,6 +24,9 @@ import responses
 import googlemaps
 import googlemaps.test as _test
 
+from googlemaps.maps import StaticMapMarker
+from googlemaps.maps import StaticMapPath
+
 
 class MapsTest(_test.TestCase):
 
@@ -32,24 +35,63 @@ class MapsTest(_test.TestCase):
         self.client = googlemaps.Client(self.key)
 
     @responses.activate
+    def test_static_map_marker(self):
+        marker = StaticMapMarker(
+            locations=[{"lat": -33.867486, "lng": 151.206990}, "Sydney"],
+            size='small', color='blue', label="S"
+        )
+
+        self.assertEqual(
+            "size:small|color:blue|label:S|"
+            "-33.867486,151.20699|Sydney",
+            str(marker)
+        )
+
+        with self.assertRaises(ValueError):
+            StaticMapMarker(locations=["Sydney"], label="XS")
+
+    @responses.activate
+    def test_static_map_path(self):
+        path = StaticMapPath(
+            points=[{"lat": -33.867486, "lng": 151.206990}, "Sydney"],
+            weight=5, color="red", geodesic=True, fillcolor="Red"
+        )
+
+        self.assertEqual(
+            "weight:5|color:red|fillcolor:Red|""geodesic:True|"
+            "-33.867486,151.20699|Sydney",
+            str(path)
+        )
+
+    @responses.activate
     def test_download(self):
         url = 'https://maps.googleapis.com/maps/api/staticmap'
         responses.add(responses.GET, url, status=200)
 
+        path = StaticMapPath(
+            points=[(62.107733,-145.541936), 'Delta+Junction,AK'],
+            weight=5, color="red"
+        )
+
+        m1 = StaticMapMarker(
+            locations=[(62.107733,-145.541936)],
+            color="blue", label="S"
+        )
+
+        m2 = StaticMapMarker(
+            locations=['Delta+Junction,AK'],
+            size="tiny", color="green"
+        )
+
+        m3 = StaticMapMarker(
+            locations=["Tok,AK"],
+            size="mid", color="0xFFFF00", label="C"
+        )
+
         response = self.client.maps_download(
             size=(400, 400), zoom=6, center=(63.259591,-144.667969),
             maptype="hybrid", format="png", scale=2, visible=["Tok,AK"],
-
-            path={
-                "weight": 5, "color": "red",
-                "points": [(62.107733,-145.541936),
-                           'Delta+Junction,AK']
-            },
-            markers=[
-                {"color": "blue", "label": "S", "locations": [(62.107733,-145.541936)]},
-                {"size": "tiny", "color": "green", "locations": ['Delta+Junction,AK']},
-                {"size": "mid", "color": "0xFFFF00", "label": "C", "locations": ["Tok,AK"]}
-            ]
+            path=path, markers=[m1, m2, m3]
         )
 
         self.assertTrue(isinstance(response, GeneratorType))

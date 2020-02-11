@@ -467,7 +467,7 @@ def urlencode_params(params):
     # Firstly, normalize the values so they get encoded correctly.
     extended = []
     for key, val in params:
-        if isinstance(val, list):
+        if isinstance(val, (list, tuple)):
             for v in val:
                 extended.append((key, normalize_for_urlencode(v)))
         else:
@@ -497,4 +497,7 @@ except NameError:
     def normalize_for_urlencode(value):
         """(Python 3) No-op."""
         # urlencode in Python 3 handles all the types we are passing it.
-        return value
+        if isinstance(value, str):
+            return value
+
+        return normalize_for_urlencode(str(value))

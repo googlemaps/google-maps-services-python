@@ -121,31 +121,6 @@ class ConvertTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             convert.size("test")
 
-    def test_markers(self):
-        c = {"size": "small", "color": "blue", "label": "S",
-             "locations": [
-                 {"lat" : -33.867486, "lng" : 151.206990}, "Sydney"
-             ]}
-        self.assertEqual(
-            "size:small|color:blue|label:S|-33.867486,151.20699|Sydney",
-            convert.markers(c))
-
-        with self.assertRaises(TypeError):
-            convert.markers("test")
-
-    def test_paths(self):
-        c = {"weight": 5, "color": "red",
-             "points": [
-                 {"lat" : 40.737102, "lng" : -73.990318},
-                 {"lat" : 40.755823, "lng" : -73.986397}
-             ]}
-        self.assertEqual(
-            "weight:5|color:red|40.737102,-73.990318|40.755823,-73.986397",
-            convert.paths(c))
-
-        with self.assertRaises(TypeError):
-            convert.paths("test")
-
     def test_polyline_decode(self):
         syd_mel_route = ("rvumEis{y[`NsfA~tAbF`bEj^h{@{KlfA~eA~`AbmEghAt~D|e@j"
                          "lRpO~yH_\\v}LjbBh~FdvCxu@`nCplDbcBf_B|wBhIfhCnqEb~D~"
