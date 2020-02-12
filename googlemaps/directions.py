@@ -41,7 +41,9 @@ def directions(client, origin, destination,
     :type mode: string
 
     :param waypoints: Specifies an array of waypoints. Waypoints alter a
-        route by routing it through the specified location(s).
+        route by routing it through the specified location(s). To influence
+        route without adding stop prefix the waypoint with `via`, similar to
+        `waypoints = ["via:San Francisco", "via:Mountain View"]`.
     :type waypoints: a single location, or a list of locations, where a
         location is a string, dict, list, or tuple
 
