@@ -45,7 +45,7 @@ contribute, please read contribute.
 
 ## Requirements
 
- - Python 2.7 or later.
+ - Python 3.5 or later.
  - A Google Maps API key.
 
 ## API Keys
