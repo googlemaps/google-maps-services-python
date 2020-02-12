@@ -25,6 +25,7 @@ APIs:
  - Time Zone API
  - Roads API
  - Places API
+ - Maps Static API
 
 Keep in mind that the same [terms and conditions](https://developers.google.com/maps/terms) apply
 to usage of the APIs when they're accessed through this library.
@@ -127,6 +128,7 @@ are returned from the API.
 - [Time Zone API](https://developers.google.com/maps/documentation/timezone/)
 - [Roads API](https://developers.google.com/maps/documentation/roads/)
 - [Places API](https://developers.google.com/places/)
+- [Maps Static API](https://developers.google.com/maps/documentation/maps-static/)
 
 ### Support
 - [Report an issue](https://github.com/googlemaps/google-maps-services-python/issues)
