@@ -38,4 +38,5 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Internet",
     ],
+    python_requires='>=3.5'
 )
