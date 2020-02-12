@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v4.2.0]
+### Added
+- Add support for Maps Static API (#344)
+
 ## [v4.1.0]
 ### Added
 - Adding support for passing in `experience_id` to Client class (#338)
@@ -45,7 +49,8 @@ All notable changes to this project will be documented in this file.
 
 **Note:** Start of changelog is 2019-08-27, [v3.0.2].
 
-[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/4.1.0...HEAD
+[Unreleased]: https://github.com/googlemaps/google-maps-services-python/compare/4.2.0...HEAD
+[v4.2.0]: https://github.com/googlemaps/google-maps-services-python/compare/4.1.0...4.2.0
 [v4.1.0]: https://github.com/googlemaps/google-maps-services-python/compare/4.0.0...4.1.0
 [v4.0.0]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.4...4.0.0
 [v3.1.4]: https://github.com/googlemaps/google-maps-services-python/compare/3.1.3...3.1.4
