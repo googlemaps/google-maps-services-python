@@ -15,7 +15,7 @@
 # the License.
 #
 
-__version__ = "4.1.0"
+__version__ = "4.2.0"
 
 from googlemaps.client import Client
 from googlemaps import exceptions
