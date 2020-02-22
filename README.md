@@ -113,6 +113,9 @@ are returned from the API.
     $ nox -e docs && mv docs/_build/html generated_docs && git clean -Xdi && git checkout gh-pages
 
 ## Documentation & resources
+
+[Documentation for the `google-maps-services-python` library](https://googlemaps.github.io/google-maps-services-python/docs/index.html)
+
 ### Getting started
 - [Get Started with Google Maps Platform](https://developers.google.com/maps/gmp-get-started)
 - [Generating/restricting an API key](https://developers.google.com/maps/gmp-get-started#api-key)
