@@ -28,8 +28,6 @@
     # '-33.8674869,151.2069902'
 """
 
-import time as _time
-
 
 def format_float(arg):
     """Formats a float value to be as short as possible.
@@ -187,8 +185,8 @@ def time(arg):
     :type arg: datetime.datetime or int
     """
     # handle datetime instances.
-    if _has_method(arg, "timetuple"):
-        arg = _time.mktime(arg.timetuple())
+    if _has_method(arg, "timestamp"):
+        arg = arg.timestamp()
 
     if isinstance(arg, float):
         arg = int(arg)
