@@ -36,7 +36,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="2.7")
+@nox.session(python=SUPPORTED_PY_VERSIONS)
 def docs(session):
     _install_dev_packages(session)
     _install_doc_dependencies(session)
