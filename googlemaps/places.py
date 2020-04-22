@@ -23,6 +23,7 @@ from googlemaps import convert
 
 PLACES_FIND_FIELDS_BASIC = set(
     [
+        "business_status",
         "formatted_address",
         "geometry",
         "geometry/location",
@@ -59,6 +60,7 @@ PLACES_DETAIL_FIELDS_BASIC = set(
     [
         "address_component",
         "adr_address",
+        "business_status",
         "formatted_address",
         "geometry",
         "geometry/location",
