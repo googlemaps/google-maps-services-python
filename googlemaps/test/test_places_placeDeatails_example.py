@@ -32,11 +32,12 @@ InternationalPhoneNumber = 0
 name = 'Not Mentioned'
 
 k = gmaps.place_details(place_id, fields={'name', 'formatted_phone_number', 'international_phone_number'})
-if k['result']['name']:
+if 'name' in k['result']:
     name = k['result']['name']
-if k['result']['formatted_phone_number']:
+if 'formatted_phone_number' in k['result']:
     FormattedPhoneNumber = k['result']['formatted_phone_number']
-if k['result']['international_phone_number']:
+if 'international_phone_number' in k['result']:
     InternationalPhoneNumber = k['result']['international_phone_number']
+
 
 print("Name of the place: {}\nFormatted phone number: {}\nInternational phone number: {}".format(name, FormattedPhoneNumber, InternationalPhoneNumber))
