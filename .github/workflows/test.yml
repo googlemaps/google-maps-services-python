@@ -1,0 +1,46 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# A workflow that runs tests on every new pull request
+name: Run tests
+
+on:
+  repository_dispatch:
+    types: [test]
+  pull_request:
+    branches: ['*']
+  push:
+    branches: ['*']
+
+jobs:
+  test:
+    name: "Run tests on Python ${{ matrix.python-version }}"
+    runs-on: ubuntu-latest
+
+  steps:
+  - name: Checkout repository
+    uses: actions/checkout@v2
+
+  - name: Setup Python
+    uses: "actions/setup-python@v1"
+    with:
+      python-version: "${{ matrix.python-version }}"
+
+  - name: Install dependencies
+    run: ./.github/scripts/install.sh
+
+  - name: Run tests
+    run: |
+      python3 -m nox --session "tests-${{ matrix.python-version }}"
+      python3 -m nox -e distribution

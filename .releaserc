@@ -1,0 +1,22 @@
+branches:
+  - master
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - - "@google/semantic-release-replace-plugin"
+    - replacements:
+        - files:
+            - "./googlemaps/__init__.py"
+          from: "__version__ = \".*\""
+          to: "__version__ = \"${nextRelease.version}\""
+        - files:
+            - "./setup.py"
+          from: "version=\".*\""
+          to: "version=\"${nextRelease.version}\""
+  - - "@semantic-release/git"
+    - assets:
+        - "./googlemaps/__init__.py"
+        - "./setup.py"
+  - "@semantic-release/github"
+options:
+  debug: true
