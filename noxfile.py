@@ -61,5 +61,5 @@ def docs(session):
 
 @nox.session()
 def distribution(session):
-    session.run("bash", ".travis/distribution.sh", external=True)
+    session.run("bash", ".github/scripts/distribution.sh", external=True)
     session.run("python", "-c", "import googlemaps")
