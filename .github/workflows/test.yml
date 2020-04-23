@@ -27,20 +27,19 @@ jobs:
   test:
     name: "Run tests on Python ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
-
-  steps:
-  - name: Checkout repository
-    uses: actions/checkout@v2
-
-  - name: Setup Python
-    uses: "actions/setup-python@v1"
-    with:
-      python-version: "${{ matrix.python-version }}"
-
-  - name: Install dependencies
-    run: ./.github/scripts/install.sh
-
-  - name: Run tests
-    run: |
-      python3 -m nox --session "tests-${{ matrix.python-version }}"
-      python3 -m nox -e distribution
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Setup Python
+      uses: "actions/setup-python@v1"
+      with:
+        python-version: "${{ matrix.python-version }}"
+    
+    - name: Install dependencies
+      run: ./.github/scripts/install.sh
+    
+    - name: Run tests
+      run: |
+        python3 -m nox --session "tests-${{ matrix.python-version }}"
+        python3 -m nox -e distribution
