@@ -8,7 +8,7 @@ plugins:
         - files:
             - "./googlemaps/__init__.py"
           from: "__version__ = \".*\""
-          to: "__version = \"${nextRelease.version}\""
+          to: "__version__ = \"${nextRelease.version}\""
         - files:
             - "./setup.py"
           from: "version=\".*\""
