@@ -39,12 +39,11 @@ try: # Python 3
 except ImportError: # Python 2
     from urllib import urlencode
 
-_X_GOOG_MAPS_EXPERIENCE_ID = "X-Goog-Maps-Experience-ID"
+
 _USER_AGENT = "GoogleGeoApiClientPython/%s" % googlemaps.__version__
 _DEFAULT_BASE_URL = "https://maps.googleapis.com"
 
 _RETRIABLE_STATUSES = set([500, 503, 504])
-
 
 class Client(object):
     """Performs requests to the Google Maps API web services."""
@@ -53,18 +52,17 @@ class Client(object):
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
                  queries_per_second=50, channel=None,
-                 retry_over_query_limit=True, experience_id=None):
+                 retry_over_query_limit=True):
         """
         :param key: Maps API key. Required, unless "client_id" and
-            "client_secret" are set. Most users should use an API key.
+            "client_secret" are set.
         :type key: string
 
         :param client_id: (for Maps API for Work customers) Your client ID.
-            Most users should use an API key instead.
         :type client_id: string
 
         :param client_secret: (for Maps API for Work customers) Your client
-            secret (base64 encoded). Most users should use an API key instead.
+            secret (base64 encoded).
         :type client_secret: string
 
         :param channel: (for Maps API for Work customers) When set, a channel
@@ -100,10 +98,6 @@ class Client(object):
             response indicating the query rate limit was exceeded will be
             retried. Defaults to True.
         :type retry_over_query_limit: bool
-
-        :param experience_id: The value for the HTTP header field name
-            'X-Goog-Maps-Experience-ID'.
-        :type experience_id: str
 
         :raises ValueError: when either credentials are missing, incomplete
             or invalid.
@@ -166,42 +160,6 @@ class Client(object):
         self.queries_per_second = queries_per_second
         self.retry_over_query_limit = retry_over_query_limit
         self.sent_times = collections.deque("", queries_per_second)
-        self.set_experience_id(experience_id)
-
-    def set_experience_id(self, *experience_id_args):
-        """Sets the value for the HTTP header field name
-        'X-Goog-Maps-Experience-ID' to be used on subsequent API calls.
-
-        :param experience_id_args: the experience ID
-        :type experience_id_args: string varargs
-        """
-        if len(experience_id_args) == 0 or experience_id_args[0] is None:
-            self.clear_experience_id()
-            return
-
-        headers = self.requests_kwargs.pop("headers", {})
-        headers[_X_GOOG_MAPS_EXPERIENCE_ID] = ",".join(experience_id_args)
-        self.requests_kwargs["headers"] = headers
-
-    def get_experience_id(self):
-        """Gets the experience ID for the HTTP header field name
-        'X-Goog-Maps-Experience-ID'
-
-        :return: The experience ID if set
-        :rtype: str
-        """
-        headers = self.requests_kwargs.get("headers", {})
-        return headers.get(_X_GOOG_MAPS_EXPERIENCE_ID, None)
-
-    def clear_experience_id(self):
-        """Clears the experience ID for the HTTP header field name
-        'X-Goog-Maps-Experience-ID' if set.
-        """
-        headers = self.requests_kwargs.get("headers")
-        if headers is None:
-            return
-        headers.pop(_X_GOOG_MAPS_EXPERIENCE_ID, {})
-        self.requests_kwargs["headers"] = headers
 
     def _request(self, url, params, first_request_time=None, retry_counter=0,
              base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
@@ -390,7 +348,10 @@ from googlemaps.places import place
 from googlemaps.places import places_photo
 from googlemaps.places import places_autocomplete
 from googlemaps.places import places_autocomplete_query
-from googlemaps.maps import static_map
+from googlemaps.places import place_details
+
+
+
 
 
 def make_api_method(func):
@@ -434,7 +395,7 @@ Client.place = make_api_method(place)
 Client.places_photo = make_api_method(places_photo)
 Client.places_autocomplete = make_api_method(places_autocomplete)
 Client.places_autocomplete_query = make_api_method(places_autocomplete_query)
-Client.static_map = make_api_method(static_map)
+Client.place_details = make_api_method(place_details)
 
 
 def sign_hmac(secret, payload):
@@ -465,17 +426,11 @@ def urlencode_params(params):
     """
     # urlencode does not handle unicode strings in Python 2.
     # Firstly, normalize the values so they get encoded correctly.
-    extended = []
-    for key, val in params:
-        if isinstance(val, (list, tuple)):
-            for v in val:
-                extended.append((key, normalize_for_urlencode(v)))
-        else:
-            extended.append((key, normalize_for_urlencode(val)))
+    params = [(key, normalize_for_urlencode(val)) for key, val in params]
     # Secondly, unquote unreserved chars which are incorrectly quoted
     # by urllib.urlencode, causing invalid auth signatures. See GH #72
     # for more info.
-    return requests.utils.unquote_unreserved(urlencode(extended))
+    return requests.utils.unquote_unreserved(urlencode(params))
 
 
 try:
@@ -497,7 +452,4 @@ except NameError:
     def normalize_for_urlencode(value):
         """(Python 3) No-op."""
         # urlencode in Python 3 handles all the types we are passing it.
-        if isinstance(value, str):
-            return value
-
-        return normalize_for_urlencode(str(value))
+        return value

@@ -20,7 +20,6 @@ import warnings
 
 from googlemaps import convert
 
-
 PLACES_FIND_FIELDS_BASIC = set(
     [
         "formatted_address",
@@ -36,11 +35,13 @@ PLACES_FIND_FIELDS_BASIC = set(
         "geometry/viewport/southwest/lat",
         "geometry/viewport/southwest/lng",
         "icon",
+        "id",  # deprecated: https://developers.google.com/maps/deprecations
         "name",
         "permanently_closed",
         "photos",
         "place_id",
         "plus_code",
+        "scope",  # deprecated: https://developers.google.com/maps/deprecations
         "types",
     ]
 )
@@ -50,15 +51,16 @@ PLACES_FIND_FIELDS_CONTACT = set(["opening_hours"])
 PLACES_FIND_FIELDS_ATMOSPHERE = set(["price_level", "rating", "user_ratings_total"])
 
 PLACES_FIND_FIELDS = (
-    PLACES_FIND_FIELDS_BASIC
-    ^ PLACES_FIND_FIELDS_CONTACT
-    ^ PLACES_FIND_FIELDS_ATMOSPHERE
+        PLACES_FIND_FIELDS_BASIC
+        ^ PLACES_FIND_FIELDS_CONTACT
+        ^ PLACES_FIND_FIELDS_ATMOSPHERE
 )
 
 PLACES_DETAIL_FIELDS_BASIC = set(
     [
         "address_component",
         "adr_address",
+        "alt_id",  # deprecated: https://developers.google.com/maps/deprecations
         "formatted_address",
         "geometry",
         "geometry/location",
@@ -72,11 +74,13 @@ PLACES_DETAIL_FIELDS_BASIC = set(
         "geometry/viewport/southwest/lat",
         "geometry/viewport/southwest/lng",
         "icon",
+        "id",  # deprecated: https://developers.google.com/maps/deprecations
         "name",
         "permanently_closed",
         "photo",
         "place_id",
         "plus_code",
+        "scope",  # deprecated: https://developers.google.com/maps/deprecations
         "type",
         "url",
         "utc_offset",
@@ -93,13 +97,47 @@ PLACES_DETAIL_FIELDS_ATMOSPHERE = set(
 )
 
 PLACES_DETAIL_FIELDS = (
-    PLACES_DETAIL_FIELDS_BASIC
-    ^ PLACES_DETAIL_FIELDS_CONTACT
-    ^ PLACES_DETAIL_FIELDS_ATMOSPHERE
+        PLACES_DETAIL_FIELDS_BASIC
+        ^ PLACES_DETAIL_FIELDS_CONTACT
+        ^ PLACES_DETAIL_FIELDS_ATMOSPHERE
 )
 
+DEPRECATED_FIELDS = {"alt_id", "id", "reference", "scope"}
+DEPRECATED_FIELDS_MESSAGE = (
+    "Fields, %s, are deprecated. "
+    "Read more at https://developers.google.com/maps/deprecations."
+)
+
+
+def place_details(client, place_id, fields=None):
+    """
+    Once you have a place_id from a Place Search, you can request more details
+    about a particular establishment or point of interest by initiating a
+    Place Details request. A Place Details request returns more comprehensive
+    information about the indicated place such as its complete address,
+    phone number, user rating and reviews.
+
+    :param place_id:
+    :return:
+    """
+    params = {}
+    if fields:
+        invalid_fields = set(fields) - PLACES_DETAIL_FIELDS
+        if invalid_fields:
+            raise ValueError(
+                "Valid values for the `fields` param for "
+                "`place_details` are '%s', these given field(s) "
+                "are invalid: '%s'"
+                % ("', '".join(PLACES_DETAIL_FIELDS), "', '".join(invalid_fields))
+            )
+        params["fields"] = convert.join_list(",", fields)
+    if place_id:
+        params["place_id"] = place_id
+    return client._request("/maps/api/place/details/json", params)
+
+
 def find_place(
-    client, input, input_type, fields=None, location_bias=None, language=None
+        client, input, input_type, fields=None, location_bias=None, language=None
 ):
     """
     A Find Place request takes a text input, and returns a place.
@@ -141,7 +179,14 @@ def find_place(
             "the given value is invalid: '%s'" % input_type
         )
 
-    if fields:       
+    if fields:
+        deprecated_fields = set(fields) & DEPRECATED_FIELDS
+        if deprecated_fields:
+            warnings.warn(
+                DEPRECATED_FIELDS_MESSAGE % str(list(deprecated_fields)),
+                DeprecationWarning
+            )
+
         invalid_fields = set(fields) - PLACES_FIND_FIELDS
         if invalid_fields:
             raise ValueError(
@@ -164,17 +209,17 @@ def find_place(
 
 
 def places(
-    client,
-    query,
-    location=None,
-    radius=None,
-    language=None,
-    min_price=None,
-    max_price=None,
-    open_now=False,
-    type=None,
-    region=None,
-    page_token=None,
+        client,
+        query,
+        location=None,
+        radius=None,
+        language=None,
+        min_price=None,
+        max_price=None,
+        open_now=False,
+        type=None,
+        region=None,
+        page_token=None,
 ):
     """
     Places search.
@@ -241,18 +286,18 @@ def places(
 
 
 def places_nearby(
-    client,
-    location=None,
-    radius=None,
-    keyword=None,
-    language=None,
-    min_price=None,
-    max_price=None,
-    name=None,
-    open_now=False,
-    rank_by=None,
-    type=None,
-    page_token=None,
+        client,
+        location=None,
+        radius=None,
+        keyword=None,
+        language=None,
+        min_price=None,
+        max_price=None,
+        name=None,
+        open_now=False,
+        rank_by=None,
+        type=None,
+        page_token=None,
 ):
     """
     Performs nearby search for places.
@@ -343,21 +388,21 @@ def places_nearby(
 
 
 def _places(
-    client,
-    url_part,
-    query=None,
-    location=None,
-    radius=None,
-    keyword=None,
-    language=None,
-    min_price=0,
-    max_price=4,
-    name=None,
-    open_now=False,
-    rank_by=None,
-    type=None,
-    region=None,
-    page_token=None,
+        client,
+        url_part,
+        query=None,
+        location=None,
+        radius=None,
+        keyword=None,
+        language=None,
+        min_price=0,
+        max_price=4,
+        name=None,
+        open_now=False,
+        rank_by=None,
+        type=None,
+        region=None,
+        page_token=None,
 ):
     """
     Internal handler for ``places`` and ``places_nearby``.
@@ -487,16 +532,16 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
 
 
 def places_autocomplete(
-    client,
-    input_text,
-    session_token=None,
-    offset=None,
-    location=None,
-    radius=None,
-    language=None,
-    types=None,
-    components=None,
-    strict_bounds=False,
+        client,
+        input_text,
+        session_token=None,
+        offset=None,
+        location=None,
+        radius=None,
+        language=None,
+        types=None,
+        components=None,
+        strict_bounds=False,
 ):
     """
     Returns Place predictions given a textual search string and optional
@@ -558,7 +603,7 @@ def places_autocomplete(
 
 
 def places_autocomplete_query(
-    client, input_text, offset=None, location=None, radius=None, language=None
+        client, input_text, offset=None, location=None, radius=None, language=None
 ):
     """
     Returns Place predictions given a textual search query, such as
@@ -596,17 +641,17 @@ def places_autocomplete_query(
 
 
 def _autocomplete(
-    client,
-    url_part,
-    input_text,
-    session_token=None,
-    offset=None,
-    location=None,
-    radius=None,
-    language=None,
-    types=None,
-    components=None,
-    strict_bounds=False,
+        client,
+        url_part,
+        input_text,
+        session_token=None,
+        offset=None,
+        location=None,
+        radius=None,
+        language=None,
+        types=None,
+        components=None,
+        strict_bounds=False,
 ):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
