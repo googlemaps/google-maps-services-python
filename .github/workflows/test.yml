@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # A workflow that runs tests on every new pull request
-name: Run unit tests
+name: Run tests
 
 on:
   repository_dispatch:
