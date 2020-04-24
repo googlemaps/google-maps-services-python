@@ -27,6 +27,9 @@ jobs:
   test:
     name: "Run tests on Python ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.5", "3.6", "3.7", "3.8"]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
