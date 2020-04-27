@@ -18,14 +18,10 @@
 import unittest
 import codecs
 
-try: # Python 3
-    from urllib.parse import urlparse, parse_qsl
-except ImportError: # Python 2
-    from urlparse import urlparse, parse_qsl
+from urllib.parse import urlparse, parse_qsl
 
 
 class TestCase(unittest.TestCase):
-
     def assertURLEqual(self, first, second, msg=None):
         """Check that two arguments are equivalent URLs. Ignores the order of
         query arguments.

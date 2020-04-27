@@ -1,11 +1,9 @@
-import sys
 import io
 from setuptools import setup
 
 
 requirements = ["requests>=2.20.0,<3.0"]
 
-# use io.open until python2.7 support is dropped
 with io.open("README.md", encoding="utf8") as f:
     readme = f.read()
 
@@ -26,7 +24,6 @@ setup(
     platforms="Posix; MacOS X; Windows",
     setup_requires=requirements,
     install_requires=requirements,
-    test_suite="googlemaps.test",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",

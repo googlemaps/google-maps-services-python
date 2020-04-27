@@ -8,7 +8,9 @@ def _install_dev_packages(session):
 
 
 def _install_test_dependencies(session):
-    session.install("-r", "test_requirements.txt")
+    session.install("pytest")
+    session.install("pytest-cov")
+    session.install("responses")
 
 
 def _install_doc_dependencies(session):
