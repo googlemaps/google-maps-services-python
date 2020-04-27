@@ -21,8 +21,7 @@
 import datetime
 
 import responses
-import mock
-
+from unittest import mock
 import googlemaps
 from . import TestCase
 
