@@ -1,4 +1,0 @@
-pytest
-pytest-cov
-responses
-mock
