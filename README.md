@@ -12,7 +12,6 @@ Python Client for Google Maps Services
 Use Python? Want to geocode something? Looking for directions?
 Maybe matrices of directions? This library brings the Google Maps Platform Web
 Services to your Python application.
-![Analytics](https://maps-ga-beacon.appspot.com/UA-12846745-20/google-maps-services-python/readme?pixel)
 
 The Python Client for Google Maps Services is a Python Client library for the following Google Maps
 APIs:
