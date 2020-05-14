@@ -209,7 +209,22 @@ class ClientTest(TestCase):
         self.assertEqual(e.exception.status_code, 404)
 
     @responses.activate
-    def test_host_override(self):
+    def test_host_override_on_init(self):
+        responses.add(
+            responses.GET,
+            "https://foo.com/bar",
+            body='{"status":"OK","results":[]}',
+            status=200,
+            content_type="application/json",
+        )
+
+        client = googlemaps.Client(key="AIzaasdf", base_url="https://foo.com")
+        client._get("/bar", {})
+
+        self.assertEqual(1, len(responses.calls))
+
+    @responses.activate
+    def test_host_override_per_request(self):
         responses.add(
             responses.GET,
             "https://foo.com/bar",
