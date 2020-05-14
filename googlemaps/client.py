@@ -53,7 +53,8 @@ class Client(object):
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
                  queries_per_second=50, channel=None,
-                 retry_over_query_limit=True, experience_id=None):
+                 retry_over_query_limit=True, experience_id=None, 
+                 base_url=_DEFAULT_BASE_URL):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set. Most users should use an API key.
@@ -115,6 +116,10 @@ class Client(object):
             implemented. See the official requests docs for more info:
             http://docs.python-requests.org/en/latest/api/#main-interface
         :type requests_kwargs: dict
+        
+        :param base_url: The base URL for all requests. Defaults to the Maps API
+            server. Should not have a trailing slash.
+        :type base_url: string
 
         """
         if not key and not (client_secret and client_id):
@@ -167,6 +172,7 @@ class Client(object):
         self.retry_over_query_limit = retry_over_query_limit
         self.sent_times = collections.deque("", queries_per_second)
         self.set_experience_id(experience_id)
+        self.base_url = base_url
 
     def set_experience_id(self, *experience_id_args):
         """Sets the value for the HTTP header field name
@@ -204,7 +210,7 @@ class Client(object):
         self.requests_kwargs["headers"] = headers
 
     def _request(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
+             base_url=None, accepts_clientid=True,
              extract_body=None, requests_kwargs=None, post_json=None):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
@@ -246,6 +252,9 @@ class Client(object):
             exceute a request.
         """
 
+        if base_url is None:
+            base_url = self.base_url
+            
         if not first_request_time:
             first_request_time = datetime.now()
 
