@@ -123,10 +123,9 @@ def find_place(
                   or 'phonenumber'.
     :type input_type: string
 
-    :param fields: The fields specifying the types of place data to return,
-                   separated by a comma. For full details see:
+    :param fields: The fields specifying the types of place data to return. For full details see:
                    https://developers.google.com/places/web-service/search#FindPlaceRequests
-    :type input: list
+    :type fields: list
 
     :param location_bias: Prefer results in a specified area, by specifying
                           either a radius plus lat/lng, or two lat/lng pairs
