@@ -75,8 +75,8 @@ class StaticMapMarker(StaticMapParam):
             self.params.append("color:%s" % color)
 
         if label:
-            if len(label) != 1 or not label.isupper() or not label.isalnum():
-                raise ValueError("Invalid label")
+            if len(label) != 1 or (label.isalpha() and not label.isupper()) or not label.isalnum():
+                raise ValueError("Marker label must be alphanumeric and uppercase.")
             self.params.append("label:%s" % label)
 
         self.params.append(convert.location_list(locations))
