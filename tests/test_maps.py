@@ -49,6 +49,8 @@ class MapsTest(TestCase):
         with self.assertRaises(ValueError):
             StaticMapMarker(locations=["Sydney"], label="XS")
 
+        self.assertEqual("label:1|Sydney", str(StaticMapMarker(locations=["Sydney"], label="1")))
+
     @responses.activate
     def test_static_map_path(self):
         path = StaticMapPath(
