@@ -46,9 +46,9 @@ PLACES_FIND_FIELDS_BASIC = set(
     ]
 )
 
-PLACES_FIND_FIELDS_CONTACT = set(["opening_hours"])
+PLACES_FIND_FIELDS_CONTACT = {"opening_hours"}
 
-PLACES_FIND_FIELDS_ATMOSPHERE = set(["price_level", "rating", "user_ratings_total"])
+PLACES_FIND_FIELDS_ATMOSPHERE = {"price_level", "rating", "user_ratings_total"}
 
 PLACES_FIND_FIELDS = (
     PLACES_FIND_FIELDS_BASIC
@@ -86,13 +86,9 @@ PLACES_DETAIL_FIELDS_BASIC = set(
     ]
 )
 
-PLACES_DETAIL_FIELDS_CONTACT = set(
-    ["formatted_phone_number", "international_phone_number", "opening_hours", "website"]
-)
+PLACES_DETAIL_FIELDS_CONTACT = {"formatted_phone_number", "international_phone_number", "opening_hours", "website"}
 
-PLACES_DETAIL_FIELDS_ATMOSPHERE = set(
-    ["price_level", "rating", "review", "user_ratings_total"]
-)
+PLACES_DETAIL_FIELDS_ATMOSPHERE = {"price_level", "rating", "review", "user_ratings_total"}
 
 PLACES_DETAIL_FIELDS = (
     PLACES_DETAIL_FIELDS_BASIC

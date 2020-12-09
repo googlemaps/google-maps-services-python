@@ -20,13 +20,9 @@
 from googlemaps import convert
 
 
-MAPS_IMAGE_FORMATS = set(
-    ['png8', 'png', 'png32', 'gif', 'jpg', 'jpg-baseline']
-)
+MAPS_IMAGE_FORMATS = {'png8', 'png', 'png32', 'gif', 'jpg', 'jpg-baseline'}
 
-MAPS_MAP_TYPES = set(
-    ['roadmap', 'satellite', 'terrain', 'hybrid']
-)
+MAPS_MAP_TYPES = {'roadmap', 'satellite', 'terrain', 'hybrid'}
 
 
 class StaticMapParam(object):
