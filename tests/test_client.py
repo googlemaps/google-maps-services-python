@@ -392,7 +392,8 @@ class ClientTest(TestCase):
         self.assertEqual(result, ids)
 
     @responses.activate
-    def _perform_mock_request(self, experience_id=None):
+    @staticmethod
+    def _perform_mock_request(experience_id=None):
         # Mock response
         responses.add(
             responses.GET,

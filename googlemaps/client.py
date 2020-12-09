@@ -324,8 +324,9 @@ class Client(object):
 
     def _get(self, *args, **kwargs):  # Backwards compatibility.
         return self._request(*args, **kwargs)
-
-    def _get_body(self, response):
+    
+    @staticmethod
+    def _get_body(response):
         if response.status_code != 200:
             raise googlemaps.exceptions.HTTPError(response.status_code)
 

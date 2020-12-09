@@ -54,7 +54,8 @@ class TimezoneTest(TestCase):
         )
 
     class MockDatetime(object):
-        def now(self):
+        @staticmethod
+        def now():
             return datetime.datetime.fromtimestamp(1608)
 
         utcnow = now
