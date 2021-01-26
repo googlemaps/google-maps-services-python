@@ -513,6 +513,7 @@ def places_autocomplete(
     input_text,
     session_token=None,
     offset=None,
+    origin=None,
     location=None,
     radius=None,
     language=None,
@@ -536,6 +537,12 @@ def places_autocomplete(
                    if the input is 'Google' and the offset is 3, the
                    service will match on 'Goo'.
     :type offset: int
+
+    :param origin: The origin point from which to calculate straight-line distance
+                    to the destination (returned as distance_meters).
+                    If this value is omitted, straight-line distance will
+                    not be returned.
+    :type origin: string, dict, list, or tuple
 
     :param location: The latitude/longitude value for which you wish to obtain the
                      closest, human-readable address.
@@ -570,6 +577,7 @@ def places_autocomplete(
         input_text,
         session_token=session_token,
         offset=offset,
+        origin=origin,
         location=location,
         radius=radius,
         language=language,
@@ -623,6 +631,7 @@ def _autocomplete(
     input_text,
     session_token=None,
     offset=None,
+    origin=None,
     location=None,
     radius=None,
     language=None,
@@ -641,6 +650,8 @@ def _autocomplete(
         params["sessiontoken"] = session_token
     if offset:
         params["offset"] = offset
+    if origin:
+        params["origin"] = convert.latlng(origin)
     if location:
         params["location"] = convert.latlng(location)
     if radius:
