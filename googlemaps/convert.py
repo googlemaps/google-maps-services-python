@@ -160,9 +160,7 @@ def _is_list(arg):
         return False
     if isinstance(arg, str): # Python 3-only, as str has __iter__
         return False
-    return (not _has_method(arg, "strip")
-            and _has_method(arg, "__getitem__")
-            or _has_method(arg, "__iter__"))
+    return _has_method(arg, "__getitem__") if not _has_method(arg, "strip") else _has_method(arg, "__iter__")
 
 
 def is_string(val):
