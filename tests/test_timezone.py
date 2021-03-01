@@ -53,7 +53,7 @@ class TimezoneTest(TestCase):
             responses.calls[0].request.url,
         )
 
-    class MockDatetime(object):
+    class MockDatetime:
         def now(self):
             return datetime.datetime.fromtimestamp(1608)
 

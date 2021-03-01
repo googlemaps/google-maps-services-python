@@ -29,7 +29,7 @@ MAPS_MAP_TYPES = set(
 )
 
 
-class StaticMapParam(object):
+class StaticMapParam:
     """Base class to handle parameters for Maps Static API."""
 
     def __init__(self):

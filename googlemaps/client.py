@@ -46,7 +46,7 @@ _DEFAULT_BASE_URL = "https://maps.googleapis.com"
 _RETRIABLE_STATUSES = set([500, 503, 504])
 
 
-class Client(object):
+class Client:
     """Performs requests to the Google Maps API web services."""
 
     def __init__(self, key=None, client_id=None, client_secret=None,
