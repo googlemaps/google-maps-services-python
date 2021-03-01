@@ -21,9 +21,7 @@ import warnings
 from googlemaps import convert
 
 
-PLACES_FIND_FIELDS_BASIC = set(
-    [
-        "business_status",
+PLACES_FIND_FIELDS_BASIC = {"business_status",
         "formatted_address",
         "geometry",
         "geometry/location",
@@ -42,13 +40,11 @@ PLACES_FIND_FIELDS_BASIC = set(
         "photos",
         "place_id",
         "plus_code",
-        "types",
-    ]
-)
+        "types",}
 
-PLACES_FIND_FIELDS_CONTACT = set(["opening_hours"])
+PLACES_FIND_FIELDS_CONTACT = {"opening_hours"}
 
-PLACES_FIND_FIELDS_ATMOSPHERE = set(["price_level", "rating", "user_ratings_total"])
+PLACES_FIND_FIELDS_ATMOSPHERE = {"price_level", "rating", "user_ratings_total"}
 
 PLACES_FIND_FIELDS = (
     PLACES_FIND_FIELDS_BASIC
@@ -56,9 +52,7 @@ PLACES_FIND_FIELDS = (
     ^ PLACES_FIND_FIELDS_ATMOSPHERE
 )
 
-PLACES_DETAIL_FIELDS_BASIC = set(
-    [
-        "address_component",
+PLACES_DETAIL_FIELDS_BASIC = {"address_component",
         "adr_address",
         "business_status",
         "formatted_address",
@@ -82,17 +76,11 @@ PLACES_DETAIL_FIELDS_BASIC = set(
         "type",
         "url",
         "utc_offset",
-        "vicinity",
-    ]
-)
+        "vicinity",}
 
-PLACES_DETAIL_FIELDS_CONTACT = set(
-    ["formatted_phone_number", "international_phone_number", "opening_hours", "website"]
-)
+PLACES_DETAIL_FIELDS_CONTACT = {"formatted_phone_number", "international_phone_number", "opening_hours", "website"}
 
-PLACES_DETAIL_FIELDS_ATMOSPHERE = set(
-    ["price_level", "rating", "review", "user_ratings_total"]
-)
+PLACES_DETAIL_FIELDS_ATMOSPHERE = {"price_level", "rating", "review", "user_ratings_total"}
 
 PLACES_DETAIL_FIELDS = (
     PLACES_DETAIL_FIELDS_BASIC
@@ -658,3 +646,4 @@ def _autocomplete(
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
     return client._request(url, params).get("predictions", [])
+    
