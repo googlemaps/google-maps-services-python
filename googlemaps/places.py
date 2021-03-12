@@ -168,7 +168,7 @@ def find_place(
 
 def places(
     client,
-    query,
+    query=None,
     location=None,
     radius=None,
     language=None,
