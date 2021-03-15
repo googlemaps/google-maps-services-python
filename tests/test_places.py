@@ -212,6 +212,7 @@ class PlacesTest(TestCase):
             "Google",
             session_token=session_token,
             offset=3,
+            origin=self.location,
             location=self.location,
             radius=self.radius,
             language=self.language,
@@ -223,6 +224,7 @@ class PlacesTest(TestCase):
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
             "%s?components=country%%3Aau&input=Google&language=en-AU&"
+            "origin=-33.86746%%2C151.20709&"
             "location=-33.86746%%2C151.20709&offset=3&radius=100&"
             "strictbounds=true&types=geocode&key=%s&sessiontoken=%s"
             % (url, self.key, session_token),
