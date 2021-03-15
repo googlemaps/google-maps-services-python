@@ -10,4 +10,5 @@ if ! python3 -m pip --version; then
 else
     sudo python3 -m pip install --upgrade setuptools
     python3 -m pip install nox
+    python3 -m pip install --prefer-binary twine
 fi

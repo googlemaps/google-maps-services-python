@@ -14,7 +14,7 @@ plugins:
           from: 'version=".*"'
           to: 'version="${nextRelease.version}"'
   - - "@semantic-release/exec"
-    -  prepareCmd: "rm -rf dist && python3 setup.py sdist && python3 -m twine check dist/*"
+    -  prepareCmd: "python3 setup.py sdist && python3 -m twine check dist/*"
        publishCmd: "python3 -m twine upload dist/*"
   - - "@semantic-release/git"
     - assets:

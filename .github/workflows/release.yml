@@ -19,11 +19,13 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: 1
     steps:
     - name: Setup Python
       uses: "actions/setup-python@v1"
       with:
-        python-version: "3.6"
+        python-version: "3.9"
     - name: Checkout
       uses: actions/checkout@v2
       with:
