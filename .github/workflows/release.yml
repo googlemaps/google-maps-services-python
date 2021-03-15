@@ -40,8 +40,8 @@ jobs:
           "@semantic-release/release-notes-generator"
           "@google/semantic-release-replace-plugin"
           "@semantic-release/exec"
-          "@semantic-release/git
-          "@semantic-release/github
+          "@semantic-release/git"
+          "@semantic-release/github"
       env:
         GH_TOKEN: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
         TWINE_USERNAME: __token__
