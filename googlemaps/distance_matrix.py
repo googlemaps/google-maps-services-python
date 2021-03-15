@@ -26,17 +26,19 @@ def distance_matrix(client, origins, destinations,
                     transit_routing_preference=None, traffic_model=None, region=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
-    :param origins: One or more locations and/or latitude/longitude values,
-        from which to calculate distance and time. If you pass an address as
-        a string, the service will geocode the string and convert it to a
+    :param origins: One or more addresses, Place IDs, and/or latitude/longitude
+        values, from which to calculate distance and time. Each Place ID string
+        must be prepended with 'place_id:'. If you pass an address as a string,
+        the service will geocode the string and convert it to a
         latitude/longitude coordinate to calculate directions.
     :type origins: a single location, or a list of locations, where a
         location is a string, dict, list, or tuple
 
-    :param destinations: One or more addresses and/or lat/lng values, to
-        which to calculate distance and time. If you pass an address as a
-        string, the service will geocode the string and convert it to a
-        latitude/longitude coordinate to calculate directions.
+    :param destinations: One or more addresses, Place IDs, and/or lat/lng values
+        , to which to calculate distance and time. Each Place ID string must be
+        prepended with 'place_id:'. If you pass an address as a string, the
+        service will geocode the string and convert it to a latitude/longitude
+        coordinate to calculate directions.
     :type destinations: a single location, or a list of locations, where a
         location is a string, dict, list, or tuple
 
