@@ -84,7 +84,10 @@ class DistanceMatrixTest(TestCase):
             content_type="application/json",
         )
 
-        origins = ["Bobcaygeon ON", [41.43206, -81.38992]]
+        origins = [
+            "Bobcaygeon ON", [41.43206, -81.38992],
+            "place_id:ChIJ7cv00DwsDogRAMDACa2m4K8"
+        ]
         destinations = [
             (43.012486, -83.6964149),
             {"lat": 42.8863855, "lng": -78.8781627},
@@ -95,7 +98,8 @@ class DistanceMatrixTest(TestCase):
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
             "https://maps.googleapis.com/maps/api/distancematrix/json?"
-            "key=%s&origins=Bobcaygeon+ON%%7C41.43206%%2C-81.38992&"
+            "key=%s&origins=Bobcaygeon+ON%%7C41.43206%%2C-81.38992%%7C"
+            "place_id%%3AChIJ7cv00DwsDogRAMDACa2m4K8&"
             "destinations=43.012486%%2C-83.6964149%%7C42.8863855%%2C"
             "-78.8781627" % self.key,
             responses.calls[0].request.url,
@@ -179,5 +183,36 @@ class DistanceMatrixTest(TestCase):
             "key=%s&language=fr-FR&mode=bicycling&"
             "origins=Vancouver+BC%%7CSeattle&"
             "destinations=San+Francisco%%7CVictoria+BC" % self.key,
+            responses.calls[0].request.url,
+        )
+    @responses.activate
+    def test_place_id_param(self):
+        responses.add(
+            responses.GET,
+            "https://maps.googleapis.com/maps/api/distancematrix/json",
+            body='{"status":"OK","rows":[]}',
+            status=200,
+            content_type="application/json",
+        )
+
+        origins = [
+            'place_id:ChIJ7cv00DwsDogRAMDACa2m4K8',
+            'place_id:ChIJzxcfI6qAa4cR1jaKJ_j0jhE',
+        ]
+        destinations = [
+            'place_id:ChIJPZDrEzLsZIgRoNrpodC5P30',
+            'place_id:ChIJjQmTaV0E9YgRC2MLmS_e_mY',
+        ]
+
+        matrix = self.client.distance_matrix(origins, destinations)
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual(
+            "https://maps.googleapis.com/maps/api/distancematrix/json?"
+            "key=%s&"
+            "origins=place_id%%3AChIJ7cv00DwsDogRAMDACa2m4K8%%7C"
+            "place_id%%3AChIJzxcfI6qAa4cR1jaKJ_j0jhE&"
+            "destinations=place_id%%3AChIJPZDrEzLsZIgRoNrpodC5P30%%7C"
+            "place_id%%3AChIJjQmTaV0E9YgRC2MLmS_e_mY" % self.key,
             responses.calls[0].request.url,
         )
