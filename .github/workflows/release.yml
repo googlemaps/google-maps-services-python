@@ -20,10 +20,18 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+    - name: Setup Python
+      uses: "actions/setup-python@v1"
+      with:
+        python-version: "3.6"
     - name: Checkout
       uses: actions/checkout@v2
       with:
         token: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
+    - name: Install dependencies
+      run: ./.github/scripts/install.sh
+    - name: Run distribution
+      run: python3 -m nox -e distribution
     - name: Semantic Release
       uses: cycjimmy/semantic-release-action@v2
       with:
@@ -35,3 +43,5 @@ jobs:
           "@semantic-release/github
       env:
         GH_TOKEN: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
