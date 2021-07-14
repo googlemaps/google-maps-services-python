@@ -280,10 +280,6 @@ class ClientTest(TestCase):
 
         self.assertEqual(2, len(responses.calls))
 
-    def test_channel_without_client_id(self):
-        with self.assertRaises(ValueError):
-            client = googlemaps.Client(key="AIzaasdf", channel="mychannel")
-
     def test_invalid_channel(self):
         # Cf. limitations here:
         # https://developers.google.com/maps/premium/reports
