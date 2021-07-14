@@ -130,13 +130,11 @@ class Client:
             raise ValueError("Invalid API key provided.")
 
         if channel:
-            if not client_id:
-                raise ValueError("The channel argument must be used with a "
-                                 "client ID")
             if not re.match("^[a-zA-Z0-9._-]*$", channel):
                 raise ValueError("The channel argument must be an ASCII "
                     "alphanumeric string. The period (.), underscore (_)"
-                    "and hyphen (-) characters are allowed.")
+                    "and hyphen (-) characters are allowed. If used without "
+                    "client_id, it must be 0-999.")
 
         self.session = requests.Session()
         self.key = key
