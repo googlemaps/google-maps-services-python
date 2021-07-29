@@ -54,6 +54,7 @@ class Client:
                  retry_timeout=60, requests_kwargs=None,
                  queries_per_second=50, channel=None,
                  retry_over_query_limit=True, experience_id=None, 
+                 requests_session=None,
                  base_url=_DEFAULT_BASE_URL):
         """
         :param key: Maps API key. Required, unless "client_id" and
@@ -116,6 +117,9 @@ class Client:
             implemented. See the official requests docs for more info:
             http://docs.python-requests.org/en/latest/api/#main-interface
         :type requests_kwargs: dict
+
+        :param requests_session: Reused persistent session for flexibility.
+        :type requests_session: requests.Session
         
         :param base_url: The base URL for all requests. Defaults to the Maps API
             server. Should not have a trailing slash.
@@ -136,7 +140,7 @@ class Client:
                     "and hyphen (-) characters are allowed. If used without "
                     "client_id, it must be 0-999.")
 
-        self.session = requests.Session()
+        self.session = requests_session or requests.Session()
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
