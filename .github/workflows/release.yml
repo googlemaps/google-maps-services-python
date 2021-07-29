@@ -34,6 +34,8 @@ jobs:
       run: ./.github/scripts/install.sh
     - name: Run distribution
       run: python3 -m nox -e distribution
+    - name: Cleanup old dist
+      run: rm -rf googlemaps-*
     - name: Semantic Release
       uses: cycjimmy/semantic-release-action@v2
       with:
