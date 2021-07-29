@@ -13,8 +13,7 @@ plugins:
             - "./setup.py"
           from: 'version=".*"'
           to: 'version="${nextRelease.version}"'
-  - - "@semantic-release/exec"
-       publishCmd: "python3 setup.py sdist && python3 -m twine upload dist/*"
+  - [ "@semantic-release/exec", { publishCmd: "python3 setup.py sdist && python3 -m twine upload dist/*" }]
   - - "@semantic-release/git"
     - assets:
         - "./googlemaps/__init__.py"
