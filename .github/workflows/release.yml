@@ -35,7 +35,7 @@ jobs:
     - name: Run distribution
       run: python3 -m nox -e distribution
     - name: Cleanup old dist
-      run: rm -rf googlemaps-*
+      run: rm -rf googlemaps-* dist/
     - name: Semantic Release
       uses: cycjimmy/semantic-release-action@v2
       with:
