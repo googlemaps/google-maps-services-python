@@ -51,7 +51,8 @@ def distance_matrix(client, origins, destinations,
     :type language: string
 
     :param avoid: Indicates that the calculated route(s) should avoid the
-        indicated features. Valid values are "tolls", "highways" or "ferries".
+        indicated features. Valid values are "tolls", "highways" or "ferries"
+        as well as any combination of them separated by "|".
     :type avoid: string
 
     :param units: Specifies the unit system to use when displaying results.
