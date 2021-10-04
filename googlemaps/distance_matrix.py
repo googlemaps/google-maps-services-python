@@ -107,7 +107,9 @@ def distance_matrix(client, origins, destinations,
         params["language"] = language
 
     if avoid:
-        if avoid not in ["tolls", "highways", "ferries"]:
+        valid_avoid_values = {"tolls", "highways", "ferries"}
+        supplied_avoid_values = set(convert.to_list(avoid))
+        if supplied_avoid_values - valid_avoid_values:
             raise ValueError("Invalid route restriction.")
         params["avoid"] = avoid
 

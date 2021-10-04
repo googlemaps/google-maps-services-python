@@ -165,6 +165,17 @@ class ConvertTest(unittest.TestCase):
         actual_polyline = convert.encode_polyline(points)
         self.assertEqual(test_polyline, actual_polyline)
 
+    def test_to_list(self):
+        test_to_list = "tolls|highways"
+
+        elements = convert.to_list(test_to_list)
+
+        self.assertEqual(["tolls", "highways"], elements)
+        test_to_list = "tolls|highways|"
+
+        elements = convert.to_list(test_to_list)
+        self.assertEqual(["tolls", "highways"], elements)
+
 
 @pytest.mark.parametrize(
     "value, expected",

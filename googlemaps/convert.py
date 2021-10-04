@@ -142,6 +142,20 @@ def join_list(sep, arg):
     """
     return sep.join(as_list(arg))
 
+def to_list(arg, sep="|"):
+    """Coerces arg into a list depends on supplied separator.
+    If arg is already list-like return arg.
+
+    :type sep: string
+    """
+    if _is_list(arg):
+        return arg
+
+    if isinstance(arg, str):
+        elements = arg.split(sep)
+        return [element for element in elements if element]
+
+    return as_list(arg)
 
 def as_list(arg):
     """Coerces arg into a list. If arg is already list-like, returns arg.
