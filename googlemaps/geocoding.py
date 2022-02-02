@@ -19,7 +19,7 @@
 from googlemaps import convert
 
 
-def geocode(client, address=None, components=None, bounds=None, region=None,
+def geocode(client, address=None, place_id=None, components=None, bounds=None, region=None,
             language=None):
     """
     Geocoding is the process of converting addresses
@@ -29,6 +29,10 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
 
     :param address: The address to geocode.
     :type address: string
+
+    :param place_id: A textual identifier that uniquely identifies a place,
+        returned from a Places search.
+    :type place_id: string
 
     :param components: A component filter for which you wish to obtain a
         geocode, for example: ``{'administrative_area': 'TX','country': 'US'}``
@@ -52,6 +56,9 @@ def geocode(client, address=None, components=None, bounds=None, region=None,
 
     if address:
         params["address"] = address
+
+    if place_id:
+        params["place_id"] = place_id
 
     if components:
         params["components"] = convert.components(components)

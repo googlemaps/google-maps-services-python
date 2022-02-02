@@ -202,6 +202,25 @@ class GeocodingTest(TestCase):
         )
 
     @responses.activate
+    def test_geocode_place_id(self):
+        responses.add(
+            responses.GET,
+            "https://maps.googleapis.com/maps/api/geocode/json",
+            body='{"status":"OK","results":[]}',
+            status=200,
+            content_type="application/json",
+        )
+
+        results = self.client.geocode(place_id="ChIJeRpOeF67j4AR9ydy_PIzPuM")
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual(
+            "https://maps.googleapis.com/maps/api/geocode/json?"
+            "key=%s&place_id=ChIJeRpOeF67j4AR9ydy_PIzPuM" % self.key,
+            responses.calls[0].request.url,
+            )
+
+    @responses.activate
     def test_simple_reverse_geocode(self):
         responses.add(
             responses.GET,
