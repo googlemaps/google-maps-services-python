@@ -24,7 +24,7 @@ on:
     branches: ['*']
 
 jobs:
-  test:
+  matrix:
     name: "Run tests on Python ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
     strategy:
@@ -46,3 +46,9 @@ jobs:
       run: |
         python3 -m nox --session "tests-${{ matrix.python-version }}"
         python3 -m nox -e distribution
+  test:
+    name: Wait for matrix to finish
+    needs: [matrix]
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "Test matrix finished"

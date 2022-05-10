@@ -1,7 +1,8 @@
 Python Client for Google Maps Services
 ====================================
 
-[![Build Status](https://travis-ci.org/googlemaps/google-maps-services-python.svg?branch=master)](https://travis-ci.org/googlemaps/google-maps-services-python)
+![Test](https://github.com/googlemaps/google-maps-services-js/workflows/test/badge.svg)
+![Release](https://github.com/googlemaps/google-maps-services-js/workflows/release/badge.svg)
 [![codecov](https://codecov.io/gh/googlemaps/google-maps-services-python/branch/master/graph/badge.svg)](https://codecov.io/gh/googlemaps/google-maps-services-python)
 [![PyPI version](https://badge.fury.io/py/googlemaps.svg)](https://badge.fury.io/py/googlemaps)
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/googlemaps)
