@@ -27,10 +27,10 @@ jobs:
       GITHUB_TOKEN: ${{secrets.SYNCED_GITHUB_TOKEN_REPO}}
     steps:
       - name: approve
-        run: gh pr review --comment -b "Automatically approved since dependabot is [configured](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#labels) with label `automatic`."
-        if: ${{ github.event.label.name == 'automatic' }}
+        run: gh pr review --comment -b "Automatically approved since dependabot is not [configured](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#labels) with label `do not merge`."
+        if: ${{ github.event.label.name != 'do not merge' }}
       - name: approve-instructions
-        run: echo "configure dependabot with label 'automatic' to have it automatically approved and merged. https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#labels"
-        if: ${{ github.event.label.name != 'automatic' }}
+        run: echo "Configure dependabot with label 'do not merge' to prevent it from being automatically approved and merged. https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#labels"
+        if: ${{ github.event.label.name == 'do not merge' }}
       - name: merge
         run: gh pr merge --auto --squash --delete-branch "$PR_URL"
