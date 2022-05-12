@@ -27,6 +27,6 @@ jobs:
       GITHUB_TOKEN: ${{secrets.SYNCED_GITHUB_TOKEN_REPO}}
     steps:
       - name: approve
-        run: gh pr review --comment -b "Automatically approved dependabot pull request."
+        run: gh pr review --comment -b "Automatically approved dependabot pull request." "$PR_URL"
       - name: merge
         run: gh pr merge --auto --squash --delete-branch "$PR_URL"
