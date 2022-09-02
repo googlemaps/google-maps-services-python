@@ -26,6 +26,7 @@ APIs:
  - Roads API
  - Places API
  - Maps Static API
+ - Address Validation API
 
 Keep in mind that the same [terms and conditions](https://developers.google.com/maps/terms) apply
 to usage of the APIs when they're accessed through this library.
@@ -85,6 +86,9 @@ directions_result = gmaps.directions("Sydney Town Hall",
                                      "Parramatta, NSW",
                                      mode="transit",
                                      departure_time=now)
+
+# Validate an address with address validation
+addressvalidation_result =  gmaps.addressvalidation('1600 Amphitheatre Pk', regionCode='US',locality='Mountain View')
 ```
 
 For more usage examples, check out [the tests](https://github.com/googlemaps/google-maps-services-python/tree/master/tests).

@@ -403,6 +403,7 @@ from googlemaps.places import places_autocomplete
 from googlemaps.places import places_autocomplete_query
 from googlemaps.maps import static_map
 
+from googlemaps.addressvalidation import addressvalidation
 
 def make_api_method(func):
     """
@@ -446,6 +447,7 @@ Client.places_photo = make_api_method(places_photo)
 Client.places_autocomplete = make_api_method(places_autocomplete)
 Client.places_autocomplete_query = make_api_method(places_autocomplete_query)
 Client.static_map = make_api_method(static_map)
+Client.addressvalidation = make_api_method(addressvalidation)
 
 
 def sign_hmac(secret, payload):
