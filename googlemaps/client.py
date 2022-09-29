@@ -31,6 +31,8 @@ import re
 import requests
 import random
 import time
+import math
+import sys
 
 import googlemaps
 
@@ -52,7 +54,7 @@ class Client:
     def __init__(self, key=None, client_id=None, client_secret=None,
                  timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=50, channel=None,
+                 queries_per_second=60, queries_per_minute=6000,channel=None,
                  retry_over_query_limit=True, experience_id=None, 
                  requests_session=None,
                  base_url=_DEFAULT_BASE_URL):
@@ -93,10 +95,15 @@ class Client:
             seconds.
         :type retry_timeout: int
 
-        :param queries_per_second: Number of queries per second permitted.
+        :param queries_per_second: Number of queries per second permitted. Unset queries_per_minute to None. If set smaller number will be used.
             If the rate limit is reached, the client will sleep for the
             appropriate amount of time before it runs the current query.
         :type queries_per_second: int
+
+        :param queries_per_minute: Number of queries per minute permitted. Unset queries_per_second to None. If set smaller number will be used.
+            If the rate limit is reached, the client will sleep for the
+            appropriate amount of time before it runs the current query.
+        :type queries_per_minute: int
 
         :param retry_over_query_limit: If True, requests that result in a
             response indicating the query rate limit was exceeded will be
@@ -169,10 +176,29 @@ class Client:
             "timeout": self.timeout,
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
-
+        
+        self.queries_quota : int
         self.queries_per_second = queries_per_second
+        self.queries_per_minute = queries_per_minute
+        try: 
+            if (type(self.queries_per_second) == int and type(self.queries_per_minute) == int ):
+                self.queries_quota =  math.floor(min(self.queries_per_second, self.queries_per_minute/60))
+                print("##############", self.queries_quota)
+            elif (self.queries_per_second and type(self.queries_per_second) == int ):
+                self.queries_quota = math.floor(self.queries_per_second)
+                print("##############", self.queries_quota)
+            elif (self.queries_per_minute and type(self.queries_per_minute) == int ):
+                self.queries_quota = math.floor(self.queries_per_minute/60)
+                print("##############", self.queries_quota)
+            else:
+                sys.exit("MISSING VALID NUMBER for queries_per_second or queries_per_minute")
+            print("\n","API queries_quota:", self.queries_quota,"\n")
+
+        except NameError:
+            sys.exit("MISSING VALUE for queries_per_second or queries_per_minute")
+
         self.retry_over_query_limit = retry_over_query_limit
-        self.sent_times = collections.deque("", queries_per_second)
+        self.sent_times = collections.deque("", self.queries_quota)
         self.set_experience_id(experience_id)
         self.base_url = base_url
 
@@ -303,7 +329,7 @@ class Client:
         # Check if the time of the nth previous query (where n is
         # queries_per_second) is under a second ago - if so, sleep for
         # the difference.
-        if self.sent_times and len(self.sent_times) == self.queries_per_second:
+        if self.sent_times and len(self.sent_times) == self.queries_quota:
             elapsed_since_earliest = time.time() - self.sent_times[0]
             if elapsed_since_earliest < 1:
                 time.sleep(1 - elapsed_since_earliest)
