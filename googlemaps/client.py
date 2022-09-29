@@ -183,13 +183,10 @@ class Client:
         try: 
             if (type(self.queries_per_second) == int and type(self.queries_per_minute) == int ):
                 self.queries_quota =  math.floor(min(self.queries_per_second, self.queries_per_minute/60))
-                print("##############", self.queries_quota)
             elif (self.queries_per_second and type(self.queries_per_second) == int ):
                 self.queries_quota = math.floor(self.queries_per_second)
-                print("##############", self.queries_quota)
             elif (self.queries_per_minute and type(self.queries_per_minute) == int ):
                 self.queries_quota = math.floor(self.queries_per_minute/60)
-                print("##############", self.queries_quota)
             else:
                 sys.exit("MISSING VALID NUMBER for queries_per_second or queries_per_minute")
             print("\n","API queries_quota:", self.queries_quota,"\n")
