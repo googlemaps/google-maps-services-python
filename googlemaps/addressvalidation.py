@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Google Inc. All rights reserved.
+# Copyright 2014 Google Inc. All rights reserved.
 #
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -44,7 +44,7 @@ def _addressvalidation_extract(response):
     #     raise exceptions.ApiError(response.status_code, error)
 
 
-def addressvalidation(client, addressLines, regionCode=None , locality=None):
+def addressvalidation(client, addressLines, regionCode=None , locality=None, enableUspsCass=None):
     """
     The Google Maps Address Validation API returns a verification of an address
     See https://developers.google.com/maps/documentation/address-validation/overview
@@ -55,6 +55,8 @@ def addressvalidation(client, addressLines, regionCode=None , locality=None):
     :type regionCode: string  
     :param locality: (optional) Restrict to a locality, ie:Mountain View
     :type locality: string
+    :param enableUspsCass For the "US" and "PR" regions only, you can optionally enable the Coding Accuracy Support System (CASS) from the United States Postal Service (USPS)
+    :type locality: boolean
     """
 
     params = {
@@ -68,6 +70,9 @@ def addressvalidation(client, addressLines, regionCode=None , locality=None):
 
     if locality is not None:
         params["address"]["locality"] = locality
+
+    if enableUspsCass is not False or enableUspsCass is not None:
+        params["enableUspsCass"] = enableUspsCass
 
     return client._request("/v1:validateAddress", {},  # No GET params
                            base_url=_ADDRESSVALIDATION_BASE_URL,

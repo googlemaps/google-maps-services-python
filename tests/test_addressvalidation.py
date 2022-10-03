@@ -34,12 +34,12 @@ class AddressValidationTest(TestCase):
         responses.add(
             responses.POST,
             "https://addressvalidation.googleapis.com/v1:validateAddress",
-            body='{"address": {"regionCode": "US","locality": "Mountain View","addressLines": "1600 Amphitheatre Pkwy"}}',
+            body='{"address": {"regionCode": "US","locality": "Mountain View","addressLines": "1600 Amphitheatre Pkwy"},"enableUspsCass":true}',
             status=200,
             content_type="application/json",
         )
 
-        results = self.client.addressvalidation('1600 Amphitheatre Pk', regionCode='US', locality='Mountain View')
+        results = self.client.addressvalidation('1600 Amphitheatre Pk', regionCode='US', locality='Mountain View', enableUspsCass=True)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
