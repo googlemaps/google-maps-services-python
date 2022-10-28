@@ -17,4 +17,3 @@ try:
 
 except NameError:
     print("MISSING VALUE for queries_per_second or queries_per_minute")
-
