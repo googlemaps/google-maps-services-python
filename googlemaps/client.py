@@ -425,7 +425,6 @@ from googlemaps.places import places_photo
 from googlemaps.places import places_autocomplete
 from googlemaps.places import places_autocomplete_query
 from googlemaps.maps import static_map
-
 from googlemaps.addressvalidation import addressvalidation
 
 def make_api_method(func):

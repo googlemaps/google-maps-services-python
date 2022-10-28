@@ -50,7 +50,7 @@ def addressvalidation(client, addressLines, regionCode=None , locality=None, ena
     See https://developers.google.com/maps/documentation/address-validation/overview
     request must include parameters below.
     :param addressLines: The address to validate
-    :type addressLines: string 
+    :type addressLines: array 
     :param regionCode: (optional) The country code
     :type regionCode: string  
     :param locality: (optional) Restrict to a locality, ie:Mountain View
