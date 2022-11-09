@@ -34,3 +34,5 @@ googlemaps.egg-info
 *.egg
 .vscode/
 .idea/
+index.py
+test.py
