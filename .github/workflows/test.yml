@@ -51,4 +51,7 @@ jobs:
     needs: [matrix]
     runs-on: ubuntu-latest
     steps:
-    - run: echo "Test matrix finished"
+    - id: step1
+    - run: echo "test=Test matrix finished" >> $GITHUB_OUTPUT
+
+    - run: echo "${{ steps.step1.outputs.test }}"
