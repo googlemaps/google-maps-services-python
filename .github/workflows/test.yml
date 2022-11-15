@@ -51,4 +51,4 @@ jobs:
     needs: [matrix]
     runs-on: ubuntu-latest
     steps:
-     - run: echo "test=`"Test matrix finished`"" >> $GITHUB_OUTPUT
+     - run: echo "test='Test matrix finished'" >> $GITHUB_OUTPUT
