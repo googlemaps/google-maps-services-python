@@ -51,4 +51,9 @@ jobs:
     needs: [matrix]
     runs-on: ubuntu-latest
     steps:
-     - run: echo "{test}={'Test matrix finished'}" >> $GITHUB_OUTPUT
+      - name: Text generation
+        id: text-generated
+        run: echo "test=`"Test matrix finished`"" >> $GITHUB_OUTPUT
+
+      - name: Get color
+        run: echo "${{ steps.text-generated.outputs.step }}"
