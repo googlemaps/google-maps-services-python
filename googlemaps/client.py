@@ -177,7 +177,6 @@ class Client:
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
         
-        self.queries_quota = int
         self.queries_per_second = queries_per_second
         self.queries_per_minute = queries_per_minute
         try: 
