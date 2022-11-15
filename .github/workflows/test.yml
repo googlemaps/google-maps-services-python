@@ -50,6 +50,3 @@ jobs:
     name: Wait for matrix to finish
     needs: [matrix]
     runs-on: ubuntu-latest
-    steps:
-    - run:  echo "test=$(echo 'Test matrix finished')" >> $GITHUB_OUTPUT
-
