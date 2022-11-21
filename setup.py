@@ -26,7 +26,7 @@ with open("CHANGELOG.md") as f:
 
 setup(
     name="googlemaps",
-    version="4.7.0",
+    version="4.7.1",
     description="Python client library for Google Maps Platform",
     long_description=readme + changelog,
     long_description_content_type="text/markdown",
