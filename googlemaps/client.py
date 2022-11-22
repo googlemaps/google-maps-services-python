@@ -191,7 +191,7 @@ class Client:
                 self.queries_quota = math.floor(self.queries_per_minute/60)
             else:
                 sys.exit("MISSING VALID NUMBER for queries_per_second or queries_per_minute")
-            logger.info("API queries_quota:", self.queries_quota)
+            logger.info("API queries_quota: %s", self.queries_quota)
 
         except NameError:
             sys.exit("MISSING VALUE for queries_per_second or queries_per_minute")
