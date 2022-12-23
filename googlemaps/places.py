@@ -96,7 +96,7 @@ DEPRECATED_FIELDS_MESSAGE = (
 
 
 def find_place(
-    client, input, input_type, fields=None, location_bias=None, language=None
+    client, input, input_type, fields=None, location_bias=None, location_restriction=None, language=None
 ):
     """
     A Find Place request takes a text input, and returns a place.
@@ -120,6 +120,12 @@ def find_place(
                           representing the points of a rectangle. See:
                           https://developers.google.com/places/web-service/search#FindPlaceRequests
     :type location_bias: string
+
+    :param location_restriction: Restrict results to a specified area, by specifying either
+                                 a radius plus lat/lng, or two lat/lng pairs representing the
+                                 points of a rectangle. See:
+                                 https://developers.google.com/places/web-service/search#FindPlaceRequests
+    :type location_restriction: string
 
     :param language: The language in which to return results.
     :type language: string
@@ -160,6 +166,13 @@ def find_place(
         if location_bias.split(":")[0] not in valid:
             raise ValueError("location_bias should be prefixed with one of: %s" % valid)
         params["locationbias"] = location_bias
+
+    if location_restriction:
+        valid = ["circle", "rectangle"]
+        if location_restriction.split(":")[0] not in valid:
+            raise ValueError("location_restriction should be prefixed with one of: %s" % valid)
+        params["locationrestriction"] = location_restriction
+
     if language:
         params["language"] = language
 
