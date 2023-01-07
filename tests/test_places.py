@@ -36,6 +36,7 @@ class PlacesTest(TestCase):
         self.type = "liquor_store"
         self.language = "en-AU"
         self.region = "AU"
+        self.review_sort_newest = True
         self.radius = 100
 
     @responses.activate
@@ -54,7 +55,7 @@ class PlacesTest(TestCase):
             "textquery",
             fields=["business_status", "geometry/location", "place_id"],
             location_bias="point:90,90",
-            language=self.language,
+            language=self.language
         )
 
         self.assertEqual(1, len(responses.calls))
@@ -165,11 +166,12 @@ class PlacesTest(TestCase):
             "ChIJN1t_tDeuEmsRUsoyG83frY4",
             fields=["business_status", "geometry/location", "place_id"],
             language=self.language,
+            review_sort_newest=True,
         )
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
+            "%s?reviews_sort=newest&language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
             "&key=%s&fields=business_status,geometry/location,place_id"
             % (url, self.key),
             responses.calls[0].request.url,

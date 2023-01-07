@@ -396,7 +396,14 @@ def _places(
     return client._request(url, params)
 
 
-def place(client, place_id, session_token=None, fields=None, language=None):
+def place(
+    client,
+    place_id,
+    session_token=None,
+    fields=None,
+    language=None,
+    review_sort_newest=False
+):
     """
     Comprehensive details for an individual place.
 
@@ -415,6 +422,9 @@ def place(client, place_id, session_token=None, fields=None, language=None):
 
     :param language: The language in which to return results.
     :type language: string
+
+    :param review_sort_newest: Determines of reviews are sorted by most_relevant or newest.
+    :type review_sort_newest: Boolean
 
     :rtype: result dict with the following keys:
         result: dict containing place details
@@ -444,6 +454,8 @@ def place(client, place_id, session_token=None, fields=None, language=None):
         params["language"] = language
     if session_token:
         params["sessiontoken"] = session_token
+    if review_sort_newest:
+        params["reviews_sort"] = "newest"
 
     return client._request("/maps/api/place/details/json", params)
 
