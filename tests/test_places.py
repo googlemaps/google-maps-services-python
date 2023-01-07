@@ -55,7 +55,7 @@ class PlacesTest(TestCase):
             "textquery",
             fields=["business_status", "geometry/location", "place_id"],
             location_bias="point:90,90",
-            language=self.language
+            language=self.language,
         )
 
         self.assertEqual(1, len(responses.calls))
