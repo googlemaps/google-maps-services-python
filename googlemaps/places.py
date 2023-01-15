@@ -44,7 +44,7 @@ PLACES_FIND_FIELDS_BASIC = {"business_status",
 
 PLACES_FIND_FIELDS_CONTACT = {"opening_hours"}
 
-PLACES_FIND_FIELDS_ATMOSPHERE = {"price_level", "rating", "user_ratings_total"}
+PLACES_FIND_FIELDS_ATMOSPHERE = {"editorial_summary","price_level", "rating", "user_ratings_total"}
 
 PLACES_FIND_FIELDS = (
     PLACES_FIND_FIELDS_BASIC
