@@ -80,7 +80,7 @@ PLACES_DETAIL_FIELDS_BASIC = {"address_component",
 
 PLACES_DETAIL_FIELDS_CONTACT = {"formatted_phone_number", "international_phone_number", "opening_hours", "website"}
 
-PLACES_DETAIL_FIELDS_ATMOSPHERE = {"price_level", "rating", "review", "user_ratings_total"}
+PLACES_DETAIL_FIELDS_ATMOSPHERE = {"editorial_summary","price_level", "rating", "review", "user_ratings_total"}
 
 PLACES_DETAIL_FIELDS = (
     PLACES_DETAIL_FIELDS_BASIC
