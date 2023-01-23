@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,12 +28,12 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Python
-      uses: "actions/setup-python@v1"
+      uses: "actions/setup-python@v3"
       with:
-        python-version: "3.6"
+        python-version: "3.9"
 
     - name: Install dependencies
       run: ./.github/scripts/install.sh
@@ -51,7 +51,7 @@ jobs:
         cd $GITHUB_WORKSPACE && git checkout gh-pages && tar xvf ~/docs.tar
 
     - name: PR Changes
-      uses: peter-evans/create-pull-request@v2
+      uses: peter-evans/create-pull-request@v4
       with:
         token: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
         commit-message: 'docs: Update docs'
