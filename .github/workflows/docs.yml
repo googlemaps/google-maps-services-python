@@ -1,0 +1,63 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# A workflow that pushes artifacts to Sonatype
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+  repository_dispatch:
+    types: [docs]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: "actions/setup-python@v3"
+      with:
+        python-version: "3.9"
+
+    - name: Install dependencies
+      run: ./.github/scripts/install.sh
+
+    - name: Generate docs
+      run: python3 -m nox --session docs
+
+    - name: Update gh-pages branch with docs
+      run: |
+        echo "Creating tar for generated docs"
+        cd ./docs/_build/html && tar cvf ~/docs.tar .
+
+        echo "Unpacking tar into gh-pages branch"
+        git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+        cd $GITHUB_WORKSPACE && git checkout gh-pages && tar xvf ~/docs.tar
+
+    - name: PR Changes
+      uses: peter-evans/create-pull-request@v4
+      with:
+        token: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
+        commit-message: 'docs: Update docs'
+        committer: googlemaps-bot <googlemaps-bot@google.com>
+        author: googlemaps-bot <googlemaps-bot@google.com>
+        title: 'docs: Update docs'
+        body: |
+            Updated GitHub pages with latest from `python3 -m nox --session docs`.
+        branch: googlemaps-bot/update_gh_pages
