@@ -36,6 +36,7 @@ class PlacesTest(TestCase):
         self.type = "liquor_store"
         self.language = "en-AU"
         self.region = "AU"
+        self.reviews_sort="newest"
         self.radius = 100
 
     @responses.activate
@@ -165,11 +166,12 @@ class PlacesTest(TestCase):
             "ChIJN1t_tDeuEmsRUsoyG83frY4",
             fields=["business_status", "geometry/location", "place_id"],
             language=self.language,
+            reviews_sort=self.reviews_sort,
         )
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
+            "%s?reviews_sort=newest&language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
             "&key=%s&fields=business_status,geometry/location,place_id"
             % (url, self.key),
             responses.calls[0].request.url,
