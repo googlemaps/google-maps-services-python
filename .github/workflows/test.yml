@@ -51,4 +51,6 @@ jobs:
     needs: [matrix]
     runs-on: ubuntu-latest
     steps:
-    - run: echo "Test matrix finished"
+    - run: |
+        echo "Test matrix finished";
+        exit 1;
