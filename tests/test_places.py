@@ -36,7 +36,7 @@ class PlacesTest(TestCase):
         self.type = "liquor_store"
         self.language = "en-AU"
         self.region = "AU"
-        self.review_sort_newest = True
+        self.reviews_sort="newest"
         self.radius = 100
 
     @responses.activate
@@ -166,7 +166,7 @@ class PlacesTest(TestCase):
             "ChIJN1t_tDeuEmsRUsoyG83frY4",
             fields=["business_status", "geometry/location", "place_id"],
             language=self.language,
-            review_sort_newest=True,
+            reviews_sort="newest",
         )
 
         self.assertEqual(1, len(responses.calls))

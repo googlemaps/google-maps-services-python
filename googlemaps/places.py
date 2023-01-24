@@ -402,7 +402,7 @@ def place(
     session_token=None,
     fields=None,
     language=None,
-    review_sort_newest=False
+    reviews_sort=None
 ):
     """
     Comprehensive details for an individual place.
@@ -423,8 +423,9 @@ def place(
     :param language: The language in which to return results.
     :type language: string
 
-    :param review_sort_newest: Determines of reviews are sorted by most_relevant or newest.
-    :type review_sort_newest: Boolean
+    :param reviews_sort: The sorting method to use when returning reviews.
+                         Can be set to most_relevant (default) or newest.
+    :type reviews_sort: string
 
     :rtype: result dict with the following keys:
         result: dict containing place details
@@ -454,8 +455,8 @@ def place(
         params["language"] = language
     if session_token:
         params["sessiontoken"] = session_token
-    if review_sort_newest:
-        params["reviews_sort"] = "newest"
+    if reviews_sort:
+        params["reviews_sort"] = reviews_sort
 
     return client._request("/maps/api/place/details/json", params)
 
@@ -669,4 +670,3 @@ def _autocomplete(
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
     return client._request(url, params).get("predictions", [])
-    
