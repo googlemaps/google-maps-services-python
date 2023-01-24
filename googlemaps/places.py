@@ -402,7 +402,7 @@ def place(
     session_token=None,
     fields=None,
     language=None,
-    reviews_sort=None
+    reviews_sort="most_relevant"
 ):
     """
     Comprehensive details for an individual place.

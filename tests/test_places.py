@@ -166,7 +166,7 @@ class PlacesTest(TestCase):
             "ChIJN1t_tDeuEmsRUsoyG83frY4",
             fields=["business_status", "geometry/location", "place_id"],
             language=self.language,
-            reviews_sort="newest",
+            reviews_sort=self.reviews_sort,
         )
 
         self.assertEqual(1, len(responses.calls))
