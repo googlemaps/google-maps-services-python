@@ -37,7 +37,7 @@ jobs:
     - name: Cleanup old dist
       run: rm -rf googlemaps-* dist/
     - name: Semantic Release
-      uses: cycjimmy/semantic-release-action@3
+      uses: cycjimmy/semantic-release-action@v3
       with:
         semantic_version: 19
         extra_plugins: |
