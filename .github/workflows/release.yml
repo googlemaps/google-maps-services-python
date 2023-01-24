@@ -23,11 +23,11 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
     steps:
     - name: Setup Python
-      uses: "actions/setup-python@v1"
+      uses: "actions/setup-python@v3"
       with:
         python-version: "3.9"
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         token: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
     - name: Install dependencies
@@ -37,8 +37,9 @@ jobs:
     - name: Cleanup old dist
       run: rm -rf googlemaps-* dist/
     - name: Semantic Release
-      uses: cycjimmy/semantic-release-action@v2
+      uses: cycjimmy/semantic-release-action@v3
       with:
+        semantic_version: 19
         extra_plugins: |
           "@semantic-release/commit-analyzer"
           "@semantic-release/release-notes-generator"
