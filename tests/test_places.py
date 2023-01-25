@@ -166,14 +166,14 @@ class PlacesTest(TestCase):
             fields=["business_status", "geometry/location",
                     "place_id", "reviews"],
             language=self.language,
-            reviews_no_translation=True,
+            reviews_no_translations=True,
             reviews_sort="newest",
         )
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
             "%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
-            "&reviews_no_translation=true&reviews_sort=newest"
+            "&reviews_no_translations=true&reviews_sort=newest"
             "&key=%s&fields=business_status,geometry/location,place_id,reviews"
             % (url, self.key),
             responses.calls[0].request.url,

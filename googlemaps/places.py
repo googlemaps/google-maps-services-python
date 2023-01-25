@@ -98,7 +98,8 @@ PLACES_DETAIL_FIELDS_ATMOSPHERE = {
     "price_level",
     "rating",
     "reservable",
-    "review",
+    "review",  # prefer "reviews" to match API documentation
+    "reviews",
     "serves_beer",
     "serves_breakfast",
     "serves_brunch",
@@ -116,7 +117,7 @@ PLACES_DETAIL_FIELDS = (
     ^ PLACES_DETAIL_FIELDS_ATMOSPHERE
 )
 
-DEPRECATED_FIELDS = {"permanently_closed"}
+DEPRECATED_FIELDS = {"permanently_closed", "review"}
 DEPRECATED_FIELDS_MESSAGE = (
     "Fields, %s, are deprecated. "
     "Read more at https://developers.google.com/maps/deprecations."
