@@ -52,35 +52,63 @@ PLACES_FIND_FIELDS = (
     ^ PLACES_FIND_FIELDS_ATMOSPHERE
 )
 
-PLACES_DETAIL_FIELDS_BASIC = {"address_component",
-        "adr_address",
-        "business_status",
-        "formatted_address",
-        "geometry",
-        "geometry/location",
-        "geometry/location/lat",
-        "geometry/location/lng",
-        "geometry/viewport",
-        "geometry/viewport/northeast",
-        "geometry/viewport/northeast/lat",
-        "geometry/viewport/northeast/lng",
-        "geometry/viewport/southwest",
-        "geometry/viewport/southwest/lat",
-        "geometry/viewport/southwest/lng",
-        "icon",
-        "name",
-        "permanently_closed",
-        "photo",
-        "place_id",
-        "plus_code",
-        "type",
-        "url",
-        "utc_offset",
-        "vicinity",}
+PLACES_DETAIL_FIELDS_BASIC = {
+    "address_component",
+    "adr_address",
+    "business_status",
+    "formatted_address",
+    "geometry",
+    "geometry/location",
+    "geometry/location/lat",
+    "geometry/location/lng",
+    "geometry/viewport",
+    "geometry/viewport/northeast",
+    "geometry/viewport/northeast/lat",
+    "geometry/viewport/northeast/lng",
+    "geometry/viewport/southwest",
+    "geometry/viewport/southwest/lat",
+    "geometry/viewport/southwest/lng",
+    "icon",
+    "name",
+    "permanently_closed",
+    "photo",
+    "place_id",
+    "plus_code",
+    "type",
+    "url",
+    "utc_offset",
+    "vicinity",
+    "wheelchair_accessible_entrance"
+}
 
-PLACES_DETAIL_FIELDS_CONTACT = {"formatted_phone_number", "international_phone_number", "opening_hours", "website"}
+PLACES_DETAIL_FIELDS_CONTACT = {
+    "formatted_phone_number",
+    "international_phone_number",
+    "opening_hours",
+    "current_opening_hours",
+    "secondary_opening_hours",
+    "website",
+}
 
-PLACES_DETAIL_FIELDS_ATMOSPHERE = {"editorial_summary","price_level", "rating", "review", "user_ratings_total"}
+PLACES_DETAIL_FIELDS_ATMOSPHERE = {
+    "curbside_pickup",
+    "delivery",
+    "dine_in",
+    "editorial_summary",
+    "price_level",
+    "rating",
+    "reservable",
+    "review",
+    "serves_beer",
+    "serves_breakfast",
+    "serves_brunch",
+    "serves_dinner",
+    "serves_lunch",
+    "serves_vegetarian_food",
+    "serves_wine",
+    "takeout",
+    "user_ratings_total"
+}
 
 PLACES_DETAIL_FIELDS = (
     PLACES_DETAIL_FIELDS_BASIC
@@ -402,7 +430,8 @@ def place(
     session_token=None,
     fields=None,
     language=None,
-    reviews_sort="most_relevant"
+    reviews_no_translations=False,
+    reviews_sort="most_relevant",
 ):
     """
     Comprehensive details for an individual place.
@@ -422,6 +451,9 @@ def place(
 
     :param language: The language in which to return results.
     :type language: string
+
+    :param reviews_no_translations: Specify reviews_no_translations=True to disable translation of reviews; reviews_no_translations=False (default) enables translation of reviews.
+    :type reviews_no_translations: bool
 
     :param reviews_sort: The sorting method to use when returning reviews.
                          Can be set to most_relevant (default) or newest.
@@ -455,6 +487,8 @@ def place(
         params["language"] = language
     if session_token:
         params["sessiontoken"] = session_token
+    if reviews_no_translations:
+        params["reviews_no_translations"] = "true"
     if reviews_sort:
         params["reviews_sort"] = reviews_sort
 
