@@ -52,7 +52,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.7")
 def docs(session):
     _install_dev_packages(session)
     _install_doc_dependencies(session)
