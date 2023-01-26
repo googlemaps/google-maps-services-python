@@ -1,31 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Python Client for Google Maps Services &#8212; Python Client for Google Maps Services 4.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <title>Python Client for Google Maps Services &mdash; Python Client for Google Maps Services 3.0.2 documentation</title>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '3.0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Python Client for Google Maps Services 3.0.2 documentation" href="#" /> 
-  </head>
-  <body role="document">
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -35,7 +29,8 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 3.0.2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 4.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Python Client for Google Maps Services</a></li> 
       </ul>
     </div>  
 
@@ -44,790 +39,835 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="python-client-for-google-maps-services">
-<h1>Python Client for Google Maps Services<a class="headerlink" href="#python-client-for-google-maps-services" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-googlemaps">
-<span id="googlemaps-module"></span><h2><a class="reference internal" href="#module-googlemaps" title="googlemaps"><code class="xref py py-mod docutils literal"><span class="pre">googlemaps</span></code></a> Module<a class="headerlink" href="#module-googlemaps" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="googlemaps.Client">
-<em class="property">class </em><code class="descclassname">googlemaps.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>key=None</em>, <em>client_id=None</em>, <em>client_secret=None</em>, <em>timeout=None</em>, <em>connect_timeout=None</em>, <em>read_timeout=None</em>, <em>retry_timeout=60</em>, <em>requests_kwargs=None</em>, <em>queries_per_second=50</em>, <em>channel=None</em>, <em>retry_over_query_limit=True</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+  <section id="python-client-for-google-maps-services">
+<h1>Python Client for Google Maps Services<a class="headerlink" href="#python-client-for-google-maps-services" title="Permalink to this heading">¶</a></h1>
+<section id="module-googlemaps">
+<span id="googlemaps-module"></span><h2><a class="reference internal" href="#module-googlemaps" title="googlemaps"><code class="xref py py-mod docutils literal notranslate"><span class="pre">googlemaps</span></code></a> Module<a class="headerlink" href="#module-googlemaps" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="googlemaps.Client">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">googlemaps.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queries_per_second</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queries_per_minute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_over_query_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experience_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests_session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://maps.googleapis.com'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Performs requests to the Google Maps API web services.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>key</strong> (<em>string</em>) &#8211; Maps API key. Required, unless &#8220;client_id&#8221; and
-&#8220;client_secret&#8221; are set.</li>
-<li><strong>client_id</strong> (<em>string</em>) &#8211; (for Maps API for Work customers) Your client ID.</li>
-<li><strong>client_secret</strong> (<em>string</em>) &#8211; (for Maps API for Work customers) Your client
-secret (base64 encoded).</li>
-<li><strong>channel</strong> (<em>str</em>) &#8211; (for Maps API for Work customers) When set, a channel
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>string</em>) – Maps API key. Required, unless “client_id” and
+“client_secret” are set. Most users should use an API key.</p></li>
+<li><p><strong>client_id</strong> (<em>string</em>) – (for Maps API for Work customers) Your client ID.
+Most users should use an API key instead.</p></li>
+<li><p><strong>client_secret</strong> (<em>string</em>) – (for Maps API for Work customers) Your client
+secret (base64 encoded). Most users should use an API key instead.</p></li>
+<li><p><strong>channel</strong> (<em>str</em>) – (for Maps API for Work customers) When set, a channel
 parameter with this value will be added to the requests.
 This can be used for tracking purpose.
-Can only be used with a Maps API client ID.</li>
-<li><strong>timeout</strong> (<em>int</em>) &#8211; Combined connect and read timeout for HTTP requests, in
-seconds. Specify &#8220;None&#8221; for no timeout.</li>
-<li><strong>connect_timeout</strong> (<em>int</em>) &#8211; Connection timeout for HTTP requests, in
+Can only be used with a Maps API client ID.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Combined connect and read timeout for HTTP requests, in
+seconds. Specify “None” for no timeout.</p></li>
+<li><p><strong>connect_timeout</strong> (<em>int</em>) – Connection timeout for HTTP requests, in
 seconds. You should specify read_timeout in addition to this option.
-Note that this requires requests &gt;= 2.4.0.</li>
-<li><strong>read_timeout</strong> (<em>int</em>) &#8211; Read timeout for HTTP requests, in
+Note that this requires requests &gt;= 2.4.0.</p></li>
+<li><p><strong>read_timeout</strong> (<em>int</em>) – Read timeout for HTTP requests, in
 seconds. You should specify connect_timeout in addition to this
-option. Note that this requires requests &gt;= 2.4.0.</li>
-<li><strong>retry_timeout</strong> (<em>int</em>) &#8211; Timeout across multiple retriable requests, in
-seconds.</li>
-<li><strong>queries_per_second</strong> (<em>int</em>) &#8211; Number of queries per second permitted.
+option. Note that this requires requests &gt;= 2.4.0.</p></li>
+<li><p><strong>retry_timeout</strong> (<em>int</em>) – Timeout across multiple retriable requests, in
+seconds.</p></li>
+<li><p><strong>queries_per_second</strong> (<em>int</em>) – Number of queries per second permitted. Unset queries_per_minute to None. If set smaller number will be used.
 If the rate limit is reached, the client will sleep for the
-appropriate amount of time before it runs the current query.</li>
-<li><strong>retry_over_query_limit</strong> (<em>bool</em>) &#8211; If True, requests that result in a
+appropriate amount of time before it runs the current query.</p></li>
+<li><p><strong>queries_per_minute</strong> (<em>int</em>) – Number of queries per minute permitted. Unset queries_per_second to None. If set smaller number will be used.
+If the rate limit is reached, the client will sleep for the
+appropriate amount of time before it runs the current query.</p></li>
+<li><p><strong>retry_over_query_limit</strong> (<em>bool</em>) – If True, requests that result in a
 response indicating the query rate limit was exceeded will be
-retried. Defaults to True.</li>
-<li><strong>requests_kwargs</strong> (<em>dict</em>) &#8211; Extra keyword arguments for the requests
+retried. Defaults to True.</p></li>
+<li><p><strong>experience_id</strong> (<em>str</em>) – The value for the HTTP header field name
+‘X-Goog-Maps-Experience-ID’.</p></li>
+<li><p><strong>requests_kwargs</strong> (<em>dict</em>) – Extra keyword arguments for the requests
 library, which among other things allow for proxy auth to be
 implemented. See the official requests docs for more info:
-<a class="reference external" href="http://docs.python-requests.org/en/latest/api/#main-interface">http://docs.python-requests.org/en/latest/api/#main-interface</a></li>
+<a class="reference external" href="http://docs.python-requests.org/en/latest/api/#main-interface">http://docs.python-requests.org/en/latest/api/#main-interface</a></p></li>
+<li><p><strong>requests_session</strong> (<em>requests.Session</em>) – Reused persistent session for flexibility.</p></li>
+<li><p><strong>base_url</strong> (<em>string</em>) – The base URL for all requests. Defaults to the Maps API
+server. Should not have a trailing slash.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ValueError</strong> &#8211; when either credentials are missing, incomplete
-or invalid.</li>
-<li><strong>NotImplementedError</strong> &#8211; if connect_timeout and read_timeout are
-used with a version of requests prior to 2.4.0.</li>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – when either credentials are missing, incomplete
+or invalid.</p></li>
+<li><p><strong>NotImplementedError</strong> – if connect_timeout and read_timeout are
+used with a version of requests prior to 2.4.0.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="googlemaps.Client.directions">
-<code class="descname">directions</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.directions" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.addressvalidation">
+<span class="sig-name descname"><span class="pre">addressvalidation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addressLines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regionCode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableUspsCass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.addressvalidation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Google Maps Address Validation API returns a verification of an address
+See <a class="reference external" href="https://developers.google.com/maps/documentation/address-validation/overview">https://developers.google.com/maps/documentation/address-validation/overview</a>
+request must include parameters below.
+:param addressLines: The address to validate
+:type addressLines: array 
+:param regionCode: (optional) The country code
+:type regionCode: string  
+:param locality: (optional) Restrict to a locality, ie:Mountain View
+:type locality: string
+:param enableUspsCass For the “US” and “PR” regions only, you can optionally enable the Coding Accuracy Support System (CASS) from the United States Postal Service (USPS)
+:type locality: boolean</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.clear_experience_id">
+<span class="sig-name descname"><span class="pre">clear_experience_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.clear_experience_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the experience ID for the HTTP header field name
+‘X-Goog-Maps-Experience-ID’ if set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.directions">
+<span class="sig-name descname"><span class="pre">directions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternatives</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avoid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">departure_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrival_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimize_waypoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transit_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transit_routing_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traffic_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.directions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get directions between an origin point and a destination point.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>origin</strong> (<em>string, dict, list, or tuple</em>) &#8211; The address or latitude/longitude value from which you wish
-to calculate directions.</li>
-<li><strong>destination</strong> (<em>string, dict, list, or tuple</em>) &#8211; The address or latitude/longitude value from which
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The address or latitude/longitude value from which you wish
+to calculate directions.</p></li>
+<li><p><strong>destination</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The address or latitude/longitude value from which
 you wish to calculate directions. You can use a place_id as destination
-by putting &#8216;place_id:&#8217; as a preffix in the passing parameter.</li>
-<li><strong>mode</strong> (<em>string</em>) &#8211; Specifies the mode of transport to use when calculating
-directions. One of &#8220;driving&#8221;, &#8220;walking&#8221;, &#8220;bicycling&#8221; or &#8220;transit&#8221;</li>
-<li><strong>waypoints</strong> (<em>a single location, or a list of locations, where a
-location is a string, dict, list, or tuple</em>) &#8211; Specifies an array of waypoints. Waypoints alter a
-route by routing it through the specified location(s).</li>
-<li><strong>alternatives</strong> (<em>bool</em>) &#8211; If True, more than one route may be returned in the
-response.</li>
-<li><strong>avoid</strong> (<em>list or string</em>) &#8211; Indicates that the calculated route(s) should avoid the
-indicated features.</li>
-<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
-<li><strong>units</strong> (<em>string</em>) &#8211; Specifies the unit system to use when displaying results.
-&#8220;metric&#8221; or &#8220;imperial&#8221;</li>
-<li><strong>region</strong> (<em>string</em>) &#8211; The region code, specified as a ccTLD (&#8220;top-level domain&#8221;
-two-character value.</li>
-<li><strong>departure_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of departure.</li>
-<li><strong>arrival_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of arrival for transit
-directions. Note: you can&#8217;t specify both departure_time and
-arrival_time.</li>
-<li><strong>optimize_waypoints</strong> (<em>bool</em>) &#8211; Optimize the provided route by rearranging the
-waypoints in a more efficient order.</li>
-<li><strong>transit_mode</strong> (<em>string or list of strings</em>) &#8211; Specifies one or more preferred modes of transit.
+by putting ‘place_id:’ as a prefix in the passing parameter.</p></li>
+<li><p><strong>mode</strong> (<em>string</em>) – Specifies the mode of transport to use when calculating
+directions. One of “driving”, “walking”, “bicycling” or “transit”</p></li>
+<li><p><strong>waypoints</strong> (<em>a single location</em><em>, or </em><em>a list</em><em> of </em><em>locations</em><em>, </em><em>where a
+location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – Specifies an array of waypoints. Waypoints alter a
+route by routing it through the specified location(s). To influence
+route without adding stop prefix the waypoint with <cite>via</cite>, similar to
+<cite>waypoints = [“via:San Francisco”, “via:Mountain View”]</cite>.</p></li>
+<li><p><strong>alternatives</strong> (<em>bool</em>) – If True, more than one route may be returned in the
+response.</p></li>
+<li><p><strong>avoid</strong> (<em>list</em><em> or </em><em>string</em>) – Indicates that the calculated route(s) should avoid the
+indicated features.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
+<li><p><strong>units</strong> (<em>string</em>) – Specifies the unit system to use when displaying results.
+“metric” or “imperial”</p></li>
+<li><p><strong>region</strong> (<em>string</em>) – The region code, specified as a ccTLD (“top-level domain”
+two-character value.</p></li>
+<li><p><strong>departure_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of departure.</p></li>
+<li><p><strong>arrival_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of arrival for transit
+directions. Note: you can’t specify both departure_time and
+arrival_time.</p></li>
+<li><p><strong>optimize_waypoints</strong> (<em>bool</em>) – Optimize the provided route by rearranging the
+waypoints in a more efficient order.</p></li>
+<li><p><strong>transit_mode</strong> (<em>string</em><em> or </em><em>list</em><em> of </em><em>strings</em>) – Specifies one or more preferred modes of transit.
 This parameter may only be specified for requests where the mode is
-transit. Valid values are &#8220;bus&#8221;, &#8220;subway&#8221;, &#8220;train&#8221;, &#8220;tram&#8221;, &#8220;rail&#8221;.
-&#8220;rail&#8221; is equivalent to [&#8220;train&#8221;, &#8220;tram&#8221;, &#8220;subway&#8221;].</li>
-<li><strong>transit_routing_preference</strong> (<em>string</em>) &#8211; Specifies preferences for transit
-requests. Valid values are &#8220;less_walking&#8221; or &#8220;fewer_transfers&#8221;</li>
-<li><strong>traffic_model</strong> &#8211; Specifies the predictive travel time model to use.
-Valid values are &#8220;best_guess&#8221; or &#8220;optimistic&#8221; or &#8220;pessimistic&#8221;.
+transit. Valid values are “bus”, “subway”, “train”, “tram”, “rail”.
+“rail” is equivalent to [“train”, “tram”, “subway”].</p></li>
+<li><p><strong>transit_routing_preference</strong> (<em>string</em>) – Specifies preferences for transit
+requests. Valid values are “less_walking” or “fewer_transfers”</p></li>
+<li><p><strong>traffic_model</strong> – Specifies the predictive travel time model to use.
+Valid values are “best_guess” or “optimistic” or “pessimistic”.
 The traffic_model parameter may only be specified for requests where
 the travel mode is driving, and where the request includes a
-departure_time.</li>
+departure_time.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of routes</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of routes</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.distance_matrix">
-<code class="descname">distance_matrix</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.distance_matrix" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.distance_matrix">
+<span class="sig-name descname"><span class="pre">distance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destinations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avoid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">departure_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrival_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transit_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transit_routing_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traffic_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.distance_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets travel distance and time for a matrix of origins and destinations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>origins</strong> (<em>a single location, or a list of locations, where a
-location is a string, dict, list, or tuple</em>) &#8211; One or more locations and/or latitude/longitude values,
-from which to calculate distance and time. If you pass an address as
-a string, the service will geocode the string and convert it to a
-latitude/longitude coordinate to calculate directions.</li>
-<li><strong>destinations</strong> (<em>a single location, or a list of locations, where a
-location is a string, dict, list, or tuple</em>) &#8211; One or more addresses and/or lat/lng values, to
-which to calculate distance and time. If you pass an address as a
-string, the service will geocode the string and convert it to a
-latitude/longitude coordinate to calculate directions.</li>
-<li><strong>mode</strong> (<em>string</em>) &#8211; Specifies the mode of transport to use when calculating
-directions. Valid values are &#8220;driving&#8221;, &#8220;walking&#8221;, &#8220;transit&#8221; or
-&#8220;bicycling&#8221;.</li>
-<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
-<li><strong>avoid</strong> (<em>string</em>) &#8211; Indicates that the calculated route(s) should avoid the
-indicated features. Valid values are &#8220;tolls&#8221;, &#8220;highways&#8221; or &#8220;ferries&#8221;.</li>
-<li><strong>units</strong> (<em>string</em>) &#8211; Specifies the unit system to use when displaying results.
-Valid values are &#8220;metric&#8221; or &#8220;imperial&#8221;.</li>
-<li><strong>departure_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of departure.</li>
-<li><strong>arrival_time</strong> (<em>int or datetime.datetime</em>) &#8211; Specifies the desired time of arrival for transit
-directions. Note: you can&#8217;t specify both departure_time and
-arrival_time.</li>
-<li><strong>transit_mode</strong> (<em>string or list of strings</em>) &#8211; Specifies one or more preferred modes of transit.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origins</strong> (<em>a single location</em><em>, or </em><em>a list</em><em> of </em><em>locations</em><em>, </em><em>where a
+location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – One or more addresses, Place IDs, and/or latitude/longitude
+values, from which to calculate distance and time. Each Place ID string
+must be prepended with ‘place_id:’. If you pass an address as a string,
+the service will geocode the string and convert it to a
+latitude/longitude coordinate to calculate directions.</p></li>
+<li><p><strong>destinations</strong> (<em>a single location</em><em>, or </em><em>a list</em><em> of </em><em>locations</em><em>, </em><em>where a
+location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – One or more addresses, Place IDs, and/or lat/lng values
+, to which to calculate distance and time. Each Place ID string must be
+prepended with ‘place_id:’. If you pass an address as a string, the
+service will geocode the string and convert it to a latitude/longitude
+coordinate to calculate directions.</p></li>
+<li><p><strong>mode</strong> (<em>string</em>) – Specifies the mode of transport to use when calculating
+directions. Valid values are “driving”, “walking”, “transit” or
+“bicycling”.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
+<li><p><strong>avoid</strong> (<em>string</em>) – Indicates that the calculated route(s) should avoid the
+indicated features. Valid values are “tolls”, “highways” or “ferries”.</p></li>
+<li><p><strong>units</strong> (<em>string</em>) – Specifies the unit system to use when displaying results.
+Valid values are “metric” or “imperial”.</p></li>
+<li><p><strong>departure_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of departure.</p></li>
+<li><p><strong>arrival_time</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Specifies the desired time of arrival for transit
+directions. Note: you can’t specify both departure_time and
+arrival_time.</p></li>
+<li><p><strong>transit_mode</strong> (<em>string</em><em> or </em><em>list</em><em> of </em><em>strings</em>) – Specifies one or more preferred modes of transit.
 This parameter may only be specified for requests where the mode is
-transit. Valid values are &#8220;bus&#8221;, &#8220;subway&#8221;, &#8220;train&#8221;, &#8220;tram&#8221;, &#8220;rail&#8221;.
-&#8220;rail&#8221; is equivalent to [&#8220;train&#8221;, &#8220;tram&#8221;, &#8220;subway&#8221;].</li>
-<li><strong>transit_routing_preference</strong> (<em>string</em>) &#8211; Specifies preferences for transit
-requests. Valid values are &#8220;less_walking&#8221; or &#8220;fewer_transfers&#8221;.</li>
-<li><strong>traffic_model</strong> &#8211; Specifies the predictive travel time model to use.
-Valid values are &#8220;best_guess&#8221; or &#8220;optimistic&#8221; or &#8220;pessimistic&#8221;.
+transit. Valid values are “bus”, “subway”, “train”, “tram”, “rail”.
+“rail” is equivalent to [“train”, “tram”, “subway”].</p></li>
+<li><p><strong>transit_routing_preference</strong> (<em>string</em>) – Specifies preferences for transit
+requests. Valid values are “less_walking” or “fewer_transfers”.</p></li>
+<li><p><strong>traffic_model</strong> – Specifies the predictive travel time model to use.
+Valid values are “best_guess” or “optimistic” or “pessimistic”.
 The traffic_model parameter may only be specified for requests where
 the travel mode is driving, and where the request includes a
-departure_time.</li>
-<li><strong>region</strong> (<em>string</em>) &#8211; Specifies the prefered region the geocoder should search
+departure_time.</p></li>
+<li><p><strong>region</strong> (<em>string</em>) – Specifies the prefered region the geocoder should search
 first, but it will not restrict the results to only this region. Valid
-values are a ccTLD code.</li>
+values are a ccTLD code.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matrix of distances. Results are returned in rows, each row
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>matrix of distances. Results are returned in rows, each row
 containing one origin paired with each destination.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.elevation">
-<code class="descname">elevation</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.elevation" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.elevation">
+<span class="sig-name descname"><span class="pre">elevation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.elevation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides elevation data for locations provided on the surface of the
 earth, including depth locations on the ocean floor (which return negative
 values)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locations</strong> (<em>a single location, or a list of locations, where a
-location is a string, dict, list, or tuple</em>) &#8211; List of latitude/longitude values from which you wish
-to calculate elevation data.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of elevation data responses</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locations</strong> (<em>a single location</em><em>, or </em><em>a list</em><em> of </em><em>locations</em><em>, </em><em>where a
+location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – List of latitude/longitude values from which you wish
+to calculate elevation data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of elevation data responses</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.elevation_along_path">
-<code class="descname">elevation_along_path</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.elevation_along_path" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.elevation_along_path">
+<span class="sig-name descname"><span class="pre">elevation_along_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.elevation_along_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides elevation data sampled along a path on the surface of the earth.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>string, dict, list, or tuple</em>) &#8211; An encoded polyline string, or a list of latitude/longitude
-values from which you wish to calculate elevation data.</li>
-<li><strong>samples</strong> (<em>int</em>) &#8211; The number of sample points along a path for which to
-return elevation data.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – An encoded polyline string, or a list of latitude/longitude
+values from which you wish to calculate elevation data.</p></li>
+<li><p><strong>samples</strong> (<em>int</em>) – The number of sample points along a path for which to
+return elevation data.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of elevation data responses</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of elevation data responses</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.find_place">
-<code class="descname">find_place</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.find_place" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.find_place">
+<span class="sig-name descname"><span class="pre">find_place</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.find_place" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Find Place request takes a text input, and returns a place.
 The text input can be any kind of Places data, for example,
 a name, address, or phone number.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>input</strong> (<em>list</em>) &#8211; The text input specifying which place to search for (for
-example, a name, address, or phone number).</li>
-<li><strong>input_type</strong> (<em>string</em>) &#8211; The type of input. This can be one of either &#8216;textquery&#8217;
-or &#8216;phonenumber&#8217;.</li>
-<li><strong>fields</strong> &#8211; The fields specifying the types of place data to return,
-separated by a comma. For full details see:
-<a class="reference external" href="https://developers.google.com/places/web-service/search#FindPlaceRequests">https://developers.google.com/places/web-service/search#FindPlaceRequests</a></li>
-<li><strong>location_bias</strong> (<em>string</em>) &#8211; Prefer results in a specified area, by specifying
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> (<em>string</em>) – The text input specifying which place to search for (for
+example, a name, address, or phone number).</p></li>
+<li><p><strong>input_type</strong> (<em>string</em>) – The type of input. This can be one of either ‘textquery’
+or ‘phonenumber’.</p></li>
+<li><p><strong>fields</strong> (<em>list</em>) – The fields specifying the types of place data to return. For full details see:
+<a class="reference external" href="https://developers.google.com/places/web-service/search#FindPlaceRequests">https://developers.google.com/places/web-service/search#FindPlaceRequests</a></p></li>
+<li><p><strong>location_bias</strong> (<em>string</em>) – Prefer results in a specified area, by specifying
 either a radius plus lat/lng, or two lat/lng pairs
 representing the points of a rectangle. See:
-<a class="reference external" href="https://developers.google.com/places/web-service/search#FindPlaceRequests">https://developers.google.com/places/web-service/search#FindPlaceRequests</a></li>
-<li><strong>language</strong> &#8211; The language in which to return results.</li>
+<a class="reference external" href="https://developers.google.com/places/web-service/search#FindPlaceRequests">https://developers.google.com/places/web-service/search#FindPlaceRequests</a></p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">result dict with the following keys:
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>result dict with the following keys:
 status: status code
 candidates: list of places</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.geocode">
-<code class="descname">geocode</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.geocode" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.geocode">
+<span class="sig-name descname"><span class="pre">geocode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">place_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.geocode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Geocoding is the process of converting addresses
-(like <code class="docutils literal"><span class="pre">&quot;1600</span> <span class="pre">Amphitheatre</span> <span class="pre">Parkway,</span> <span class="pre">Mountain</span> <span class="pre">View,</span> <span class="pre">CA&quot;</span></code>) into geographic
+(like <code class="docutils literal notranslate"><span class="pre">&quot;1600</span> <span class="pre">Amphitheatre</span> <span class="pre">Parkway,</span> <span class="pre">Mountain</span> <span class="pre">View,</span> <span class="pre">CA&quot;</span></code>) into geographic
 coordinates (like latitude 37.423021 and longitude -122.083739), which you
 can use to place markers or position the map.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>address</strong> (<em>string</em>) &#8211; The address to geocode.</li>
-<li><strong>components</strong> (<em>dict</em>) &#8211; A component filter for which you wish to obtain a
-geocode, for example: <code class="docutils literal"><span class="pre">{'administrative_area':</span> <span class="pre">'TX','country':</span> <span class="pre">'US'}</span></code></li>
-<li><strong>bounds</strong> (<em>string or dict with northeast and southwest keys.</em>) &#8211; The bounding box of the viewport within which to bias geocode
-results more prominently.</li>
-<li><strong>region</strong> (<em>string</em>) &#8211; The region code, specified as a ccTLD (&#8220;top-level domain&#8221;)
-two-character value.</li>
-<li><strong>language</strong> &#8211; The language in which to return results.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> (<em>string</em>) – The address to geocode.</p></li>
+<li><p><strong>place_id</strong> (<em>string</em>) – A textual identifier that uniquely identifies a place,
+returned from a Places search.</p></li>
+<li><p><strong>components</strong> (<em>dict</em>) – A component filter for which you wish to obtain a
+geocode, for example: <code class="docutils literal notranslate"><span class="pre">{'administrative_area':</span> <span class="pre">'TX','country':</span> <span class="pre">'US'}</span></code></p></li>
+<li><p><strong>bounds</strong> (<em>string</em><em> or </em><em>dict with northeast and southwest keys.</em>) – The bounding box of the viewport within which to bias geocode
+results more prominently.</p></li>
+<li><p><strong>region</strong> (<em>string</em>) – The region code, specified as a ccTLD (“top-level domain”)
+two-character value.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of geocoding results.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of geocoding results.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.geolocate">
-<code class="descname">geolocate</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.geolocate" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.geolocate">
+<span class="sig-name descname"><span class="pre">geolocate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">home_mobile_country_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">home_mobile_network_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radio_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">carrier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consider_ip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_towers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wifi_access_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.geolocate" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Google Maps Geolocation API returns a location and accuracy
 radius based on information about cell towers and WiFi nodes given.</p>
 <p>See <a class="reference external" href="https://developers.google.com/maps/documentation/geolocation/intro">https://developers.google.com/maps/documentation/geolocation/intro</a>
 for more info, including more detail for each parameter below.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>home_mobile_country_code</strong> (<em>string</em>) &#8211; The mobile country code (MCC) for
-the device&#8217;s home network.</li>
-<li><strong>home_mobile_network_code</strong> (<em>string</em>) &#8211; The mobile network code (MCC) for
-the device&#8217;s home network.</li>
-<li><strong>radio_type</strong> (<em>string</em>) &#8211; The mobile radio type. Supported values are
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>home_mobile_country_code</strong> (<em>string</em>) – The mobile country code (MCC) for
+the device’s home network.</p></li>
+<li><p><strong>home_mobile_network_code</strong> (<em>string</em>) – The mobile network code (MCC) for
+the device’s home network.</p></li>
+<li><p><strong>radio_type</strong> (<em>string</em>) – The mobile radio type. Supported values are
 lte, gsm, cdma, and wcdma. While this field is optional, it
 should be included if a value is available, for more accurate
-results.</li>
-<li><strong>carrier</strong> (<em>string</em>) &#8211; The carrier name.</li>
-<li><strong>consider_ip</strong> (<em>bool</em>) &#8211; Specifies whether to fall back to IP geolocation
+results.</p></li>
+<li><p><strong>carrier</strong> (<em>string</em>) – The carrier name.</p></li>
+<li><p><strong>consider_ip</strong> (<em>bool</em>) – Specifies whether to fall back to IP geolocation
 if wifi and cell tower signals are not available. Note that the
-IP address in the request header may not be the IP of the device.</li>
-<li><strong>cell_towers</strong> (<em>list of dicts</em>) &#8211; A list of cell tower dicts. See
+IP address in the request header may not be the IP of the device.</p></li>
+<li><p><strong>cell_towers</strong> (<em>list</em><em> of </em><em>dicts</em>) – A list of cell tower dicts. See
 <a class="reference external" href="https://developers.google.com/maps/documentation/geolocation/intro#cell_tower_object">https://developers.google.com/maps/documentation/geolocation/intro#cell_tower_object</a>
-for more detail.</li>
-<li><strong>wifi_access_points</strong> (<em>list of dicts</em>) &#8211; A list of WiFi access point dicts. See
+for more detail.</p></li>
+<li><p><strong>wifi_access_points</strong> (<em>list</em><em> of </em><em>dicts</em>) – A list of WiFi access point dicts. See
 <a class="reference external" href="https://developers.google.com/maps/documentation/geolocation/intro#wifi_access_point_object">https://developers.google.com/maps/documentation/geolocation/intro#wifi_access_point_object</a>
-for more detail.</li>
+for more detail.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.nearest_roads">
-<code class="descname">nearest_roads</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.nearest_roads" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.get_experience_id">
+<span class="sig-name descname"><span class="pre">get_experience_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.get_experience_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the experience ID for the HTTP header field name
+‘X-Goog-Maps-Experience-ID’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The experience ID if set</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.nearest_roads">
+<span class="sig-name descname"><span class="pre">nearest_roads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.nearest_roads" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the closest road segments for each point</p>
 <p>Takes up to 100 independent coordinates, and returns the closest road
 segment for each point. The points passed do not need to be part of a
 continuous path.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>a single location, or a list of locations, where a
-location is a string, dict, list, or tuple</em>) &#8211; The points for which the nearest road segments are to be
-located.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">A list of snapped points.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>points</strong> (<em>a single location</em><em>, or </em><em>a list</em><em> of </em><em>locations</em><em>, </em><em>where a
+location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The points for which the nearest road segments are to be
+located.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of snapped points.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.place">
-<code class="descname">place</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.place" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.place">
+<span class="sig-name descname"><span class="pre">place</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">place_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reviews_no_translations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reviews_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'most_relevant'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.place" title="Permalink to this definition">¶</a></dt>
 <dd><p>Comprehensive details for an individual place.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>place_id</strong> (<em>string</em>) &#8211; A textual identifier that uniquely identifies a place,
-returned from a Places search.</li>
-<li><strong>session_token</strong> (<em>string</em>) &#8211; A random string which identifies an autocomplete
-session for billing purposes.</li>
-<li><strong>fields</strong> &#8211; The fields specifying the types of place data to return,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>place_id</strong> (<em>string</em>) – A textual identifier that uniquely identifies a place,
+returned from a Places search.</p></li>
+<li><p><strong>session_token</strong> (<em>string</em>) – A random string which identifies an autocomplete
+session for billing purposes.</p></li>
+<li><p><strong>fields</strong> – The fields specifying the types of place data to return,
 separated by a comma. For full details see:
-<a class="reference external" href="https://cloud.google.com/maps-platform/user-guide/product-changes/#places">https://cloud.google.com/maps-platform/user-guide/product-changes/#places</a></li>
-<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
+<a class="reference external" href="https://cloud.google.com/maps-platform/user-guide/product-changes/#places">https://cloud.google.com/maps-platform/user-guide/product-changes/#places</a></p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
+<li><p><strong>reviews_no_translations</strong> (<em>bool</em>) – Specify reviews_no_translations=True to disable translation of reviews; reviews_no_translations=False (default) enables translation of reviews.</p></li>
+<li><p><strong>reviews_sort</strong> (<em>string</em>) – The sorting method to use when returning reviews.
+Can be set to most_relevant (default) or newest.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">result dict with the following keys:
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>result dict with the following keys:
 result: dict containing place details
 html_attributions: set of attributions which must be displayed</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.places">
-<code class="descname">places</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.places">
+<span class="sig-name descname"><span class="pre">places</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_now</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places" title="Permalink to this definition">¶</a></dt>
 <dd><p>Places search.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query</strong> (<em>string</em>) &#8211; The text string on which to search, for example: &#8220;restaurant&#8221;.</li>
-<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
-closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
-<li><strong>language</strong> &#8211; The language in which to return results.</li>
-<li><strong>min_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no less than
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>string</em>) – The text string on which to search, for example: “restaurant”.</p></li>
+<li><p><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+closest, human-readable address.</p></li>
+<li><p><strong>radius</strong> (<em>int</em>) – Distance in meters within which to bias results.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
+<li><p><strong>min_price</strong> (<em>int</em>) – Restricts results to only those places with no less than
 this price level. Valid values are in the range from 0 (most affordable)
-to 4 (most expensive).</li>
-<li><strong>max_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no greater
+to 4 (most expensive).</p></li>
+<li><p><strong>max_price</strong> (<em>int</em>) – Restricts results to only those places with no greater
 than this price level. Valid values are in the range from 0 (most
-affordable) to 4 (most expensive).</li>
-<li><strong>open_now</strong> (<em>bool</em>) &#8211; Return only those places that are open for business at
-the time the query is sent.</li>
-<li><strong>type</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
+affordable) to 4 (most expensive).</p></li>
+<li><p><strong>open_now</strong> (<em>bool</em>) – Return only those places that are open for business at
+the time the query is sent.</p></li>
+<li><p><strong>type</strong> (<em>string</em>) – Restricts the results to places matching the specified type.
 The full list of supported types is available here:
-<a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></li>
-<li><strong>region</strong> (<em>string</em>) &#8211; The region code, optional parameter.
-See more &#64; <a class="reference external" href="https://developers.google.com/places/web-service/search">https://developers.google.com/places/web-service/search</a></li>
-<li><strong>page_token</strong> (<em>string</em>) &#8211; Token from a previous search that when provided will
-returns the next page of results for the same search.</li>
+<a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></p></li>
+<li><p><strong>region</strong> (<em>string</em>) – The region code, optional parameter.
+See more &#64; <a class="reference external" href="https://developers.google.com/places/web-service/search">https://developers.google.com/places/web-service/search</a></p></li>
+<li><p><strong>page_token</strong> (<em>string</em>) – Token from a previous search that when provided will
+returns the next page of results for the same search.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">result dict with the following keys:
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>result dict with the following keys:
 results: list of places
 html_attributions: set of attributions which must be displayed
 next_page_token: token for retrieving the next page of results</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.places_autocomplete">
-<code class="descname">places_autocomplete</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_autocomplete" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.places_autocomplete">
+<span class="sig-name descname"><span class="pre">places_autocomplete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_autocomplete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Place predictions given a textual search string and optional
 geographic bounds.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>input_text</strong> (<em>string</em>) &#8211; The text string on which to search.</li>
-<li><strong>session_token</strong> (<em>string</em>) &#8211; A random string which identifies an autocomplete
-session for billing purposes.</li>
-<li><strong>offset</strong> (<em>int</em>) &#8211; The position, in the input term, of the last character
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_text</strong> (<em>string</em>) – The text string on which to search.</p></li>
+<li><p><strong>session_token</strong> (<em>string</em>) – A random string which identifies an autocomplete
+session for billing purposes.</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – The position, in the input term, of the last character
 that the service uses to match predictions. For example,
-if the input is &#8216;Google&#8217; and the offset is 3, the
-service will match on &#8216;Goo&#8217;.</li>
-<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
-closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
-<li><strong>language</strong> &#8211; The language in which to return results.</li>
-<li><strong>types</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
+if the input is ‘Google’ and the offset is 3, the
+service will match on ‘Goo’.</p></li>
+<li><p><strong>origin</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The origin point from which to calculate straight-line distance
+to the destination (returned as distance_meters).
+If this value is omitted, straight-line distance will
+not be returned.</p></li>
+<li><p><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+closest, human-readable address.</p></li>
+<li><p><strong>radius</strong> (<em>int</em>) – Distance in meters within which to bias results.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
+<li><p><strong>types</strong> (<em>string</em>) – Restricts the results to places matching the specified type.
 The full list of supported types is available here:
-<a class="reference external" href="https://developers.google.com/places/web-service/autocomplete#place_types">https://developers.google.com/places/web-service/autocomplete#place_types</a></li>
-<li><strong>components</strong> (<em>dict</em>) &#8211; A component filter for which you wish to obtain a geocode.
+<a class="reference external" href="https://developers.google.com/places/web-service/autocomplete#place_types">https://developers.google.com/places/web-service/autocomplete#place_types</a></p></li>
+<li><p><strong>components</strong> (<em>dict</em>) – A component filter for which you wish to obtain a geocode.
 Currently, you can use components to filter by up to 5 countries for
-example: <code class="docutils literal"><span class="pre">{'country':</span> <span class="pre">['US',</span> <span class="pre">'AU']}</span></code></li>
-<li><strong>strict_bounds</strong> (<em>bool</em>) &#8211; Returns only those places that are strictly within
-the region defined by location and radius.</li>
+example: <code class="docutils literal notranslate"><span class="pre">{'country':</span> <span class="pre">['US',</span> <span class="pre">'AU']}</span></code></p></li>
+<li><p><strong>strict_bounds</strong> (<em>bool</em>) – Returns only those places that are strictly within
+the region defined by location and radius.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of predictions</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of predictions</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.places_autocomplete_query">
-<code class="descname">places_autocomplete_query</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_autocomplete_query" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.places_autocomplete_query">
+<span class="sig-name descname"><span class="pre">places_autocomplete_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_autocomplete_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Place predictions given a textual search query, such as
-&#8220;pizza near New York&#8221;, and optional geographic bounds.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>input_text</strong> (<em>string</em>) &#8211; The text query on which to search.</li>
-<li><strong>offset</strong> (<em>int</em>) &#8211; The position, in the input term, of the last character
+“pizza near New York”, and optional geographic bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_text</strong> (<em>string</em>) – The text query on which to search.</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – The position, in the input term, of the last character
 that the service uses to match predictions. For example, if the input
-is &#8216;Google&#8217; and the offset is 3, the service will match on &#8216;Goo&#8217;.</li>
-<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
-closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>number</em>) &#8211; Distance in meters within which to bias results.</li>
-<li><strong>language</strong> &#8211; The language in which to return results.</li>
+is ‘Google’ and the offset is 3, the service will match on ‘Goo’.</p></li>
+<li><p><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+closest, human-readable address.</p></li>
+<li><p><strong>radius</strong> (<em>number</em>) – Distance in meters within which to bias results.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of predictions</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of predictions</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.places_nearby">
-<code class="descname">places_nearby</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_nearby" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.places_nearby">
+<span class="sig-name descname"><span class="pre">places_nearby</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_now</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_nearby" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs nearby search for places.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
-closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
-<li><strong>region</strong> (<em>string</em>) &#8211; The region code, optional parameter.
-See more &#64; <a class="reference external" href="https://developers.google.com/places/web-service/search">https://developers.google.com/places/web-service/search</a></li>
-<li><strong>keyword</strong> (<em>string</em>) &#8211; A term to be matched against all content that Google has
-indexed for this place.</li>
-<li><strong>language</strong> &#8211; The language in which to return results.</li>
-<li><strong>min_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no less than
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value for which you wish to obtain the
+closest, human-readable address.</p></li>
+<li><p><strong>radius</strong> (<em>int</em>) – Distance in meters within which to bias results.</p></li>
+<li><p><strong>region</strong> (<em>string</em>) – The region code, optional parameter.
+See more &#64; <a class="reference external" href="https://developers.google.com/places/web-service/search">https://developers.google.com/places/web-service/search</a></p></li>
+<li><p><strong>keyword</strong> (<em>string</em>) – A term to be matched against all content that Google has
+indexed for this place.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
+<li><p><strong>min_price</strong> (<em>int</em>) – Restricts results to only those places with no less than
 this price level. Valid values are in the range from 0
-(most affordable) to 4 (most expensive).</li>
-<li><strong>max_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no greater
+(most affordable) to 4 (most expensive).</p></li>
+<li><p><strong>max_price</strong> (<em>int</em>) – Restricts results to only those places with no greater
 than this price level. Valid values are in the range
-from 0 (most affordable) to 4 (most expensive).</li>
-<li><strong>name</strong> (<em>string or list of strings</em>) &#8211; One or more terms to be matched against the names of places.</li>
-<li><strong>open_now</strong> (<em>bool</em>) &#8211; Return only those places that are open for business at
-the time the query is sent.</li>
-<li><strong>rank_by</strong> (<em>string</em>) &#8211; Specifies the order in which results are listed.
-Possible values are: prominence (default), distance</li>
-<li><strong>type</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
+from 0 (most affordable) to 4 (most expensive).</p></li>
+<li><p><strong>name</strong> (<em>string</em><em> or </em><em>list</em><em> of </em><em>strings</em>) – One or more terms to be matched against the names of places.</p></li>
+<li><p><strong>open_now</strong> (<em>bool</em>) – Return only those places that are open for business at
+the time the query is sent.</p></li>
+<li><p><strong>rank_by</strong> (<em>string</em>) – Specifies the order in which results are listed.
+Possible values are: prominence (default), distance</p></li>
+<li><p><strong>type</strong> (<em>string</em>) – Restricts the results to places matching the specified type.
 The full list of supported types is available here:
-<a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></li>
-<li><strong>page_token</strong> (<em>string</em>) &#8211; Token from a previous search that when provided will
-returns the next page of results for the same search.</li>
+<a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></p></li>
+<li><p><strong>page_token</strong> (<em>string</em>) – Token from a previous search that when provided will
+returns the next page of results for the same search.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">result dict with the following keys:
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>result dict with the following keys:
 status: status code
 results: list of places
 html_attributions: set of attributions which must be displayed
 next_page_token: token for retrieving the next page of results</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.places_photo">
-<code class="descname">places_photo</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_photo" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.places_photo">
+<span class="sig-name descname"><span class="pre">places_photo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">photo_reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_photo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads a photo from the Places API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>photo_reference</strong> (<em>string</em>) &#8211; A string identifier that uniquely identifies a
-photo, as provided by either a Places search or Places detail request.</li>
-<li><strong>max_width</strong> (<em>int</em>) &#8211; Specifies the maximum desired width, in pixels.</li>
-<li><strong>max_height</strong> (<em>int</em>) &#8211; Specifies the maximum desired height, in pixels.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>photo_reference</strong> (<em>string</em>) – A string identifier that uniquely identifies a
+photo, as provided by either a Places search or Places detail request.</p></li>
+<li><p><strong>max_width</strong> (<em>int</em>) – Specifies the maximum desired width, in pixels.</p></li>
+<li><p><strong>max_height</strong> (<em>int</em>) – Specifies the maximum desired height, in pixels.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><p>iterator containing the raw image data, which typically can be
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>iterator containing the raw image data, which typically can be
+used to save an image file locally. For example:</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">places_photo</span><span class="p">(</span><span class="n">photo_reference</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.reverse_geocode">
+<span class="sig-name descname"><span class="pre">reverse_geocode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latlng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.reverse_geocode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverse geocoding is the process of converting geographic coordinates into a
+human-readable address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>latlng</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value or place_id for which you wish
+to obtain the closest, human-readable address.</p></li>
+<li><p><strong>result_type</strong> (<em>string</em><em> or </em><em>list</em><em> of </em><em>strings</em>) – One or more address types to restrict results to.</p></li>
+<li><p><strong>location_type</strong> (<em>list</em><em> of </em><em>strings</em>) – One or more location types to restrict results to.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of reverse geocoding results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.set_experience_id">
+<span class="sig-name descname"><span class="pre">set_experience_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">experience_id_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.set_experience_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value for the HTTP header field name
+‘X-Goog-Maps-Experience-ID’ to be used on subsequent API calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>experience_id_args</strong> (<em>string varargs</em>) – the experience ID</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.snap_to_roads">
+<span class="sig-name descname"><span class="pre">snap_to_roads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.snap_to_roads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Snaps a path to the most likely roads travelled.</p>
+<p>Takes up to 100 GPS points collected along a route, and returns a similar
+set of data with the points snapped to the most likely roads the vehicle
+was traveling along.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>a single location</em><em>, or </em><em>a list</em><em> of </em><em>locations</em><em>, </em><em>where a
+location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The path to be snapped.</p></li>
+<li><p><strong>interpolate</strong> (<em>bool</em>) – Whether to interpolate a path to include all points
+forming the full road-geometry. When true, additional interpolated
+points will also be returned, resulting in a path that smoothly follows
+the geometry of the road, even around corners and through tunnels.
+Interpolated paths may contain more points than the original path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of snapped points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.snapped_speed_limits">
+<span class="sig-name descname"><span class="pre">snapped_speed_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.snapped_speed_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the posted speed limit (in km/h) for given road segments.</p>
+<p>The provided points will first be snapped to the most likely roads the
+vehicle was traveling along.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>a single location</em><em>, or </em><em>a list</em><em> of </em><em>locations</em><em>, </em><em>where a
+location is a string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The path of points to be snapped.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict with a list of speed limits and a list of the snapped points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.speed_limits">
+<span class="sig-name descname"><span class="pre">speed_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">place_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.speed_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the posted speed limit (in km/h) for given road segments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>place_ids</strong> (<em>str</em><em> or </em><em>list</em>) – The Place ID of the road segment. Place IDs are returned
+by the snap_to_roads function. You can pass up to 100 Place IDs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of speed limits.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.static_map">
+<span class="sig-name descname"><span class="pre">static_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.static_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a map image from the Maps Static API.</p>
+<p>See <a class="reference external" href="https://developers.google.com/maps/documentation/maps-static/intro">https://developers.google.com/maps/documentation/maps-static/intro</a>
+for more info, including more detail for each parameter below.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> – Defines the rectangular dimensions of the map image.</p></li>
+<li><p><strong>center</strong> (<em>dict</em><em> or </em><em>list</em><em> or </em><em>string</em>) – Defines the center of the map, equidistant from all edges
+of the map.</p></li>
+<li><p><strong>zoom</strong> (<em>int</em>) – Defines the zoom level of the map, which determines the
+magnification level of the map.</p></li>
+<li><p><strong>scale</strong> (<em>int</em>) – Affects the number of pixels that are returned.</p></li>
+<li><p><strong>format</strong> (<em>string</em>) – Defines the format of the resulting image.</p></li>
+<li><p><strong>maptype</strong> (<em>string</em>) – defines the type of map to construct. There are several
+possible maptype values, including roadmap, satellite, hybrid,
+and terrain.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – defines the language to use for display of labels on
+map tiles.</p></li>
+<li><p><strong>region</strong> (<em>string</em>) – defines the appropriate borders to display, based on
+geo-political sensitivities.</p></li>
+<li><p><strong>markers</strong> (<em>StaticMapMarker</em>) – define one or more markers to attach to the image at
+specified locations.</p></li>
+<li><p><strong>path</strong> (<em>StaticMapPath</em>) – defines a single path of two or more connected points to
+overlay on the image at specified locations.</p></li>
+<li><p><strong>visible</strong> (<em>list</em><em> of </em><em>dict</em>) – specifies one or more locations that should remain visible
+on the map, though no markers or other indicators will be displayed.</p></li>
+<li><p><strong>style</strong> (<em>list</em><em> of </em><em>dict</em>) – defines a custom style to alter the presentation of
+a specific feature (roads, parks, and other features) of the map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>iterator containing the raw image data, which typically can be
 used to save an image file locally. For example:</p>
 <p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
-f = open(local_filename, &#8216;wb&#8217;)
-for chunk in client.places_photo(photo_reference, max_width=100):</p>
+f = open(local_filename, ‘wb’)
+for chunk in client.static_map(size=(400, 400),</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>if chunk:</dt>
-<dd><p class="first last">f.write(chunk)</p>
+<div><blockquote>
+<div><p>center=(52.520103, 13.404871),
+zoom=15):</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if chunk:</dt><dd><p>f.write(chunk)</p>
 </dd>
 </dl>
 </div></blockquote>
 <p>f.close()
 <a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="googlemaps.Client.places_radar">
-<code class="descname">places_radar</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.places_radar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs radar search for places.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value for which you wish to obtain the
-closest, human-readable address.</li>
-<li><strong>radius</strong> (<em>int</em>) &#8211; Distance in meters within which to bias results.</li>
-<li><strong>keyword</strong> (<em>string</em>) &#8211; A term to be matched against all content that Google has
-indexed for this place.</li>
-<li><strong>min_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no less than
-this price level. Valid values are in the range from 0
-(most affordable) to 4 (most expensive).</li>
-<li><strong>max_price</strong> (<em>int</em>) &#8211; Restricts results to only those places with no greater
-than this price level. Valid values are in the range
-from 0 (most affordable) to 4 (most expensive).</li>
-<li><strong>name</strong> (<em>string or list of strings</em>) &#8211; One or more terms to be matched against the names of places.</li>
-<li><strong>open_now</strong> (<em>bool</em>) &#8211; Return only those places that are open for business at
-the time the query is sent.</li>
-<li><strong>type</strong> (<em>string</em>) &#8211; Restricts the results to places matching the specified type.
-The full list of supported types is available here:
-<a class="reference external" href="https://developers.google.com/places/supported_types">https://developers.google.com/places/supported_types</a></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">result dict with the following keys:
-status: status code
-results: list of places
-html_attributions: set of attributions which must be displayed</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="googlemaps.Client.reverse_geocode">
-<code class="descname">reverse_geocode</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.reverse_geocode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reverse geocoding is the process of converting geographic coordinates into a
-human-readable address.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>latlng</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value or place_id for which you wish
-to obtain the closest, human-readable address.</li>
-<li><strong>result_type</strong> (<em>string or list of strings</em>) &#8211; One or more address types to restrict results to.</li>
-<li><strong>location_type</strong> (<em>list of strings</em>) &#8211; One or more location types to restrict results to.</li>
-<li><strong>language</strong> &#8211; The language in which to return results.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of reverse geocoding results.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="googlemaps.Client.snap_to_roads">
-<code class="descname">snap_to_roads</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.snap_to_roads" title="Permalink to this definition">¶</a></dt>
-<dd><p>Snaps a path to the most likely roads travelled.</p>
-<p>Takes up to 100 GPS points collected along a route, and returns a similar
-set of data with the points snapped to the most likely roads the vehicle
-was traveling along.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>a single location, or a list of locations, where a
-location is a string, dict, list, or tuple</em>) &#8211; The path to be snapped.</li>
-<li><strong>interpolate</strong> (<em>bool</em>) &#8211; Whether to interpolate a path to include all points
-forming the full road-geometry. When true, additional interpolated
-points will also be returned, resulting in a path that smoothly follows
-the geometry of the road, even around corners and through tunnels.
-Interpolated paths may contain more points than the original path.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">A list of snapped points.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="googlemaps.Client.snapped_speed_limits">
-<code class="descname">snapped_speed_limits</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.snapped_speed_limits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the posted speed limit (in km/h) for given road segments.</p>
-<p>The provided points will first be snapped to the most likely roads the
-vehicle was traveling along.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>a single location, or a list of locations, where a
-location is a string, dict, list, or tuple</em>) &#8211; The path of points to be snapped.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict with a list of speed limits and a list of the snapped points.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="googlemaps.Client.speed_limits">
-<code class="descname">speed_limits</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.speed_limits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the posted speed limit (in km/h) for given road segments.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>place_ids</strong> (<em>str or list</em>) &#8211; The Place ID of the road segment. Place IDs are returned
-by the snap_to_roads function. You can pass up to 100 Place IDs.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of speed limits.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="googlemaps.Client.timezone">
-<code class="descname">timezone</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.timezone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get time zone for a location on the earth, as well as that location&#8217;s
+<dl class="py method">
+<dt class="sig sig-object py" id="googlemaps.Client.timezone">
+<span class="sig-name descname"><span class="pre">timezone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.Client.timezone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get time zone for a location on the earth, as well as that location’s
 time offset from UTC.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>location</strong> (<em>string, dict, list, or tuple</em>) &#8211; The latitude/longitude value representing the location to
-look up.</li>
-<li><strong>timestamp</strong> (<em>int or datetime.datetime</em>) &#8211; Timestamp specifies the desired time as seconds since
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> (<em>string</em><em>, </em><em>dict</em><em>, </em><em>list</em><em>, or </em><em>tuple</em>) – The latitude/longitude value representing the location to
+look up.</p></li>
+<li><p><strong>timestamp</strong> (<em>int</em><em> or </em><em>datetime.datetime</em>) – Timestamp specifies the desired time as seconds since
 midnight, January 1, 1970 UTC. The Time Zone API uses the timestamp to
 determine whether or not Daylight Savings should be applied. Times
 before 1970 can be expressed as negative values. Optional. Defaults to
-<code class="docutils literal"><span class="pre">datetime.utcnow()</span></code>.</li>
-<li><strong>language</strong> (<em>string</em>) &#8211; The language in which to return results.</li>
+<code class="docutils literal notranslate"><span class="pre">datetime.utcnow()</span></code>.</p></li>
+<li><p><strong>language</strong> (<em>string</em>) – The language in which to return results.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-googlemaps.exceptions">
-<span id="googlemaps-exceptions-module"></span><h2><a class="reference internal" href="#module-googlemaps.exceptions" title="googlemaps.exceptions"><code class="xref py py-mod docutils literal"><span class="pre">googlemaps.exceptions</span></code></a> Module<a class="headerlink" href="#module-googlemaps.exceptions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-googlemaps.exceptions">
+<span id="googlemaps-exceptions-module"></span><h2><a class="reference internal" href="#module-googlemaps.exceptions" title="googlemaps.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">googlemaps.exceptions</span></code></a> Module<a class="headerlink" href="#module-googlemaps.exceptions" title="Permalink to this heading">¶</a></h2>
 <p>Defines exceptions that are thrown by the Google Maps client.</p>
-<dl class="exception">
-<dt id="googlemaps.exceptions.ApiError">
-<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">ApiError</code><span class="sig-paren">(</span><em>status</em>, <em>message=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.ApiError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="googlemaps.exceptions.ApiError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">googlemaps.exceptions.</span></span><span class="sig-name descname"><span class="pre">ApiError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.ApiError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Represents an exception returned by the remote API.</p>
 </dd></dl>
 
-<dl class="exception">
-<dt id="googlemaps.exceptions.HTTPError">
-<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">HTTPError</code><span class="sig-paren">(</span><em>status_code</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.HTTPError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#googlemaps.exceptions.TransportError" title="googlemaps.exceptions.TransportError"><code class="xref py py-class docutils literal"><span class="pre">googlemaps.exceptions.TransportError</span></code></a></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="googlemaps.exceptions.HTTPError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">googlemaps.exceptions.</span></span><span class="sig-name descname"><span class="pre">HTTPError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.HTTPError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#googlemaps.exceptions.TransportError" title="googlemaps.exceptions.TransportError"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransportError</span></code></a></p>
 <p>An unexpected HTTP error occurred.</p>
 </dd></dl>
 
-<dl class="exception">
-<dt id="googlemaps.exceptions.Timeout">
-<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">Timeout</code><a class="headerlink" href="#googlemaps.exceptions.Timeout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="googlemaps.exceptions.Timeout">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">googlemaps.exceptions.</span></span><span class="sig-name descname"><span class="pre">Timeout</span></span><a class="headerlink" href="#googlemaps.exceptions.Timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>The request timed out.</p>
 </dd></dl>
 
-<dl class="exception">
-<dt id="googlemaps.exceptions.TransportError">
-<em class="property">exception </em><code class="descclassname">googlemaps.exceptions.</code><code class="descname">TransportError</code><span class="sig-paren">(</span><em>base_exception=None</em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.TransportError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="googlemaps.exceptions.TransportError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">googlemaps.exceptions.</span></span><span class="sig-name descname"><span class="pre">TransportError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#googlemaps.exceptions.TransportError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Something went wrong while trying to execute the request.</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Python Client for Google Maps Services</a><ul>
-<li><a class="reference internal" href="#module-googlemaps"><code class="docutils literal"><span class="pre">googlemaps</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-googlemaps.exceptions"><code class="docutils literal"><span class="pre">googlemaps.exceptions</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-googlemaps"><code class="xref py py-mod docutils literal notranslate"><span class="pre">googlemaps</span></code> Module</a><ul>
+<li><a class="reference internal" href="#googlemaps.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul>
+<li><a class="reference internal" href="#googlemaps.Client.addressvalidation"><code class="docutils literal notranslate"><span class="pre">Client.addressvalidation()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.clear_experience_id"><code class="docutils literal notranslate"><span class="pre">Client.clear_experience_id()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.directions"><code class="docutils literal notranslate"><span class="pre">Client.directions()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.distance_matrix"><code class="docutils literal notranslate"><span class="pre">Client.distance_matrix()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.elevation"><code class="docutils literal notranslate"><span class="pre">Client.elevation()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.elevation_along_path"><code class="docutils literal notranslate"><span class="pre">Client.elevation_along_path()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.find_place"><code class="docutils literal notranslate"><span class="pre">Client.find_place()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.geocode"><code class="docutils literal notranslate"><span class="pre">Client.geocode()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.geolocate"><code class="docutils literal notranslate"><span class="pre">Client.geolocate()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.get_experience_id"><code class="docutils literal notranslate"><span class="pre">Client.get_experience_id()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.nearest_roads"><code class="docutils literal notranslate"><span class="pre">Client.nearest_roads()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.place"><code class="docutils literal notranslate"><span class="pre">Client.place()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.places"><code class="docutils literal notranslate"><span class="pre">Client.places()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.places_autocomplete"><code class="docutils literal notranslate"><span class="pre">Client.places_autocomplete()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.places_autocomplete_query"><code class="docutils literal notranslate"><span class="pre">Client.places_autocomplete_query()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.places_nearby"><code class="docutils literal notranslate"><span class="pre">Client.places_nearby()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.places_photo"><code class="docutils literal notranslate"><span class="pre">Client.places_photo()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.reverse_geocode"><code class="docutils literal notranslate"><span class="pre">Client.reverse_geocode()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.set_experience_id"><code class="docutils literal notranslate"><span class="pre">Client.set_experience_id()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.snap_to_roads"><code class="docutils literal notranslate"><span class="pre">Client.snap_to_roads()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.snapped_speed_limits"><code class="docutils literal notranslate"><span class="pre">Client.snapped_speed_limits()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.speed_limits"><code class="docutils literal notranslate"><span class="pre">Client.speed_limits()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.static_map"><code class="docutils literal notranslate"><span class="pre">Client.static_map()</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.Client.timezone"><code class="docutils literal notranslate"><span class="pre">Client.timezone()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-googlemaps.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">googlemaps.exceptions</span></code> Module</a><ul>
+<li><a class="reference internal" href="#googlemaps.exceptions.ApiError"><code class="docutils literal notranslate"><span class="pre">ApiError</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.exceptions.HTTPError"><code class="docutils literal notranslate"><span class="pre">HTTPError</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.exceptions.Timeout"><code class="docutils literal notranslate"><span class="pre">Timeout</span></code></a></li>
+<li><a class="reference internal" href="#googlemaps.exceptions.TransportError"><code class="docutils literal notranslate"><span class="pre">TransportError</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/index.txt"
+      <li><a href="_sources/index.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -841,12 +881,13 @@ before 1970 can be expressed as negative values. Optional. Defaults to
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 3.0.2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Python Client for Google Maps Services 4.10.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Python Client for Google Maps Services</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2018, Google Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2023, Google Inc..
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
