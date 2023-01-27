@@ -715,26 +715,19 @@ a specific feature (roads, parks, and other features) of the map.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>iterator containing the raw image data, which typically can be
+<dd class="field-even"><p>iterator containing the raw image data, which typically can be
 used to save an image file locally. For example:</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
-f = open(local_filename, ‘wb’)
-for chunk in client.static_map(size=(400, 400),</p>
-<blockquote>
-<div><blockquote>
-<div><p>center=(52.520103, 13.404871),
-zoom=15):</p>
-</div></blockquote>
-<dl class="simple">
-<dt>if chunk:</dt><dd><p>f.write(chunk)</p>
 </dd>
 </dl>
-</div></blockquote>
-<p>f.close()
-<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
-</p>
-</dd>
-</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">static_map</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+                               <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mf">52.520103</span><span class="p">,</span> <span class="mf">13.404871</span><span class="p">),</span>
+                               <span class="n">zoom</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
