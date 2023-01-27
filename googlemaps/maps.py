@@ -123,7 +123,7 @@ class StaticMapPath(StaticMapParam):
 
 
 def static_map(client, size,
-               center=None, zoom=None, scale=None, 
+               center=None, zoom=None, scale=None,
                format=None, maptype=None, language=None, region=None,
                markers=None, path=None, visible=None, style=None):
     """
@@ -181,7 +181,8 @@ def static_map(client, size,
     :rtype: iterator containing the raw image data, which typically can be
         used to save an image file locally. For example:
 
-        ```
+    .. code-block:: python
+
         f = open(local_filename, 'wb')
         for chunk in client.static_map(size=(400, 400),
                                        center=(52.520103, 13.404871),
@@ -189,7 +190,6 @@ def static_map(client, size,
             if chunk:
                 f.write(chunk)
         f.close()
-        ```
     """
 
     params = {"size": convert.size(size)}
