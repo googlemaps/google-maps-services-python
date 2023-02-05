@@ -30,6 +30,7 @@ dist/
 .coverage
 .nox
 env
+.env
 googlemaps.egg-info
 *.egg
 .vscode/
