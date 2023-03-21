@@ -16,19 +16,28 @@
 #
 
 """Performs requests to the Google Maps Address Validation API."""
+from __future__ import annotations
+from typing import TYPE_CHECKING, cast, List, Optional
+
+import requests
+
 from googlemaps import exceptions
+from googlemaps.types import DictStrAny
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
 _ADDRESSVALIDATION_BASE_URL = "https://addressvalidation.googleapis.com"
 
 
-def _addressvalidation_extract(response):
+def _addressvalidation_extract(response: requests.Response) -> DictStrAny:
     """
     Mimics the exception handling logic in ``client._get_body``, but
     for addressvalidation which uses a different response format.
     """
     body = response.json()
-    return body
+    return cast(DictStrAny, body)
 
     # if response.status_code in (200, 404):
     #     return body
@@ -44,7 +53,13 @@ def _addressvalidation_extract(response):
     #     raise exceptions.ApiError(response.status_code, error)
 
 
-def addressvalidation(client, addressLines, regionCode=None , locality=None, enableUspsCass=None):
+def addressvalidation(
+    client: Client,
+    addressLines: List[str],
+    regionCode: Optional[str] = None,
+    locality: Optional[str] = None,
+    enableUspsCass: Optional[bool] = None,
+) -> DictStrAny:
     """
     The Google Maps Address Validation API returns a verification of an address
     See https://developers.google.com/maps/documentation/address-validation/overview
@@ -59,7 +74,7 @@ def addressvalidation(client, addressLines, regionCode=None , locality=None, ena
     :type locality: boolean
     """
 
-    params = {
+    params: DictStrAny = {
         "address":{
             "addressLines": addressLines
         }

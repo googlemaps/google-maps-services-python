@@ -16,13 +16,26 @@
 #
 
 """Performs requests to the Google Maps Directions API."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
 
 from googlemaps import convert
+from googlemaps.types import Location, Timestamp, DictStrAny
 
 from datetime import datetime
 
 
-def timezone(client, location, timestamp=None, language=None):
+if TYPE_CHECKING:
+    from googlemaps.client import Client
+
+
+def timezone(
+    client: Client,
+    location: Location,
+    timestamp: Optional[Timestamp] = None,
+    language: Optional[str] = None,
+) -> DictStrAny:
     """Get time zone for a location on the earth, as well as that location's
     time offset from UTC.
 

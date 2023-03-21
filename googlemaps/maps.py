@@ -16,8 +16,14 @@
 #
 
 """Performs requests to the Google Maps Static API."""
+from __future__ import annotations
+from typing import List, Optional, Iterator, TYPE_CHECKING, Union
 
 from googlemaps import convert
+from googlemaps.types import Location, DictStrAny
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
 MAPS_IMAGE_FORMATS = {'png8', 'png', 'png32', 'gif', 'jpg', 'jpg-baseline'}
@@ -27,10 +33,10 @@ MAPS_MAP_TYPES = {'roadmap', 'satellite', 'terrain', 'hybrid'}
 class StaticMapParam:
     """Base class to handle parameters for Maps Static API."""
 
-    def __init__(self):
-        self.params = []
+    def __init__(self) -> None:
+        self.params: List[str] = []
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Converts a list of parameters to the format expected by
         the Google Maps server.
 
@@ -43,8 +49,13 @@ class StaticMapParam:
 class StaticMapMarker(StaticMapParam):
     """Handles marker parameters for Maps Static API."""
 
-    def __init__(self, locations,
-                 size=None, color=None, label=None):
+    def __init__(
+        self,
+        locations: List[Location],
+        size: Optional[str] = None,
+        color: Optional[str] = None,
+        label: Optional[str] = None,
+    ) -> None:
         """
         :param locations: Specifies the locations of the markers on
             the map.
@@ -80,9 +91,14 @@ class StaticMapMarker(StaticMapParam):
 class StaticMapPath(StaticMapParam):
     """Handles path parameters for Maps Static API."""
 
-    def __init__(self, points,
-                 weight=None, color=None,
-                 fillcolor=None, geodesic=None):
+    def __init__(
+        self,
+        points: List[Location],
+        weight: Optional[int] = None,
+        color: Optional[str] = None,
+        fillcolor: Optional[str] = None,
+        geodesic: Optional[str] = None,
+    ) -> None:
         """
         :param points: Specifies the point through which the path
             will be built.
@@ -122,10 +138,21 @@ class StaticMapPath(StaticMapParam):
         self.params.append(convert.location_list(points))
 
 
-def static_map(client, size,
-               center=None, zoom=None, scale=None,
-               format=None, maptype=None, language=None, region=None,
-               markers=None, path=None, visible=None, style=None):
+def static_map(
+    client: Client,
+    size: Union[int, List[int]],
+    center: Optional[Location] = None,
+    zoom: Optional[int] = None,
+    scale: Optional[int] = None,
+    format: Optional[str] = None,
+    maptype: Optional[str] = None,
+    language: Optional[str] = None,
+    region: Optional[str] = None,
+    markers: Optional[StaticMapMarker] = None,
+    path: Optional[StaticMapPath] = None,
+    visible: Optional[List[Location]] = None,
+    style: Optional[List[DictStrAny]] = None,
+) -> Iterator[bytes]:
     """
     Downloads a map image from the Maps Static API.
 
@@ -192,7 +219,7 @@ def static_map(client, size,
         f.close()
     """
 
-    params = {"size": convert.size(size)}
+    params: DictStrAny = {"size": convert.size(size)}
 
     if not markers:
         if not (center or zoom is not None):
@@ -244,4 +271,5 @@ def static_map(client, size,
         extract_body=lambda response: response,
         requests_kwargs={"stream": True},
     )
-    return response.iter_content()
+
+    return response.iter_content()  # type: ignore

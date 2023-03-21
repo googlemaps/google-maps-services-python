@@ -18,14 +18,16 @@
 """
 Defines exceptions that are thrown by the Google Maps client.
 """
+from typing import Optional, Union
+
 
 class ApiError(Exception):
     """Represents an exception returned by the remote API."""
-    def __init__(self, status, message=None):
+    def __init__(self, status: Union[int, str], message: Optional[str] = None) -> None:
         self.status = status
         self.message = message
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.message is None:
             return str(self.status)
         else:
@@ -34,10 +36,10 @@ class ApiError(Exception):
 class TransportError(Exception):
     """Something went wrong while trying to execute the request."""
 
-    def __init__(self, base_exception=None):
+    def __init__(self, base_exception: Optional[BaseException] = None) -> None:
         self.base_exception = base_exception
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.base_exception:
             return str(self.base_exception)
 
@@ -45,10 +47,10 @@ class TransportError(Exception):
 
 class HTTPError(TransportError):
     """An unexpected HTTP error occurred."""
-    def __init__(self, status_code):
+    def __init__(self, status_code: int) -> None:
         self.status_code = status_code
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "HTTP Error: %d" % self.status_code
 
 class Timeout(Exception):

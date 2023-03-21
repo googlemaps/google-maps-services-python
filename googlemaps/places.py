@@ -16,9 +16,17 @@
 #
 
 """Performs requests to the Google Places API."""
+from __future__ import annotations
+
 import warnings
+from typing import Optional, List, TYPE_CHECKING, Union, Iterator
+from typing_extensions import Literal
 
 from googlemaps import convert
+from googlemaps.types import DictStrAny, Location
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
 PLACES_FIND_FIELDS_BASIC = {"business_status",
@@ -125,8 +133,13 @@ DEPRECATED_FIELDS_MESSAGE = (
 
 
 def find_place(
-    client, input, input_type, fields=None, location_bias=None, language=None
-):
+    client: Client,
+    input: str,
+    input_type: Literal["textquery", "phonenumber"],
+    fields: Optional[List[str]] = None,
+    location_bias: Optional[str] = None,
+    language: Optional[str] = None,
+) -> DictStrAny:
     """
     A Find Place request takes a text input, and returns a place.
     The text input can be any kind of Places data, for example,
@@ -196,18 +209,18 @@ def find_place(
 
 
 def places(
-    client,
-    query=None,
-    location=None,
-    radius=None,
-    language=None,
-    min_price=None,
-    max_price=None,
-    open_now=False,
-    type=None,
-    region=None,
-    page_token=None,
-):
+    client: Client,
+    query: Optional[str] = None,
+    location: Optional[Location] = None,
+    radius: Optional[int] = None,
+    language: Optional[str] = None,
+    min_price: Optional[int] = None,
+    max_price: Optional[int] = None,
+    open_now: bool = False,
+    type: Optional[str] = None,
+    region: Optional[str] = None,
+    page_token: Optional[str] = None,
+) -> DictStrAny:
     """
     Places search.
 
@@ -273,19 +286,19 @@ def places(
 
 
 def places_nearby(
-    client,
-    location=None,
-    radius=None,
-    keyword=None,
-    language=None,
-    min_price=None,
-    max_price=None,
-    name=None,
-    open_now=False,
-    rank_by=None,
-    type=None,
-    page_token=None,
-):
+    client: Client,
+    location: Optional[Location] = None,
+    radius: Optional[int] = None,
+    keyword: Optional[str] = None,
+    language: Optional[str] = None,
+    min_price: Optional[int] = None,
+    max_price: Optional[int] = None,
+    name: Optional[Union[str, List[str]]] = None,
+    open_now: bool = False,
+    rank_by: Optional[str] = None,
+    type: Optional[str] = None,
+    page_token: Optional[str] = None,
+) -> DictStrAny:
     """
     Performs nearby search for places.
 
@@ -375,28 +388,28 @@ def places_nearby(
 
 
 def _places(
-    client,
-    url_part,
-    query=None,
-    location=None,
-    radius=None,
-    keyword=None,
-    language=None,
-    min_price=0,
-    max_price=4,
-    name=None,
-    open_now=False,
-    rank_by=None,
-    type=None,
-    region=None,
-    page_token=None,
-):
+    client: Client,
+    url_part: str,
+    query: Optional[str] = None,
+    location: Optional[Location] = None,
+    radius: Optional[int] = None,
+    keyword: Optional[str] = None,
+    language: Optional[str] = None,
+    min_price: Optional[int] = 0,
+    max_price: Optional[int] = 4,
+    name: Optional[Union[str, List[str]]] = None,
+    open_now: bool = False,
+    rank_by: Optional[str] = None,
+    type: Optional[str] = None,
+    region: Optional[str] = None,
+    page_token: Optional[str] = None,
+) -> DictStrAny:
     """
     Internal handler for ``places`` and ``places_nearby``.
     See each method's docs for arg details.
     """
 
-    params = {"minprice": min_price, "maxprice": max_price}
+    params: DictStrAny = {"minprice": min_price, "maxprice": max_price}
 
     if query:
         params["query"] = query
@@ -426,14 +439,14 @@ def _places(
 
 
 def place(
-    client,
-    place_id,
-    session_token=None,
-    fields=None,
-    language=None,
-    reviews_no_translations=False,
-    reviews_sort="most_relevant",
-):
+    client: Client,
+    place_id: str,
+    session_token: Optional[str] = None,
+    fields: Optional[List[str]] = None,
+    language: Optional[str] = None,
+    reviews_no_translations: bool = False,
+    reviews_sort: str = "most_relevant",
+) -> DictStrAny:
     """
     Comprehensive details for an individual place.
 
@@ -496,7 +509,12 @@ def place(
     return client._request("/maps/api/place/details/json", params)
 
 
-def places_photo(client, photo_reference, max_width=None, max_height=None):
+def places_photo(
+    client: Client,
+    photo_reference: str,
+    max_width: Optional[int] = None,
+    max_height: Optional[int] = None,
+) -> Iterator[bytes]:
     """
     Downloads a photo from the Places API.
 
@@ -525,7 +543,7 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
     if not (max_width or max_height):
         raise ValueError("a max_width or max_height arg is required")
 
-    params = {"photoreference": photo_reference}
+    params: DictStrAny = {"photoreference": photo_reference}
 
     if max_width:
         params["maxwidth"] = max_width
@@ -541,22 +559,22 @@ def places_photo(client, photo_reference, max_width=None, max_height=None):
         extract_body=lambda response: response,
         requests_kwargs={"stream": True},
     )
-    return response.iter_content()
+    return response.iter_content()  # type: ignore
 
 
 def places_autocomplete(
-    client,
-    input_text,
-    session_token=None,
-    offset=None,
-    origin=None,
-    location=None,
-    radius=None,
-    language=None,
-    types=None,
-    components=None,
-    strict_bounds=False,
-):
+    client: Client,
+    input_text: str,
+    session_token: Optional[str] = None,
+    offset: Optional[int] = None,
+    origin: Optional[Location] = None,
+    location: Optional[Location] = None,
+    radius: Optional[int] = None,
+    language: Optional[str] = None,
+    types: Optional[List[str]] = None,
+    components: Optional[DictStrAny] = None,
+    strict_bounds: bool = False,
+) -> List[DictStrAny]:
     """
     Returns Place predictions given a textual search string and optional
     geographic bounds.
@@ -624,8 +642,13 @@ def places_autocomplete(
 
 
 def places_autocomplete_query(
-    client, input_text, offset=None, location=None, radius=None, language=None
-):
+    client: Client,
+    input_text: str,
+    offset: Optional[int] = None,
+    location: Optional[Location] = None,
+    radius: Optional[int] = None,
+    language: Optional[str] = None,
+) -> List[DictStrAny]:
     """
     Returns Place predictions given a textual search query, such as
     "pizza near New York", and optional geographic bounds.
@@ -662,25 +685,25 @@ def places_autocomplete_query(
 
 
 def _autocomplete(
-    client,
-    url_part,
-    input_text,
-    session_token=None,
-    offset=None,
-    origin=None,
-    location=None,
-    radius=None,
-    language=None,
-    types=None,
-    components=None,
-    strict_bounds=False,
-):
+    client: Client,
+    url_part: str,
+    input_text: str,
+    session_token: Optional[str] = None,
+    offset: Optional[int] = None,
+    origin: Optional[Location] = None,
+    location: Optional[Location] = None,
+    radius: Optional[int] = None,
+    language: Optional[str] = None,
+    types: Optional[List[str]] = None,
+    components: Optional[DictStrAny] = None,
+    strict_bounds: bool = False,
+) -> List[DictStrAny]:
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
     See each method's docs for arg details.
     """
 
-    params = {"input": input_text}
+    params: DictStrAny = {"input": input_text}
 
     if session_token:
         params["sessiontoken"] = session_token

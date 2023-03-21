@@ -27,9 +27,13 @@
     convert.latlng(sydney)
     # '-33.8674869,151.2069902'
 """
+from typing import Any, Union, Dict, List, Tuple, TypeVar, Iterator, overload, cast
+from typing_extensions import TypeGuard, TypeAlias
+
+from googlemaps.types import Location, DictStrAny, LocationDict
 
 
-def format_float(arg):
+def format_float(arg: float) -> str:
     """Formats a float value to be as short as possible.
 
     Truncates float to 8 decimal places and trims extraneous
@@ -55,7 +59,7 @@ def format_float(arg):
     return ("%.8f" % float(arg)).rstrip("0").rstrip(".")
 
 
-def latlng(arg):
+def latlng(arg: Location) -> str:
     """Converts a lat/lon pair to a comma-separated string.
 
     For example:
@@ -81,7 +85,7 @@ def latlng(arg):
     return "%s,%s" % (format_float(normalized[0]), format_float(normalized[1]))
 
 
-def normalize_lat_lng(arg):
+def normalize_lat_lng(arg: Location) -> Tuple[float, float]:
     """Take the various lat/lng representations and return a tuple.
 
     Accepts various representations:
@@ -108,7 +112,7 @@ def normalize_lat_lng(arg):
         "but got %s" % type(arg).__name__)
 
 
-def location_list(arg):
+def location_list(arg: Union[Location, List[Location]]) -> str:
     """Joins a list of locations into a pipe separated string, handling
     the various formats supported for lat/lng values.
 
@@ -126,10 +130,10 @@ def location_list(arg):
         # Handle the single-tuple lat/lng case.
         return latlng(arg)
     else:
-        return "|".join([latlng(location) for location in as_list(arg)])
+        return "|".join([latlng(cast(Location, location)) for location in as_list(arg)])
 
 
-def join_list(sep, arg):
+def join_list(sep: str, arg: Union[str, List[str]]) -> str:
     """If arg is list-like, then joins it with sep.
 
     :param sep: Separator string.
@@ -143,7 +147,20 @@ def join_list(sep, arg):
     return sep.join(as_list(arg))
 
 
-def as_list(arg):
+T = TypeVar("T")
+
+
+@overload
+def as_list(arg: List[T]) -> List[T]:
+    pass
+
+
+@overload
+def as_list(arg: T) -> List[T]:
+    pass
+
+
+def as_list(arg: Union[List[T], T]) -> List[T]:
     """Coerces arg into a list. If arg is already list-like, returns arg.
     Otherwise, returns a one-element list containing arg.
 
@@ -151,10 +168,10 @@ def as_list(arg):
     """
     if _is_list(arg):
         return arg
-    return [arg]
+    return [arg]  # type: ignore[list-item]
 
 
-def _is_list(arg):
+def _is_list(arg: Any) -> TypeGuard[List[Any]]:
     """Checks if arg is list-like. This excludes strings and dicts."""
     if isinstance(arg, dict):
         return False
@@ -163,16 +180,12 @@ def _is_list(arg):
     return _has_method(arg, "__getitem__") if not _has_method(arg, "strip") else _has_method(arg, "__iter__")
 
 
-def is_string(val):
+def is_string(val: Any) -> TypeGuard[str]:
     """Determines whether the passed value is a string, safe for 2/3."""
-    try:
-        basestring
-    except NameError:
-        return isinstance(val, str)
-    return isinstance(val, basestring)
+    return isinstance(val, str)
 
 
-def time(arg):
+def time(arg: Any) -> str:
     """Converts the value into a unix time (seconds since unix epoch).
 
     For example:
@@ -192,7 +205,7 @@ def time(arg):
     return str(arg)
 
 
-def _has_method(arg, method):
+def _has_method(arg: Any, method: str) -> bool:
     """Returns true if the given object has a method with the given name.
 
     :param arg: the object
@@ -205,7 +218,7 @@ def _has_method(arg, method):
     return hasattr(arg, method) and callable(getattr(arg, method))
 
 
-def components(arg):
+def components(arg: Union[DictStrAny, List[DictStrAny]]) -> str:
     """Converts a dict of components to the format expected by the Google Maps
     server.
 
@@ -223,7 +236,7 @@ def components(arg):
     # Components may have multiple values per type, here we
     # expand them into individual key/value items, eg:
     # {"country": ["US", "AU"], "foo": 1} -> "country:AU", "country:US", "foo:1"
-    def expand(arg):
+    def expand(arg: DictStrAny) -> Iterator[str]:
         for k, v in arg.items():
             for item in as_list(v):
                 yield "%s:%s" % (k, item)
@@ -236,7 +249,7 @@ def components(arg):
         "but got %s" % type(arg).__name__)
 
 
-def bounds(arg):
+def bounds(arg: Any) -> str:
     """Converts a lat/lon bounds to a comma- and pipe-separated string.
 
     Accepts two representations:
@@ -276,7 +289,7 @@ def bounds(arg):
         "but got %s" % type(arg).__name__)
 
 
-def size(arg):
+def size(arg: Any) -> str:
     if isinstance(arg, int):
         return "%sx%s" % (arg, arg)
     elif _is_list(arg):
@@ -287,7 +300,7 @@ def size(arg):
         "but got %s" % type(arg).__name__)
 
 
-def decode_polyline(polyline):
+def decode_polyline(polyline: str) -> List[Dict[str, float]]:
     """Decodes a Polyline string into a list of lat/lng dicts.
 
     See the developer docs for a detailed description of this encoding:
@@ -329,7 +342,7 @@ def decode_polyline(polyline):
     return points
 
 
-def encode_polyline(points):
+def encode_polyline(points: List[Location]) -> str:
     """Encodes a list of points into a polyline string.
 
     See the developer docs for a detailed description of this encoding:
@@ -363,7 +376,7 @@ def encode_polyline(points):
     return result
 
 
-def shortest_path(locations):
+def shortest_path(locations: List[Location]) -> str:
     """Returns the shortest representation of the given locations.
 
     The Elevations API limits requests to 2000 characters, and accepts

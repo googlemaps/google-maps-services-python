@@ -15,7 +15,10 @@
 from setuptools import setup
 
 
-requirements = ["requests>=2.20.0,<3.0"]
+requirements = [
+    "requests>=2.20.0,<3.0",
+    "typing_extensions>=4.5.0,<5.0",
+]
 
 with open("README.md") as f:
     readme = f.read()
@@ -48,5 +51,5 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Internet",
     ],
-    python_requires='>=3.5'
+    python_requires='>=3.7'
 )

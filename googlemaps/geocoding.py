@@ -16,11 +16,26 @@
 #
 
 """Performs requests to the Google Maps Geocoding API."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional, Union, List
+
 from googlemaps import convert
+from googlemaps.types import DictStrAny, Location
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
-def geocode(client, address=None, place_id=None, components=None, bounds=None, region=None,
-            language=None):
+def geocode(
+    client: Client,
+    address: Optional[str] = None,
+    place_id: Optional[str] = None,
+    components: Optional[DictStrAny] = None,
+    bounds: Optional[Union[str, DictStrAny]] = None,
+    region: Optional[str] = None,
+    language: Optional[str] = None,
+) -> List[DictStrAny]:
     """
     Geocoding is the process of converting addresses
     (like ``"1600 Amphitheatre Parkway, Mountain View, CA"``) into geographic
@@ -52,7 +67,7 @@ def geocode(client, address=None, place_id=None, components=None, bounds=None, r
     :rtype: list of geocoding results.
     """
 
-    params = {}
+    params: DictStrAny = {}
 
     if address:
         params["address"] = address
@@ -75,8 +90,13 @@ def geocode(client, address=None, place_id=None, components=None, bounds=None, r
     return client._request("/maps/api/geocode/json", params).get("results", [])
 
 
-def reverse_geocode(client, latlng, result_type=None, location_type=None,
-                    language=None):
+def reverse_geocode(
+    client: Client,
+    latlng: Location,
+    result_type: Optional[Union[str, List[str]]] = None,
+    location_type: Optional[List[str]] = None,
+    language: Optional[str] = None,
+) -> List[DictStrAny]:
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
