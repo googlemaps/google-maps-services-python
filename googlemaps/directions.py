@@ -16,15 +16,35 @@
 #
 
 """Performs requests to the Google Maps Directions API."""
+from __future__ import annotations
+from typing import TYPE_CHECKING, List, Optional, Union, cast
 
 from googlemaps import convert
+from googlemaps.types import DictStrAny, Location, Timestamp, Unit, DirectionsMode, TransitMode, \
+    TransitRoutingPreference, TrafficMode, DestinationAvoid
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
-def directions(client, origin, destination,
-               mode=None, waypoints=None, alternatives=False, avoid=None,
-               language=None, units=None, region=None, departure_time=None,
-               arrival_time=None, optimize_waypoints=False, transit_mode=None,
-               transit_routing_preference=None, traffic_model=None):
+def directions(
+    client: Client,
+    origin: Location,
+    destination: Location,
+    mode: Optional[DirectionsMode] = None,
+    waypoints: Optional[List[Location]] = None,
+    alternatives: bool = False,
+    avoid: Optional[Union[DestinationAvoid, List[DestinationAvoid]]] = None,
+    language: Optional[str] = None,
+    units: Optional[Unit] = None,
+    region: Optional[str] = None,
+    departure_time: Optional[Timestamp] = None,
+    arrival_time: Optional[Timestamp] = None,
+    optimize_waypoints: bool = False,
+    transit_mode: Optional[TransitMode] = None,
+    transit_routing_preference: Optional[TransitRoutingPreference] = None,
+    traffic_model: Optional[TrafficMode] = None,
+) -> List[DictStrAny]:
     """Get directions between an origin point and a destination point.
 
     :param origin: The address or latitude/longitude value from which you wish
@@ -98,7 +118,7 @@ def directions(client, origin, destination,
     :rtype: list of routes
     """
 
-    params = {
+    params: DictStrAny = {
         "origin": convert.latlng(origin),
         "destination": convert.latlng(destination)
     }
@@ -111,16 +131,16 @@ def directions(client, origin, destination,
         params["mode"] = mode
 
     if waypoints:
-        waypoints = convert.location_list(waypoints)
+        waypoints_val = convert.location_list(waypoints)
         if optimize_waypoints:
-            waypoints = "optimize:true|" + waypoints
-        params["waypoints"] = waypoints
+            waypoints_val = "optimize:true|" + waypoints_val
+        params["waypoints"] = waypoints_val
 
     if alternatives:
         params["alternatives"] = "true"
 
     if avoid:
-        params["avoid"] = convert.join_list("|", avoid)
+        params["avoid"] = convert.join_list("|", cast(Union[str, List[str]], avoid))
 
     if language:
         params["language"] = language

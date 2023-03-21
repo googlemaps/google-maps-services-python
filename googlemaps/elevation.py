@@ -16,11 +16,18 @@
 #
 
 """Performs requests to the Google Maps Elevation API."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, List, Union
 
 from googlemaps import convert
+from googlemaps.types import Location, DictStrAny
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
-def elevation(client, locations):
+def elevation(client: Client, locations: List[Location]) -> List[DictStrAny]:
     """
     Provides elevation data for locations provided on the surface of the
     earth, including depth locations on the ocean floor (which return negative
@@ -37,7 +44,11 @@ def elevation(client, locations):
     return client._request("/maps/api/elevation/json", params).get("results", [])
 
 
-def elevation_along_path(client, path, samples):
+def elevation_along_path(
+    client: Client,
+    path: Union[str, List[Location]],
+    samples: int,
+) -> List[DictStrAny]:
     """
     Provides elevation data sampled along a path on the surface of the earth.
 
@@ -52,7 +63,7 @@ def elevation_along_path(client, path, samples):
     :rtype: list of elevation data responses
     """
 
-    if type(path) is str:
+    if isinstance(path, str):
         path = "enc:%s" % path
     else:
         path = convert.shortest_path(path)

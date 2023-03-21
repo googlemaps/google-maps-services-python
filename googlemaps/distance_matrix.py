@@ -16,14 +16,41 @@
 #
 
 """Performs requests to the Google Maps Distance Matrix API."""
+from __future__ import annotations
+from typing import List, TYPE_CHECKING, Union, Optional
 
 from googlemaps import convert
+from googlemaps.types import (
+    DictStrAny,
+    Location,
+    DirectionsMode,
+    DestinationAvoid,
+    Unit,
+    Timestamp,
+    TransitMode,
+    TrafficMode,
+    TransitRoutingPreference,
+)
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
-def distance_matrix(client, origins, destinations,
-                    mode=None, language=None, avoid=None, units=None,
-                    departure_time=None, arrival_time=None, transit_mode=None,
-                    transit_routing_preference=None, traffic_model=None, region=None):
+def distance_matrix(
+    client: Client,
+    origins: Union[Location, List[Location]],
+    destinations: Union[Location, List[Location]],
+    mode: Optional[DirectionsMode] = None,
+    language: Optional[str] = None,
+    avoid: Optional[DestinationAvoid] = None,
+    units: Optional[Unit] = None,
+    departure_time: Optional[Timestamp] = None,
+    arrival_time: Optional[Timestamp] = None,
+    transit_mode: Optional[TransitMode] = None,
+    transit_routing_preference: Optional[TransitRoutingPreference] = None,
+    traffic_model: Optional[TrafficMode] = None,
+    region: Optional[str] = None,
+) -> List[DictStrAny]:
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param origins: One or more addresses, Place IDs, and/or latitude/longitude
@@ -136,4 +163,4 @@ def distance_matrix(client, origins, destinations,
     if region:
         params["region"] = region
 
-    return client._request("/maps/api/distancematrix/json", params)
+    return client._request("/maps/api/distancematrix/json", params)  # type: ignore

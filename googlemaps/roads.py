@@ -16,15 +16,28 @@
 #
 
 """Performs requests to the Google Maps Roads API."""
+from __future__ import annotations
 
+from typing import TYPE_CHECKING, Dict, Any, Union, List, cast
+
+import requests
 import googlemaps
+
 from googlemaps import convert
+from googlemaps.types import Location, DictStrAny
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
 _ROADS_BASE_URL = "https://roads.googleapis.com"
 
 
-def snap_to_roads(client, path, interpolate=False):
+def snap_to_roads(
+    client: Client,
+    path: Union[Location, List[Location]],
+    interpolate: bool = False,
+) -> List[DictStrAny]:
     """Snaps a path to the most likely roads travelled.
 
     Takes up to 100 GPS points collected along a route, and returns a similar
@@ -45,7 +58,7 @@ def snap_to_roads(client, path, interpolate=False):
     :rtype: A list of snapped points.
     """
 
-    params = {"path": convert.location_list(path)}
+    params: Dict[str, Any] = {"path": convert.location_list(path)}
 
     if interpolate:
         params["interpolate"] = "true"
@@ -55,7 +68,10 @@ def snap_to_roads(client, path, interpolate=False):
                        accepts_clientid=False,
                        extract_body=_roads_extract).get("snappedPoints", [])
 
-def nearest_roads(client, points):
+def nearest_roads(
+    client: Client,
+    points: Union[Location, List[Location]],
+) -> List[DictStrAny]:
     """Find the closest road segments for each point
 
     Takes up to 100 independent coordinates, and returns the closest road
@@ -77,7 +93,11 @@ def nearest_roads(client, points):
                        accepts_clientid=False,
                        extract_body=_roads_extract).get("snappedPoints", [])
 
-def speed_limits(client, place_ids):
+
+def speed_limits(
+    client:Client,
+    place_ids: Union[str, List[str]],
+) -> List[DictStrAny]:
     """Returns the posted speed limit (in km/h) for given road segments.
 
     :param place_ids: The Place ID of the road segment. Place IDs are returned
@@ -95,7 +115,10 @@ def speed_limits(client, place_ids):
                        extract_body=_roads_extract).get("speedLimits", [])
 
 
-def snapped_speed_limits(client, path):
+def snapped_speed_limits(
+    client: Client,
+    path: Union[Location, List[Location]],
+) -> DictStrAny:
     """Returns the posted speed limit (in km/h) for given road segments.
 
     The provided points will first be snapped to the most likely roads the
@@ -116,11 +139,11 @@ def snapped_speed_limits(client, path):
                        extract_body=_roads_extract)
 
 
-def _roads_extract(resp):
+def _roads_extract(resp: requests.Response) -> DictStrAny:
     """Extracts a result from a Roads API HTTP response."""
 
     try:
-        j = resp.json()
+        j = cast(DictStrAny, resp.json())
     except:
         if resp.status_code != 200:
             raise googlemaps.exceptions.HTTPError(resp.status_code)

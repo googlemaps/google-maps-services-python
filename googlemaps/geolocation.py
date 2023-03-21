@@ -16,18 +16,28 @@
 #
 
 """Performs requests to the Google Maps Geolocation API."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional, List, cast
+
+import requests
+
 from googlemaps import exceptions
+from googlemaps.types import DictStrAny
+
+if TYPE_CHECKING:
+    from googlemaps.client import Client
 
 
 _GEOLOCATION_BASE_URL = "https://www.googleapis.com"
 
 
-def _geolocation_extract(response):
+def _geolocation_extract(response: requests.Response) -> DictStrAny:
     """
     Mimics the exception handling logic in ``client._get_body``, but
     for geolocation which uses a different response format.
     """
-    body = response.json()
+    body = cast(DictStrAny, response.json())
     if response.status_code in (200, 404):
         return body
 
@@ -42,9 +52,16 @@ def _geolocation_extract(response):
         raise exceptions.ApiError(response.status_code, error)
 
 
-def geolocate(client, home_mobile_country_code=None,
-              home_mobile_network_code=None, radio_type=None, carrier=None,
-              consider_ip=None, cell_towers=None, wifi_access_points=None):
+def geolocate(
+    client: Client,
+    home_mobile_country_code: Optional[str] = None,
+    home_mobile_network_code: Optional[str] = None,
+    radio_type: Optional[str] = None,
+    carrier: Optional[str] = None,
+    consider_ip: Optional[bool] = None,
+    cell_towers: Optional[List[DictStrAny]] = None,
+    wifi_access_points: Optional[List[DictStrAny]] = None,
+) -> DictStrAny:
     """
     The Google Maps Geolocation API returns a location and accuracy
     radius based on information about cell towers and WiFi nodes given.
@@ -85,7 +102,7 @@ def geolocate(client, home_mobile_country_code=None,
     :type wifi_access_points: list of dicts
     """
 
-    params = {}
+    params: DictStrAny = {}
     if home_mobile_country_code is not None:
         params["homeMobileCountryCode"] = home_mobile_country_code
     if home_mobile_network_code is not None:

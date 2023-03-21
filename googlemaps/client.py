@@ -23,44 +23,129 @@ HTTP requests).
 import base64
 import collections
 import logging
+from contextlib import suppress
 from datetime import datetime
 from datetime import timedelta
 import functools
 import hashlib
 import hmac
 import re
+from typing import TypeVar, Callable, Optional, Dict, Any, Union, Tuple, cast, Deque, List
+from typing_extensions import ParamSpec
+
 import requests
 import random
 import time
 import math
 import sys
 
+from urllib.parse import urlencode
+
 import googlemaps
 
-try: # Python 3
-    from urllib.parse import urlencode
-except ImportError: # Python 2
-    from urllib import urlencode
+from googlemaps.directions import directions as directions_method
+from googlemaps.distance_matrix import distance_matrix as distance_matrix_method
+from googlemaps.elevation import elevation as elevation_method
+from googlemaps.elevation import elevation_along_path as elevation_along_path_method
+from googlemaps.geocoding import geocode as geocode_method
+from googlemaps.geocoding import reverse_geocode    as reverse_geocode_method
+from googlemaps.geolocation import geolocate as geolocate_method
+from googlemaps.timezone import timezone     as timezone_method
+from googlemaps.roads import snap_to_roads as snap_to_roads_method
+from googlemaps.roads import nearest_roads as nearest_roads_method
+from googlemaps.roads import speed_limits   as speed_limits_method
+from googlemaps.roads import snapped_speed_limits as snapped_speed_limits_method
+from googlemaps.places import find_place as find_place_method
+from googlemaps.places import places as places_method
+from googlemaps.places import places_nearby as places_nearby_method
+from googlemaps.places import place as place_method
+from googlemaps.places import places_photo as places_photo_method
+from googlemaps.places import places_autocomplete as places_autocomplete_method
+from googlemaps.places import places_autocomplete_query as places_autocomplete_query_method
+from googlemaps.maps import static_map as static_map_method
+from googlemaps.addressvalidation import addressvalidation as addressvalidation_method
+from googlemaps.types import DictStrAny
 
 logger = logging.getLogger(__name__)
 
 _X_GOOG_MAPS_EXPERIENCE_ID = "X-Goog-Maps-Experience-ID"
-_USER_AGENT = "GoogleGeoApiClientPython/%s" % googlemaps.__version__
+_USER_AGENT = f"GoogleGeoApiClientPython/{googlemaps.__version__}"
 _DEFAULT_BASE_URL = "https://maps.googleapis.com"
 
 _RETRIABLE_STATUSES = {500, 503, 504}
 
 
+P = ParamSpec("P")
+R = TypeVar("R")
+
+
+def make_api_method(func: Callable[P, R]) -> Callable[P, R]:
+    """
+    Provides a single entry point for modifying all API methods.
+    For now this is limited to allowing the client object to be modified
+    with an `extra_params` keyword arg to each method, that is then used
+    as the params for each web service request.
+
+    Please note that this is an unsupported feature for advanced use only.
+    It's also currently incompatibile with multiple threads, see GH #160.
+    """
+
+    @functools.wraps(func)
+    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+        args[0]._extra_params = kwargs.pop("extra_params", None)  # type: ignore[attr-defined]
+
+        try:
+            return func(*args, **kwargs)
+        finally:
+            with suppress(AttributeError):
+                del args[0]._extra_params  # type: ignore[attr-defined]
+
+    return wrapper
+
+
 class Client:
     """Performs requests to the Google Maps API web services."""
 
-    def __init__(self, key=None, client_id=None, client_secret=None,
-                 timeout=None, connect_timeout=None, read_timeout=None,
-                 retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=60, queries_per_minute=6000,channel=None,
-                 retry_over_query_limit=True, experience_id=None, 
-                 requests_session=None,
-                 base_url=_DEFAULT_BASE_URL):
+    directions = make_api_method(directions_method)
+    distance_matrix = make_api_method(distance_matrix_method)
+    elevation = make_api_method(elevation_method)
+    elevation_along_path = make_api_method(elevation_along_path_method)
+    geocode = make_api_method(geocode_method)
+    reverse_geocode = make_api_method(reverse_geocode_method)
+    geolocate = make_api_method(geolocate_method)
+    timezone = make_api_method(timezone_method)
+    snap_to_roads = make_api_method(snap_to_roads_method)
+    nearest_roads = make_api_method(nearest_roads_method)
+    speed_limits = make_api_method(speed_limits_method)
+    snapped_speed_limits = make_api_method(snapped_speed_limits_method)
+    find_place = make_api_method(find_place_method)
+    places = make_api_method(places_method)
+    places_nearby = make_api_method(places_nearby_method)
+    place = make_api_method(place_method)
+    places_photo = make_api_method(places_photo_method)
+    places_autocomplete = make_api_method(places_autocomplete_method)
+    places_autocomplete_query = make_api_method(places_autocomplete_query_method)
+    static_map = make_api_method(static_map_method)
+    addressvalidation = make_api_method(addressvalidation_method)
+
+    def __init__(
+        self,
+        key: Optional[str] = None,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        timeout: Optional[int] = None,
+        connect_timeout: Optional[int] = None,
+        read_timeout: Optional[int] = None,
+        retry_timeout: int = 60,
+        requests_kwargs: Optional[DictStrAny] = None,
+        queries_per_second: int = 60,
+        queries_per_minute: int = 6000,
+        channel: Optional[str] = None,
+        retry_over_query_limit: bool = True,
+        experience_id: Optional[str] = None,
+        requests_session: Optional[requests.Session] = None,
+        base_url: str = _DEFAULT_BASE_URL,
+    ) -> None:
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set. Most users should use an API key.
@@ -157,6 +242,7 @@ class Client:
             raise ValueError("Specify either timeout, or connect_timeout "
                              "and read_timeout")
 
+        self.timeout: Optional[Union[int, Tuple[int, int]]]
         if connect_timeout and read_timeout:
             # Check that the version of requests is >= 2.4.0
             chunks = requests.__version__.split(".")
@@ -197,11 +283,11 @@ class Client:
             sys.exit("MISSING VALUE for queries_per_second or queries_per_minute")
 
         self.retry_over_query_limit = retry_over_query_limit
-        self.sent_times = collections.deque("", self.queries_quota)
+        self.sent_times: Deque[float] = collections.deque(maxlen=self.queries_quota)
         self.set_experience_id(experience_id)
         self.base_url = base_url
 
-    def set_experience_id(self, *experience_id_args):
+    def set_experience_id(self, *experience_id_args: Optional[str]) -> None:
         """Sets the value for the HTTP header field name
         'X-Goog-Maps-Experience-ID' to be used on subsequent API calls.
 
@@ -213,10 +299,10 @@ class Client:
             return
 
         headers = self.requests_kwargs.pop("headers", {})
-        headers[_X_GOOG_MAPS_EXPERIENCE_ID] = ",".join(experience_id_args)
+        headers[_X_GOOG_MAPS_EXPERIENCE_ID] = ",".join(exp for exp in experience_id_args if exp is not None)
         self.requests_kwargs["headers"] = headers
 
-    def get_experience_id(self):
+    def get_experience_id(self) -> Optional[str]:
         """Gets the experience ID for the HTTP header field name
         'X-Goog-Maps-Experience-ID'
 
@@ -224,9 +310,9 @@ class Client:
         :rtype: str
         """
         headers = self.requests_kwargs.get("headers", {})
-        return headers.get(_X_GOOG_MAPS_EXPERIENCE_ID, None)
+        return cast(Optional[str], headers.get(_X_GOOG_MAPS_EXPERIENCE_ID, None))
 
-    def clear_experience_id(self):
+    def clear_experience_id(self) -> None:
         """Clears the experience ID for the HTTP header field name
         'X-Goog-Maps-Experience-ID' if set.
         """
@@ -236,9 +322,18 @@ class Client:
         headers.pop(_X_GOOG_MAPS_EXPERIENCE_ID, {})
         self.requests_kwargs["headers"] = headers
 
-    def _request(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=None, accepts_clientid=True,
-             extract_body=None, requests_kwargs=None, post_json=None):
+    def _request(
+        self,
+        url: str,
+        params: Union[DictStrAny, List[Tuple[str, Any]]],
+        first_request_time: Optional[datetime] = None,
+        retry_counter: int = 0,
+        base_url: Optional[str] = None,
+        accepts_clientid: bool = True,
+        extract_body: Optional[Callable[[requests.Response], Any]] = None,
+        requests_kwargs: Optional[DictStrAny] = None,
+        post_json: Optional[Any] = None,
+    ) -> DictStrAny:
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
@@ -339,7 +434,7 @@ class Client:
             else:
                 result = self._get_body(response)
             self.sent_times.append(time.time())
-            return result
+            return cast(DictStrAny, result)
         except googlemaps.exceptions._RetriableRequest as e:
             if isinstance(e, googlemaps.exceptions._OverQueryLimit) and not self.retry_over_query_limit:
                 raise
@@ -349,10 +444,10 @@ class Client:
                                  retry_counter + 1, base_url, accepts_clientid,
                                  extract_body, requests_kwargs, post_json)
 
-    def _get(self, *args, **kwargs):  # Backwards compatibility.
+    def _get(self, *args: Any, **kwargs: Any) -> Any:  # Backwards compatibility.
         return self._request(*args, **kwargs)
 
-    def _get_body(self, response):
+    def _get_body(self, response: requests.Response) -> DictStrAny:
         if response.status_code != 200:
             raise googlemaps.exceptions.HTTPError(response.status_code)
 
@@ -360,7 +455,7 @@ class Client:
 
         api_status = body["status"]
         if api_status == "OK" or api_status == "ZERO_RESULTS":
-            return body
+            return cast(DictStrAny, body)
 
         if api_status == "OVER_QUERY_LIMIT":
             raise googlemaps.exceptions._OverQueryLimit(
@@ -369,7 +464,12 @@ class Client:
         raise googlemaps.exceptions.ApiError(api_status,
                                              body.get("error_message"))
 
-    def _generate_auth_url(self, path, params, accepts_clientid):
+    def _generate_auth_url(
+        self,
+        path: str,
+        params: Union[DictStrAny, List[Tuple[str, Any]]],
+        accepts_clientid: bool,
+    ) -> str:
         """Returns the path and query string portion of the request URL, first
         adding any necessary parameters.
 
@@ -388,7 +488,7 @@ class Client:
         if type(params) is dict:
             params = sorted(dict(extra_params, **params).items())
         else:
-            params = sorted(extra_params.items()) + params[:] # Take a copy.
+            params = sorted(extra_params.items()) + params[:]  # type: ignore  # Take a copy.
 
         if accepts_clientid and self.client_id and self.client_secret:
             if self.channel:
@@ -407,74 +507,7 @@ class Client:
                          "enterprise credentials.")
 
 
-from googlemaps.directions import directions
-from googlemaps.distance_matrix import distance_matrix
-from googlemaps.elevation import elevation
-from googlemaps.elevation import elevation_along_path
-from googlemaps.geocoding import geocode
-from googlemaps.geocoding import reverse_geocode
-from googlemaps.geolocation import geolocate
-from googlemaps.timezone import timezone
-from googlemaps.roads import snap_to_roads
-from googlemaps.roads import nearest_roads
-from googlemaps.roads import speed_limits
-from googlemaps.roads import snapped_speed_limits
-from googlemaps.places import find_place
-from googlemaps.places import places
-from googlemaps.places import places_nearby
-from googlemaps.places import place
-from googlemaps.places import places_photo
-from googlemaps.places import places_autocomplete
-from googlemaps.places import places_autocomplete_query
-from googlemaps.maps import static_map
-from googlemaps.addressvalidation import addressvalidation
-
-def make_api_method(func):
-    """
-    Provides a single entry point for modifying all API methods.
-    For now this is limited to allowing the client object to be modified
-    with an `extra_params` keyword arg to each method, that is then used
-    as the params for each web service request.
-
-    Please note that this is an unsupported feature for advanced use only.
-    It's also currently incompatibile with multiple threads, see GH #160.
-    """
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        args[0]._extra_params = kwargs.pop("extra_params", None)
-        result = func(*args, **kwargs)
-        try:
-            del args[0]._extra_params
-        except AttributeError:
-            pass
-        return result
-    return wrapper
-
-
-Client.directions = make_api_method(directions)
-Client.distance_matrix = make_api_method(distance_matrix)
-Client.elevation = make_api_method(elevation)
-Client.elevation_along_path = make_api_method(elevation_along_path)
-Client.geocode = make_api_method(geocode)
-Client.reverse_geocode = make_api_method(reverse_geocode)
-Client.geolocate = make_api_method(geolocate)
-Client.timezone = make_api_method(timezone)
-Client.snap_to_roads = make_api_method(snap_to_roads)
-Client.nearest_roads = make_api_method(nearest_roads)
-Client.speed_limits = make_api_method(speed_limits)
-Client.snapped_speed_limits = make_api_method(snapped_speed_limits)
-Client.find_place = make_api_method(find_place)
-Client.places = make_api_method(places)
-Client.places_nearby = make_api_method(places_nearby)
-Client.place = make_api_method(place)
-Client.places_photo = make_api_method(places_photo)
-Client.places_autocomplete = make_api_method(places_autocomplete)
-Client.places_autocomplete_query = make_api_method(places_autocomplete_query)
-Client.static_map = make_api_method(static_map)
-Client.addressvalidation = make_api_method(addressvalidation)
-
-
-def sign_hmac(secret, payload):
+def sign_hmac(secret: str, payload: str) -> str:
     """Returns a base64-encoded HMAC-SHA1 signature of a given string.
 
     :param secret: The key used for the signature, base64 encoded.
@@ -485,14 +518,14 @@ def sign_hmac(secret, payload):
 
     :rtype: string
     """
-    payload = payload.encode('ascii', 'strict')
-    secret = secret.encode('ascii', 'strict')
-    sig = hmac.new(base64.urlsafe_b64decode(secret), payload, hashlib.sha1)
+    bpayload = payload.encode('ascii', 'strict')
+    bsecret = secret.encode('ascii', 'strict')
+    sig = hmac.new(base64.urlsafe_b64decode(bsecret), bpayload, hashlib.sha1)
     out = base64.urlsafe_b64encode(sig.digest())
     return out.decode('utf-8')
 
 
-def urlencode_params(params):
+def urlencode_params(params: Any) -> str:
     """URL encodes the parameters.
 
     :param params: The parameters
@@ -515,26 +548,10 @@ def urlencode_params(params):
     return requests.utils.unquote_unreserved(urlencode(extended))
 
 
-try:
-    unicode
-    # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
-    # raised here, and caught below.
+def normalize_for_urlencode(value: Any) -> str:
+    """(Python 3) No-op."""
+    # urlencode in Python 3 handles all the types we are passing it.
+    if isinstance(value, str):
+        return value
 
-    def normalize_for_urlencode(value):
-        """(Python 2) Converts the value to a `str` (raw bytes)."""
-        if isinstance(value, unicode):
-            return value.encode('utf8')
-
-        if isinstance(value, str):
-            return value
-
-        return normalize_for_urlencode(str(value))
-
-except NameError:
-    def normalize_for_urlencode(value):
-        """(Python 3) No-op."""
-        # urlencode in Python 3 handles all the types we are passing it.
-        if isinstance(value, str):
-            return value
-
-        return normalize_for_urlencode(str(value))
+    return normalize_for_urlencode(str(value))

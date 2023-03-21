@@ -14,7 +14,7 @@
 
 import nox
 
-SUPPORTED_PY_VERSIONS = ["3.7", "3.8", "3.9", "3.10"]
+SUPPORTED_PY_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11"]
 
 
 def _install_dev_packages(session):
@@ -31,6 +31,11 @@ def _install_doc_dependencies(session):
     session.install("sphinx")
 
 
+def _install_mypy_dependencies(session):
+    session.install("mypy")
+    session.install("types-requests")
+
+
 @nox.session(python=SUPPORTED_PY_VERSIONS)
 def tests(session):
     _install_dev_packages(session)
@@ -40,6 +45,13 @@ def tests(session):
     session.run("pytest")
 
     session.notify("cover")
+
+
+@nox.session(python=SUPPORTED_PY_VERSIONS)
+def mypy(session):
+    _install_dev_packages(session)
+    _install_mypy_dependencies(session)
+    session.run("mypy", "googlemaps")
 
 
 @nox.session
