@@ -517,7 +517,7 @@ def urlencode_params(params):
 
 try:
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
-    # raised here, and caught below.
+    # raised here, and caught below. 
 
     def normalize_for_urlencode(value):
         if(int(sys.version[0])<=2):
