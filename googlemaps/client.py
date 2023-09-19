@@ -520,7 +520,7 @@ try:
     # raised here, and caught below.
 
     def normalize_for_urlencode(value):
-        if(sys.version[0]<=2):
+        if(int(sys.version[0])<=2):
             """(Python 2) Converts the value to a `str` (raw bytes)."""
             if isinstance(value, str):
                 return value
