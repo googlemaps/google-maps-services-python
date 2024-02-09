@@ -92,6 +92,10 @@ addressvalidation_result =  gmaps.addressvalidation(['1600 Amphitheatre Pk'],
                                                     regionCode='US',
                                                     locality='Mountain View', 
                                                     enableUspsCass=True)
+
+# Get an Address Descriptor of a location in the reverse geocoding response
+address_descriptor_result = gmaps.reverse_geocode((40.714224, -73.961452), enable_address_descriptor=True)
+
 ```
 
 For more usage examples, check out [the tests](https://github.com/googlemaps/google-maps-services-python/tree/master/tests).
