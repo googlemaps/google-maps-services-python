@@ -41,7 +41,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode("Sydney")
+        results = self.client.geocode("Sydney").get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -60,7 +60,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.reverse_geocode((-33.8674869, 151.2069902))
+        results = self.client.reverse_geocode((-33.8674869, 151.2069902)).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -79,7 +79,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode("1600 Amphitheatre Parkway, " "Mountain View, CA")
+        results = self.client.geocode("1600 Amphitheatre Parkway, " "Mountain View, CA").get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -105,7 +105,7 @@ class GeocodingTest(TestCase):
                 "southwest": (34.172684, -118.604794),
                 "northeast": (34.236144, -118.500938),
             },
-        )
+        ).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -125,7 +125,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode("Toledo", region="es")
+        results = self.client.geocode("Toledo", region="es").get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -144,7 +144,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode("santa cruz", components={"country": "ES"})
+        results = self.client.geocode("santa cruz", components={"country": "ES"}).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -165,7 +165,7 @@ class GeocodingTest(TestCase):
 
         results = self.client.geocode(
             "Torun", components={"administrative_area": "TX", "country": "US"}
-        )
+        ).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -191,7 +191,7 @@ class GeocodingTest(TestCase):
                 "administrative_area": "Helsinki",
                 "country": "Finland",
             }
-        )
+        ).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -211,7 +211,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode(place_id="ChIJeRpOeF67j4AR9ydy_PIzPuM")
+        results = self.client.geocode(place_id="ChIJeRpOeF67j4AR9ydy_PIzPuM").get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -230,7 +230,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.reverse_geocode((40.714224, -73.961452))
+        results = self.client.reverse_geocode((40.714224, -73.961452)).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -253,7 +253,7 @@ class GeocodingTest(TestCase):
             (40.714224, -73.961452),
             location_type="ROOFTOP",
             result_type="street_address",
-        )
+        ).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -277,7 +277,7 @@ class GeocodingTest(TestCase):
             (40.714224, -73.961452),
             location_type=["ROOFTOP", "RANGE_INTERPOLATED"],
             result_type="street_address",
-        )
+        ).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -301,13 +301,35 @@ class GeocodingTest(TestCase):
             (40.714224, -73.961452),
             location_type="ROOFTOP",
             result_type=["street_address", "route"],
-        )
+        ).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
             "https://maps.googleapis.com/maps/api/geocode/json?"
             "latlng=40.714224%%2C-73.961452&result_type=street_address"
             "%%7Croute&key=%s&location_type=ROOFTOP" % self.key,
+            responses.calls[0].request.url,
+        )
+
+    @responses.activate
+    def test_reverse_geocode_with_address_descriptors(self):
+        responses.add(
+            responses.GET,
+            "https://maps.googleapis.com/maps/api/geocode/json",
+            body='{"status":"OK","results":[], "address_descriptor":{ "landmarks": [ { "placeId": "id" } ] } }',
+            status=200,
+            content_type="application/json",
+        )
+
+        response = self.client.reverse_geocode((-33.8674869, 151.2069902), enable_address_descriptor=True)
+
+        address_descriptor = response.get("address_descriptor", [])
+
+        self.assertEqual(1, len(address_descriptor["landmarks"]))
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual(
+            "https://maps.googleapis.com/maps/api/geocode/json?"
+            "latlng=-33.8674869,151.2069902&enable_address_descriptor=true&key=%s" % self.key,
             responses.calls[0].request.url,
         )
 
@@ -321,7 +343,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode("Pirrama Pyrmont")
+        results = self.client.geocode("Pirrama Pyrmont").get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -340,7 +362,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode(components={"postal_code": "96766"})
+        results = self.client.geocode(components={"postal_code": "96766"}).get("results", [])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -359,7 +381,7 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        self.client.geocode(self.u("\\u4e2d\\u56fd"))  # China
+        self.client.geocode(self.u("\\u4e2d\\u56fd")).get("results", [])  # China
         self.assertURLEqual(
             "https://maps.googleapis.com/maps/api/geocode/json?"
             "key=%s&address=%s" % (self.key, "%E4%B8%AD%E5%9B%BD"),
