@@ -18,6 +18,7 @@
 """Performs requests to the Google Maps Directions API."""
 
 from googlemaps import convert
+from googlemaps.exceptions import ApiError
 
 
 def directions(client, origin, destination,
@@ -150,4 +151,15 @@ def directions(client, origin, destination,
     if traffic_model:
         params["traffic_model"] = traffic_model
 
-    return client._request("/maps/api/directions/json", params).get("routes", [])
+    # Make the API request
+    response = client._request("/maps/api/directions/json", params)
+        
+    # Check if the API request was successful
+    if response.get("status") == "OK":
+        return response.get("routes", [])
+    elif response.get("error_message"):
+        # Handle specific error message returned by the API
+        raise ApiError(response.get("error_message"))
+    else:
+        # Handle generic API error
+        raise ApiError("Unknown error occurred during API request")
