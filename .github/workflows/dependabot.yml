@@ -19,7 +19,10 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
   dependabot:
+    needs: test
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
     env:
