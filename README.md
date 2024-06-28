@@ -88,9 +88,11 @@ directions_result = gmaps.directions("Sydney Town Hall",
                                      departure_time=now)
 
 # Validate an address with address validation
-addressvalidation_result =  gmaps.addressvalidation(['1600 Amphitheatre Pk'], 
+addressvalidation_result =  gmaps.addressvalidation(['1600 Amphitheatre Pk'],
                                                     regionCode='US',
-                                                    locality='Mountain View', 
+                                                    locality='Mountain View',
+                                                    administrativeArea='CA',
+                                                    postalCode='94043',
                                                     enableUspsCass=True)
 ```
 
