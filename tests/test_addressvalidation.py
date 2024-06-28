@@ -46,3 +46,21 @@ class AddressValidationTest(TestCase):
             "https://addressvalidation.googleapis.com/v1:validateAddress?" "key=%s" % self.key,
             responses.calls[0].request.url,
         )
+
+    @responses.activate
+    def test_addressvalidation_optional_fields(self):
+        responses.add(
+            responses.POST,
+            "https://addressvalidation.googleapis.com/v1:validateAddress",
+            body='{"address": {"regionCode": "US","locality": "Mountain View","addressLines": "1600 Amphitheatre Pkwy","administrativeArea":"CA","postalCode":"94043"},"enableUspsCass":true}',
+            status=200,
+            content_type="application/json",
+        )
+
+        results = self.client.addressvalidation('1600 Amphitheatre Pk', regionCode='US', locality='Mountain View', enableUspsCass=True, administrativeArea="CA", postalCode="94043")
+
+        self.assertEqual(1, len(responses.calls))
+        self.assertURLEqual(
+            "https://addressvalidation.googleapis.com/v1:validateAddress?" "key=%s" % self.key,
+            responses.calls[0].request.url,
+        )

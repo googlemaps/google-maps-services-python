@@ -44,17 +44,21 @@ def _addressvalidation_extract(response):
     #     raise exceptions.ApiError(response.status_code, error)
 
 
-def addressvalidation(client, addressLines, regionCode=None , locality=None, enableUspsCass=None):
+def addressvalidation(client, addressLines, regionCode=None , locality=None, enableUspsCass=None, administrativeArea=None, postalCode=None):
     """
     The Google Maps Address Validation API returns a verification of an address
     See https://developers.google.com/maps/documentation/address-validation/overview
     request must include parameters below.
     :param addressLines: The address to validate
-    :type addressLines: array 
+    :type addressLines: array
     :param regionCode: (optional) The country code
-    :type regionCode: string  
+    :type regionCode: string
     :param locality: (optional) Restrict to a locality, ie:Mountain View
     :type locality: string
+    :param administrativeArea: (optional) Restrict to a administrative area when CASS is enabled, ie:CA
+    :type administrativeArea: string
+    :param postalCode: (optional) Restrict to a postal code when CASS is enabled, ie:94043
+    :type postalCode: string
     :param enableUspsCass For the "US" and "PR" regions only, you can optionally enable the Coding Accuracy Support System (CASS) from the United States Postal Service (USPS)
     :type locality: boolean
     """
@@ -71,11 +75,17 @@ def addressvalidation(client, addressLines, regionCode=None , locality=None, ena
     if locality is not None:
         params["address"]["locality"] = locality
 
+
     if enableUspsCass is not False or enableUspsCass is not None:
         params["enableUspsCass"] = enableUspsCass
+
+        if administrativeArea is not None:
+            params["address"]["administrativeArea"] = administrativeArea
+
+        if postalCode is not None:
+            params["address"]["postalCode"] = postalCode
 
     return client._request("/v1:validateAddress", {},  # No GET params
                            base_url=_ADDRESSVALIDATION_BASE_URL,
                            extract_body=_addressvalidation_extract,
                            post_json=params)
-    
