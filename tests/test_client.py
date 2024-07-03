@@ -310,7 +310,7 @@ class ClientTest(TestCase):
         auth_url = client._generate_auth_url(
             "/test", {"param": "param"}, accepts_clientid=False
         )
-        self.assertEqual(auth_url, "/test?param=param&key=AIzaasdf")
+        self.assertEqual(auth_url, "/test?param=param&channel=MyChannel_1&key=AIzaasdf")
 
     def test_requests_version(self):
         client_args_timeout = {
