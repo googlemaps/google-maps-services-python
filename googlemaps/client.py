@@ -516,19 +516,18 @@ def urlencode_params(params):
 
 
 try:
-    unicode
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
-    # raised here, and caught below.
+    # raised here, and caught below. 
 
     def normalize_for_urlencode(value):
-        """(Python 2) Converts the value to a `str` (raw bytes)."""
-        if isinstance(value, unicode):
-            return value.encode('utf8')
-
-        if isinstance(value, str):
-            return value
-
-        return normalize_for_urlencode(str(value))
+        if(int(sys.version[0])<=2):
+            """(Python 2) Converts the value to a `str` (raw bytes)."""
+            if isinstance(value, str):
+                return value
+            else:
+                return value.encode('utf8')
+        else:
+            return value.encode('utf-8')
 
 except NameError:
     def normalize_for_urlencode(value):
