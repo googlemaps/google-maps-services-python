@@ -223,6 +223,7 @@ class PlacesTest(TestCase):
             types="geocode",
             components={"country": "au"},
             strict_bounds=True,
+            location_bias="circle:500@41.0,-81.0"
         )
 
         self.assertEqual(1, len(responses.calls))
@@ -230,10 +231,14 @@ class PlacesTest(TestCase):
             "%s?components=country%%3Aau&input=Google&language=en-AU&"
             "origin=-33.86746%%2C151.20709&"
             "location=-33.86746%%2C151.20709&offset=3&radius=100&"
-            "strictbounds=true&types=geocode&key=%s&sessiontoken=%s"
+            "strictbounds=true&types=geocode&key=%s&sessiontoken=%s&"
+            "locationbias=circle:500@41.0,-81.0"
             % (url, self.key, session_token),
             responses.calls[0].request.url,
         )
+
+        with self.assertRaises(ValueError):
+            self.client.places_autocomplete("Google", location_bias="invalid")
 
     @responses.activate
     def test_autocomplete_query(self):
