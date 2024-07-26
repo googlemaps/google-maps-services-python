@@ -36,7 +36,6 @@ def tests(session):
     _install_dev_packages(session)
     _install_test_dependencies(session)
 
-    session.install("pytest")
     session.run("pytest")
 
     session.notify("cover")
