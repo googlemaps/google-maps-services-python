@@ -17,6 +17,7 @@
 
 """Performs requests to the Google Maps Static API."""
 
+import googlemaps
 from googlemaps import convert
 
 
@@ -244,4 +245,8 @@ def static_map(client, size,
         extract_body=lambda response: response,
         requests_kwargs={"stream": True},
     )
+
+    if response.status_code != 200:
+        raise googlemaps.exceptions.HTTPError(response.status_code)
+
     return response.iter_content()
