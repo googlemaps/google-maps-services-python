@@ -17,15 +17,15 @@
 
 """Converts Python types to string representations suitable for Maps API server.
 
-    For example:
+For example:
 
-    sydney = {
-        "lat" : -33.8674869,
-        "lng" : 151.2069902
-    }
+sydney = {
+    "lat" : -33.8674869,
+    "lng" : 151.2069902
+}
 
-    convert.latlng(sydney)
-    # '-33.8674869,151.2069902'
+convert.latlng(sydney)
+# '-33.8674869,151.2069902'
 """
 
 
@@ -52,7 +52,7 @@ def format_float(arg):
 
     :rtype: string
     """
-    return ("%.8f" % float(arg)).rstrip("0").rstrip(".")
+    return f"{float(arg):.8f}".rstrip("0").rstrip(".")
 
 
 def latlng(arg):
@@ -78,7 +78,7 @@ def latlng(arg):
         return arg
 
     normalized = normalize_lat_lng(arg)
-    return "%s,%s" % (format_float(normalized[0]), format_float(normalized[1]))
+    return f"{format_float(normalized[0])},{format_float(normalized[1])}"
 
 
 def normalize_lat_lng(arg):
@@ -103,9 +103,7 @@ def normalize_lat_lng(arg):
     if _is_list(arg):
         return arg[0], arg[1]
 
-    raise TypeError(
-        "Expected a lat/lng dict or tuple, "
-        "but got %s" % type(arg).__name__)
+    raise TypeError(f"Expected a lat/lng dict or tuple, but got {type(arg).__name__}")
 
 
 def location_list(arg):
@@ -158,18 +156,18 @@ def _is_list(arg):
     """Checks if arg is list-like. This excludes strings and dicts."""
     if isinstance(arg, dict):
         return False
-    if isinstance(arg, str): # Python 3-only, as str has __iter__
+    if isinstance(arg, str):  # Python 3-only, as str has __iter__
         return False
-    return _has_method(arg, "__getitem__") if not _has_method(arg, "strip") else _has_method(arg, "__iter__")
+    return (
+        _has_method(arg, "__getitem__")
+        if not _has_method(arg, "strip")
+        else _has_method(arg, "__iter__")
+    )
 
 
 def is_string(val):
-    """Determines whether the passed value is a string, safe for 2/3."""
-    try:
-        basestring
-    except NameError:
-        return isinstance(val, str)
-    return isinstance(val, basestring)
+    """Determines whether the passed value is a string."""
+    return isinstance(val, str)
 
 
 def time(arg):
@@ -226,14 +224,12 @@ def components(arg):
     def expand(arg):
         for k, v in arg.items():
             for item in as_list(v):
-                yield "%s:%s" % (k, item)
+                yield f"{k}:{item}"
 
     if isinstance(arg, dict):
         return "|".join(sorted(expand(arg)))
 
-    raise TypeError(
-        "Expected a dict for components, "
-        "but got %s" % type(arg).__name__)
+    raise TypeError(f"Expected a dict for components, but got {type(arg).__name__}")
 
 
 def bounds(arg):
@@ -266,25 +262,19 @@ def bounds(arg):
 
     if is_string(arg) and arg.count("|") == 1 and arg.count(",") == 2:
         return arg
-    elif isinstance(arg, dict):
-        if "southwest" in arg and "northeast" in arg:
-            return "%s|%s" % (latlng(arg["southwest"]),
-                              latlng(arg["northeast"]))
+    if isinstance(arg, dict) and "southwest" in arg and "northeast" in arg:
+        return f"{latlng(arg['southwest'])}|{latlng(arg['northeast'])}"
 
-    raise TypeError(
-        "Expected a bounds (southwest/northeast) dict, "
-        "but got %s" % type(arg).__name__)
+    raise TypeError(f"Expected a bounds (southwest/northeast) dict, but got {type(arg).__name__}")
 
 
 def size(arg):
     if isinstance(arg, int):
-        return "%sx%s" % (arg, arg)
-    elif _is_list(arg):
-        return "%sx%s" % (arg[0], arg[1])
+        return f"{arg}x{arg}"
+    if _is_list(arg):
+        return f"{arg[0]}x{arg[1]}"
 
-    raise TypeError(
-        "Expected a size int or list, "
-        "but got %s" % type(arg).__name__)
+    raise TypeError(f"Expected a size int or list, but got {type(arg).__name__}")
 
 
 def decode_polyline(polyline):
@@ -309,7 +299,7 @@ def decode_polyline(polyline):
             index += 1
             result += b << shift
             shift += 5
-            if b < 0x1f:
+            if b < 0x1F:
                 break
         lat += (~result >> 1) if (result & 1) != 0 else (result >> 1)
 
@@ -320,7 +310,7 @@ def decode_polyline(polyline):
             index += 1
             result += b << shift
             shift += 5
-            if b < 0x1f:
+            if b < 0x1F:
                 break
         lng += ~(result >> 1) if (result & 1) != 0 else (result >> 1)
 
@@ -345,17 +335,17 @@ def encode_polyline(points):
 
     for point in points:
         ll = normalize_lat_lng(point)
-        lat = int(round(ll[0] * 1e5))
-        lng = int(round(ll[1] * 1e5))
+        lat = round(ll[0] * 1e5)
+        lng = round(ll[1] * 1e5)
         d_lat = lat - last_lat
         d_lng = lng - last_lng
 
-        for v in [d_lat, d_lng]:
-            v = ~(v << 1) if v < 0 else v << 1
+        for delta in (d_lat, d_lng):
+            v = ~(delta << 1) if delta < 0 else delta << 1
             while v >= 0x20:
-                result += (chr((0x20 | (v & 0x1f)) + 63))
+                result += chr((0x20 | (v & 0x1F)) + 63)
                 v >>= 5
-            result += (chr(v + 63))
+            result += chr(v + 63)
 
         last_lat = lat
         last_lng = lng
@@ -378,7 +368,7 @@ def shortest_path(locations):
     if isinstance(locations, tuple):
         # Handle the single-tuple lat/lng case.
         locations = [locations]
-    encoded = "enc:%s" % encode_polyline(locations)
+    encoded = f"enc:{encode_polyline(locations)}"
     unencoded = location_list(locations)
     if len(encoded) < len(unencoded):
         return encoded

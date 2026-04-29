@@ -28,6 +28,21 @@ dist/
 
 # python testing things etc
 .coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.nox/
+
+# packaging
+*.egg-info/
+__pycache__/
+
+# editors
+.vscode/
+.idea/
 .nox
 env
 googlemaps.egg-info

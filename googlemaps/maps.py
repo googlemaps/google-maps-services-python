@@ -19,10 +19,10 @@
 
 from googlemaps import convert
 
+MAPS_IMAGE_FORMATS = {"png8", "png", "png32", "gif", "jpg", "jpg-baseline"}
 
-MAPS_IMAGE_FORMATS = {'png8', 'png', 'png32', 'gif', 'jpg', 'jpg-baseline'}
+MAPS_MAP_TYPES = {"roadmap", "satellite", "terrain", "hybrid"}
 
-MAPS_MAP_TYPES = {'roadmap', 'satellite', 'terrain', 'hybrid'}
 
 class StaticMapParam:
     """Base class to handle parameters for Maps Static API."""
@@ -37,14 +37,13 @@ class StaticMapParam:
         :rtype: str
 
         """
-        return convert.join_list('|', self.params)
+        return convert.join_list("|", self.params)
 
 
 class StaticMapMarker(StaticMapParam):
     """Handles marker parameters for Maps Static API."""
 
-    def __init__(self, locations,
-                 size=None, color=None, label=None):
+    def __init__(self, locations, size=None, color=None, label=None):
         """
         :param locations: Specifies the locations of the markers on
             the map.
@@ -61,18 +60,18 @@ class StaticMapMarker(StaticMapParam):
         :type label: str
         """
 
-        super(StaticMapMarker, self).__init__()
+        super().__init__()
 
         if size:
-            self.params.append("size:%s" % size)
+            self.params.append(f"size:{size}")
 
         if color:
-            self.params.append("color:%s" % color)
+            self.params.append(f"color:{color}")
 
         if label:
             if len(label) != 1 or (label.isalpha() and not label.isupper()) or not label.isalnum():
                 raise ValueError("Marker label must be alphanumeric and uppercase.")
-            self.params.append("label:%s" % label)
+            self.params.append(f"label:{label}")
 
         self.params.append(convert.location_list(locations))
 
@@ -80,9 +79,7 @@ class StaticMapMarker(StaticMapParam):
 class StaticMapPath(StaticMapParam):
     """Handles path parameters for Maps Static API."""
 
-    def __init__(self, points,
-                 weight=None, color=None,
-                 fillcolor=None, geodesic=None):
+    def __init__(self, points, weight=None, color=None, fillcolor=None, geodesic=None):
         """
         :param points: Specifies the point through which the path
             will be built.
@@ -105,27 +102,38 @@ class StaticMapPath(StaticMapParam):
         :type geodesic: bool
         """
 
-        super(StaticMapPath, self).__init__()
+        super().__init__()
 
         if weight:
-            self.params.append("weight:%s" % weight)
+            self.params.append(f"weight:{weight}")
 
         if color:
-            self.params.append("color:%s" % color)
+            self.params.append(f"color:{color}")
 
         if fillcolor:
-            self.params.append("fillcolor:%s" % fillcolor)
+            self.params.append(f"fillcolor:{fillcolor}")
 
         if geodesic:
-            self.params.append("geodesic:%s" % geodesic)
+            self.params.append(f"geodesic:{geodesic}")
 
         self.params.append(convert.location_list(points))
 
 
-def static_map(client, size,
-               center=None, zoom=None, scale=None,
-               format=None, maptype=None, language=None, region=None,
-               markers=None, path=None, visible=None, style=None):
+def static_map(
+    client,
+    size,
+    center=None,
+    zoom=None,
+    scale=None,
+    format=None,
+    maptype=None,
+    language=None,
+    region=None,
+    markers=None,
+    path=None,
+    visible=None,
+    style=None,
+):
     """
     Downloads a map image from the Maps Static API.
 
@@ -194,12 +202,8 @@ def static_map(client, size,
 
     params = {"size": convert.size(size)}
 
-    if not markers:
-        if not (center or zoom is not None):
-            raise ValueError(
-                "both center and zoom are required"
-                "when markers is not specifed"
-            )
+    if not markers and not (center or zoom is not None):
+        raise ValueError("both center and zoom are required when markers is not specified")
 
     if center:
         params["center"] = convert.latlng(center)
@@ -212,8 +216,8 @@ def static_map(client, size,
 
     if format:
         if format not in MAPS_IMAGE_FORMATS:
-             raise ValueError("Invalid image format")
-        params['format'] = format
+            raise ValueError("Invalid image format")
+        params["format"] = format
 
     if maptype:
         if maptype not in MAPS_MAP_TYPES:

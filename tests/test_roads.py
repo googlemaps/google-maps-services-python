@@ -17,10 +17,10 @@
 
 """Tests for the roads module."""
 
-
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 
@@ -84,9 +84,7 @@ class RoadsTest(TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://roads.googleapis.com/v1/speedLimits?"
-            "path=1%%2C2|3%%2C4"
-            "&key=%s" % self.key,
+            "https://roads.googleapis.com/v1/speedLimits?path=1%%2C2|3%%2C4&key=%s" % self.key,
             responses.calls[0].request.url,
         )
 
@@ -103,8 +101,7 @@ class RoadsTest(TestCase):
         results = self.client.speed_limits("id1")
         self.assertEqual("foo", results[0])
         self.assertEqual(
-            "https://roads.googleapis.com/v1/speedLimits?"
-            "placeId=id1&key=%s" % self.key,
+            "https://roads.googleapis.com/v1/speedLimits?placeId=id1&key=%s" % self.key,
             responses.calls[0].request.url,
         )
 

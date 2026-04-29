@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 #
 # Copyright 2016 Google Inc. All rights reserved.
 #
@@ -19,12 +18,12 @@
 """Tests for the places module."""
 
 import uuid
-
 from types import GeneratorType
 
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 
@@ -61,17 +60,14 @@ class PlacesTest(TestCase):
         self.assertURLEqual(
             "%s?language=en-AU&inputtype=textquery&"
             "locationbias=point:90,90&input=restaurant"
-            "&fields=business_status,geometry/location,place_id&key=%s"
-            % (url, self.key),
+            "&fields=business_status,geometry/location,place_id&key=%s" % (url, self.key),
             responses.calls[0].request.url,
         )
 
         with self.assertRaises(ValueError):
             self.client.find_place("restaurant", "invalid")
         with self.assertRaises(ValueError):
-            self.client.find_place(
-                "restaurant", "textquery", fields=["geometry", "invalid"]
-            )
+            self.client.find_place("restaurant", "textquery", fields=["geometry", "invalid"])
         with self.assertRaises(ValueError):
             self.client.find_place("restaurant", "textquery", location_bias="invalid")
 
@@ -163,8 +159,7 @@ class PlacesTest(TestCase):
 
         self.client.place(
             "ChIJN1t_tDeuEmsRUsoyG83frY4",
-            fields=["business_status", "geometry/location",
-                    "place_id", "reviews"],
+            fields=["business_status", "geometry/location", "place_id", "reviews"],
             language=self.language,
             reviews_no_translations=True,
             reviews_sort="newest",
@@ -174,15 +169,12 @@ class PlacesTest(TestCase):
         self.assertURLEqual(
             "%s?language=en-AU&placeid=ChIJN1t_tDeuEmsRUsoyG83frY4"
             "&reviews_no_translations=true&reviews_sort=newest"
-            "&key=%s&fields=business_status,geometry/location,place_id,reviews"
-            % (url, self.key),
+            "&key=%s&fields=business_status,geometry/location,place_id,reviews" % (url, self.key),
             responses.calls[0].request.url,
         )
 
         with self.assertRaises(ValueError):
-            self.client.place(
-                "ChIJN1t_tDeuEmsRUsoyG83frY4", fields=["geometry", "invalid"]
-            )
+            self.client.place("ChIJN1t_tDeuEmsRUsoyG83frY4", fields=["geometry", "invalid"])
 
     @responses.activate
     def test_photo(self):

@@ -1,0 +1,116 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "googlemaps"
+version = "4.10.0"
+description = "Python client library for Google Maps Platform"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.8"
+authors = [{ name = "Google Inc." }]
+keywords = ["google", "maps", "geocoding", "directions", "places", "routes"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet",
+]
+dependencies = ["requests>=2.20.0,<3.0"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "pytest-cov>=4",
+    "responses>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.8",
+]
+docs = ["sphinx>=5"]
+
+[project.urls]
+Homepage = "https://github.com/googlemaps/google-maps-services-python"
+Documentation = "https://googlemaps.github.io/google-maps-services-python/"
+Source = "https://github.com/googlemaps/google-maps-services-python"
+Issues = "https://github.com/googlemaps/google-maps-services-python/issues"
+
+[tool.setuptools]
+packages = ["googlemaps"]
+
+# ---------------------------------------------------------------------------
+# Tooling
+# ---------------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+addopts = "-rsxX --strict-markers"
+testpaths = ["tests"]
+filterwarnings = ["error::DeprecationWarning:googlemaps.*"]
+
+[tool.coverage.run]
+source = ["googlemaps"]
+branch = true
+omit = ["tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+extend-exclude = ["docs/_build"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",   # pycodestyle / pyflakes
+    "I",             # isort
+    "B",             # flake8-bugbear
+    "UP",            # pyupgrade
+    "SIM",           # flake8-simplify
+    "C4",            # comprehensions
+    "PL",            # pylint subset
+    "RUF",
+]
+ignore = [
+    "E501",     # line length handled by formatter
+    "PLR0913",  # many public APIs take many kwargs by design
+    "PLR2004",  # magic numbers in tests / API constants
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Test patterns we accept project-wide:
+#   - PLR2004 magic numbers in assertions
+#   - B011 assert False
+#   - S101 assert in tests
+#   - E402 imports after sys.path tweaks
+#   - UP031 / F841 upstream test idioms (results = ...; URL = "%s")
+#   - B017 raises Exception in legacy tests
+"tests/*" = ["PLR2004", "B011", "S101", "E402", "UP031", "F841", "B017", "PLC0415"]
+# Endpoint dispatchers intentionally have many branches/params, and
+# googlemaps/client.py performs late imports at module bottom to avoid
+# circular imports between the Client class and the API modules it binds.
+"googlemaps/client.py" = ["E402", "PLR0912"]
+"googlemaps/directions.py" = ["PLR0912"]
+"googlemaps/distance_matrix.py" = ["PLR0912"]
+"googlemaps/maps.py" = ["PLR0912"]
+"googlemaps/places.py" = ["PLR0912"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_unused_ignores = true
+warn_redundant_casts = true
+ignore_missing_imports = true
+files = ["googlemaps"]

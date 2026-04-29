@@ -17,12 +17,13 @@
 
 """Tests for the distance matrix module."""
 
-from datetime import datetime
 import time
+from datetime import datetime
 
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 
@@ -84,10 +85,7 @@ class DistanceMatrixTest(TestCase):
             content_type="application/json",
         )
 
-        origins = [
-            "Bobcaygeon ON", [41.43206, -81.38992],
-            "place_id:ChIJ7cv00DwsDogRAMDACa2m4K8"
-        ]
+        origins = ["Bobcaygeon ON", [41.43206, -81.38992], "place_id:ChIJ7cv00DwsDogRAMDACa2m4K8"]
         destinations = [
             (43.012486, -83.6964149),
             {"lat": 42.8863855, "lng": -78.8781627},
@@ -185,6 +183,7 @@ class DistanceMatrixTest(TestCase):
             "destinations=San+Francisco%%7CVictoria+BC" % self.key,
             responses.calls[0].request.url,
         )
+
     @responses.activate
     def test_place_id_param(self):
         responses.add(
@@ -196,12 +195,12 @@ class DistanceMatrixTest(TestCase):
         )
 
         origins = [
-            'place_id:ChIJ7cv00DwsDogRAMDACa2m4K8',
-            'place_id:ChIJzxcfI6qAa4cR1jaKJ_j0jhE',
+            "place_id:ChIJ7cv00DwsDogRAMDACa2m4K8",
+            "place_id:ChIJzxcfI6qAa4cR1jaKJ_j0jhE",
         ]
         destinations = [
-            'place_id:ChIJPZDrEzLsZIgRoNrpodC5P30',
-            'place_id:ChIJjQmTaV0E9YgRC2MLmS_e_mY',
+            "place_id:ChIJPZDrEzLsZIgRoNrpodC5P30",
+            "place_id:ChIJjQmTaV0E9YgRC2MLmS_e_mY",
         ]
 
         matrix = self.client.distance_matrix(origins, destinations)

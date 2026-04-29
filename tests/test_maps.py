@@ -22,10 +22,9 @@ from types import GeneratorType
 import responses
 
 import googlemaps
-from . import TestCase
+from googlemaps.maps import StaticMapMarker, StaticMapPath
 
-from googlemaps.maps import StaticMapMarker
-from googlemaps.maps import StaticMapPath
+from . import TestCase
 
 
 class MapsTest(TestCase):
@@ -42,9 +41,7 @@ class MapsTest(TestCase):
             label="S",
         )
 
-        self.assertEqual(
-            "size:small|color:blue|label:S|" "-33.867486,151.20699|Sydney", str(marker)
-        )
+        self.assertEqual("size:small|color:blue|label:S|-33.867486,151.20699|Sydney", str(marker))
 
         with self.assertRaises(ValueError):
             StaticMapMarker(locations=["Sydney"], label="XS")
@@ -62,9 +59,7 @@ class MapsTest(TestCase):
         )
 
         self.assertEqual(
-            "weight:5|color:red|fillcolor:Red|"
-            "geodesic:True|"
-            "-33.867486,151.20699|Sydney",
+            "weight:5|color:red|fillcolor:Red|geodesic:True|-33.867486,151.20699|Sydney",
             str(path),
         )
 
@@ -79,17 +74,11 @@ class MapsTest(TestCase):
             color="red",
         )
 
-        m1 = StaticMapMarker(
-            locations=[(62.107733, -145.541936)], color="blue", label="S"
-        )
+        m1 = StaticMapMarker(locations=[(62.107733, -145.541936)], color="blue", label="S")
 
-        m2 = StaticMapMarker(
-            locations=["Delta+Junction,AK"], size="tiny", color="green"
-        )
+        m2 = StaticMapMarker(locations=["Delta+Junction,AK"], size="tiny", color="green")
 
-        m3 = StaticMapMarker(
-            locations=["Tok,AK"], size="mid", color="0xFFFF00", label="C"
-        )
+        m3 = StaticMapMarker(locations=["Tok,AK"], size="mid", color="0xFFFF00", label="C")
 
         response = self.client.static_map(
             size=(400, 400),

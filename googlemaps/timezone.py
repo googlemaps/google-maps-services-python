@@ -17,9 +17,9 @@
 
 """Performs requests to the Google Maps Directions API."""
 
-from googlemaps import convert
-
 from datetime import datetime
+
+from googlemaps import convert
 
 
 def timezone(client, location, timestamp=None, language=None):
@@ -45,10 +45,10 @@ def timezone(client, location, timestamp=None, language=None):
 
     params = {
         "location": convert.latlng(location),
-        "timestamp": convert.time(timestamp or datetime.utcnow())
+        "timestamp": convert.time(timestamp or datetime.utcnow()),
     }
 
     if language:
         params["language"] = language
 
-    return client._request( "/maps/api/timezone/json", params)
+    return client._request("/maps/api/timezone/json", params)

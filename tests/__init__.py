@@ -15,10 +15,9 @@
 # the License.
 #
 
-import unittest
 import codecs
-
-from urllib.parse import urlparse, parse_qsl
+import unittest
+from urllib.parse import parse_qsl, urlparse
 
 
 class TestCase(unittest.TestCase):

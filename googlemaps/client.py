@@ -22,30 +22,27 @@ HTTP requests).
 
 import base64
 import collections
-import logging
-from datetime import datetime
-from datetime import timedelta
+import contextlib
 import functools
 import hashlib
 import hmac
-import re
-import requests
-import random
-import time
+import logging
 import math
-import sys
+import random
+import re
+import time
+from datetime import datetime, timedelta
+from urllib.parse import urlencode
+
+import requests
 
 import googlemaps
-
-try: # Python 3
-    from urllib.parse import urlencode
-except ImportError: # Python 2
-    from urllib import urlencode
+from googlemaps.cache import make_cache_key
 
 logger = logging.getLogger(__name__)
 
 _X_GOOG_MAPS_EXPERIENCE_ID = "X-Goog-Maps-Experience-ID"
-_USER_AGENT = "GoogleGeoApiClientPython/%s" % googlemaps.__version__
+_USER_AGENT = f"GoogleGeoApiClientPython/{googlemaps.__version__}"
 _DEFAULT_BASE_URL = "https://maps.googleapis.com"
 
 _RETRIABLE_STATUSES = {500, 503, 504}
@@ -54,13 +51,24 @@ _RETRIABLE_STATUSES = {500, 503, 504}
 class Client:
     """Performs requests to the Google Maps API web services."""
 
-    def __init__(self, key=None, client_id=None, client_secret=None,
-                 timeout=None, connect_timeout=None, read_timeout=None,
-                 retry_timeout=60, requests_kwargs=None,
-                 queries_per_second=60, queries_per_minute=6000,channel=None,
-                 retry_over_query_limit=True, experience_id=None, 
-                 requests_session=None,
-                 base_url=_DEFAULT_BASE_URL):
+    def __init__(
+        self,
+        key=None,
+        client_id=None,
+        client_secret=None,
+        timeout=None,
+        connect_timeout=None,
+        read_timeout=None,
+        retry_timeout=60,
+        requests_kwargs=None,
+        queries_per_second=60,
+        queries_per_minute=6000,
+        channel=None,
+        retry_over_query_limit=True,
+        experience_id=None,
+        requests_session=None,
+        base_url=_DEFAULT_BASE_URL,
+    ):
         """
         :param key: Maps API key. Required, unless "client_id" and
             "client_secret" are set. Most users should use an API key.
@@ -130,39 +138,37 @@ class Client:
 
         :param requests_session: Reused persistent session for flexibility.
         :type requests_session: requests.Session
-        
+
         :param base_url: The base URL for all requests. Defaults to the Maps API
             server. Should not have a trailing slash.
         :type base_url: string
 
         """
         if not key and not (client_secret and client_id):
-            raise ValueError("Must provide API key or enterprise credentials "
-                             "when creating client.")
+            raise ValueError("Must provide API key or enterprise credentials when creating client.")
 
         if key and not key.startswith("AIza"):
             raise ValueError("Invalid API key provided.")
 
-        if channel:
-            if not re.match("^[a-zA-Z0-9._-]*$", channel):
-                raise ValueError("The channel argument must be an ASCII "
-                    "alphanumeric string. The period (.), underscore (_)"
-                    "and hyphen (-) characters are allowed. If used without "
-                    "client_id, it must be 0-999.")
+        if channel and not re.match("^[a-zA-Z0-9._-]*$", channel):
+            raise ValueError(
+                "The channel argument must be an ASCII "
+                "alphanumeric string. The period (.), underscore (_)"
+                "and hyphen (-) characters are allowed. If used without "
+                "client_id, it must be 0-999."
+            )
 
         self.session = requests_session or requests.Session()
         self.key = key
 
         if timeout and (connect_timeout or read_timeout):
-            raise ValueError("Specify either timeout, or connect_timeout "
-                             "and read_timeout")
+            raise ValueError("Specify either timeout, or connect_timeout and read_timeout")
 
         if connect_timeout and read_timeout:
             # Check that the version of requests is >= 2.4.0
             chunks = requests.__version__.split(".")
             if int(chunks[0]) < 2 or (int(chunks[0]) == 2 and int(chunks[1]) < 4):
-                raise NotImplementedError("Connect/Read timeouts require "
-                                          "requests v2.4.0 or higher")
+                raise NotImplementedError("Connect/Read timeouts require requests v2.4.0 or higher")
             self.timeout = (connect_timeout, read_timeout)
         else:
             self.timeout = timeout
@@ -172,34 +178,40 @@ class Client:
         self.channel = channel
         self.retry_timeout = timedelta(seconds=retry_timeout)
         self.requests_kwargs = requests_kwargs or {}
-        headers = self.requests_kwargs.pop('headers', {})
+        headers = self.requests_kwargs.pop("headers", {})
         headers.update({"User-Agent": _USER_AGENT})
-        self.requests_kwargs.update({
-            "headers": headers,
-            "timeout": self.timeout,
-            "verify": True,  # NOTE(cbro): verify SSL certs.
-        })
-        
+        self.requests_kwargs.update(
+            {
+                "headers": headers,
+                "timeout": self.timeout,
+                "verify": True,  # NOTE(cbro): verify SSL certs.
+            }
+        )
+
         self.queries_per_second = queries_per_second
         self.queries_per_minute = queries_per_minute
-        try: 
-            if (type(self.queries_per_second) == int and type(self.queries_per_minute) == int ):
-                self.queries_quota =  math.floor(min(self.queries_per_second, self.queries_per_minute/60))
-            elif (self.queries_per_second and type(self.queries_per_second) == int ):
-                self.queries_quota = math.floor(self.queries_per_second)
-            elif (self.queries_per_minute and type(self.queries_per_minute) == int ):
-                self.queries_quota = math.floor(self.queries_per_minute/60)
-            else:
-                sys.exit("MISSING VALID NUMBER for queries_per_second or queries_per_minute")
-            logger.info("API queries_quota: %s", self.queries_quota)
-
-        except NameError:
-            sys.exit("MISSING VALUE for queries_per_second or queries_per_minute")
+        qps_int = isinstance(queries_per_second, int) and not isinstance(queries_per_second, bool)
+        qpm_int = isinstance(queries_per_minute, int) and not isinstance(queries_per_minute, bool)
+        if qps_int and qpm_int:
+            self.queries_quota = math.floor(min(queries_per_second, queries_per_minute / 60))
+        elif qps_int and queries_per_second:
+            self.queries_quota = math.floor(queries_per_second)
+        elif qpm_int and queries_per_minute:
+            self.queries_quota = math.floor(queries_per_minute / 60)
+        else:
+            raise ValueError(
+                "Must provide a valid integer for queries_per_second or queries_per_minute."
+            )
+        logger.info("API queries_quota: %s", self.queries_quota)
 
         self.retry_over_query_limit = retry_over_query_limit
-        self.sent_times = collections.deque("", self.queries_quota)
+        self.sent_times = collections.deque(maxlen=self.queries_quota)
         self.set_experience_id(experience_id)
         self.base_url = base_url
+        # Optional response cache; see googlemaps.cache.
+        self.cache = None
+        # Optional metrics collector; see googlemaps.metrics.
+        self.metrics = None
 
     def set_experience_id(self, *experience_id_args):
         """Sets the value for the HTTP header field name
@@ -236,9 +248,18 @@ class Client:
         headers.pop(_X_GOOG_MAPS_EXPERIENCE_ID, {})
         self.requests_kwargs["headers"] = headers
 
-    def _request(self, url, params, first_request_time=None, retry_counter=0,
-             base_url=None, accepts_clientid=True,
-             extract_body=None, requests_kwargs=None, post_json=None):
+    def _request(
+        self,
+        url,
+        params,
+        first_request_time=None,
+        retry_counter=0,
+        base_url=None,
+        accepts_clientid=True,
+        extract_body=None,
+        requests_kwargs=None,
+        post_json=None,
+    ):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
@@ -281,13 +302,30 @@ class Client:
 
         if base_url is None:
             base_url = self.base_url
-            
+
         if not first_request_time:
             first_request_time = datetime.now()
 
         elapsed = datetime.now() - first_request_time
         if elapsed > self.retry_timeout:
             raise googlemaps.exceptions.Timeout()
+
+        # Cache lookup (GET-only, no extract_body override, only on first attempt
+        # so retries don't double-count). The cache key intentionally excludes
+        # auth params; see googlemaps.cache.make_cache_key.
+        cache_key = None
+        cacheable = (
+            self.cache is not None
+            and post_json is None
+            and extract_body is None
+            and retry_counter == 0
+        )
+        if cacheable:
+            param_items = params.items() if isinstance(params, dict) else params
+            cache_key = make_cache_key(url, param_items)
+            cached = self.cache.get(cache_key)
+            if cached is not None:
+                return cached
 
         if retry_counter > 0:
             # 0.5 * (1.5 ^ i) is an increased sleep time of 1.5x per iteration,
@@ -312,18 +350,25 @@ class Client:
             final_requests_kwargs["json"] = post_json
 
         try:
-            response = requests_method(base_url + authed_url,
-                                       **final_requests_kwargs)
-        except requests.exceptions.Timeout:
-            raise googlemaps.exceptions.Timeout()
+            response = requests_method(base_url + authed_url, **final_requests_kwargs)
+        except requests.exceptions.Timeout as err:
+            raise googlemaps.exceptions.Timeout() from err
         except Exception as e:
-            raise googlemaps.exceptions.TransportError(e)
+            raise googlemaps.exceptions.TransportError(e) from e
 
         if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
-            return self._request(url, params, first_request_time,
-                                 retry_counter + 1, base_url, accepts_clientid,
-                                 extract_body, requests_kwargs, post_json)
+            return self._request(
+                url,
+                params,
+                first_request_time,
+                retry_counter + 1,
+                base_url,
+                accepts_clientid,
+                extract_body,
+                requests_kwargs,
+                post_json,
+            )
 
         # Check if the time of the nth previous query (where n is
         # queries_per_second) is under a second ago - if so, sleep for
@@ -334,20 +379,30 @@ class Client:
                 time.sleep(1 - elapsed_since_earliest)
 
         try:
-            if extract_body:
-                result = extract_body(response)
-            else:
-                result = self._get_body(response)
+            result = extract_body(response) if extract_body else self._get_body(response)
             self.sent_times.append(time.time())
+            if cacheable and cache_key is not None:
+                self.cache.set(cache_key, result)
             return result
         except googlemaps.exceptions._RetriableRequest as e:
-            if isinstance(e, googlemaps.exceptions._OverQueryLimit) and not self.retry_over_query_limit:
+            if (
+                isinstance(e, googlemaps.exceptions._OverQueryLimit)
+                and not self.retry_over_query_limit
+            ):
                 raise
 
             # Retry request.
-            return self._request(url, params, first_request_time,
-                                 retry_counter + 1, base_url, accepts_clientid,
-                                 extract_body, requests_kwargs, post_json)
+            return self._request(
+                url,
+                params,
+                first_request_time,
+                retry_counter + 1,
+                base_url,
+                accepts_clientid,
+                extract_body,
+                requests_kwargs,
+                post_json,
+            )
 
     def _get(self, *args, **kwargs):  # Backwards compatibility.
         return self._request(*args, **kwargs)
@@ -359,15 +414,13 @@ class Client:
         body = response.json()
 
         api_status = body["status"]
-        if api_status == "OK" or api_status == "ZERO_RESULTS":
+        if api_status in {"OK", "ZERO_RESULTS"}:
             return body
 
         if api_status == "OVER_QUERY_LIMIT":
-            raise googlemaps.exceptions._OverQueryLimit(
-                api_status, body.get("error_message"))
+            raise googlemaps.exceptions._OverQueryLimit(api_status, body.get("error_message"))
 
-        raise googlemaps.exceptions.ApiError(api_status,
-                                             body.get("error_message"))
+        raise googlemaps.exceptions.ApiError(api_status, body.get("error_message"))
 
     def _generate_auth_url(self, path, params, accepts_clientid):
         """Returns the path and query string portion of the request URL, first
@@ -385,10 +438,10 @@ class Client:
         # Deterministic ordering through sorting by key.
         # Useful for tests, and in the future, any caching.
         extra_params = getattr(self, "_extra_params", None) or {}
-        if type(params) is dict:
+        if isinstance(params, dict):
             params = sorted(dict(extra_params, **params).items())
         else:
-            params = sorted(extra_params.items()) + params[:] # Take a copy.
+            params = sorted(extra_params.items()) + params[:]  # Take a copy.
 
         if accepts_clientid and self.client_id and self.client_secret:
             if self.channel:
@@ -403,31 +456,30 @@ class Client:
             params.append(("key", self.key))
             return path + "?" + urlencode_params(params)
 
-        raise ValueError("Must provide API key for this API. It does not accept "
-                         "enterprise credentials.")
+        raise ValueError(
+            "Must provide API key for this API. It does not accept enterprise credentials."
+        )
 
 
+from googlemaps.addressvalidation import addressvalidation
 from googlemaps.directions import directions
 from googlemaps.distance_matrix import distance_matrix
-from googlemaps.elevation import elevation
-from googlemaps.elevation import elevation_along_path
-from googlemaps.geocoding import geocode
-from googlemaps.geocoding import reverse_geocode
+from googlemaps.elevation import elevation, elevation_along_path
+from googlemaps.geocoding import geocode, reverse_geocode
 from googlemaps.geolocation import geolocate
-from googlemaps.timezone import timezone
-from googlemaps.roads import snap_to_roads
-from googlemaps.roads import nearest_roads
-from googlemaps.roads import speed_limits
-from googlemaps.roads import snapped_speed_limits
-from googlemaps.places import find_place
-from googlemaps.places import places
-from googlemaps.places import places_nearby
-from googlemaps.places import place
-from googlemaps.places import places_photo
-from googlemaps.places import places_autocomplete
-from googlemaps.places import places_autocomplete_query
 from googlemaps.maps import static_map
-from googlemaps.addressvalidation import addressvalidation
+from googlemaps.places import (
+    find_place,
+    place,
+    places,
+    places_autocomplete,
+    places_autocomplete_query,
+    places_nearby,
+    places_photo,
+)
+from googlemaps.roads import nearest_roads, snap_to_roads, snapped_speed_limits, speed_limits
+from googlemaps.timezone import timezone
+
 
 def make_api_method(func):
     """
@@ -439,15 +491,15 @@ def make_api_method(func):
     Please note that this is an unsupported feature for advanced use only.
     It's also currently incompatibile with multiple threads, see GH #160.
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         args[0]._extra_params = kwargs.pop("extra_params", None)
         result = func(*args, **kwargs)
-        try:
+        with contextlib.suppress(AttributeError):
             del args[0]._extra_params
-        except AttributeError:
-            pass
         return result
+
     return wrapper
 
 
@@ -485,11 +537,11 @@ def sign_hmac(secret, payload):
 
     :rtype: string
     """
-    payload = payload.encode('ascii', 'strict')
-    secret = secret.encode('ascii', 'strict')
+    payload = payload.encode("ascii", "strict")
+    secret = secret.encode("ascii", "strict")
     sig = hmac.new(base64.urlsafe_b64decode(secret), payload, hashlib.sha1)
     out = base64.urlsafe_b64encode(sig.digest())
-    return out.decode('utf-8')
+    return out.decode("utf-8")
 
 
 def urlencode_params(params):
@@ -515,26 +567,8 @@ def urlencode_params(params):
     return requests.utils.unquote_unreserved(urlencode(extended))
 
 
-try:
-    unicode
-    # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
-    # raised here, and caught below.
-
-    def normalize_for_urlencode(value):
-        """(Python 2) Converts the value to a `str` (raw bytes)."""
-        if isinstance(value, unicode):
-            return value.encode('utf8')
-
-        if isinstance(value, str):
-            return value
-
-        return normalize_for_urlencode(str(value))
-
-except NameError:
-    def normalize_for_urlencode(value):
-        """(Python 3) No-op."""
-        # urlencode in Python 3 handles all the types we are passing it.
-        if isinstance(value, str):
-            return value
-
-        return normalize_for_urlencode(str(value))
+def normalize_for_urlencode(value):
+    """Coerce a value into a ``str`` suitable for ``urllib.parse.urlencode``."""
+    if isinstance(value, str):
+        return value
+    return normalize_for_urlencode(str(value))

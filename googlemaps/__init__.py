@@ -17,8 +17,16 @@
 
 __version__ = "4.10.0"
 
-from googlemaps.client import Client
 from googlemaps import exceptions
+from googlemaps.batch import BatchExecutor
+from googlemaps.cache import BaseCache, CacheStats, InMemoryTTLCache
+from googlemaps.client import Client
 
-
-__all__ = ["Client", "exceptions"]
+__all__ = [
+    "BaseCache",
+    "BatchExecutor",
+    "CacheStats",
+    "Client",
+    "InMemoryTTLCache",
+    "exceptions",
+]

@@ -17,11 +17,10 @@
 
 """Tests for the elevation module."""
 
-import datetime
-
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 

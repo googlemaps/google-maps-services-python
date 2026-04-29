@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 #
 # Copyright 2017 Google Inc. All rights reserved.
 #
@@ -21,6 +20,7 @@
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 
@@ -39,10 +39,12 @@ class AddressValidationTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.addressvalidation('1600 Amphitheatre Pk', regionCode='US', locality='Mountain View', enableUspsCass=True)
+        results = self.client.addressvalidation(
+            "1600 Amphitheatre Pk", regionCode="US", locality="Mountain View", enableUspsCass=True
+        )
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://addressvalidation.googleapis.com/v1:validateAddress?" "key=%s" % self.key,
+            "https://addressvalidation.googleapis.com/v1:validateAddress?key=%s" % self.key,
             responses.calls[0].request.url,
         )

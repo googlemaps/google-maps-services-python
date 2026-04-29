@@ -17,13 +17,13 @@
 
 """Tests for the directions module."""
 
-from datetime import datetime
-from datetime import timedelta
 import time
+from datetime import datetime, timedelta
 
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 
@@ -84,9 +84,7 @@ class DirectionsTest(TestCase):
         # With mode of transit, we need a departure_time or an
         # arrival_time specified
         with self.assertRaises(googlemaps.exceptions.ApiError):
-            self.client.directions(
-                "Sydney Town Hall", "Parramatta, NSW", mode="transit"
-            )
+            self.client.directions("Sydney Town Hall", "Parramatta, NSW", mode="transit")
 
     @responses.activate
     def test_transit_with_departure_time(self):
@@ -159,9 +157,7 @@ class DirectionsTest(TestCase):
             content_type="application/json",
         )
 
-        routes = self.client.directions(
-            "Town Hall, Sydney", "Parramatta, NSW", mode="bicycling"
-        )
+        routes = self.client.directions("Town Hall, Sydney", "Parramatta, NSW", mode="bicycling")
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -182,9 +178,7 @@ class DirectionsTest(TestCase):
         )
 
         now = datetime.now()
-        routes = self.client.directions(
-            "Brooklyn", "Queens", mode="transit", departure_time=now
-        )
+        routes = self.client.directions("Brooklyn", "Queens", mode="transit", departure_time=now)
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(

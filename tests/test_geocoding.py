@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 #
 # Copyright 2014 Google Inc. All rights reserved.
 #
@@ -18,11 +17,10 @@
 
 """Tests for the geocoding module."""
 
-import datetime
-
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 
@@ -45,8 +43,7 @@ class GeocodingTest(TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://maps.googleapis.com/maps/api/geocode/json?"
-            "key=%s&address=Sydney" % self.key,
+            "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=Sydney" % self.key,
             responses.calls[0].request.url,
         )
 
@@ -79,7 +76,9 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        results = self.client.geocode("1600 Amphitheatre Parkway, " "Mountain View, CA").get("results", [])
+        results = self.client.geocode("1600 Amphitheatre Parkway, Mountain View, CA").get(
+            "results", []
+        )
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
@@ -218,7 +217,7 @@ class GeocodingTest(TestCase):
             "https://maps.googleapis.com/maps/api/geocode/json?"
             "key=%s&place_id=ChIJeRpOeF67j4AR9ydy_PIzPuM" % self.key,
             responses.calls[0].request.url,
-            )
+        )
 
     @responses.activate
     def test_simple_reverse_geocode(self):
@@ -321,7 +320,9 @@ class GeocodingTest(TestCase):
             content_type="application/json",
         )
 
-        response = self.client.reverse_geocode((-33.8674869, 151.2069902), enable_address_descriptor=True)
+        response = self.client.reverse_geocode(
+            (-33.8674869, 151.2069902), enable_address_descriptor=True
+        )
 
         address_descriptor = response.get("address_descriptor", [])
 

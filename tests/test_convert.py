@@ -19,6 +19,7 @@
 
 import datetime
 import unittest
+
 import pytest
 
 from googlemaps import convert
@@ -156,10 +157,7 @@ class ConvertTest(unittest.TestCase):
         self.assertAlmostEqual(144.963180, points[-1]["lng"])
 
     def test_polyline_round_trip(self):
-        test_polyline = (
-            "gcneIpgxzRcDnBoBlEHzKjBbHlG`@`IkDxIi"
-            "KhKoMaLwTwHeIqHuAyGXeB~Ew@fFjAtIzExF"
-        )
+        test_polyline = "gcneIpgxzRcDnBoBlEHzKjBbHlG`@`IkDxIiKhKoMaLwTwHeIqHuAyGXeB~Ew@fFjAtIzExF"
 
         points = convert.decode_polyline(test_polyline)
         actual_polyline = convert.encode_polyline(points)

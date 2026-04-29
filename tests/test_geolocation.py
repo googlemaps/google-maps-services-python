@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 #
 # Copyright 2017 Google Inc. All rights reserved.
 #
@@ -21,6 +20,7 @@
 import responses
 
 import googlemaps
+
 from . import TestCase
 
 
@@ -43,6 +43,6 @@ class GeolocationTest(TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://www.googleapis.com/geolocation/v1/geolocate?" "key=%s" % self.key,
+            "https://www.googleapis.com/geolocation/v1/geolocate?key=%s" % self.key,
             responses.calls[0].request.url,
         )

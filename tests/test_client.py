@@ -19,15 +19,16 @@
 """Tests for client module."""
 
 import time
-
-import responses
-import requests
 import uuid
+
+import requests
+import responses
 
 import googlemaps
 import googlemaps.client as _client
-from . import TestCase
 from googlemaps.client import _X_GOOG_MAPS_EXPERIENCE_ID
+
+from . import TestCase
 
 
 class ClientTest(TestCase):
@@ -62,9 +63,7 @@ class ClientTest(TestCase):
                 status=200,
                 content_type="application/json",
             )
-        client = googlemaps.Client(
-            key="AIzaasdf", queries_per_second=queries_per_second
-        )
+        client = googlemaps.Client(key="AIzaasdf", queries_per_second=queries_per_second)
         start = time.time()
         for _ in query_range:
             client.geocode("Sesame St.")
@@ -86,8 +85,7 @@ class ClientTest(TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://maps.googleapis.com/maps/api/geocode/json?"
-            "key=AIzaasdf&address=Sesame+St.",
+            "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaasdf&address=Sesame+St.",
             responses.calls[0].request.url,
         )
 
@@ -141,9 +139,7 @@ class ClientTest(TestCase):
         self.assertEqual(1, len(responses.calls))
 
         # Check ordering of parameters.
-        self.assertIn(
-            "address=Sesame+St.&client=foo&signature", responses.calls[0].request.url
-        )
+        self.assertIn("address=Sesame+St.&client=foo&signature", responses.calls[0].request.url)
         self.assertURLEqual(
             "https://maps.googleapis.com/maps/api/geocode/json?"
             "address=Sesame+St.&client=foo&"
@@ -285,9 +281,7 @@ class ClientTest(TestCase):
         # https://developers.google.com/maps/premium/reports
         # /usage-reports#channels
         with self.assertRaises(ValueError):
-            client = googlemaps.Client(
-                client_id="foo", client_secret="a2V5", channel="auieauie$? "
-            )
+            client = googlemaps.Client(client_id="foo", client_secret="a2V5", channel="auieauie$? ")
 
     def test_auth_url_with_channel(self):
         client = googlemaps.Client(
@@ -295,9 +289,7 @@ class ClientTest(TestCase):
         )
 
         # Check ordering of parameters + signature.
-        auth_url = client._generate_auth_url(
-            "/test", {"param": "param"}, accepts_clientid=True
-        )
+        auth_url = client._generate_auth_url("/test", {"param": "param"}, accepts_clientid=True)
         self.assertEqual(
             auth_url,
             "/test?param=param"
@@ -307,9 +299,7 @@ class ClientTest(TestCase):
         )
 
         # Check if added to requests to API with accepts_clientid=False
-        auth_url = client._generate_auth_url(
-            "/test", {"param": "param"}, accepts_clientid=False
-        )
+        auth_url = client._generate_auth_url("/test", {"param": "param"}, accepts_clientid=False)
         self.assertEqual(auth_url, "/test?param=param&key=AIzaasdf")
 
     def test_requests_version(self):

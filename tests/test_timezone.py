@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 #
 # Copyright 2014 Google Inc. All rights reserved.
 #
@@ -19,10 +18,12 @@
 """Tests for the timezone module."""
 
 import datetime
+from unittest import mock
 
 import responses
-from unittest import mock
+
 import googlemaps
+
 from . import TestCase
 
 
