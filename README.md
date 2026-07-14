@@ -49,14 +49,40 @@ contribute, please read contribute.
  - Python 3.5 or later.
  - A Google Maps API key.
 
-## API Keys
+## API Keys & Setup
 
-Each Google Maps Web Service request requires an API key or client ID. API keys
-are generated in the 'Credentials' page of the 'APIs & Services' tab of [Google Cloud console](https://console.cloud.google.com/apis/credentials).
+Each request to Google Maps Platform Web Services requires an API key.
 
-For even more information on getting started with Google Maps Platform and generating/restricting an API key, see [Get Started with Google Maps Platform](https://developers.google.com/maps/gmp-get-started) in our docs.
+### 1. Generating an API Key
 
-**Important:** This key should be kept secret on your server.
+1. Go to the [Google Cloud Console Credentials](https://console.cloud.google.com/apis/credentials) page.
+2. Select your Google Cloud project (or create a new project).
+3. Click **+ Create Credentials** at the top and select **API key**.
+4. Copy the generated API key.
+
+### 2. Enabling Required APIs
+
+Google Maps Platform Web Services are modular. Enable the specific APIs your project needs in the [Google Cloud API Library](https://console.cloud.google.com/apis/library):
+
+- **Places API (New)** (`places.googleapis.com`)
+- **Routes API (v2)** (`routes.googleapis.com`)
+- **Address Validation API** (`addressvalidation.googleapis.com`)
+- **Geocoding API** (`geocoding-backend.googleapis.com`)
+- **Isochrones API** (`isochrones.googleapis.com`)
+- **Environmental APIs**: Solar (`solar.googleapis.com`), Air Quality (`airquality.googleapis.com`), Pollen (`pollen.googleapis.com`)
+
+### 3. Key Restrictions & Security Best Practices
+
+> ⚠️ **Important Security Rule:** Never hardcode secret API keys directly into public repositories or client-side code.
+
+- **API Restrictions**: In Cloud Console, select your API Key -> **API restrictions** -> choose **Restrict key** -> select only the specific APIs your backend application requires.
+- **Application Restrictions**: Limit key usage by server IP address (`IP addresses` restriction) for backend environments.
+- **Environment Variables**: Store your key in an environment variable:
+  ```bash
+  export GOOGLE_MAPS_API_KEY="AIzaSy..."
+  ```
+
+For full setup documentation, visit [Get Started with Google Maps Platform](https://developers.google.com/maps/gmp-get-started).
 
 ## Installation
 
@@ -108,14 +134,68 @@ Automatically retry when intermittent failures occur. That is, when any of the r
 are returned from the API.
 
 
+## Testing
+
+The project contains unit tests (with mock HTTP responses) and live integration tests (against Google Maps Platform production servers).
+
+### 1. Running Unit Tests (Offline / Mocked)
+
+Run the fast unit test suite using `pytest`:
+
+```bash
+# Run all unit tests
+pytest
+
+# Run tests with coverage report
+pytest --cov=googlemaps --cov-report=term-missing
+```
+
+### 2. Running Live Integration Tests
+
+The live integration suite in `tests/test_integration.py` tests actual API requests against Google Maps Platform production endpoints.
+
+#### Running Locally
+Set your API key in your shell environment:
+
+```bash
+export GOOGLE_MAPS_API_KEY="YOUR_ACTUAL_API_KEY"
+pytest tests/test_integration.py
+```
+
+#### Running automatically in GitHub Actions CI
+To run live integration tests on GitHub Actions:
+1. Open your repository on GitHub.
+2. Go to **Settings** -> **Secrets and variables** -> **Actions**.
+3. Click **New repository secret**.
+4. Name: `GOOGLE_MAPS_API_KEY`
+5. Value: *your restricted Google Maps Platform API key*.
+
+The `.github/workflows/test.yml` workflow automatically passes `${{ secrets.GOOGLE_MAPS_API_KEY }}` into test runs across Python versions 3.9 through 3.13.
+
+*(Note: If `GOOGLE_MAPS_API_KEY` secret or environment variable is absent, live integration tests are automatically skipped).*
+
+### 3. Running Executable CUJ Samples
+
+Run any of the real-world CUJ sample applications:
+
+```bash
+python samples/real_estate_insights.py
+python samples/delivery_route_planner.py
+python samples/travel_discovery_assistant.py
+python samples/isochrone_reachability_cuj.py
+```
+
+---
+
 ## Building the Project
 
+```bash
+# Installing nox
+$ pip install nox
 
-    # Installing nox
-    $ pip install nox
-
-    # Running tests
-    $ nox
+# Running full test matrices across Python versions
+$ nox
+```
 
     # Generating documentation
     $ nox -e docs

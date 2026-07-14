@@ -303,7 +303,15 @@ class Client:
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
         requests_kwargs = requests_kwargs or {}
+
+        # Safely merge headers to preserve default headers (e.g. User-Agent)
+        client_headers = self.requests_kwargs.get("headers", {})
+        request_headers = requests_kwargs.get("headers", {})
+        merged_headers = dict(client_headers, **request_headers)
+
         final_requests_kwargs = dict(self.requests_kwargs, **requests_kwargs)
+        if merged_headers:
+            final_requests_kwargs["headers"] = merged_headers
 
         # Determine GET/POST.
         requests_method = self.session.get
@@ -428,6 +436,18 @@ from googlemaps.places import places_autocomplete
 from googlemaps.places import places_autocomplete_query
 from googlemaps.maps import static_map
 from googlemaps.addressvalidation import addressvalidation
+from googlemaps.routes import compute_routes, compute_route_matrix
+from googlemaps.solar import find_closest_building_insights, get_solar_data_layers
+from googlemaps.airquality import air_quality_current_conditions
+from googlemaps.pollen import pollen_forecast
+from googlemaps.places_v1 import (
+    places_search_text,
+    places_search_nearby,
+    place_v1,
+    places_autocomplete_v1,
+    place_photo_v1,
+)
+from googlemaps.isochrones import generate_isochrones
 
 def make_api_method(func):
     """
@@ -472,6 +492,18 @@ Client.places_autocomplete = make_api_method(places_autocomplete)
 Client.places_autocomplete_query = make_api_method(places_autocomplete_query)
 Client.static_map = make_api_method(static_map)
 Client.addressvalidation = make_api_method(addressvalidation)
+Client.compute_routes = make_api_method(compute_routes)
+Client.compute_route_matrix = make_api_method(compute_route_matrix)
+Client.find_closest_building_insights = make_api_method(find_closest_building_insights)
+Client.get_solar_data_layers = make_api_method(get_solar_data_layers)
+Client.air_quality_current_conditions = make_api_method(air_quality_current_conditions)
+Client.pollen_forecast = make_api_method(pollen_forecast)
+Client.places_search_text = make_api_method(places_search_text)
+Client.places_search_nearby = make_api_method(places_search_nearby)
+Client.place_v1 = make_api_method(place_v1)
+Client.places_autocomplete_v1 = make_api_method(places_autocomplete_v1)
+Client.place_photo_v1 = make_api_method(place_photo_v1)
+Client.generate_isochrones = make_api_method(generate_isochrones)
 
 
 def sign_hmac(secret, payload):
