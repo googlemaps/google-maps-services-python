@@ -14,7 +14,7 @@
 
 import nox
 
-SUPPORTED_PY_VERSIONS = ["3.7", "3.8", "3.9", "3.10"]
+SUPPORTED_PY_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
 
 def _install_dev_packages(session):
@@ -52,7 +52,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.11")
 def docs(session):
     _install_dev_packages(session)
     _install_doc_dependencies(session)
