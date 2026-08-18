@@ -23,6 +23,9 @@ on:
   push:
     branches: ['*']
 
+permissions:
+  contents: read
+
 jobs:
   matrix:
     name: "Run tests on Python ${{ matrix.python-version }}"
