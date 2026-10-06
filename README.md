@@ -8,6 +8,22 @@ Python Client for Google Maps Services
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/googlemaps)
 ![GitHub contributors](https://img.shields.io/github/contributors/googlemaps/google-maps-services-python)
 
+> [!IMPORTANT]
+> **Legacy APIs End of Sale & Newer Client Libraries**
+>
+> Several APIs supported by this library are in [Legacy status](https://developers.google.com/maps/legacy):
+> - **Places API (Legacy):** This product is in [Legacy status](https://developers.google.com/maps/legacy). As of October 2026, Places API (Legacy) can no longer be enabled for new Google Cloud projects. Existing projects remain fully supported. For new features and improved performance, [migrate to Places API (New)](https://developers.google.com/maps/documentation/places/web-service/legacy/migrate-overview).
+> - **Directions API (Legacy):** This product is in [Legacy status](https://developers.google.com/maps/legacy). As of October 2026, Directions API (Legacy) can no longer be enabled for new Google Cloud projects. Existing projects remain fully supported. For new features and improved performance, [migrate to the Routes API](https://developers.google.com/maps/documentation/routes/migrate-routes).
+> - **Distance Matrix API (Legacy):** This product is in [Legacy status](https://developers.google.com/maps/legacy). As of October 2026, Distance Matrix API (Legacy) can no longer be enabled for new Google Cloud projects. Existing projects remain fully supported. For new features and improved performance, [migrate to the Routes API](https://developers.google.com/maps/documentation/routes/migrate-routes).
+>
+> For our newer APIs, see the [Google Maps Platform APIs in the Cloud Client Libraries for Python](https://github.com/googleapis/google-cloud-python) ([overview](https://docs.cloud.google.com/apis/docs/cloud-client-libraries)):
+> - [Places API (New)](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-places)
+> - [Routes API](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-routing)
+> - [Address Validation API](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-addressvalidation)
+> - [Datasets API](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-mapsplatformdatasets)
+>
+> The new APIs will not be added to this client library.
+
 ## Description
 
 Use Python? Want to geocode something? Looking for directions?
@@ -17,32 +33,19 @@ Services to your Python application.
 The Python Client for Google Maps Services is a Python Client library for the following Google Maps
 APIs:
 
- - Directions API
- - Distance Matrix API
  - Elevation API
  - Geocoding API
  - Geolocation API
  - Time Zone API
  - Roads API
- - Places API
  - Maps Static API
  - Address Validation API
 
-Keep in mind that the same [terms and conditions](https://developers.google.com/maps/terms) apply
-to usage of the APIs when they're accessed through this library.
+As well as the following legacy APIs:
 
-## Support
-
-This library is community supported. We're comfortable enough with the stability and features of
-the library that we want you to build real production applications on it. We will try to support,
-through Stack Overflow, the public and protected surface of the library and maintain backwards
-compatibility in the future; however, while the library is in version 0.x, we reserve the right
-to make backwards-incompatible changes. If we do remove some functionality (typically because
-better functionality exists or if the feature proved infeasible), our intention is to deprecate
-and give developers a year to update their code.
-
-If you find a bug, or have a feature suggestion, please log an issue. If you'd like to
-contribute, please read contribute.
+ - Directions API (Legacy)
+ - Distance Matrix API (Legacy)
+ - Places API (Legacy)
 
 ## Requirements
 
@@ -144,7 +147,23 @@ are returned from the API.
 - [Places API](https://developers.google.com/places/)
 - [Maps Static API](https://developers.google.com/maps/documentation/maps-static/)
 
-### Support
-- [Report an issue](https://github.com/googlemaps/google-maps-services-python/issues)
-- [Contribute](https://github.com/googlemaps/google-maps-services-python/blob/master/CONTRIB.md)
-- [StackOverflow](http://stackoverflow.com/questions/tagged/google-maps)
+## Terms of Service
+
+This library uses Google Maps Platform services. Use of Google Maps Platform services through this library is subject to the Google Maps Platform [Terms of Service](https://cloud.google.com/maps-platform/terms).
+
+This library is not a Google Maps Platform Core Service. Therefore, the Google Maps Platform Terms of Service (e.g. Technical Support Services, Service Level Agreements, and Deprecation Policy) do not apply to the code in this library.
+
+### European Economic Area (EEA) developers
+
+If your billing address is in the European Economic Area, effective on 8 July 2025, the [Google Maps Platform EEA Terms of Service](https://cloud.google.com/terms/maps-platform/eea) will apply to your use of the Services. Functionality varies by region. [Learn more](https://developers.google.com/maps/comms/eea/faq).
+
+## Support
+
+This library is offered via an open source [license](LICENSE). It is not governed by the Google Maps Platform Support [Technical Support Services Guidelines](https://cloud.google.com/maps-platform/terms/tssg), the [SLA](https://cloud.google.com/maps-platform/terms/sla), or the [Deprecation Policy](https://cloud.google.com/maps-platform/terms) (however, any Google Maps Platform services used by the library remain subject to the Google Maps Platform Terms of Service).
+
+This library adheres to [semantic versioning](https://semver.org/) to indicate when backwards-incompatible changes are introduced. Accordingly, while the library is in version 0.x, backwards-incompatible changes may be introduced at any time.
+
+If you find a bug, or have a feature request, please [file an issue](https://github.com/googlemaps/google-maps-services-python/issues) on GitHub. If you would like to get answers to technical questions from other Google Maps Platform developers, ask through one of our [developer community channels](https://developers.google.com/maps/developer-community). If you'd like to contribute, please check the [Contributing guide](CONTRIB.md).
+
+You can also discuss this library on our [Discord server](https://discord.gg/hYsWbmk).
+
