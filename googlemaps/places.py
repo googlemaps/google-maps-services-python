@@ -556,6 +556,7 @@ def places_autocomplete(
     types=None,
     components=None,
     strict_bounds=False,
+    location_bias=None
 ):
     """
     Returns Place predictions given a textual search string and optional
@@ -604,6 +605,12 @@ def places_autocomplete(
         the region defined by location and radius.
     :type strict_bounds: bool
 
+    :param location_bias: Prefer results in a specified area, by specifying
+                          either a radius plus lat/lng, or two lat/lng pairs
+                          representing the points of a rectangle. See:
+                          https://developers.google.com/maps/documentation/places/web-service/autocomplete#locationbias
+    :type location_bias: string
+
     :rtype: list of predictions
 
     """
@@ -620,6 +627,7 @@ def places_autocomplete(
         types=types,
         components=components,
         strict_bounds=strict_bounds,
+        location_bias=location_bias
     )
 
 
@@ -674,6 +682,7 @@ def _autocomplete(
     types=None,
     components=None,
     strict_bounds=False,
+    location_bias=None
 ):
     """
     Internal handler for ``autocomplete`` and ``autocomplete_query``.
@@ -702,6 +711,11 @@ def _autocomplete(
         params["components"] = convert.components(components)
     if strict_bounds:
         params["strictbounds"] = "true"
+    if location_bias:
+        valid = ["ipbias", "circle", "rectangle"]
+        if location_bias.split(":")[0] not in valid:
+            raise ValueError("location_bias should be prefixed with one of: %s" % valid)
+        params["locationbias"] = location_bias
 
     url = "/maps/api/place/%sautocomplete/json" % url_part
     return client._request(url, params).get("predictions", [])
