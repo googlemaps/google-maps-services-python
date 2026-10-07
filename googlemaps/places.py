@@ -74,7 +74,7 @@ PLACES_DETAIL_FIELDS_BASIC = {
     "photo",
     "place_id",
     "plus_code",
-    "type",
+    "types",
     "url",
     "utc_offset",
     "vicinity",
