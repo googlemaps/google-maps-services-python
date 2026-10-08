@@ -53,7 +53,7 @@ PLACES_FIND_FIELDS = (
 )
 
 PLACES_DETAIL_FIELDS_BASIC = {
-    "address_component",
+    "address_components",
     "adr_address",
     "business_status",
     "formatted_address",
