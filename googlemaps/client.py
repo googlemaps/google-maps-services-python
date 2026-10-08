@@ -366,6 +366,9 @@ class Client:
             raise googlemaps.exceptions._OverQueryLimit(
                 api_status, body.get("error_message"))
 
+        if api_status == "INVALID_REQUEST":
+            raise googlemaps.exceptions._RetriableRequest()
+
         raise googlemaps.exceptions.ApiError(api_status,
                                              body.get("error_message"))
 
