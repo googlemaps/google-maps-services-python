@@ -77,7 +77,6 @@ class Client:
         :param channel: (for Maps API for Work customers) When set, a channel
             parameter with this value will be added to the requests.
             This can be used for tracking purpose.
-            Can only be used with a Maps API client ID.
         :type channel: str
 
         :param timeout: Combined connect and read timeout for HTTP requests, in
@@ -390,9 +389,10 @@ class Client:
         else:
             params = sorted(extra_params.items()) + params[:] # Take a copy.
 
+        if self.channel:
+            params.append(("channel", self.channel))
+
         if accepts_clientid and self.client_id and self.client_secret:
-            if self.channel:
-                params.append(("channel", self.channel))
             params.append(("client", self.client_id))
 
             path = "?".join([path, urlencode_params(params)])
