@@ -419,7 +419,7 @@ def _places(
     if region:
         params["region"] = region
     if page_token:
-        params["pagetoken"] = page_token
+        params["page_token"] = page_token
 
     url = "/maps/api/place/%ssearch/json" % url_part
     return client._request(url, params)
