@@ -15,7 +15,7 @@
 # the License.
 #
 
-"""Performs requests to the Google Maps Directions API."""
+"""Performs requests to the Google Maps Time Zone API."""
 
 from googlemaps import convert
 
