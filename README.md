@@ -69,13 +69,23 @@ Note that you will need requests 2.4.0 or higher if you want to specify connect/
 
 ## Usage
 
+Set the `GOOGLE_MAPS_API_KEY` environment variable before running the example,
+replacing the placeholder with your API key:
+
+```bash
+export GOOGLE_MAPS_API_KEY="YOUR_API_KEY"
+```
+
+Keep real API keys out of source control, including scripts and configuration files.
+
 This example uses the Geocoding API and the Directions API with an API key:
 
 ```python
+import os
 import googlemaps
 from datetime import datetime
 
-gmaps = googlemaps.Client(key='Add Your Key here')
+gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
 
 # Geocoding an address
 geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
